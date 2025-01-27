@@ -170,8 +170,12 @@ class SiswaController extends Controller
      */
     public function destroy(string $id)
     {
-        $siswa = Siswa::find($id);
+        $userRole = UserRole::where('iduser', $id);
+        $siswa = Siswa::where('iduser', $id);
+        $user = User::find($id);
+        $userRole->delete();
         $siswa->delete();
+        $user->delete();
         return redirect()->back()->with('success', 'Data Berhasil Dihapus');
     }
 
