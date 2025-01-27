@@ -12,4 +12,9 @@ class Siswa extends Model
     {
         return $this->belongsTo(TahunAjaran::class, 'idtahunajaran');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'iduser');
+    }
 }

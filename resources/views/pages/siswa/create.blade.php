@@ -134,7 +134,7 @@
                                             @foreach ($tahun_ajaran as $item)
                                                 <option value="{{ $item->id }}">
                                                     {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
-                                                    ({{ $item->semster == 'ganjil' ? 'Ganjil' : 'Genap' }})
+                                                    ({{ $item->semester == 'ganjil' ? 'Ganjil' : 'Genap' }})
                                                 </option>
                                             @endforeach
                                         </select>
@@ -227,20 +227,19 @@
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Username</label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" name="username">
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Password</label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="password">
+                                        <input class="form-control" type="password" name="password">
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Level</label>
                                     <div class="col-md-10">
-                                        <select name="role" class="form-select select2">
-                                            <option disabled selected>--- Pilih Level ---</option>
+                                        <select name="role[]" class="form-control select2" multiple="multiple">
                                             @foreach ($role as $item)
                                                 <option value="{{ $item->id }}">{{ $item->role }}
                                                 </option>

@@ -36,6 +36,11 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+        Role::create([
+            'role' => 'Siswa',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
         UserRole::create([
             'iduser' => 1,
             'idrole' => 1,
