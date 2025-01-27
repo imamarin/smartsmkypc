@@ -79,9 +79,9 @@ class SiswaController extends Controller
         Siswa::create($dataSiswa);
 
         foreach ($request->role as $key => $value) {
-            Role::create([
+            UserRole::create([
                 'iduser' => $user->id,
-                'idrole' => $request->role
+                'idrole' => $value
             ]);
         }
         return redirect()->route('data-siswa.index')->with('success', 'Data Berasil Disimpan');
@@ -103,6 +103,7 @@ class SiswaController extends Controller
         $data['siswa'] = Siswa::with(['tahunajaran', 'user'])->where('iduser', $id)->first();
         $data['tahun_ajaran'] = TahunAjaran::all();
         $data['role'] = Role::all();
+        $data['roleUser'] = UserRole::where('iduser', $id)->get();
         return view('pages.siswa.edit', $data);
     }
 
@@ -151,8 +152,8 @@ class SiswaController extends Controller
             ]);
             $siswa->update($editSiswa);
 
-            $role = Role::find($id);
-            if ($role) {
+            $role = UserRole::where('iduser', $id);
+            if ($role->count() > 0) {
                 $role->delete();
             }
             foreach ($request->role as $key => $value) {
@@ -163,6 +164,8 @@ class SiswaController extends Controller
             }
             return redirect()->route('data-siswa.index')->with('success', 'Data Berhasil Diubah');
         }
+
+        return redirect()->back()->with('danger', 'Data Gagal Diubah');
     }
 
     /**

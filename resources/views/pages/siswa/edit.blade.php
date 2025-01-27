@@ -262,7 +262,7 @@
                                     <div class="col-md-10">
                                         <select name="role[]" class="form-select select2" multiple>
                                             @foreach ($role as $item)
-                                                <option value="{{ $item->id }}">{{ $item->role }}
+                                                <option value="{{ $item->id }}" {{ in_array($item->id, $roleUser)?'selected':'' }}>{{ $item->role }}
                                                 </option>
                                             @endforeach
                                         </select>
