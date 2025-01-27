@@ -86,11 +86,11 @@
                                         </td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('data-guru.edit', $item->id) }}"
+                                                <a href="{{ route('data-guru.edit', $item->user->id) }}"
                                                     class="btn btn-sm btn-secondary me-2">
                                                     Edit
                                                 </a>
-                                                <a href="{{ route('data-guru.destroy', $item->id) }}"
+                                                <a href="{{ route('data-guru.destroy', $item->user->id) }}"
                                                     class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                             </div>
                                         </td>

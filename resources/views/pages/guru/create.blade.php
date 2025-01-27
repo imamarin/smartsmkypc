@@ -33,27 +33,27 @@
                                     <label class="col-md-2 col-form-label">Kode Guru<span
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="number" name="kode_guru" required>
+                                        <input class="form-control" type="number" name="kode_guru" value="{{ old('kode_guru') }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Nama<span class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="text" name="nama" required>
+                                        <input class="form-control" type="text" name="nama" value="{{ old('nama') }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Tempat Lahir<span
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="text" name="tempat_lahir" required>
+                                        <input class="form-control" type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Tanggal Lahir<span
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="date" name="tanggal_lahir" required>
+                                        <input class="form-control" type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
@@ -79,7 +79,7 @@
                                 <div class="mb-3 mb-lg-0 row">
                                     <label class="col-md-2 col-form-label">NUPTK</label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="number" name="nuptk">
+                                        <input class="form-control" type="number" name="nuptk" value="{{ old('nuptk') }}">
                                     </div>
                                 </div><!-- end row -->
                             </div><!-- end col -->
@@ -88,19 +88,19 @@
                                 <div class="row mb-3">
                                     <label class="col-md-2 col-form-label">NIP<span class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="number" name="nip">
+                                        <input class="form-control" type="number" name="nip" value="{{ old('nip') }}">
                                     </div>
                                 </div><!-- end row -->
                                 <div class="row mb-3 mt-3 mt-xl-0">
                                     <label class="col-md-2 col-form-label">Alamat<span class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <textarea name="alamat" class="form-control" cols="30" rows="5" required></textarea>
+                                        <textarea name="alamat" class="form-control" cols="30" rows="5" required>{{ old('alamat') }}</textarea>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="row mb-3">
                                     <label class="col-md-2 col-form-label">No HP<span class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="number" name="no_hp" required>
+                                        <input class="form-control" type="number" name="no_hp" value="{{ old('no_hp') }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="row">
@@ -131,20 +131,19 @@
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Username</label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" name="username" value="{{ old('username') }}">
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Password</label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="password">
+                                        <input class="form-control" type="password" name="password">
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Level</label>
                                     <div class="col-md-10">
-                                        <select name="role" class="form-select select2">
-                                            <option disabled selected>--- Pilih Level ---</option>
+                                        <select name="role[]" class="form-select select2" multiple>
                                             @foreach ($role as $item)
                                                 <option value="{{ $item->id }}">{{ $item->role }}
                                                 </option>

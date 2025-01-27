@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Siswa::class, 'iduser');
     }
+
+    public function guru()
+    {
+        return $this->hasMany(Guru::class, 'iduser');
+    }
 }

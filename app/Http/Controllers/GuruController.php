@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Guru;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Http\Request;
 
 class GuruController extends Controller
@@ -35,6 +37,11 @@ class GuruController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'username' => 'required|unique:users,username',
+            'password' => 'required',
+        ]);
+
+        $requestGuru = $request->validate([
             'kode_guru' => 'required|unique:gurus,kode_guru',
             'nama' => 'required',
             'nip' => 'required|unique:gurus,nip',
@@ -44,8 +51,29 @@ class GuruController extends Controller
             'jenis_kelamin' => 'required',
             'no_hp' => 'required',
             'status' => 'required',
+            'nuptk' => 'nuptk',
         ]);
-        Guru::create($request->all());
+
+        $dataRole = $request->validate([
+            'role' => 'required'
+        ]);
+
+
+        $user = User::create([
+            'username' => $request->username,
+            'password' => bcrypt($request->password)
+        ]);
+
+        $dataGuru = $requestGuru;
+        $dataGuru['iduser'] = $user->id;
+        Guru::create($dataGuru);
+
+        foreach ($request->role as $key => $value) {
+            UserRole::create([
+                'iduser' => $user->id,
+                'idrole' => $value
+            ]);
+        }
         return redirect()->route('data-guru.index')->with('success', 'Data Berhasil Disimpan');
     }
 
@@ -62,8 +90,9 @@ class GuruController extends Controller
      */
     public function edit(string $id)
     {
-        $data['guru'] = Guru::find($id);
+        $data['guru'] = Guru::where('iduser', $id)->first();
         $data['role'] = Role::all();
+        $data['roleUser'] = UserRole::where('iduser', $id)->get()->pluck('idrole')->toArray();
         return view('pages.guru.edit', $data);
     }
 
@@ -72,19 +101,51 @@ class GuruController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'kode_guru' => 'required',
-            'nama' => 'required',
-            'nip' => 'required',
-            'alamat' => 'required',
-            'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required',
-            'jenis_kelamin' => 'required',
-            'no_hp' => 'required',
-            'status' => 'required',
-        ]);
-        Guru::find($id)->update($request->all());
-        return redirect()->route('data-guru.index')->with('success', 'Data Berhasil Diubah');
+        $users = User::find($id);
+        if ($users) {
+            if ($users->username != $request->username) {
+                $request->validate([
+                    'username' => 'required|unique:users,username'
+                ]);
+                $users->username = $request->username;
+            }
+
+            if ($request->password) {
+                $users->password = bcrypt($request->password);
+            }
+
+            $users->save();
+
+            $guru = Guru::where('iduser', $id)->first();
+            $editGuru = $request->validate([
+                'kode_guru' => $guru->kode_guru != $request->kode_guru ? 'required|unique:gurus,kode_guru' : 'required',
+                'nama' => 'required',
+                'nip' => $guru->nip != $request->nip ? 'required|unique:gurus,nip' : 'required',
+                'alamat' => 'required',
+                'tempat_lahir' => 'required',
+                'tanggal_lahir' => 'required',
+                'jenis_kelamin' => 'required',
+                'no_hp' => 'required',
+                'status' => 'required',
+                'nuptk' => 'required',
+            ]);
+
+            $guru->update($editGuru);
+
+            $role = UserRole::where('iduser', $id);
+            if ($role->count() > 0) {
+                $role->delete();
+            }
+            foreach ($request->role as $key => $value) {
+                UserRole::create([
+                    'iduser' => $id,
+                    'idrole' => $value
+                ]);
+            }
+            return redirect()->route('data-guru.index')->with('success', 'Data Berhasil Diubah');
+        }
+
+        return redirect()->back()->with('danger', 'Data Gagal Diubah');
     }
 
     /**
@@ -92,8 +153,12 @@ class GuruController extends Controller
      */
     public function destroy(string $id)
     {
-        $guru = Guru::find($id);
+        $role = UserRole::where('iduser', $id);
+        $guru = Guru::where('iduser', $id);
+        $user = User::find($id);
+        $role->delete();
         $guru->delete();
+        $user->delete();
         return redirect()->back()->with('success', 'Data Berhasil Dihapus');
     }
 

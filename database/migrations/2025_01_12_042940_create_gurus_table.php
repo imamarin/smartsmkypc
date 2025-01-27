@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('no_hp');
             $table->string('alamat');
             $table->integer('status')->default(1);
+            $table->foreignId('iduser')->references('id')->on('users');
             $table->timestamps();
         });
     }
