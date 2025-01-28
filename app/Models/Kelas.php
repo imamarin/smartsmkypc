@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Kelas extends Model
 {
     protected $guarded = [];
+    protected $primaryKey = "kdkelas";
+
     public function tahunAjaran()
     {
         return $this->belongsTo(TahunAjaran::class, 'idtahunajaran');
@@ -15,5 +17,10 @@ class Kelas extends Model
     public function jurusan()
     {
         return $this->belongsTo(Jurusan::class, 'idjurusan');
+    }
+
+    public function rombel()
+    {
+        return $this->hasMany(Rombel::class, 'kdkelas', 'kdkelas');
     }
 }
