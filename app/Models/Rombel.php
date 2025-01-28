@@ -15,7 +15,7 @@ class Rombel extends Model
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'kdkelas', 'kdkelas');
+        return $this->belongsTo(Kelas::class, 'idkelas');
     }
 
     public function tahunajaran()

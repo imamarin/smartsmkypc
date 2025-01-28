@@ -1,13 +1,4 @@
 @extends('layouts.app')
-@push('styles')
-<style>
-    .select2-container.readonly .select2-selection {
-      background-color: #e9ecef; /* Warna abu-abu untuk efek readonly */
-      pointer-events: none;      /* Cegah klik */
-      touch-action: none;
-    }
-</style>
-@endpush
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -36,17 +27,17 @@
                     <div class="d-flex justify-content-end mb-3">
                         <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah
                             Siswa</button>
-                        <a href="#" class="btn btn-info me-2">Edit Rombel</a>
-                        <a href="#" class="btn btn-danger me-2">Hapus Rombel</a>
+                        <a href="#" class="btn btn-danger me-2" id="hapusRombel">Hapus Rombel</a>
                     </div>
                 </div>
             </div><!-- end card header -->
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table display nowrap" id="example">
+                    <table class="table display nowrap">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th><input type="checkbox" id="select-all"></th>
+                                <th>No</th>
                                 <th>Nisn / Nis</th>
                                 <th>Nama Siswa</th>
                                 <th>Jenis Kelamin</th>
@@ -56,6 +47,7 @@
                         <tbody>
                             @foreach ($rombel as $key => $item)
                                 <tr>
+                                    <td><input type="checkbox" name="idrombel" value="" class="item-checkbox"></td>
                                     <td>{{ $key+1 }}</td>
                                     <td>{{ $item->nisn }}</td>
                                     <td>{{ $item->siswa->nama }}</td>
@@ -64,16 +56,16 @@
                                         <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#movingClassModal" data-id="{{ $item->id }}"
                                             data-nisn="{{ $item->nisn }}"
-                                            data-kdkelas="{{ $item->kdkelas }}"
-                                            data-idtahunajaran="{{ $item->idtahunajaran }}"
+                                            data-idkelas="{{ $item->idkelas }}"
+                                            data-idtahunajaran="{{ $item->kelas->idtahunajaran }}"
                                             data-subject="pindahkelas">
                                             Pindah Kelas
                                         </button>
                                         <button class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#movingClassModal" data-id="{{ $item->id }}"
                                             data-nisn="{{ $item->nisn }}"
-                                            data-kdkelas="{{ $item->kdkelas }}"
-                                            data-idtahunajaran="{{ $item->idtahunajaran }}"
+                                            data-idkelas="{{ $item->idkelas }}"
+                                            data-idtahunajaran="{{ $item->kelas->idtahunajaran }}"
                                             data-subject="naikkelas">
                                             Naik Kelas
                                         </button>
@@ -94,7 +86,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addSubjectModalLabel">Input Siswa Baru</h5>
+                <h5 class="modal-title" id="addSubjectModalLabel">Tambahkan Siswa ke {{ $kdkelas }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="subjectForm" action="{{ route('data-rombel.store') }}" method="POST">
@@ -111,10 +103,10 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="kdkelas" class="form-label">Kelas</label>
-                        <select name="kdkelas" id="kdkelas" class="form-control">
+                        <label for="idkelas" class="form-label">Kelas</label>
+                        <select name="idkelas" id="idkelas" class="form-control">
                             @foreach ($kelas as $item)
-                                <option value="{{ $item->kdkelas }}" {{ $item->kdkelas==$kdkelas?'selected':'' }}>{{ $item->kdkelas }}</option>
+                                <option value="{{ $item->id }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -157,10 +149,10 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="kdkelas" class="form-label">Kelas</label>
-                        <select name="kdkelas" id="kdkelas" class="form-control select2">
+                        <label for="idkelas" class="form-label">Kelas</label>
+                        <select name="idkelas" id="idkelas" class="form-control select2">
                             @foreach ($kelas as $item)
-                                <option value="{{ $item->kdkelas }}" {{ $item->kdkelas==$kdkelas?'selected':'' }}>{{ $item->kdkelas }}</option>
+                                <option value="{{ $item->id }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -182,7 +174,7 @@
             form.querySelector("#idtahunajaran").addEventListener('mousedown',function(e){
                 e.preventDefault();
             });
-            form.querySelector("#kdkelas").addEventListener('mousedown',function(e){
+            form.querySelector("#idkelas").addEventListener('mousedown',function(e){
                 e.preventDefault();
             });
         });
@@ -194,7 +186,7 @@
             const id = button.getAttribute('data-id');
             const nisn = button.getAttribute('data-nisn');
             const subject = button.getAttribute('data-subject');
-            const kdkelas = button.getAttribute('data-kdkelas');
+            const idkelas = button.getAttribute('data-idkelas');
             const idtahunajaran = button.getAttribute('data-idtahunajaran');
 
             const form = document.querySelector('#movingForm');
@@ -210,7 +202,7 @@
                     modalTitle.textContent = 'Pindah Kelas';
                     subjectId.value = id;
                     formMethod.value = 'PUT';
-                    form.querySelector('#kdkelas').value = kdkelas;
+                    form.querySelector('#idkelas').value = idkelas;
                     form.querySelector('#nisn').value = nisn;
                     form.querySelector('#idtahunajaran').value = idtahunajaran; 
                     form.querySelector('#idtahunajaran').addEventListener('mousedown', function(e){
@@ -222,12 +214,33 @@
                     modalTitle.textContent = 'Naik Kelas';
                     subjectId.value = id;
                     formMethod.value = 'POST';
-                    form.querySelector('#kdkelas').value = nisn;
+                    form.querySelector('#idkelas').value = idkelas;
                     form.querySelector('#nisn').value = nisn;
                     form.querySelector('#idtahunajaran').value = idtahunajaran;
                     form.querySelector('#idtahunajaran').classList.add('select2');
                 }
             }
+        });
+
+        const selectAllCheckbox = document.getElementById('select-all');
+        const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+
+        selectAllCheckbox.addEventListener('change', function () {
+        const isChecked = this.checked;
+        itemCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+        });
+
+        itemCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            if (!this.checked) {
+                selectAllCheckbox.checked = false;
+            } else {
+                const allChecked = Array.from(itemCheckboxes).every(cb => cb.checked);
+                selectAllCheckbox.checked = allChecked;
+            }
+        });
         });
     </script>
 @endpush

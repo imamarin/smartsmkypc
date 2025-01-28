@@ -284,7 +284,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Kelas::create([
             'idtahunajaran' => 1,
-            'kdkelas' => 'X RPL 1',
+            'kelas' => 'X RPL 1',
             'tingkat' => 'X',
             'idjurusan' => 1,
             'created_at' => now(),

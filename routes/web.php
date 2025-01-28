@@ -37,7 +37,8 @@ Route::prefix('/pages')->group(function () {
     //data-rombel
     Route::resource('/data-rombel', RombelController::class);
     Route::post('/data-rombel/levelup/{id}', [RombelController::class, 'levelUpClass'])->name('data-rombel.levelUpClass');
-    Route::get('/data-rombel/{kdkelas}/{idtahunajaran}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
+    Route::post('/data-rombel/updaterombel/{kdkelas}/{idtahunajaran}', [RombelController::class, 'updateRombel'])->name('data-rombel.updateRombel');
+    Route::get('/data-rombel/{idkelas}/{idtahunajaran}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
     //data-mata-pelajaran
     Route::resource('/data-mata-pelajaran', MataPelajaranController::class);
     //role

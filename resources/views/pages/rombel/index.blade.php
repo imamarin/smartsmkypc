@@ -48,18 +48,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($rombel as $key => $item)
+                            @foreach ($kelas as $key => $item)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->kdkelas }}</td>
-                                    <td>{{ $item->kelas->jurusan->jurusan }}</td>
-                                    <td>{{ $item->count() }}</td>
+                                    <td>{{ $item->kelas }}</td>
+                                    <td>{{ $item->jurusan->jurusan }}</td>
+                                    <td>{{ $item->rombel->count() }}</td>
                                     <td>-</td>
                                     <td>
-                                        <a href="{{ route('data-rombel.showStudents', [$item->kdkelas, $item->idtahunajaran]) }}"
-                                            class="btn btn-sm btn-info" data-confirm-delete="true">Lihat Siswa</a>
-                                        <a href="{{ route('data-rombel.destroy', $item->id) }}"
-                                            class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                        <a href="{{ route('data-rombel.showStudents', [$item->id, $item->idtahunajaran]) }}"
+                                            class="btn btn-sm btn-info">Lihat Siswa</a>
+                                        <a href="#" class="btn btn-sm btn-warning" data-kdkelas="{{ $item->id }}" data-idtahunajaran="{{ $item->idtahunajaran }}" data-bs-toggle="modal" data-bs-target="#editRombelModal">Edit Rombel</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -116,44 +115,60 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="editRombelModal" tabindex="-1" aria-labelledby="editRombelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editRombelModalLabel">Edit Rombel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editRombelForm" action="" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <input type="hidden" id="subjectId" name="id">
+                    <input type="hidden" name="_method" id="formMethod" value="POST">
+                    <div class="mb-3">
+                        <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
+                        <select name="idtahunajaran" id="idtahunajaran" class="form-control select2">
+                            @foreach ($tahunajaran as $item)
+                                <option value="{{ $item->id }}">{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="kdkelas" class="form-label">Kelas</label>
+                        <select name="kdkelas" id="kdkelas" class="form-control select2">
+                            @foreach ($kelas as $item)
+                                <option value="{{ $item->kdkelas }}">{{ $item->kdkelas }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Edit Rombel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 @push('scripts')
     <script>
-        const modal = document.getElementById('addSubjectModal');
-        modal.addEventListener('show.bs.modal', function(event) {
-            // console.log(event);
-            
+        const modalEditRombel = document.getElementById('editRombelModal');
+        modalEditRombel.addEventListener('show.bs.modal', function(event){
             const button = event.relatedTarget;
-            const id = button.getAttribute('data-id');
-            const nisn = button.getAttribute('data-nisn');
             const kdkelas = button.getAttribute('data-kdkelas');
             const idtahunajaran = button.getAttribute('data-idtahunajaran');
-
-            const form = document.getElementById('subjectForm');
-            const submitBtn = document.getElementById('submitBtn');
-            const subjectId = document.getElementById('subjectId');
-            const modalTitle = document.getElementById('addSubjectModalLabel');
+            const form = document.querySelector('#editRombelForm');
             const formMethod = document.getElementById('formMethod');
 
-            if (id) {
-                form.action = '{{ route('data-rombel.update', ':id') }}'.replace(':id', id);
-                submitBtn.textContent = 'Simpan Perubahan';
-                modalTitle.textContent = 'Update Rombel';
-                subjectId.value = id;
-                formMethod.value = 'PUT';
-                document.getElementById('nisn').value = nisn;
-                document.getElementById('kdkelas').value = kdkelas;
-                document.getElementById('idtahunajaran').value = idtahunajaran;
-                console.log(idtahunajaran);
-                
-            } else {
-                form.action = '{{ route('data-rombel.store') }}';
-                submitBtn.textContent = 'Simpan';
-                modalTitle.textContent = 'Input Rombel Baru';
-                subjectId.value = '';
+            if(kdkelas){
+                form.action = '{{ route('data-rombel.updateRombel', [':kls',':thn']) }}'.replace(':kls', kdkelas).replace(':thn',idtahunajaran);
+                form.querySelector("#kdkelas").value = kdkelas;
                 formMethod.value = 'POST';
-                form.reset();
+                form.querySelector("#idtahunajaran").value = idtahunajaran;
             }
-        });
+        })
     </script>
 @endpush
