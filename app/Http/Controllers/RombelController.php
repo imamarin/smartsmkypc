@@ -21,7 +21,7 @@ class RombelController extends Controller
         $kelas = Kelas::select('kdkelas')->orderBy('tingkat', 'asc')->get();
         $rombel = Rombel::whereHas('tahunajaran', function ($query) {
             $query->where('status', 1);
-        })->get();
+        })->groupBy('idtahunajaran', 'kdkelas')->get();
         // dd($rombel);
         return view('pages.rombel.index', compact('rombel', 'siswa', 'kelas', 'tahunajaran'));
     }
