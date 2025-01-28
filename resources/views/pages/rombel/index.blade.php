@@ -53,17 +53,10 @@
                                     <td>{{ $key+1 }}</td>
                                     <td>{{ $item->kdkelas }}</td>
                                     <td>{{ $item->kelas->jurusan->jurusan }}</td>
-                                    <td>{{ $item->siswa->count() }}</td>
+                                    <td>{{ $item->count() }}</td>
                                     <td>-</td>
                                     <td>
-                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#addSubjectModal" data-id="{{ $item->id }}"
-                                            data-nisn="{{ $item->nisn }}"
-                                            data-kdkelas="{{ $item->kdkelas }}"
-                                            data-idtahunajaran="{{ $item->idtahunajaran }}">
-                                            Edit
-                                        </button>
-                                        <a href="{{ route('data-rombel.destroy', $item->id) }}"
+                                        <a href="{{ route('data-rombel.showStudents', [$item->kdkelas, $item->idtahunajaran]) }}"
                                             class="btn btn-sm btn-info" data-confirm-delete="true">Lihat Siswa</a>
                                         <a href="{{ route('data-rombel.destroy', $item->id) }}"
                                             class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>

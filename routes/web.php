@@ -36,6 +36,8 @@ Route::prefix('/pages')->group(function () {
     Route::post('/data-guru/{id}/updateStatus', [GuruController::class, 'updateStatus'])->name('data-guru.updateStatus');
     //data-rombel
     Route::resource('/data-rombel', RombelController::class);
+    Route::post('/data-rombel/levelup/{id}', [RombelController::class, 'levelUpClass'])->name('data-rombel.levelUpClass');
+    Route::get('/data-rombel/{kdkelas}/{idtahunajaran}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
     //data-mata-pelajaran
     Route::resource('/data-mata-pelajaran', MataPelajaranController::class);
     //role
