@@ -9,6 +9,7 @@ use App\Models\Kategori;
 use App\Models\Kelas;
 use App\Models\Menu;
 use App\Models\Role;
+use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use App\Models\User;
 use App\Models\UserRole;
@@ -26,6 +27,11 @@ class DatabaseSeeder extends Seeder
             'username' => 'adminTest',
             'password' => bcrypt('12341234'),
         ]);
+        User::create([
+            'username' => 'siswa',
+            'password' => bcrypt('12341234'),
+        ]);
+
         Role::create([
             'role' => 'Admin',
             'created_at' => now(),
@@ -44,6 +50,12 @@ class DatabaseSeeder extends Seeder
         UserRole::create([
             'iduser' => 1,
             'idrole' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        UserRole::create([
+            'iduser' => 2,
+            'idrole' => 3,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -277,6 +289,29 @@ class DatabaseSeeder extends Seeder
             'idjurusan' => 1,
             'created_at' => now(),
             'updated_at' => now()
+        ]);
+        Siswa::create([
+            'nisn' => '12341234',
+            'nis' => '12345',
+            'nama' => 'Siswa Test',
+            'iduser' => 2,
+            'idtahunajaran' => 1,
+            'nik' => '77777',
+            'asal_sekolah' => 'smp',
+            'alamat_siswa' => 'tasik',
+            'tempat_lahir' => 'Tasikmalaya',
+            'tanggal_lahir' => '1991-03-12',
+            'jenis_kelamin' => 'L',
+            'diterima_tanggal' => '2024-07-01',
+            'kelas' => 'X RPL 1',
+            'no_hp_siswa' => '67667',
+            'status' => '1',
+            'nama_ayah' => 'ayah',
+            'nama_ibu' => 'ibu',
+            'pekerjaan_ayah' => '-',
+            'pekerjaan_ibu' => '-',
+            'alamat_ortu' => '-',
+            'no_hp_ortu' => '888'
         ]);
     }
 }

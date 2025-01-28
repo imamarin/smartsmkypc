@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('rombels', function (Blueprint $table) {
             $table->id();
+            $table->string('nisn', 20);
+            $table->string('kdkelas', 15);
+            $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
+            $table->foreign('nisn')->references('nisn')->on('siswas');
+            $table->foreign('kdkelas')->references('kdkelas')->on('kelas');
             $table->timestamps();
         });
     }
