@@ -8,6 +8,7 @@ class Kelas extends Model
 {
     protected $guarded = [];
     protected $primaryKey = "kdkelas";
+    protected $keyType = "string";
 
     public function tahunAjaran()
     {
