@@ -6,6 +6,7 @@ use App\Models\Kelas;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class RombelController extends Controller
@@ -18,8 +19,10 @@ class RombelController extends Controller
         $tahunajaran = TahunAjaran::orderBy('status', 'desc')->get();
         $siswa = Siswa::select('nisn', 'nama')->where('status', 1)->get();
         $kelas = Kelas::select('kdkelas')->orderBy('tingkat', 'asc')->get();
-        $rombel = Rombel::with('siswa')->get();
-        // dd($rombel->siswa);
+        $rombel = Rombel::whereHas('tahunajaran', function ($query) {
+            $query->where('status', 1);
+        })->get();
+        // dd($rombel);
         return view('pages.rombel.index', compact('rombel', 'siswa', 'kelas', 'tahunajaran'));
     }
 

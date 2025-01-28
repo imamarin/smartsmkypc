@@ -40,10 +40,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>NISN / NIS</th>
-                                <th>Nama Siswa</th>
                                 <th>Kelas</th>
                                 <th>Jurusan</th>
+                                <th>Jumlah Siswa</th>
+                                <th>Walikelas</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -51,11 +51,23 @@
                             @foreach ($rombel as $key => $item)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->nisn }}</td>
-                                    <td>{{ $item->siswa->nama }}</td>
                                     <td>{{ $item->kdkelas }}</td>
                                     <td>{{ $item->kelas->jurusan->jurusan }}</td>
-                                    <td></td>
+                                    <td>{{ $item->siswa->count() }}</td>
+                                    <td>-</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#addSubjectModal" data-id="{{ $item->id }}"
+                                            data-nisn="{{ $item->nisn }}"
+                                            data-kdkelas="{{ $item->kdkelas }}"
+                                            data-idtahunajaran="{{ $item->idtahunajaran }}">
+                                            Edit
+                                        </button>
+                                        <a href="{{ route('data-rombel.destroy', $item->id) }}"
+                                            class="btn btn-sm btn-info" data-confirm-delete="true">Lihat Siswa</a>
+                                        <a href="{{ route('data-rombel.destroy', $item->id) }}"
+                                            class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -112,3 +124,43 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+    <script>
+        const modal = document.getElementById('addSubjectModal');
+        modal.addEventListener('show.bs.modal', function(event) {
+            // console.log(event);
+            
+            const button = event.relatedTarget;
+            const id = button.getAttribute('data-id');
+            const nisn = button.getAttribute('data-nisn');
+            const kdkelas = button.getAttribute('data-kdkelas');
+            const idtahunajaran = button.getAttribute('data-idtahunajaran');
+
+            const form = document.getElementById('subjectForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const subjectId = document.getElementById('subjectId');
+            const modalTitle = document.getElementById('addSubjectModalLabel');
+            const formMethod = document.getElementById('formMethod');
+
+            if (id) {
+                form.action = '{{ route('data-rombel.update', ':id') }}'.replace(':id', id);
+                submitBtn.textContent = 'Simpan Perubahan';
+                modalTitle.textContent = 'Update Rombel';
+                subjectId.value = id;
+                formMethod.value = 'PUT';
+                document.getElementById('nisn').value = nisn;
+                document.getElementById('kdkelas').value = kdkelas;
+                document.getElementById('idtahunajaran').value = idtahunajaran;
+                console.log(idtahunajaran);
+                
+            } else {
+                form.action = '{{ route('data-rombel.store') }}';
+                submitBtn.textContent = 'Simpan';
+                modalTitle.textContent = 'Input Rombel Baru';
+                subjectId.value = '';
+                formMethod.value = 'POST';
+                form.reset();
+            }
+        });
+    </script>
+@endpush
