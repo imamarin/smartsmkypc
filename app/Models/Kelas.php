@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Kelas extends Model
 {
     protected $guarded = [];
-    protected $primaryKey = "kdkelas";
-    protected $keyType = "string";
 
     public function tahunAjaran()
     {
@@ -22,6 +20,6 @@ class Kelas extends Model
 
     public function rombel()
     {
-        return $this->hasMany(Rombel::class, 'kdkelas', 'kdkelas');
+        return $this->hasMany(Rombel::class, 'idkelas');
     }
 }

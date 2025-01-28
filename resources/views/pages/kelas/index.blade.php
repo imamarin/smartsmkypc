@@ -57,18 +57,18 @@
                                         <td>{{ $item->tahunajaran->awal_tahun_ajaran }}/{{ $item->tahunajaran->akhir_tahun_ajaran }}
                                             ({{ $item->tahunajaran->semester == 'ganjil' ? 'Ganjil' : 'Genap' }})
                                         </td>
-                                        <td>{{ $item->kdkelas }}</td>
+                                        <td>{{ $item->kelas }}</td>
                                         <td>{{ ($item->tingkat == 'X' ? '10' : $item->tingkat == 'XI') ? '11' : '12' }}
                                         </td>
                                         <td>{{ $item->jurusan->jurusan }}</td>
                                         <td>
                                             <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
-                                                data-bs-target="#addSubjectModal" data-id="{{ $item->kdkelas }}"
+                                                data-bs-target="#addSubjectModal" data-id="{{ $item->id }}" data-kelas="{{ $item->kelas }}"
                                                 data-tahun_ajaran="{{ $item->tahunajaran->id }}" data-tingkat="{{ $item->tingkat }}"
                                                 data-jurusan="{{ $item->jurusan->id }}">
                                                 Edit
                                             </button>
-                                            <a href="{{ route('data-kelas.destroy', $item->kdkelas) }}"
+                                            <a href="{{ route('data-kelas.destroy', $item->id) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                         </td>
                                     </tr>
@@ -91,6 +91,7 @@
                 <form id="kelasForm" action="{{ route('data-kelas.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" id="subjectId" name="id">
                         <input type="hidden" name="_method" id="formMethod" value="POST">
 
                         <div class="mb-3">
@@ -107,8 +108,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="kdkelas" class="form-label">Kelas</label>
-                            <input type="text" class="form-control" id="kdkelas" name="kdkelas" required>
+                            <label for="kelas" class="form-label">Kelas</label>
+                            <input type="text" class="form-control" id="kelas" name="kelas" required>
                         </div>
 
                         <div class="mb-3">
@@ -150,6 +151,7 @@
             const tahun_ajaran = button.getAttribute('data-tahun_ajaran');
             const tingkat = button.getAttribute('data-tingkat');
             const jurusan = button.getAttribute('data-jurusan');
+            const kelas = button.getAttribute('data-kelas');
 
             const form = document.getElementById('kelasForm');
             const submitBtn = document.getElementById('submitBtn');
@@ -163,7 +165,8 @@
                 formMethod.value = 'PUT';
 
                 // Isi data ke form
-                document.getElementById('kdkelas').value = id;
+                document.getElementById('subjectId').value = id;
+                document.getElementById('kelas').value = kelas;
                 document.getElementById('tingkat').value = tingkat;
                 document.getElementById('jurusan').value = jurusan;
                 document.getElementById('tahun_ajaran').value = tahun_ajaran;
