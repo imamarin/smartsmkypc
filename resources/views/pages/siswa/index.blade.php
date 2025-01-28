@@ -94,7 +94,7 @@
                                             {{ $item->no_hp_ortu ?? '-' }}</td>
                                         <td>{{ $item->diterima_tanggal }}</td>
                                         <td>
-                                            <form action="{{ route('data-siswa.updateStatus', $item->id) }}"
+                                            <form action="{{ route('data-siswa.updateStatus', $item->nisn) }}"
                                                 method="post">
                                                 @csrf
                                                 <button type="submit"

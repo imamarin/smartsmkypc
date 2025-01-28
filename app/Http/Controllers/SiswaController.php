@@ -62,6 +62,8 @@ class SiswaController extends Controller
             'pekerjaan_ayah' => 'required',
             'pekerjaan_ibu' => 'required',
             'alamat_ortu' => 'required',
+            'no_hp_siswa' => 'required',
+            'no_hp_ortu' => 'required',
         ]);
 
         $dataRole = $request->validate([
@@ -103,7 +105,7 @@ class SiswaController extends Controller
         $data['siswa'] = Siswa::with(['tahunajaran', 'user'])->where('iduser', $id)->first();
         $data['tahun_ajaran'] = TahunAjaran::all();
         $data['role'] = Role::all();
-        $data['roleUser'] = UserRole::where('iduser', $id)->get();
+        $data['roleUser'] = UserRole::where('iduser', $id)->get()->pluck('idrole')->toArray();
         return view('pages.siswa.edit', $data);
     }
 
@@ -127,7 +129,8 @@ class SiswaController extends Controller
 
             $users->save();
 
-            $siswa = Siswa::where('iduser', $id)->first();
+            $updateSiswa = Siswa::where('iduser', $id);
+            $siswa = $updateSiswa->first();
             $editSiswa = $request->validate([
                 'nisn' => $siswa->nisn != $request->nisn ? 'required|unique:siswa,nisn' : 'required',
                 'nis' => $siswa->nis != $request->nis ? 'unique:siswa,nis' : 'required',
@@ -150,7 +153,7 @@ class SiswaController extends Controller
                 'alamat_ortu' => 'required',
                 'no_hp_ortu' => 'required',
             ]);
-            $siswa->update($editSiswa);
+            $updateSiswa->update($editSiswa);
 
             $role = UserRole::where('iduser', $id);
             if ($role->count() > 0) {
@@ -184,7 +187,7 @@ class SiswaController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        $siswa = Siswa::find($id);
+        $siswa = Siswa::where('nisn', $id);
         $siswa->update([
             'status' => $request->status,
         ]);
