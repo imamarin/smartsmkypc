@@ -38,7 +38,7 @@ class KelasController extends Controller
     {
         $validate = $request->validate([
             'idtahunajaran' => 'required',
-            'kelas' => 'required',
+            'kdkelas' => 'required',
             'tingkat' => 'required',
             'idjurusan' => 'required',
         ]);
@@ -70,12 +70,12 @@ class KelasController extends Controller
     {
         $validate = $request->validate([
             'idtahunajaran' => 'required',
-            'kelas' => 'required',
+            'kdkelas' => 'required',
             'tingkat' => 'required',
             'idjurusan' => 'required',
         ]);
 
-        Kelas::find($id)->update($validate);
+        Kelas::where('kdkelas', $id)->update($validate);
         return redirect()->back()->with('success', 'Data Berhasil Ditambahkan');
     }
 
@@ -84,7 +84,7 @@ class KelasController extends Controller
      */
     public function destroy(string $id)
     {
-        $kelas = Kelas::find($id);
+        $kelas = Kelas::where('kdkelas', $id);
         $kelas->delete();
         return redirect()->back()->with('success', 'Data Berhasil Dihapus');
     }
