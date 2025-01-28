@@ -21,13 +21,10 @@ class RombelController extends Controller
         $kelas = Kelas::whereHas('tahunajaran', function ($query) {
             $query->where('status', 1);
         })->orderBy('tingkat', 'asc')->get();
-        // $rombel = Rombel::select('rombels.*', DB::raw('COUNT(*) as total'))->whereHas('tahunajaran', function ($query) {
-        //     $query->where('status', 1);
-        // })->groupBy('idtahunajaran', 'kdkelas')->get();
+
         $title = 'Data Kelas!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
-        // dd($rombel);
         return view('pages.rombel.index', compact('siswa', 'kelas', 'tahunajaran'));
     }
 
@@ -104,7 +101,6 @@ class RombelController extends Controller
     public function destroy(string $id)
     {
         //
-        echo $id;
         Rombel::find($id)->delete();
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
@@ -120,6 +116,11 @@ class RombelController extends Controller
         $kelas = Kelas::select('id', 'kelas')->orderBy('tingkat', 'asc')->get();
         $rombel = Rombel::where(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran])->get();
         $idtahunajaran = $idtahunajaran;
+
+        $title = 'Data Kelas!';
+        $text = "Yakin ingin menghapus data ini?";
+        confirmDelete($title, $text);
+
         return view('pages.rombel.show', compact('rombel', 'siswa', 'kelas', 'tahunajaran', 'idkelas', 'kdkelas', 'idtahunajaran'));
     }
 
