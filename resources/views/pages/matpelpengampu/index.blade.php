@@ -31,7 +31,7 @@
                             <div style="width: 45%">
                                 <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
                                 <select name="idtahunajaran" id="idtahunajaran" class="form-control">
-                                    <option value="{{ $tahunajaran->id }}">{{ $tahunajaran->awal_tahun_ajaran }}/{{ $tahunajaran->awal_tahun_ajaran }}</option>
+                                    <option value="{{ $tahunajaran->id }}">{{ $tahunajaran->awal_tahun_ajaran }}/{{ $tahunajaran->akhir_tahun_ajaran }}</option>
                                 </select>
                             </div>
                             <div style="width: 45%">
