@@ -7,4 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Matpel extends Model
 {
     protected $guarded = [];
+    protected $primaryKey = "kode_matpel";
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    public function matpelpengampu()
+    {
+        return $this->hasMany(MatpelPengampu::class, 'kode_matpel', 'kode_matpel');
+    }
 }

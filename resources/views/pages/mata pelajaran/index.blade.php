@@ -63,14 +63,14 @@
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#addSubjectModal" data-id="{{ $subject->id }}"
+                                                data-bs-target="#addSubjectModal" data-id="{{ $subject->kode_matpel }}"
                                                 data-kode="{{ $subject->kode_matpel }}" data-matpel="{{ $subject->matpel }}"
                                                 data-kelompok="{{ $subject->kelompok }}"
                                                 data-kelompok2="{{ $subject->kelompok2 }}"
                                                 data-kategori="{{ $subject->kategori }}">
                                                 Edit
                                             </button>
-                                            <a href="{{ route('data-mata-pelajaran.destroy', $subject->id) }}"
+                                            <a href="{{ route('data-mata-pelajaran.destroy', $subject->kode_matpel) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                         </td>
                                     </tr>

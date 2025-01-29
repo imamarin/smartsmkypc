@@ -33,7 +33,7 @@ class MataPelajaranController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'kode_matpel' => 'required',
+            'kode_matpel' => 'required|unique:matpels,kode_matpel',
             'matpel' => 'required',
             'kelompok' => 'required',
             'kelompok2' => 'required',
@@ -66,7 +66,6 @@ class MataPelajaranController extends Controller
     public function update(Request $request, string $id)
     {
         $validate = $request->validate([
-            'kode_matpel' => 'required',
             'matpel' => 'required',
             'kelompok' => 'required',
             'kelompok2' => 'required',
