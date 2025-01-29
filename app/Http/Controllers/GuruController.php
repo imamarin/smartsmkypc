@@ -51,7 +51,7 @@ class GuruController extends Controller
             'jenis_kelamin' => 'required',
             'no_hp' => 'required',
             'status' => 'required',
-            'nuptk' => 'nuptk',
+            'nuptk' => 'required',
         ]);
 
         $dataRole = $request->validate([
@@ -164,7 +164,7 @@ class GuruController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        $guru = Guru::find($id);
+        $guru = Guru::where('kode_guru', $id);
         $guru->update([
             'status' => $request->status,
         ]);

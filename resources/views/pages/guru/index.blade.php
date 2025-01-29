@@ -74,7 +74,7 @@
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->no_hp }}</td>
                                         <td>
-                                            <form action="{{ route('data-guru.updateStatus', $item->id) }}" method="post">
+                                            <form action="{{ route('data-guru.updateStatus', $item->kode_guru) }}" method="post">
                                                 @csrf
                                                 <button type="submit"
                                                     class="btn btn-sm {{ $item->status == 1 ? 'btn-success' : 'btn-danger' }}">
