@@ -22,4 +22,9 @@ class Rombel extends Model
     {
         return $this->belongsTo(TahunAjaran::class, 'idtahunajaran');
     }
+
+    public function walikelas()
+    {
+        return $this->hasOne(Walikelas::class, 'idrombel');
+    }
 }

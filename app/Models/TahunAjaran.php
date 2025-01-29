@@ -27,4 +27,9 @@ class TahunAjaran extends Model
     {
         return $this->hasMany(Rombel::class, 'idtahunajaran');
     }
+
+    public function walikelas()
+    {
+        return $this->hasMany(Walikelas::class, 'idtahunajaran');
+    }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RombelController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\WalikelasController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,6 +44,8 @@ Route::prefix('/pages')->group(function () {
     Route::get('/data-rombel/{idkelas}/{idtahunajaran}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
     //data-mata-pelajaran
     Route::resource('/data-mata-pelajaran', MataPelajaranController::class);
+    //data-walikelas
+    Route::resource('/data-walikelas', WalikelasController::class);
     //role
     Route::resource('/role', RoleController::class);
     //pengaturan
