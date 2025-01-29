@@ -81,8 +81,15 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Kategori::create([
-            'kategori' => 'Pengaturan',
+            'kategori' => 'Kurikulum',
             'posisi' => 4,
+            'icon' => 'book',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Kategori::create([
+            'kategori' => 'Pengaturan',
+            'posisi' => 5,
             'icon' => 'settings',
             'created_at' => now(),
             'updated_at' => now()
@@ -135,14 +142,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        Menu::create([
-            'menu' => 'Data Mata Pelajaran',
-            'url' => '/pages/data-mata-pelajaran',
-            'posisi' => 6,
-            'idkategori' => 2,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+
         Menu::create([
             'menu' => 'Masuk Mengajar',
             'url' => '/pages/masuk-mengajar',
@@ -160,10 +160,26 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Data Mata Pelajaran',
+            'url' => '/pages/data-mata-pelajaran',
+            'posisi' => 1,
+            'idkategori' => 4,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Data Walikelas',
+            'url' => '/pages/data-walikelas',
+            'posisi' => 2,
+            'idkategori' => 4,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Role & Hak Akses',
             'url' => '/pages/role',
             'posisi' => 1,
-            'idkategori' => 4,
+            'idkategori' => 5,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -171,7 +187,7 @@ class DatabaseSeeder extends Seeder
             'menu' => 'Tahun Ajaran',
             'url' => '/pages/tahun-ajaran',
             'posisi' => 2,
-            'idkategori' => 4,
+            'idkategori' => 5,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -286,6 +302,30 @@ class DatabaseSeeder extends Seeder
             'idtahunajaran' => 1,
             'kelas' => 'X RPL 1',
             'tingkat' => 'X',
+            'idjurusan' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Kelas::create([
+            'idtahunajaran' => 1,
+            'kelas' => 'X RPL 2',
+            'tingkat' => 'X',
+            'idjurusan' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Kelas::create([
+            'idtahunajaran' => 1,
+            'kelas' => 'XI RPL 1',
+            'tingkat' => 'XI',
+            'idjurusan' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Kelas::create([
+            'idtahunajaran' => 1,
+            'kelas' => 'XI RPL 2',
+            'tingkat' => 'XI',
             'idjurusan' => 1,
             'created_at' => now(),
             'updated_at' => now()
