@@ -3,10 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Fitur;
+use App\Models\Guru;
 use App\Models\HakAkses;
 use App\Models\Jurusan;
 use App\Models\Kategori;
 use App\Models\Kelas;
+use App\Models\Matpel;
 use App\Models\Menu;
 use App\Models\Role;
 use App\Models\Siswa;
@@ -28,7 +30,19 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12341234'),
         ]);
         User::create([
-            'username' => 'siswa',
+            'username' => 'guru1',
+            'password' => bcrypt('12341234'),
+        ]);
+        User::create([
+            'username' => 'guru2',
+            'password' => bcrypt('12341234'),
+        ]);
+        User::create([
+            'username' => 'siswa1',
+            'password' => bcrypt('12341234'),
+        ]);
+        User::create([
+            'username' => 'siswa2',
             'password' => bcrypt('12341234'),
         ]);
 
@@ -55,6 +69,24 @@ class DatabaseSeeder extends Seeder
         ]);
         UserRole::create([
             'iduser' => 2,
+            'idrole' => 2,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        UserRole::create([
+            'iduser' => 3,
+            'idrole' => 2,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        UserRole::create([
+            'iduser' => 4,
+            'idrole' => 3,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        UserRole::create([
+            'iduser' => 5,
             'idrole' => 3,
             'created_at' => now(),
             'updated_at' => now()
@@ -155,6 +187,14 @@ class DatabaseSeeder extends Seeder
             'menu' => 'Rekap Absensi Mengajar',
             'url' => '/pages/rekap-absensi-mengajar',
             'posisi' => 2,
+            'idkategori' => 3,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Matpel Pengampu',
+            'url' => '/pages/matpel-pengampu',
+            'posisi' => 3,
             'idkategori' => 3,
             'created_at' => now(),
             'updated_at' => now()
@@ -333,8 +373,8 @@ class DatabaseSeeder extends Seeder
         Siswa::create([
             'nisn' => '12341234',
             'nis' => '12345',
-            'nama' => 'Siswa Test',
-            'iduser' => 2,
+            'nama' => 'Siswa Test 1',
+            'iduser' => 4,
             'idtahunajaran' => 1,
             'nik' => '77777',
             'asal_sekolah' => 'smp',
@@ -352,6 +392,74 @@ class DatabaseSeeder extends Seeder
             'pekerjaan_ibu' => '-',
             'alamat_ortu' => '-',
             'no_hp_ortu' => '888'
+        ]);
+
+        Siswa::create([
+            'nisn' => '12341235',
+            'nis' => '12346',
+            'nama' => 'Siswa Test 2',
+            'iduser' => 4,
+            'idtahunajaran' => 1,
+            'nik' => '77778',
+            'asal_sekolah' => 'smp',
+            'alamat_siswa' => 'tasik',
+            'tempat_lahir' => 'Tasikmalaya',
+            'tanggal_lahir' => '1991-03-12',
+            'jenis_kelamin' => 'L',
+            'diterima_tanggal' => '2024-07-01',
+            'kelas' => 'X RPL 1',
+            'no_hp_siswa' => '67667',
+            'status' => '1',
+            'nama_ayah' => 'ayah',
+            'nama_ibu' => 'ibu',
+            'pekerjaan_ayah' => '-',
+            'pekerjaan_ibu' => '-',
+            'alamat_ortu' => '-',
+            'no_hp_ortu' => '888'
+        ]);
+
+        Guru::create([
+            'kode_guru' => '1122233',
+            'nama' => 'Guru Satu',
+            'nip' => '22333444',
+            'alamat' => '-',
+            'tempat_lahir' => '-',
+            'tanggal_lahir' => '1991-03-12',
+            'jenis_kelamin' => 'L',
+            'no_hp' => '032434',
+            'status' => '1',
+            'nuptk' => '12323',
+            'iduser' => 2,
+        ]);
+
+        Guru::create([
+            'kode_guru' => '1122234',
+            'nama' => 'Guru Dua',
+            'nip' => '22333445',
+            'alamat' => '-',
+            'tempat_lahir' => '-',
+            'tanggal_lahir' => '1991-03-12',
+            'jenis_kelamin' => 'L',
+            'no_hp' => '032434',
+            'status' => '1',
+            'nuptk' => '12324',
+            'iduser' => 3,
+        ]);
+
+        Matpel::create([
+            'kode_matpel' => 'MTK',
+            'matpel' => 'Matematika',
+            'kelompok' => '-',
+            'kelompok2' => '-',
+            'kategori' => '-',
+        ]);
+
+        Matpel::create([
+            'kode_matpel' => 'BIND',
+            'matpel' => 'Bahasa Indonesia',
+            'kelompok' => '-',
+            'kelompok2' => '-',
+            'kategori' => '-',
         ]);
     }
 }

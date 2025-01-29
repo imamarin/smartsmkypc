@@ -6,6 +6,7 @@ use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MataPelajaranController;
+use App\Http\Controllers\MatpelPengampuController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RombelController;
@@ -44,6 +45,8 @@ Route::prefix('/pages')->group(function () {
     Route::get('/data-rombel/{idkelas}/{idtahunajaran}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
     //data-mata-pelajaran
     Route::resource('/data-mata-pelajaran', MataPelajaranController::class);
+    //data-matpel-pengampu
+    Route::resource('/matpel-pengampu', MatpelPengampuController::class);
     //data-walikelas
     Route::resource('/data-walikelas', WalikelasController::class);
     //role

@@ -32,4 +32,9 @@ class TahunAjaran extends Model
     {
         return $this->hasMany(Walikelas::class, 'idtahunajaran');
     }
+
+    public function tahunajaran()
+    {
+        return $this->hasMany(MatpelPengampu::class, 'idtahunajaran');
+    }
 }
