@@ -21,6 +21,10 @@ class MatpelPengampuController extends Controller
             $query->where('status', 1);
         })->get();
 
+        $title = 'Matpel Pengampu!';
+        $text = "Yakin ingin menghapus data ini?";
+        confirmDelete($title, $text);
+
         return view('pages.matpelpengampu.index', $data);
     }
 
@@ -62,5 +66,7 @@ class MatpelPengampuController extends Controller
     public function destroy(string $id)
     {
         //
+        MatpelPengampu::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 }
