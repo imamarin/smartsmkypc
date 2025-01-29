@@ -26,11 +26,11 @@
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
-                        <a href="#" class="btn btn-info me-2">Export Data</a>
+                        <a href="#" class="btn btn-primary me-2">Export Data</a>
                         <a href="#" class="btn btn-success me-2">Import Data</a>
                         <!-- Button to trigger modal -->
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah
-                            Data</button>
+                        {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah
+                            Data</button> --}}
                     </div>
                 </div>
             </div><!-- end card header -->
@@ -58,7 +58,6 @@
                                     <td>
                                         <a href="{{ route('data-rombel.showStudents', [$item->id, $item->idtahunajaran]) }}"
                                             class="btn btn-sm btn-info">Lihat Siswa</a>
-                                        <a href="#" class="btn btn-sm btn-warning" data-kdkelas="{{ $item->id }}" data-idtahunajaran="{{ $item->idtahunajaran }}" data-bs-toggle="modal" data-bs-target="#editRombelModal">Edit Rombel</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -115,60 +114,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="editRombelModal" tabindex="-1" aria-labelledby="editRombelModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editRombelModalLabel">Edit Rombel</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="editRombelForm" action="" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <input type="hidden" id="subjectId" name="id">
-                    <input type="hidden" name="_method" id="formMethod" value="POST">
-                    <div class="mb-3">
-                        <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
-                        <select name="idtahunajaran" id="idtahunajaran" class="form-control select2">
-                            @foreach ($tahunajaran as $item)
-                                <option value="{{ $item->id }}">{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="kdkelas" class="form-label">Kelas</label>
-                        <select name="kdkelas" id="kdkelas" class="form-control select2">
-                            @foreach ($kelas as $item)
-                                <option value="{{ $item->kdkelas }}">{{ $item->kdkelas }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" id="submitBtn">Edit Rombel</button>
-                    </div>
-
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 @endsection
 @push('scripts')
-    <script>
-        const modalEditRombel = document.getElementById('editRombelModal');
-        modalEditRombel.addEventListener('show.bs.modal', function(event){
-            const button = event.relatedTarget;
-            const kdkelas = button.getAttribute('data-kdkelas');
-            const idtahunajaran = button.getAttribute('data-idtahunajaran');
-            const form = document.querySelector('#editRombelForm');
-            const formMethod = document.getElementById('formMethod');
 
-            if(kdkelas){
-                form.action = '{{ route('data-rombel.updateRombel', [':kls',':thn']) }}'.replace(':kls', kdkelas).replace(':thn',idtahunajaran);
-                form.querySelector("#kdkelas").value = kdkelas;
-                formMethod.value = 'POST';
-                form.querySelector("#idtahunajaran").value = idtahunajaran;
-            }
-        })
-    </script>
 @endpush

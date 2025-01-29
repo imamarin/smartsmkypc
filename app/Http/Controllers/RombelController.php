@@ -111,9 +111,10 @@ class RombelController extends Controller
         $kelas = Kelas::find($idkelas);
         $idkelas = $kelas->id;
         $kdkelas = $kelas->kelas;
+        $tingkat = $kelas->tingkat;
         $tahunajaran = TahunAjaran::orderBy('status', 'desc')->get();
         $siswa = Siswa::select('nisn', 'nama')->where('status', 1)->get();
-        $kelas = Kelas::select('id', 'kelas')->orderBy('tingkat', 'asc')->get();
+        $kelas = Kelas::select('id', 'kelas', 'tingkat')->orderBy('tingkat', 'asc')->get();
         $rombel = Rombel::where(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran])->get();
         $idtahunajaran = $idtahunajaran;
 
@@ -121,30 +122,26 @@ class RombelController extends Controller
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
 
-        return view('pages.rombel.show', compact('rombel', 'siswa', 'kelas', 'tahunajaran', 'idkelas', 'kdkelas', 'idtahunajaran'));
+        return view('pages.rombel.show', compact('rombel', 'siswa', 'kelas', 'tahunajaran', 'idkelas', 'kdkelas', 'idtahunajaran', 'tingkat'));
     }
 
-    public function levelUpClass(Request $request, String $id)
+    public function pindahTingkat(Request $request, String $idkelas, String $idtahunajaran)
     {
         $request->validate([
-            'nisn' => 'required',
-            'idkelas' => 'required',
-            'idtahunajaran' => 'required'
+            'nisn' => 'required'
         ]);
 
-        Rombel::firstOrCreate([
-            'idtahunajaran' => $request->idtahunajaran,
-            'idkelas' => $request->kdkelas,
-            'nisn' => $request->nisn
-        ], [
-            'idtahunajaran' => $request->idtahunajaran,
-            'kdkelas' => $request->kdkelas,
-            'nisn' => $request->nisn
-        ]);
-        redirect()->back()->with('success', 'Data berhasil diproses');
+        foreach ($request->nisn as $key => $value) {
+            Rombel::updateOrCreate([
+                'idtahunajaran' => $idtahunajaran,
+                'idkelas' => $idkelas,
+                'nisn' => $value
+            ]);
+        }
+        return redirect()->back()->with('success', 'Data berhasil diproses');
     }
 
-    public function updateRombel(Request $request, string $kdkelas, string $idtahunajaran)
+    public function updateRombel(Request $request, string $idkelas, string $idtahunajaran)
     {
         //
         $requestRombel = $request->validate([
@@ -152,7 +149,36 @@ class RombelController extends Controller
             'idtahunajaran' => 'required'
         ]);
 
-        Rombel::where(["idkelas" => $kdkelas, "idtahunajaran" => $idtahunajaran])->update($requestRombel);
+        Rombel::find(["idkelas" => $idkelas, "idtahunajaran" => $idtahunajaran])->update($requestRombel);
         return redirect()->back()->with('success', 'Data berhasil diubah');
+    }
+
+    public function deleteSiswa(Request $request)
+    {
+        //
+        $request->validate([
+            "siswa" => 'required'
+        ]);
+        foreach ($request->siswa as $key => $value) {
+            # code...
+            Rombel::find($value)->delete();
+        }
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
+
+    public function siswaRombel(Request $request)
+    {
+        $siswa = Rombel::where(['idkelas' => $request->idkelas, 'idtahunajaran' => $request->idtahunajaran])->get();
+        $result = $siswa->map(function ($item) {
+            return [
+                'nisn' => $item->nisn,
+                'nama' => $item->siswa->nama
+            ];
+        });
+
+        return response()->json([
+            "total" => $siswa->count(),
+            "data" => $result
+        ]);
     }
 }
