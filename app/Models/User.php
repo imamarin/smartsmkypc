@@ -47,11 +47,11 @@ class User extends Authenticatable
 
     public function siswa()
     {
-        return $this->hasMany(Siswa::class, 'iduser');
+        return $this->hasOne(Siswa::class, 'iduser');
     }
 
     public function guru()
     {
-        return $this->hasMany(Guru::class, 'iduser');
+        return $this->hasOne(Guru::class, 'iduser');
     }
 }
