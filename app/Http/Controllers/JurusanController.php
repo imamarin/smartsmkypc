@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exports\JurusanExport;
+use App\Exports\SiswaExport;
 use Illuminate\Http\Request;
 use App\Models\TahunAjaran;
 use App\Models\Jurusan;
+use App\Models\Siswa;
 use Maatwebsite\Excel\Facades\Excel;
 
 class JurusanController extends Controller
@@ -93,7 +95,6 @@ class JurusanController extends Controller
 
     public function export()
     {
-        $data['jurusan'] = Jurusan::with('tahunajaran')->get();
-        return Excel::download(new JurusanExport($data['jurusan']), 'Data Jurusan.xlsx');
+        return Excel::download(new JurusanExport, 'Data Jurusan.xlsx');
     }
 }

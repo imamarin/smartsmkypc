@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KelasExport;
 use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\TahunAjaran;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KelasController extends Controller
 {
@@ -87,5 +89,10 @@ class KelasController extends Controller
         $kelas = Kelas::find($id);
         $kelas->delete();
         return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function export()
+    {
+        return Excel::download(new KelasExport, 'Data Kelas.xlsx');
     }
 }

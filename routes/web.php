@@ -33,6 +33,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/tahun-ajaran/{id}/updateStatus', [TahunAjaranController::class, 'updateStatus'])->name('tahun-ajaran.updateStatus');
         //data-kelas
         Route::resource('/data-kelas', KelasController::class);
+        Route::get('/data-kelas/export/data', [KelasController::class, 'export'])->name('data-kelas.export');
         //data-jurusan
         Route::resource('/data-jurusan', JurusanController::class);
         Route::get('/data-jurusan/export/data', [JurusanController::class, 'export'])->name('data-jurusan.export');
