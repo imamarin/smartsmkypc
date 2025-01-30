@@ -36,11 +36,14 @@
                 @foreach ($menuKategori as $menu)
                     @if (!in_array($menu->kategori->id, $tampilkanKategori))
                         @php
-                            // Cek apakah ada submenu yang aktif
                             $isActiveSubmenu = $menuKategori
                                 ->where('idkategori', $menu->kategori->id)
-                                ->contains(fn($submenu) => request()->is(ltrim($submenu->url, '/')));
+                                ->contains(
+                                    fn($submenu) => request()->is(ltrim($submenu->url, '/')) ||
+                                        request()->is(ltrim($submenu->url, '/') . '*'),
+                                );
                         @endphp
+
                         @if ($menuKategori->where('idkategori', $menu->kategori->id)->count() > 1)
                             <li class="{{ $isActiveSubmenu ? 'mm-active' : '' }}">
                                 <a href="javascript: void(0);" class="has-arrow">
@@ -49,14 +52,16 @@
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
                                     @foreach ($menuKategori->where('idkategori', $menu->kategori->id) as $submenu)
-                                        <li class="{{ request()->is(ltrim($submenu->url, '/')) ? 'mm-active' : '' }}"><a
-                                                href="{{ $submenu->url }}"
-                                                data-key="t-user-grid">{{ $submenu->menu }}</a></li>
+                                        <li
+                                            class="{{ request()->is(ltrim($submenu->url, '/') . '*') ? 'mm-active' : '' }}">
+                                            <a href="{{ $submenu->url }}"
+                                                data-key="t-user-grid">{{ $submenu->menu }}</a>
+                                        </li>
                                     @endforeach
                                 </ul>
                             </li>
                         @else
-                            <li class="{{ request()->is(ltrim($menu->url, '/')) ? 'mm-active' : '' }}">
+                            <li class="{{ request()->is(ltrim($menu->url, '/') . '*') ? 'mm-active' : '' }}">
                                 <a href="{{ $menu->url }}">
                                     <i class="icon nav-icon" data-feather="{{ $menu->kategori->icon }}"></i>
                                     <span class="menu-item" data-key="t-analytics">{{ $menu->menu }}</span>

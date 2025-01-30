@@ -671,7 +671,7 @@ body[data-sidebar-size="sm"]
 body[data-sidebar-size="sm"] .vertical-menu #sidebar-menu > ul > li:hover > a {
     position: relative;
     width: calc(180px + 70px);
-    color: #038edc;
+    color: #d8d8d8;
     background-color: var(--bs-sidebar-menu-item-active-bg-color);
     -webkit-transition: none;
     transition: none;
@@ -685,7 +685,7 @@ body[data-sidebar-size="sm"]
     > li:hover
     > a
     .nav-icon {
-    color: #038edc;
+    color: #d8d8d8;
 }
 body[data-sidebar-size="sm"]
     .vertical-menu
@@ -2278,9 +2278,9 @@ body[data-layout="horizontal"][data-layout-size="boxed"] .navbar-header {
     --bs-sidebar-menu-item-color: #d8d8d8;
     --bs-sidebar-menu-sub-item-color: #7b8190;
     --bs-sidebar-menu-item-icon-color: #d8d8d8;
-    --bs-sidebar-menu-item-hover-color: #038edc;
+    --bs-sidebar-menu-item-hover-color: #d8d8d8;
     --bs-sidebar-menu-item-active-color: #e6e6e6;
-    --bs-sidebar-menu-sub-item-active-color: #038edc;
+    --bs-sidebar-menu-sub-item-active-color: #d8d8d8;
     --bs-sidebar-menu-item-active-bg-color: #038edc;
 }
 :root [data-sidebar="dark"],
