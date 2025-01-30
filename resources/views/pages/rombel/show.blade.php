@@ -236,7 +236,6 @@
                 form.submit()
             }
             });
-            form.querySelector("#submitHapusSiswa").click();
         });
 
         const modalAdd = document.getElementById('addSubjectModal');
@@ -333,17 +332,6 @@
                         e.preventDefault();
                     });                              
                 } 
-                // else {
-                //     form.action = '{{ route('data-rombel.update', ':id') }}'.replace(':id', id);
-                //     submitBtn.textContent = 'Naik Kelas';
-                //     modalTitle.textContent = 'Naik Kelas';
-                //     subjectId.value = id;
-                //     formMethod.value = 'POST';
-                //     form.querySelector('#idkelas').value = idkelas;
-                //     form.querySelector('#nisn').value = nisn;
-                //     form.querySelector('#idtahunajaran').value = idtahunajaran;
-                //     form.querySelector('#idtahunajaran').classList.add('select2');
-                // }
             }
         });
 

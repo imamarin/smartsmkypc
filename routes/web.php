@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\JamPelajaranController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
@@ -52,6 +53,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/matpel-pengampu', MatpelPengampuController::class);
         //data-walikelas
         Route::resource('/data-walikelas', WalikelasController::class);
+        //data-jam-pelajaran
+        Route::resource('/data-jam-pelajaran', JamPelajaranController::class);
+        Route::post('/data-jam-pelajaran/delete', [JamPelajaranController::class, 'delete'])->name('data-jam-pelajaran.delete');
         //role
         Route::resource('/role', RoleController::class);
         //pengaturan
