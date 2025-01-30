@@ -200,6 +200,14 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Jadwal Mengajar',
+            'url' => '/pages/jadwal-mengajar',
+            'posisi' => 4,
+            'idkategori' => 3,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Data Mata Pelajaran',
             'url' => '/pages/data-mata-pelajaran',
             'posisi' => 1,
@@ -232,9 +240,17 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Sistem Blok',
+            'url' => '/pages/sistem-blok',
+            'posisi' => 2,
+            'idkategori' => 5,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Tahun Ajaran',
             'url' => '/pages/tahun-ajaran',
-            'posisi' => 2,
+            'posisi' => 3,
             'idkategori' => 5,
             'created_at' => now(),
             'updated_at' => now()
@@ -332,6 +348,7 @@ class DatabaseSeeder extends Seeder
         TahunAjaran::create([
             'awal_tahun_ajaran' => '2023',
             'akhir_tahun_ajaran' => '2024',
+            'status' => 1,
             'semester' => 'ganjil',
             'tgl_mulai' => now(),
             'created_at' => now(),

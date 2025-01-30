@@ -42,4 +42,9 @@ class TahunAjaran extends Model
     {
         return $this->hasMany(JamPelajaran::class, 'idtahunajaran');
     }
+
+    public function sistemblok()
+    {
+        return $this->hasMany(SistemBlok::class, 'idtahunajaran');
+    }
 }
