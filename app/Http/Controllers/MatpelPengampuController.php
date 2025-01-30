@@ -6,6 +6,7 @@ use App\Models\Matpel;
 use App\Models\MatpelPengampu;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MatpelPengampuController extends Controller
 {
@@ -19,7 +20,7 @@ class MatpelPengampuController extends Controller
         $data['tahunajaran'] = TahunAjaran::where('status', 1)->first();
         $data['matpelpengampu'] = MatpelPengampu::whereHas('tahunajaran', function ($query) {
             $query->where('status', 1);
-        })->get();
+        })->where('kode_guru', Auth::user()->guru->kode_guru)->get();
 
         $title = 'Matpel Pengampu!';
         $text = "Yakin ingin menghapus data ini?";
@@ -38,7 +39,7 @@ class MatpelPengampuController extends Controller
             'idtahunajaran' => 'required',
             'kode_matpel' => 'required',
         ]);
-        $validate['kode_guru'] = "1122233";
+        $validate['kode_guru'] = Auth::user()->guru->kode_guru;
 
         MatpelPengampu::create($validate);
         return redirect()->back()->with('success', 'Data berhasil disimpan');
