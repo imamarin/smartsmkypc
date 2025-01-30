@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SiswaExport;
 use App\Models\Role;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -192,5 +194,11 @@ class SiswaController extends Controller
             'status' => $request->status,
         ]);
         return redirect()->back()->with('success', 'Status Berhasil Diubah');
+    }
+
+    public function export()
+    {
+        $data['siswa'] = Siswa::all();
+        return Excel::download(new SiswaExport($data['siswa']), 'Data Siswa.xlsx');
     }
 }
