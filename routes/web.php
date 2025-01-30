@@ -37,6 +37,7 @@ Route::middleware('cek-status-login')->group(function () {
         //data-siswa
         Route::resource('/data-siswa', SiswaController::class);
         Route::post('/data-siswa/{id}/updateStatus', [SiswaController::class, 'updateStatus'])->name('data-siswa.updateStatus');
+        Route::get('/data-siswa/export/data', [SiswaController::class, 'export'])->name('data-siswa.export');
         //data-guru
         Route::resource('/data-guru', GuruController::class);
         Route::post('/data-guru/{id}/updateStatus', [GuruController::class, 'updateStatus'])->name('data-guru.updateStatus');
