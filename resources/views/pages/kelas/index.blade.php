@@ -143,7 +143,7 @@
 </div>
 @endsection
 @push('scripts')
-<!-- <script>
+<script>
         const modal = document.getElementById('addSubjectModal');
         modal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget; // Tombol yang memicu modal
@@ -178,5 +178,5 @@
                 form.reset();
             }
         });
-    </script> -->
+    </script>
 @endpush
