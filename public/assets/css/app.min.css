@@ -2253,12 +2253,12 @@ body[data-layout="horizontal"][data-layout-size="boxed"] .navbar-header {
 }
 :root,
 [data-bs-theme="light"] {
-    --bs-header-bg: #303841;
+    --bs-header-bg: #038edc;
     --bs-header-item-color: #d8d8d8;
     --bs-header-item-sub-color: var(--bs-text-muted);
     --bs-sidebar-bg: #d8d8d8;
-    --bs-topbar-user-bg: #303841;
-    --bs-navbar-brand-box-bg: #303841;
+    --bs-topbar-user-bg: #038edc;
+    --bs-navbar-brand-box-bg: #038edc;
     --bs-topnav-bg: #fff;
     --bs-topnav-item-color: #5d6071;
     --bs-topnav-item-color-active: var(--bs-primary);
