@@ -29,7 +29,7 @@
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
-                            <a href="#" class="btn btn-info me-2">Export Data</a>
+                            <a href="{{ route('data-guru.export') }}" class="btn btn-info me-2">Export Data</a>
                             <a href="#" class="btn btn-success me-2">Import Data</a>
                             <a href="{{ route('data-guru.create') }}" class="btn btn-primary">Tambah Data</a>
                         </div>
@@ -74,7 +74,8 @@
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->no_hp }}</td>
                                         <td>
-                                            <form action="{{ route('data-guru.updateStatus', $item->kode_guru) }}" method="post">
+                                            <form action="{{ route('data-guru.updateStatus', $item->kode_guru) }}"
+                                                method="post">
                                                 @csrf
                                                 <button type="submit"
                                                     class="btn btn-sm {{ $item->status == 1 ? 'btn-success' : 'btn-danger' }}">

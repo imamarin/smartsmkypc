@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\JurusanExport;
 use Illuminate\Http\Request;
 use App\Models\TahunAjaran;
 use App\Models\Jurusan;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JurusanController extends Controller
 {
@@ -87,5 +89,11 @@ class JurusanController extends Controller
         $jurusan = Jurusan::find($id);
         $jurusan->delete();
         return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function export()
+    {
+        $data['jurusan'] = Jurusan::with('tahunajaran')->get();
+        return Excel::download(new JurusanExport($data['jurusan']), 'Data Jurusan.xlsx');
     }
 }

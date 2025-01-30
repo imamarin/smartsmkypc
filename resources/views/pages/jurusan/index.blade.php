@@ -29,7 +29,7 @@
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
-                            <a href="#" class="btn btn-info me-2">Export Data</a>
+                            <a href="{{ route('data-jurusan.export') }}" class="btn btn-info me-2">Export Data</a>
                             <a href="#" class="btn btn-success me-2">Import Data</a>
                             <!-- Button to trigger modal -->
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addJurusanModal">Tambah
