@@ -10,6 +10,13 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
-        return view('pages.dashboard');
+        $credentials = $request->only('username', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('dashboard');
+        }
+
+        return redirect()->back()->with('errors', 'Username atau Password Salah');
     }
 }

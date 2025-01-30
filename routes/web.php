@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('pages.auth.login');
 });
 //login
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::prefix('/pages')->group(function () {
     //dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

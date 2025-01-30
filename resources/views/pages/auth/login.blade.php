@@ -18,6 +18,7 @@
     <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
     <!-- Material Design Icons -->
     <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
 </head>
 
@@ -45,9 +46,10 @@
                                 <h5>Selamat Datang !</h5>
                                 <p>Masuk untuk melanjutkan ke SMART YPC.</p>
                             </div>
-                            <form>
+                            <form method="POST" action="{{ route('login') }}">
+                                @csrf
                                 <div class="form-floating form-floating-custom mb-3">
-                                    <input type="text" class="form-control" id="input-username"
+                                    <input type="text" class="form-control" id="input-username" name="username"
                                         placeholder="Enter User Name">
                                     <label for="input-username">Username</label>
                                     <div class="form-floating-icon">
@@ -55,7 +57,7 @@
                                     </div>
                                 </div>
                                 <div class="form-floating form-floating-custom mb-3">
-                                    <input type="password" class="form-control" id="input-password"
+                                    <input type="password" class="form-control" id="input-password" name="password"
                                         placeholder="Enter Password">
                                     <label for="input-password">Password</label>
                                     <div class="form-floating-icon">
@@ -94,6 +96,9 @@
     <script src="{{ asset('assets/libs/metismenujs/metismenujs.min.js') }}"></script>
     <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('assets/libs/feather-icons/feather.min.js') }}"></script>
+
+
+    @include('sweetalert::alert')
 
 </body>
 
