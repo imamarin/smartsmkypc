@@ -11,6 +11,7 @@ use App\Http\Controllers\MatpelPengampuController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RombelController;
+use App\Http\Controllers\SistemBlokController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\WalikelasController;
@@ -59,6 +60,8 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/data-jam-pelajaran/delete', [JamPelajaranController::class, 'delete'])->name('data-jam-pelajaran.delete');
         //role
         Route::resource('/role', RoleController::class);
+        //sistem-blok
+        Route::resource('/sistem-blok', SistemBlokController::class);
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');
