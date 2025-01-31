@@ -26,7 +26,7 @@
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
-                        <a href="#" class="btn btn-primary me-2">Export Data</a>
+                        <a href="{{ route('data-rombel.export') }}" class="btn btn-primary me-2">Export Data</a>
                         <a href="#" class="btn btn-success me-2">Import Data</a>
                         <!-- Button to trigger modal -->
                         {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah
@@ -49,17 +49,17 @@
                         </thead>
                         <tbody>
                             @foreach ($kelas as $key => $item)
-                                <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->kelas }}</td>
-                                    <td>{{ $item->jurusan->jurusan }}</td>
-                                    <td>{{ $item->rombel->count() }}</td>
-                                    <td>-</td>
-                                    <td>
-                                        <a href="{{ route('data-rombel.showStudents', [$item->id, $item->idtahunajaran]) }}"
-                                            class="btn btn-sm btn-info">Lihat Siswa</a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $item->kelas }}</td>
+                                <td>{{ $item->jurusan->jurusan }}</td>
+                                <td>{{ $item->rombel->count() }}</td>
+                                <td>-</td>
+                                <td>
+                                    <a href="{{ route('data-rombel.showStudents', [$item->id, $item->idtahunajaran]) }}"
+                                        class="btn btn-sm btn-info">Lihat Siswa</a>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -85,7 +85,7 @@
                         <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
                         <select name="idtahunajaran" id="idtahunajaran" class="form-control select2">
                             @foreach ($tahunajaran as $item)
-                                <option value="{{ $item->id }}">{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
+                            <option value="{{ $item->id }}">{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -93,7 +93,7 @@
                         <label for="kdkelas" class="form-label">Kelas</label>
                         <select name="kdkelas" id="kdkelas" class="form-control select2">
                             @foreach ($kelas as $item)
-                                <option value="{{ $item->kdkelas }}">{{ $item->kdkelas }}</option>
+                            <option value="{{ $item->kdkelas }}">{{ $item->kdkelas }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -101,7 +101,7 @@
                         <label for="nisn" class="form-label">Siswa</label>
                         <select name="nisn[]" id="nisn" class="form-control select2" multiple>
                             @foreach ($siswa as $item)
-                                <option value="{{ $item->nisn }}">{{ $item->nama }}</option>
+                            <option value="{{ $item->nisn }}">{{ $item->nama }}</option>
                             @endforeach
                         </select>
                     </div>

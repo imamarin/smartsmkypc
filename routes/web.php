@@ -54,11 +54,14 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/data-rombel/deletesiswa', [RombelController::class, 'deleteSiswa'])->name('data-rombel.deleteSiswa');
         Route::post('/data-rombel/pindahtingkat/{idkelas}/{idtahunajaran}', [RombelController::class, 'pindahTingkat'])->name('data-rombel.pindahTingkat');
         Route::post('/data-rombel/updaterombel/{idkelas}/{idtahunajaran}', [RombelController::class, 'updateRombel'])->name('data-rombel.updateRombel');
+        Route::get('/data-rombel/export/data', [RombelController::class, 'export'])->name('data-rombel.export');
         Route::get('/data-rombel/{idkelas}/{idtahunajaran}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
+
         //data-mata-pelajaran
         Route::resource('/data-mata-pelajaran', MataPelajaranController::class);
         //data-matpel-pengampu
         Route::resource('/matpel-pengampu', MatpelPengampuController::class);
+        Route::get('/matpel-pengampu/export/data', [MatpelPengampuController::class, 'export'])->name('matpel-pengampu.export');
         //data-walikelas
         Route::resource('/data-walikelas', WalikelasController::class);
         //data-jam-pelajaran
