@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RombelExport;
 use App\Models\Kelas;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RombelController extends Controller
 {
@@ -180,5 +182,13 @@ class RombelController extends Controller
             "total" => $siswa->count(),
             "data" => $result
         ]);
+    }
+
+    public function export()
+    {
+        $kelas = Kelas::with(['rombel', 'jurusan'])->whereHas('tahunajaran', function ($query) {
+            $query->where('status', 1);
+        })->orderBy('tingkat', 'asc')->get();
+        return Excel::download(new RombelExport($kelas), 'Data Rombel.xlsx');
     }
 }
