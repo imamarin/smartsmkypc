@@ -30,28 +30,47 @@ class PresensiController extends Controller
         $kode_guru = Crypt::decrypt($request->kode_guru);
 
         $tahunajaran = TahunAjaran::where('status', 1)->first();
-        $presensi = Presensi::updateOrCreate([
-            'idtahunajaran' => $tahunajaran->id,
-            'semester' => $tahunajaran->semester,
-            'idkelas' => $idkelas,
-            'kode_matpel' => $kode_matpel,
-            'kode_guru' => $kode_guru,
-            'idjadwalmengajar' => $idjadwalmengajar
-        ]);
 
-        foreach ($request->presensi as $key => $value) {
-            # code...
-            DetailPresensi::updateOrCreate([
-                'nisn' => $key,
-                'keterangan' => $value,
-                'idpresensi' => $presensi->id
+        $presensi = Presensi::whereDate('created_at', date("Y-m-d"))
+            ->where('idjadwalmengajar', $idjadwalmengajar)
+            ->where('semester', $tahunajaran->semester)->first();
+        if ($presensi) {
+            $presensi->update([
+                'idtahunajaran' => $tahunajaran->id,
+                'semester' => $tahunajaran->semester,
+                'idkelas' => $idkelas,
+                'kode_matpel' => $kode_matpel,
+                'kode_guru' => $kode_guru,
+                'pokok_bahasan' => $request->pokok_bahasan
+            ]);
+        } else {
+            $presensi = Presensi::create([
+                'idtahunajaran' => $tahunajaran->id,
+                'semester' => $tahunajaran->semester,
+                'idkelas' => $idkelas,
+                'kode_matpel' => $kode_matpel,
+                'kode_guru' => $kode_guru,
+                'idjadwalmengajar' => $idjadwalmengajar,
+                'pokok_bahasan' => $request->pokok_bahasan
             ]);
         }
 
-        if ($presensi) {
-            Presensi::find($presensi->id)->update(['pokok_bahasan' => $request->pokok_bahasan]);
-        } else {
-            Presensi::create(['pokok_bahasan' => $request->pokok_bahasan]);
+        foreach ($request->presensi as $key => $value) {
+            # code...
+            $detailPresensi = DetailPresensi::where('idpresensi', $presensi->id)->where('nisn', $key);
+            if ($detailPresensi->first()) {
+                $detailPresensi->update([
+                    'nisn' => $key,
+                    'keterangan' => $value,
+                    'idpresensi' => $presensi->id
+                ]);
+            } else {
+                DetailPresensi::Create([
+                    'nisn' => $key,
+                    'keterangan' => $value,
+                    'idpresensi' => $presensi->id
+                ]);
+            }
         }
 
         return redirect()->back()->with('success', 'Presensi berhasil di proses');
