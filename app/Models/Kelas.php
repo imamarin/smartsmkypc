@@ -27,4 +27,9 @@ class Kelas extends Model
     {
         return $this->hasMany(JadwalMengajar::class, 'idkelas');
     }
+
+    public function presensi()
+    {
+        return $this->hasMay(Presensi::class, 'idkelas');
+    }
 }

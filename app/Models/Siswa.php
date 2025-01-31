@@ -23,4 +23,9 @@ class Siswa extends Model
     {
         return $this->hasMany(Rombel::class, 'nisn', 'nisn');
     }
+
+    public function detailpresensi()
+    {
+        return $this->hasMany(DetailPresensi::class, 'nisn', 'nisn');
+    }
 }

@@ -47,4 +47,9 @@ class TahunAjaran extends Model
     {
         return $this->hasMany(SistemBlok::class, 'idtahunajaran');
     }
+
+    public function presensi()
+    {
+        return $this->hasMany(Presensi::class, 'idtahunajaran');
+    }
 }

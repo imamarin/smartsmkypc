@@ -33,4 +33,9 @@ class JadwalMengajar extends Model
     {
         return $this->belongsTo(SistemBlok::class, 'idsistemblok');
     }
+
+    public function presensi()
+    {
+        return $this->belongsTo(Presensi::class, 'idjadwalmengajar');
+    }
 }

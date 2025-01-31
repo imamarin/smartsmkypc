@@ -63,7 +63,7 @@
                                         <td>{{ $hari[$subject->jampel->hari-1] }}</td>
                                         <td>Jam Ke: {{ $subject->jampel->jam }} ({{ $subject->jampel->mulai }})</td>
                                         <td>Jam Ke: {{ $subject->jam_keluar }} ({{ $subject->waktu_keluar }})</td>
-                                        <td>{{ $subject->kode_matpel }}</td>
+                                        <td>{{ $subject->matpel->matpel }}</td>
                                         <td>{{ $subject->kelas->kelas }}</td>
                                         <td>
                                             <!-- Trigger modal untuk Edit -->

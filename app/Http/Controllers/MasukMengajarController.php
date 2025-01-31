@@ -27,8 +27,7 @@ class MasukMengajarController extends Controller
                 AND jp.idtahunajaran = jam_pelajarans.idtahunajaran
                 AND jp.jam = jam_keluar) as waktu_keluar')
             ->whereHas('jampel', function ($query) use ($tahunajaran) {
-                // $query->where('hari', 1);
-                $query->where('hari', date('N'));
+                $query->where('hari', date('N'))->where('idtahunajaran', $tahunajaran->id);
             })->where([
                 'kode_guru' => Auth::user()->guru->kode_guru,
             ])->get();
@@ -38,6 +37,23 @@ class MasukMengajarController extends Controller
 
     public function show(String $id)
     {
-        echo Crypt::decrypt($id);
+        $id = Crypt::decrypt($id);
+
+        $data['jadwal'] = JadwalMengajar::join('jam_pelajarans', 'jam_pelajarans.id', '=', 'jadwal_mengajars.idjampel')
+            ->selectRaw('jadwal_mengajars.*, (jam_pelajarans.jam + jadwal_mengajars.jumlah_jam) - 1 as jam_keluar,
+                (SELECT jp.akhir
+                FROM jam_pelajarans as jp
+                WHERE jp.hari = jam_pelajarans.hari
+                AND jp.idtahunajaran = jam_pelajarans.idtahunajaran
+                AND jp.jam = jam_keluar) as waktu_keluar')
+            ->where([
+                'jadwal_mengajars.id' => $id,
+            ])->first();
+
+        if ($data['jadwal']) {
+            return view('pages.masukmengajar.show', $data);
+        }
+
+        return redirect()->back()->with('warning', 'Mohon maaf jadwal tidak tersedia!');
     }
 }
