@@ -15,4 +15,9 @@ class Matpel extends Model
     {
         return $this->hasMany(MatpelPengampu::class, 'kode_matpel', 'kode_matpel');
     }
+
+    public function jadwalmengajar()
+    {
+        return $this->hasMany(JadwalMengajar::class, 'kode_matpel', 'kode_matpel');
+    }
 }

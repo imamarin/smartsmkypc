@@ -16,6 +16,10 @@ class Guru extends Model
 
     public function walikelas()
     {
-    return $this->hasMany(Walikelas::class, 'kode_guru', 'kode_guru');
+        return $this->hasMany(Walikelas::class, 'kode_guru', 'kode_guru');
+    }
+
+    public function jadwalmengajar(){
+        return $this->hasMany(JadwalMengajar::class, 'kode_guru', 'kode_guru');
     }
 }

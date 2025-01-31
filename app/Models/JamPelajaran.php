@@ -13,4 +13,9 @@ class JamPelajaran extends Model
     {
         return $this->belongsTo(TahunAjaran::class, 'idtahunajaran');
     }
+
+    public function jadwalmengajar()
+    {
+        return $this->hasMany(JadwalMengajar::class, 'idjampel');
+    }
 }

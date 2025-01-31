@@ -22,4 +22,9 @@ class Kelas extends Model
     {
         return $this->hasMany(Rombel::class, 'idkelas');
     }
+
+    public function jadwalmengar()
+    {
+        return $this->hasMany(JadwalMengajar::class, 'idkelas');
+    }
 }
