@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GuruExport;
 use App\Models\Guru;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
 {
@@ -169,5 +171,11 @@ class GuruController extends Controller
             'status' => $request->status,
         ]);
         return redirect()->back()->with('success', 'Status Berhasil Diubah');
+    }
+
+    public function export()
+    {
+        $data['guru'] = Guru::all();
+        return Excel::download(new GuruExport($data['guru']), 'Data Guru.xlsx');
     }
 }

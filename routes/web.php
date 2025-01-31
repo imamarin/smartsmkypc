@@ -34,8 +34,10 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/tahun-ajaran/{id}/updateStatus', [TahunAjaranController::class, 'updateStatus'])->name('tahun-ajaran.updateStatus');
         //data-kelas
         Route::resource('/data-kelas', KelasController::class);
+        Route::get('/data-kelas/export/data', [KelasController::class, 'export'])->name('data-kelas.export');
         //data-jurusan
         Route::resource('/data-jurusan', JurusanController::class);
+        Route::get('/data-jurusan/export/data', [JurusanController::class, 'export'])->name('data-jurusan.export');
         //data-siswa
         Route::resource('/data-siswa', SiswaController::class);
         Route::post('/data-siswa/{id}/updateStatus', [SiswaController::class, 'updateStatus'])->name('data-siswa.updateStatus');
@@ -43,6 +45,7 @@ Route::middleware('cek-status-login')->group(function () {
         //data-guru
         Route::resource('/data-guru', GuruController::class);
         Route::post('/data-guru/{id}/updateStatus', [GuruController::class, 'updateStatus'])->name('data-guru.updateStatus');
+        Route::get('/data-guru/export/data', [GuruController::class, 'export'])->name('data-guru.export');
         //data-rombel
         Route::resource('/data-rombel', RombelController::class);
         Route::post('/data-rombel/siswarombel', [RombelController::class, 'SiswaRombel'])->name('data-rombel.siswaRombel');
