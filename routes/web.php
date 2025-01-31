@@ -7,6 +7,7 @@ use App\Http\Controllers\JamPelajaranController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MasukMengajarController;
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\MatpelPengampuController;
 use App\Http\Controllers\PengaturanController;
@@ -68,6 +69,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/sistem-blok', SistemBlokController::class);
         //jadwal-Mengajar
         Route::resource('/jadwal-mengajar', JadwalMengajarController::class);
+        //Masuk-Mengajar
+        Route::get('/masuk-mengajar', [MasukMengajarController::class, 'index'])->name('masuk-mengajar.index');
+        Route::get('/masuk-mengajar/{id}', [MasukMengajarController::class, 'show'])->name('masuk-mengajar.show');
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');
