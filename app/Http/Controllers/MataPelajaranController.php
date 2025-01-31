@@ -81,7 +81,13 @@ class MataPelajaranController extends Controller
      */
     public function destroy(string $id)
     {
-        Matpel::find($id)->delete();
-        return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        try {
+            //code...
+            Matpel::find($id)->delete();
+            return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Tidak dapat menghapus data karena masih memiliki relasi!');
+        }
     }
 }
