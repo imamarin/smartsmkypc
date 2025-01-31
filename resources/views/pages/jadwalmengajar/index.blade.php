@@ -60,7 +60,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $subject->sistemblok?->nama_sesi }}</td>
-                                        <td>{{ $hari[$subject->idjampel-1] }}</td>
+                                        <td>{{ $hari[$subject->jampel->hari-1] }}</td>
                                         <td>Jam Ke: {{ $subject->jampel->jam }} ({{ $subject->jampel->mulai }})</td>
                                         <td>Jam Ke: {{ $subject->jam_keluar }} ({{ $subject->waktu_keluar }})</td>
                                         <td>{{ $subject->kode_matpel }}</td>
@@ -68,14 +68,15 @@
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#addSubjectModal" data-id="{{ $subject->id }}"
+                                                data-bs-target="#addSubjectModal" 
+                                                data-id="{{ $subject->id }}"
                                                 data-sesi="{{ $subject->sistemblok?->id }}"
-                                                data-hari="{{ $subject->idjampel }}"
-                                                data-jammasuk="{{ $subject->idjampel }}"
-                                                data-jamkeluar="{{ $subject->idjampel }}"
+                                                data-hari="{{ $subject->jampel->hari }}"
+                                                data-jam-masuk="{{ $subject->jampel->jam }}"
+                                                data-jumlah-jam="{{ $subject->jumlah_jam }}"
                                                 data-matpel="{{ $subject->kode_matpel }}"
-                                                data-kelas="{{ $subject->kelas->id }}"
-                                                data-tahunajaran="{{ $subject->sistemblok->idtahunajaran }}">
+                                                data-kelas="{{ $subject->idkelas }}"
+                                                data-tahun-ajaran="{{ $subject->sistemblok->idtahunajaran }}">
                                                 Edit
                                             </button>
                                             <a href="{{ route('jadwal-mengajar.destroy', $subject->id) }}"
@@ -181,8 +182,12 @@
             const button = event.relatedTarget;
             const id = button.getAttribute('data-id');
             const sesi = button.getAttribute('data-sesi');
-            const semester = button.getAttribute('data-semester');
-            const tahunajaran = button.getAttribute('data-tahunajaran');
+            const hari = button.getAttribute('data-hari');
+            const masuk = button.getAttribute('data-jam-masuk');
+            const jumlahJam = button.getAttribute('data-jumlah-jam');
+            const matpel = button.getAttribute('data-matpel');
+            const kelas = button.getAttribute('data-kelas');
+            const tahunAjaran = button.getAttribute('data-tahun-ajaran');
 
             const form = document.getElementById('subjectForm');
             const submitBtn = document.getElementById('submitBtn');
@@ -196,9 +201,13 @@
                 modalTitle.textContent = 'Update Sistem Blok';
                 subjectId.value = id;
                 formMethod.value = 'PUT';
-                document.getElementById('nama_sesi').value = sesi;
-                document.getElementById('semester').value = semester;
-                document.getElementById('idtahunajaran').value = tahunajaran;
+                document.getElementById('idsistemblok').value = sesi;
+                document.getElementById('kode_matpel').value = matpel;
+                document.getElementById('idkelas').value = kelas;
+                document.getElementById('hari').value = hari;
+                document.getElementById('idjampel').value = masuk;
+                document.getElementById('jumlah_jam').value = jumlahJam;
+                document.getElementById('idtahunajaran').value = tahunAjaran;
             } else {
                 form.action = '{{ route('jadwal-mengajar.store') }}';
                 submitBtn.textContent = 'Simpan';

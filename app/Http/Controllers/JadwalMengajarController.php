@@ -20,6 +20,10 @@ class JadwalMengajarController extends Controller
     public function index()
     {
         //
+        $title = 'Hapus Jadwal Mengajar!';
+        $text = "Yakin ingin menghapus data ini?";
+        confirmDelete($title, $text);
+
         $tahunajaran = TahunAjaran::where('status', 1)->first();
         $data['tahunajaran'] = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
         $data['sistemblok'] = SistemBlok::where([
@@ -74,6 +78,7 @@ class JadwalMengajarController extends Controller
             $validate['idjampel'] = $jampel->id;
             $validate['kode_guru'] = Auth::user()->guru->kode_guru;
             JadwalMengajar::create($validate);
+            return redirect()->back()->with('success', 'Jam pelajaran berhasil disimpan!');
         } else {
             return redirect()->back()->with('warning', 'Jam pelajaran tidak tersedia!');
         }
@@ -93,6 +98,30 @@ class JadwalMengajarController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validate = $request->validate([
+            'kode_matpel' => 'required',
+            'hari' => 'required',
+            'idkelas' => 'required',
+            'idjampel' => 'required',
+            'idsistemblok' => 'required',
+            'jumlah_jam' => 'required',
+        ]);
+
+        $jampel = JamPelajaran::where([
+            'hari' => $request->hari,
+            'jam' => $request->idjampel,
+            'idtahunajaran' => $request->idtahunajaran,
+        ])->first();
+
+        if ($jampel) {
+            unset($validate['hari']);
+            $validate['idjampel'] = $jampel->id;
+            $validate['kode_guru'] = Auth::user()->guru->kode_guru;
+            JadwalMengajar::find($id)->update($validate);
+            return redirect()->back()->with('success', 'Jam pelajaran berhasil diubah!');
+        } else {
+            return redirect()->back()->with('warning', 'Jam pelajaran tidak tersedia!');
+        }
     }
 
     /**
@@ -101,5 +130,7 @@ class JadwalMengajarController extends Controller
     public function destroy(string $id)
     {
         //
+        JadwalMengajar::find($id)->delete();
+        return redirect()->back()->with('success', 'Jam pelajaran berhasil dihapus!');
     }
 }
