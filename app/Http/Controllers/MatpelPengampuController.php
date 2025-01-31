@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MatpelPengampuExport;
 use App\Models\Matpel;
 use App\Models\MatpelPengampu;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MatpelPengampuController extends Controller
 {
@@ -69,5 +71,13 @@ class MatpelPengampuController extends Controller
         //
         MatpelPengampu::findOrFail($id)->delete();
         return redirect()->back()->with('success', 'Data berhasil dihapus!');
+    }
+
+    public function export()
+    {
+        $data['matpelpengampu'] = MatpelPengampu::whereHas('tahunajaran', function ($query) {
+            $query->where('status', 1);
+        })->where('kode_guru', Auth::user()->guru->kode_guru)->get();
+        return Excel::download(new MatpelPengampuExport($data['matpelpengampu']), 'Matpel Pengampu.xlsx');
     }
 }

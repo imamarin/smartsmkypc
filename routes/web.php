@@ -60,6 +60,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/data-mata-pelajaran', MataPelajaranController::class);
         //data-matpel-pengampu
         Route::resource('/matpel-pengampu', MatpelPengampuController::class);
+        Route::get('/matpel-pengampu/export/data', [MatpelPengampuController::class, 'export'])->name('matpel-pengampu.export');
         //data-walikelas
         Route::resource('/data-walikelas', WalikelasController::class);
         //data-jam-pelajaran
