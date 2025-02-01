@@ -33,4 +33,9 @@ class Presensi extends Model
     {
         return $this->belongsTo(JadwalMengajar::class, 'dijadwalmengajar');
     }
+
+    public function detailpresensi()
+    {
+        return $this->hasMany(DetailPresensi::class, 'idpresensi');
+    }
 }

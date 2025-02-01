@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('idjampel')->references('id')->on('jam_pelajarans');
             $table->foreignId('idsistemblok')->references('id')->on('sistem_bloks');
             $table->integer('jumlah_jam');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -88,7 +88,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($jadwal->kelas->rombel as $subject)
+                                    @foreach ($siswa as $key => $subject)
+                                        @php
+                                        if($subject)   
+                                        @endphp
                                         <tr>
                                             <td>{{ $loop->iteration }} </td>
                                             <td>{{ $subject->nisn }}</td>
@@ -96,10 +99,10 @@
                                             <td>{{ $subject->siswa->jenis_kelamin }}</td>
                                             <td>
                                                 <select name="presensi[{{ $subject->nisn }}]" id="" class="form-select">
-                                                    <option value="h">Hadir</option>
-                                                    <option value="s">Sakit</option>
-                                                    <option value="i">Izin</option>
-                                                    <option value="a">Tanpa Keterangan</option>
+                                                    <option value="h" {{ $subject->keterangan == 'h'?'selected':'' }}>Hadir</option>
+                                                    <option value="s" {{ $subject->keterangan == 's'?'selected':'' }}>Sakit</option>
+                                                    <option value="i" {{ $subject->keterangan == 'i'?'selected':'' }}>Izin</option>
+                                                    <option value="a" {{ $subject->keterangan == 'a'?'selected':'' }}>Tanpa Keterangan</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -110,7 +113,7 @@
                                         <td colspan="5">
                                             <div class="mb-3">
                                                 <label for="pokok_bahasan" class="form-label">Pokok Bahasan</label>
-                                                <textarea name="pokok_bahasan" rows="5" id="pokok_bahasan" class="form-control"></textarea>
+                                                <textarea name="pokok_bahasan" rows="5" id="pokok_bahasan" class="form-control">{{ $presensi->pokok_bahasan }}</textarea>
                                             </div>
                                             <div class="mb-3 d-flex justify-content-end">
                                                 <input type="hidden" name="idjadwalmengajar" value="{{ Crypt::encrypt($jadwal->id)}}">

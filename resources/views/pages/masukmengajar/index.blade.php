@@ -172,7 +172,7 @@
 
             setInterval(() => {
                 cekMasukMengajar();
-            }, 5000);
+            }, 3000);
 
             setInterval(() => {
                 let now = new Date();

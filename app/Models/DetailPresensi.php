@@ -13,4 +13,9 @@ class DetailPresensi extends Model
     {
         return $this->belongsTo(Siswa::class, 'nisn', 'nisn');
     }
+
+    public function presensi()
+    {
+        return $this->belongsTo(Presensi::class, 'idpresensi');
+    }
 }

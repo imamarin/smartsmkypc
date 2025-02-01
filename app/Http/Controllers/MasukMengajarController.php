@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JadwalMengajar;
+use App\Models\Presensi;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,8 +39,13 @@ class MasukMengajarController extends Controller
     public function show(String $id)
     {
         $id = Crypt::decrypt($id);
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
 
-        $data['jadwal'] = JadwalMengajar::join('jam_pelajarans', 'jam_pelajarans.id', '=', 'jadwal_mengajars.idjampel')
+        $presensi = Presensi::whereDate('created_at', date("Y-m-d"))
+            ->where('idjadwalmengajar', $id)
+            ->where('semester', $tahunajaran->semester)->first();
+
+        $jadwal = JadwalMengajar::join('jam_pelajarans', 'jam_pelajarans.id', '=', 'jadwal_mengajars.idjampel')
             ->selectRaw('jadwal_mengajars.*, (jam_pelajarans.jam + jadwal_mengajars.jumlah_jam) - 1 as jam_keluar,
                 (SELECT jp.akhir
                 FROM jam_pelajarans as jp
@@ -50,10 +56,18 @@ class MasukMengajarController extends Controller
                 'jadwal_mengajars.id' => $id,
             ])->first();
 
-        if ($data['jadwal']) {
-            return view('pages.masukmengajar.show', $data);
+        if (!$presensi) {
+            if (!$jadwal) {
+                return redirect()->back()->with('warning', 'Mohon maaf jadwal tidak tersedia!');
+            }
+            $data['jadwal'] = $jadwal;
+            $data['siswa'] = $jadwal->kelas->rombel;
+        } else {
+            $data['jadwal'] = $jadwal;
+            $data['presensi'] = $presensi;
+            $data['siswa'] = $presensi->detailpresensi;
         }
 
-        return redirect()->back()->with('warning', 'Mohon maaf jadwal tidak tersedia!');
+        return view('pages.masukmengajar.show', $data);
     }
 }

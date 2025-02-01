@@ -78,7 +78,7 @@ class JadwalMengajarController extends Controller
             $validate['idjampel'] = $jampel->id;
             $validate['kode_guru'] = Auth::user()->guru->kode_guru;
             JadwalMengajar::create($validate);
-            return redirect()->back()->with('success', 'Jam pelajaran berhasil disimpan!');
+            return redirect()->back()->with('success', 'Jadwal Mengajar berhasil disimpan!');
         } else {
             return redirect()->back()->with('warning', 'Jam pelajaran tidak tersedia!');
         }
@@ -118,7 +118,7 @@ class JadwalMengajarController extends Controller
             $validate['idjampel'] = $jampel->id;
             $validate['kode_guru'] = Auth::user()->guru->kode_guru;
             JadwalMengajar::find($id)->update($validate);
-            return redirect()->back()->with('success', 'Jam pelajaran berhasil diubah!');
+            return redirect()->back()->with('success', 'Jadwal Mengajar berhasil diubah!');
         } else {
             return redirect()->back()->with('warning', 'Jam pelajaran tidak tersedia!');
         }

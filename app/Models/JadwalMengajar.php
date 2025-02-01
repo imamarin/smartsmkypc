@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class JadwalMengajar extends Model
 {
     //
     protected $guarded = [];
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     public function matpel()
     {
@@ -36,6 +39,6 @@ class JadwalMengajar extends Model
 
     public function presensi()
     {
-        return $this->belongsTo(Presensi::class, 'idjadwalmengajar');
+        return $this->hasMany(Presensi::class, 'idjadwalmengajar');
     }
 }

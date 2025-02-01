@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('pokok_bahasan');
             $table->enum('semester', ['ganjil', 'genap']);
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
-            $table->unsignedBigInteger('idjadwalmengajar')->index();
+            $table->foreignId('idjadwalmengajar')->references('id')->on('jadwal_mengajars')->onDelete('no action');
             $table->timestamps();
         });
     }
