@@ -90,36 +90,6 @@
                                         @endif
                                     @endforeach
                                 @endif
-                                    <li class="list-group-item d-flex flex-column">
-                                        <i>sadsad</i>
-                                        <div class="catatan mt-2">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, eveniet?
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex flex-column">
-                                        <i>sadsad</i>
-                                        <div class="catatan mt-2">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, eveniet?
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex flex-column">
-                                        <i>sadsad</i>
-                                        <div class="catatan mt-2">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, eveniet?
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex flex-column">
-                                        <i>sadsad</i>
-                                        <div class="catatan mt-2">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, eveniet?
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex flex-column">
-                                        <i>sadsad</i>
-                                        <div class="catatan mt-2">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, eveniet?
-                                        </div>
-                                    </li>
                               </ul>
                         </div>
                     </div>
