@@ -66,8 +66,32 @@ class MasukMengajarController extends Controller
             $data['jadwal'] = $jadwal;
             $data['presensi'] = $presensi;
             $data['siswa'] = $presensi->detailpresensi;
+            $data['catatan'] = Presensi::select('catatan_pembelajaran', 'updated_at')->where([
+                'kode_guru' => Auth::user()->guru->kode_guru,
+                'kode_matpel' => $presensi->kode_matpel,
+                'idkelas' => $presensi->idkelas
+            ])->orderBy('updated_at', 'desc')->get();
         }
 
         return view('pages.masukmengajar.show', $data);
+    }
+
+    public function updateCatatan(Request $request, String $id)
+    {
+        $idjadwalmengajar = Crypt::decrypt($id);
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+
+        $presensi = Presensi::whereDate('created_at', date("Y-m-d"))
+            ->where('idjadwalmengajar', $idjadwalmengajar)
+            ->where('semester', $tahunajaran->semester);
+        if ($presensi->first()) {
+            $presensi->update([
+                'catatan_pembelajaran' => $request->catatan
+            ]);
+
+            return redirect()->back()->with('success', 'Catatan Pembelajaran berhasil disimpan!');
+        }
+
+        return redirect()->back()->with('info', 'Silakan lakukan presensi siswa terlebih dahulu!');
     }
 }

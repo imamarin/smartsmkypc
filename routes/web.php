@@ -76,6 +76,7 @@ Route::middleware('cek-status-login')->group(function () {
         //Masuk-Mengajar
         Route::get('/masuk-mengajar', [MasukMengajarController::class, 'index'])->name('masuk-mengajar.index');
         Route::get('/masuk-mengajar/{id}', [MasukMengajarController::class, 'show'])->name('masuk-mengajar.show');
+        Route::post('/masuk-mengajar/catatan/{id}', [MasukMengajarController::class, 'updateCatatan'])->name('masuk-mengajar.updateCatatan');
         //jadwal-Mengajar
         Route::resource('/presensi', PresensiController::class);
         //pengaturan
