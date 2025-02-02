@@ -56,7 +56,7 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $hari = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu']
+                                    $hari = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','minggu'];
                                     @endphp
                                     @foreach ($jampel as $subject)
                                         <tr>

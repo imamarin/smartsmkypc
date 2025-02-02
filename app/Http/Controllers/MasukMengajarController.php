@@ -36,12 +36,19 @@ class MasukMengajarController extends Controller
         return view('pages.masukmengajar.index', $data);
     }
 
-    public function show(String $id)
+    public function show(String $id, String $tgl = null)
     {
         $id = Crypt::decrypt($id);
         $tahunajaran = TahunAjaran::where('status', 1)->first();
 
-        $presensi = Presensi::whereDate('created_at', date("Y-m-d"))
+        if ($tgl == null) {
+            $date = date('Y-m-d');
+            $data['tanggal'] = date('d-m-Y H:i:s');
+        } else {
+            $date = date('Y-m-d', strtotime($tgl));
+            $data['tanggal'] = date('d-m-Y H:i:s', strtotime($tgl));
+        }
+        $presensi = Presensi::whereDate('created_at', $date)
             ->where('idjadwalmengajar', $id)
             ->where('semester', $tahunajaran->semester)->first();
 
@@ -62,6 +69,11 @@ class MasukMengajarController extends Controller
             }
             $data['jadwal'] = $jadwal;
             $data['siswa'] = $jadwal->kelas->rombel;
+            $data['catatan'] = Presensi::select('catatan_pembelajaran', 'updated_at')->where([
+                'kode_guru' => Auth::user()->guru->kode_guru,
+                'kode_matpel' => $jadwal->kode_matpel,
+                'idkelas' => $jadwal->idkelas
+            ])->orderBy('updated_at', 'desc')->get();
         } else {
             $data['jadwal'] = $jadwal;
             $data['presensi'] = $presensi;
@@ -72,7 +84,6 @@ class MasukMengajarController extends Controller
                 'idkelas' => $presensi->idkelas
             ])->orderBy('updated_at', 'desc')->get();
         }
-
         return view('pages.masukmengajar.show', $data);
     }
 

@@ -31,6 +31,7 @@
                     <h1 id="timer">00:00:00</h1>
                     @if($jadwal->count() > 0)
                     <a href="#" id="masukMengajar" class="btn btn-info btn-lg mt-3">
+                        <span class="spinner-border spinner-border-sm"></span>
                         Pengecekan Jadwal
                     </a>
                     @else

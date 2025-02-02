@@ -111,8 +111,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h4 class="card-title text-start">Presensi Siswa</h4>
-                    
-                    <h4 class="card-title text-end">Tanggal: {{ date('d-m-Y') }} Jam: {{ date('H:i:s') }}</h4>
+                    <h4 class="card-title text-end">{{ $tanggal }}</h4>
                 </div><!-- end card header -->
                 <div class="card-body">
                     @if(!isset($presensi))
@@ -165,6 +164,7 @@
                                                 <input type="hidden" name="kode_matpel" value="{{ Crypt::encrypt($jadwal->kode_matpel) }}">
                                                 <input type="hidden" name="kode_guru" value="{{ Crypt::encrypt($jadwal->kode_guru) }}">
                                                 <input type="hidden" name="idkelas" value="{{ Crypt::encrypt($jadwal->idkelas) }}">
+                                                <input type="hidden" name="tanggal" value="{{ Crypt::encrypt($tanggal)}}">
                                                 <input type="submit" value="Simpan Presensi" class="btn btn-primary">
                                             </div>
                                         </td>
