@@ -184,8 +184,16 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Rekap Absensi Mengajar',
-            'url' => '/pages/rekap-absensi-mengajar',
+            'menu' => 'Rekap Mengajar Siswa',
+            'url' => '/pages/rekap-presensi-siswa',
+            'posisi' => 2,
+            'idkategori' => 3,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Rekap Presensi Siswa',
+            'url' => '/pages/rekap-presensi-siswa',
             'posisi' => 2,
             'idkategori' => 3,
             'created_at' => now(),
@@ -224,9 +232,25 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Data Rekap Presensi Guru',
+            'url' => '/pages/data-rekap-presensi-guru',
+            'posisi' => 3,
+            'idkategori' => 4,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Data Rekap Presensi Siswa',
+            'url' => '/pages/data-rekap-presensi-siswa',
+            'posisi' => 4,
+            'idkategori' => 4,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Data Jam Pelajaran',
             'url' => '/pages/data-jam-pelajaran',
-            'posisi' => 3,
+            'posisi' => 5,
             'idkategori' => 4,
             'created_at' => now(),
             'updated_at' => now()

@@ -95,4 +95,15 @@ class KelasController extends Controller
     {
         return Excel::download(new KelasExport, 'Data Kelas.xlsx');
     }
+
+    public function getJsonByIdTahunAjaran(String $id)
+    {
+        $kelas = Kelas::where('idtahunajaran', $id)->get();
+        $tahunajaran = TahunAjaran::find($id);
+        return response()->json([
+            'idtahunajaran' => $tahunajaran->id,
+            'semester' => $tahunajaran->semester,
+            'data' => $kelas
+        ]);
+    }
 }

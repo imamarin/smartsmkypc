@@ -36,6 +36,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/tahun-ajaran/{id}/updateStatus', [TahunAjaranController::class, 'updateStatus'])->name('tahun-ajaran.updateStatus');
         //data-kelas
         Route::resource('/data-kelas', KelasController::class);
+        Route::get('/data-kelas/json-tahunajaran/{id}', [KelasController::class, 'getJsonByIdTahunAjaran'])->name('data-kelas.json-tahunajaran');
         Route::get('/data-kelas/export/data', [KelasController::class, 'export'])->name('data-kelas.export');
         //data-jurusan
         Route::resource('/data-jurusan', JurusanController::class);
@@ -83,6 +84,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/history-presensi/{id}', [PresensiController::class, 'historyPresensi'])->name('history-presensi');
         Route::get('/show-presensi/{id}/tanggal/{tgl}', [MasukMengajarController::class, 'show'])->name('show-presensi.tanggal');
         Route::resource('/presensi', PresensiController::class);
+        //rekap presensi guru
+        Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa']);
+        Route::post('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('rekap-presensi-siswa');
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');

@@ -27,6 +27,14 @@
                     </div>
                 </div><!-- end card header -->
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Mata Pelajaran: {{ $matpel }}
+                            <hr>
+                            Kelas: {{ $kelas }}
+                            <hr>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered " id="exapmle">
                             <thead>
