@@ -8,6 +8,8 @@ class Guru extends Model
 {
     protected $guarded = [];
     protected $primaryKey = "kode_guru";
+    public $incrementing = false;
+    protected $keyType = "string";
 
     public function user()
     {
@@ -28,4 +30,8 @@ class Guru extends Model
     {
         return $this->hasMany(Presensi::class, 'kode_guru', 'kode_guru');
     }
+
+    protected $casts = [
+        'id' => 'string',
+    ];
 }

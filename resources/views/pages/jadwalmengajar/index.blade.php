@@ -32,12 +32,27 @@
                             <a href="#" class="btn btn-info me-2">Export Data</a>
                             <a href="#" class="btn btn-success me-2">Import Data</a>
                             <!-- Button to trigger modal -->
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah
-                                Data</button>
+                            <button class="btn btn-primary" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#addSubjectModal">TambahData</button>
                         </div>
                     </div>
                 </div><!-- end card header -->
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-2">
+                            <div class="row">
+                                <div class="col-6 col-md-5"><h6>NIP</h6></div>
+                                <div class="col-6 col-md-7"><h6>: {{ $guru->nip }}</h6></div>
+                                <hr>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-5"><h6>Nama Guru</h6></div>
+                                <div class="col-6 col-md-7"><h6>: {{ $guru->nama }}</h6></div>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table display nowrap" id="example">
                             <thead>
@@ -69,7 +84,7 @@
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" 
-                                                data-id="{{ $subject->id }}"
+                                                data-id="{{ Crypt::encrypt($subject->id) }}"
                                                 data-sesi="{{ $subject->sistemblok?->id }}"
                                                 data-hari="{{ $subject->jampel->hari }}"
                                                 data-jam-masuk="{{ $subject->jampel->jam }}"
@@ -79,7 +94,7 @@
                                                 data-tahun-ajaran="{{ $subject->sistemblok->idtahunajaran }}">
                                                 Edit
                                             </button>
-                                            <a href="{{ route('jadwal-mengajar.destroy', $subject->id) }}"
+                                            <a href="{{ route('jadwal-mengajar.destroy', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                         </td>
                                     </tr>
@@ -104,6 +119,7 @@
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" id="subjectId" name="id">
+                        <input type="hidden" id="kode_guru" name="kode_guru" value="{{ Crypt::encrypt($guru->kode_guru) }}">
                         <input type="hidden" name="_method" id="formMethod" value="POST">
                         <div class="mb-3">
                             <label for="idtahunajaran" class="form-label">Sesi</label>

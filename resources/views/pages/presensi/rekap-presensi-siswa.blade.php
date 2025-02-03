@@ -60,7 +60,7 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered " id="exapmle">
+                        <table class="table table-striped table-bordered display nowrap" id="exapmle">
                             <thead>
                                 <tr>
                                     <th rowspan="3">#</th>
