@@ -32,6 +32,7 @@ class JadwalMengajarController extends Controller
             'idtahunajaran' => $tahunajaran->id,
             'semester' => $tahunajaran->semester
         ])->get();
+
         $data['matpel'] = MatpelPengampu::where('kode_guru', Auth::user()->guru->kode_guru)->get();
         $data['jampel'] = JamPelajaran::where('idtahunajaran', $tahunajaran->id)->get();
         $data['kelas'] = Kelas::where('idtahunajaran', $tahunajaran->id)->get();
@@ -45,11 +46,12 @@ class JadwalMengajarController extends Controller
             ->whereHas('sistemblok', function ($query) use ($tahunajaran) {
                 $query->where([
                     'semester' => $tahunajaran->semester,
-                    'idtahunajaran' => $tahunajaran->id
+                    'idtahunajaran' => $tahunajaran->id,
                 ]);
             })->where([
                 'kode_guru' => Auth::user()->guru->kode_guru,
             ])->get();
+
         $data['guru'] = Guru::where('kode_guru', Auth::user()->guru->kode_guru)->first();
         return view('pages.jadwalmengajar.index', $data);
     }
@@ -94,37 +96,40 @@ class JadwalMengajarController extends Controller
     {
         //
         $id = explode('*', Crypt::decrypt($id));
+        if (count($id) == 3) {
+            $title = 'Hapus Jadwal Mengajar!';
+            $text = "Yakin ingin menghapus data ini?";
+            confirmDelete($title, $text);
 
-        $title = 'Hapus Jadwal Mengajar!';
-        $text = "Yakin ingin menghapus data ini?";
-        confirmDelete($title, $text);
-
-        $tahunajaran = TahunAjaran::where('status', 1)->first();
-        $data['tahunajaran'] = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
-        $data['sistemblok'] = SistemBlok::where([
-            'idtahunajaran' => $id[2],
-            'semester' => $id[1]
-        ])->get();
-        $data['matpel'] = MatpelPengampu::where('kode_guru', $id[0])->get();
-        $data['jampel'] = JamPelajaran::where('idtahunajaran', $id[2])->get();
-        $data['kelas'] = Kelas::where('idtahunajaran', $id[2])->get();
-        $data['jadwal'] = JadwalMengajar::join('jam_pelajarans', 'jam_pelajarans.id', '=', 'jadwal_mengajars.idjampel')
-            ->selectRaw('jadwal_mengajars.*, (jam_pelajarans.jam + jadwal_mengajars.jumlah_jam) - 1 as jam_keluar,
-                (SELECT jp.akhir
-                FROM jam_pelajarans as jp
-                WHERE jp.hari = jam_pelajarans.hari
-                AND jp.idtahunajaran = jam_pelajarans.idtahunajaran
-                AND jp.jam = jam_keluar) as waktu_keluar')
-            ->whereHas('sistemblok', function ($query) use ($id) {
-                $query->where([
-                    'semester' => $id[1],
-                    'idtahunajaran' => $id[2]
-                ]);
-            })->where([
-                'kode_guru' => $id[0],
+            // $tahunajaran = TahunAjaran::where('status', 1)->first();
+            $data['tahunajaran'] = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
+            $data['sistemblok'] = SistemBlok::where([
+                'idtahunajaran' => $id[2],
+                'semester' => $id[1]
             ])->get();
-        $data['guru'] = Guru::where('kode_guru', $id[0])->first();
-        return view('pages.jadwalmengajar.index', $data);
+            $data['matpel'] = MatpelPengampu::where('kode_guru', $id[0])->get();
+            $data['jampel'] = JamPelajaran::where('idtahunajaran', $id[2])->get();
+            $data['kelas'] = Kelas::where('idtahunajaran', $id[2])->get();
+            $data['jadwal'] = JadwalMengajar::join('jam_pelajarans', 'jam_pelajarans.id', '=', 'jadwal_mengajars.idjampel')
+                ->selectRaw('jadwal_mengajars.*, (jam_pelajarans.jam + jadwal_mengajars.jumlah_jam) - 1 as jam_keluar,
+                    (SELECT jp.akhir
+                    FROM jam_pelajarans as jp
+                    WHERE jp.hari = jam_pelajarans.hari
+                    AND jp.idtahunajaran = jam_pelajarans.idtahunajaran
+                    AND jp.jam = jam_keluar) as waktu_keluar')
+                ->whereHas('sistemblok', function ($query) use ($id) {
+                    $query->where([
+                        'semester' => $id[1],
+                        'idtahunajaran' => $id[2]
+                    ]);
+                })->where([
+                    'kode_guru' => $id[0],
+                ])->get();
+            $data['guru'] = Guru::where('kode_guru', $id[0])->first();
+            return view('pages.jadwalmengajar.index', $data);
+        }
+
+        return redirect()->back()->with('warning', 'ID tidak tersedia');
     }
 
     /**

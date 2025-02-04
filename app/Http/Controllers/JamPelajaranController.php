@@ -111,6 +111,6 @@ class JamPelajaranController extends Controller
     public function delete(Request $request)
     {
         JamPelajaran::whereIn('id', $request->jampel)->delete();
-        return redirect()->back()->with('success', 'Data berhasil disimpan');
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 }

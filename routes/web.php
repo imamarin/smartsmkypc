@@ -86,9 +86,11 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/history-presensi/{id}', [PresensiController::class, 'historyPresensi'])->name('history-presensi');
         Route::get('/show-presensi/{id}/tanggal/{tgl}', [MasukMengajarController::class, 'show'])->name('show-presensi.tanggal');
         Route::resource('/presensi', PresensiController::class);
-        //rekap presensi guru
+        //rekap presensi
         Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa']);
+        Route::get('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru']);
         Route::post('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('rekap-presensi-siswa');
+        Route::post('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('rekap-presensi-guru');
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');
