@@ -184,8 +184,8 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Rekap Mengajar Siswa',
-            'url' => '/pages/rekap-presensi-siswa',
+            'menu' => 'Rekap Presensi Mengajar',
+            'url' => '/pages/rekap-presensi-mengajar',
             'posisi' => 2,
             'idkategori' => 3,
             'created_at' => now(),
@@ -194,7 +194,15 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Rekap Presensi Siswa',
             'url' => '/pages/rekap-presensi-siswa',
-            'posisi' => 2,
+            'posisi' => 3,
+            'idkategori' => 3,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Rekap Presensi Siswa',
+            'url' => '/pages/rekap-presensi-siswa',
+            'posisi' => 4,
             'idkategori' => 3,
             'created_at' => now(),
             'updated_at' => now()
@@ -202,7 +210,7 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Matpel Pengampu',
             'url' => '/pages/matpel-pengampu',
-            'posisi' => 3,
+            'posisi' => 5,
             'idkategori' => 3,
             'created_at' => now(),
             'updated_at' => now()
@@ -210,7 +218,7 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Jadwal Mengajar',
             'url' => '/pages/jadwal-mengajar',
-            'posisi' => 4,
+            'posisi' => 6,
             'idkategori' => 3,
             'created_at' => now(),
             'updated_at' => now()
@@ -232,7 +240,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Data Rekap Presensi Guru',
+            'menu' => 'Rekap Presensi Guru',
             'url' => '/pages/data-rekap-presensi-guru',
             'posisi' => 3,
             'idkategori' => 4,
@@ -240,7 +248,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Data Rekap Presensi Siswa',
+            'menu' => 'Rekap Presensi Siswa',
             'url' => '/pages/data-rekap-presensi-siswa',
             'posisi' => 4,
             'idkategori' => 4,
@@ -248,7 +256,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Data Jadwal Mengajar Guru',
+            'menu' => 'Jadwal Mengajar Guru',
             'url' => '/pages/data-jadwal-mengajar-guru',
             'posisi' => 6,
             'idkategori' => 4,

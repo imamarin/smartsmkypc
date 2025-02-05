@@ -50,7 +50,8 @@ class JadwalMengajarController extends Controller
                 ]);
             })->where([
                 'kode_guru' => Auth::user()->guru->kode_guru,
-            ])->get();
+            ])->orderBy('jam_pelajarans.hari')
+            ->orderBy('jam_pelajarans.jam')->get();
 
         $data['guru'] = Guru::where('kode_guru', Auth::user()->guru->kode_guru)->first();
         return view('pages.jadwalmengajar.index', $data);
@@ -124,7 +125,7 @@ class JadwalMengajarController extends Controller
                     ]);
                 })->where([
                     'kode_guru' => $id[0],
-                ])->get();
+                ])->orderBy('jam_pelajarans.hari')->orderBy('jam_pelajarans.jam')->get();
             $data['guru'] = Guru::where('kode_guru', $id[0])->first();
             return view('pages.jadwalmengajar.index', $data);
         }
@@ -186,15 +187,30 @@ class JadwalMengajarController extends Controller
     public function dataJadwalMengajarGuru()
     {
         $tahunajaran = TahunAjaran::where('status', 1)->first();
-        $data['guru'] = Guru::withSum(['jadwalmengajar as jadwal_mengajar_count' => function ($query) use ($tahunajaran) {
+        $teachers = Guru::with(['jadwalmengajar' => function ($query) use ($tahunajaran) {
+            $query->with(['sistemblok' => function ($query) use ($tahunajaran) {
+                $query->where([
+                    'semester' => $tahunajaran->semester,
+                    'idtahunajaran' => $tahunajaran->id,
+                ]);
+            }])->whereHas('jampel', function ($query) {
+                $query->where('hari', date('N'));
+            })->orderBy('idjampel');
+        }])->withSum(['jadwalmengajar as jadwal_mengajar_sum' => function ($query) use ($tahunajaran) {
             $query->with('sistemblok', function ($query) use ($tahunajaran) {
                 $query->where([
                     'semester' => $tahunajaran->semester,
                     'idtahunajaran' => $tahunajaran->id,
                 ]);
             });
-        }], 'jumlah_jam')->get();
+        }], 'jumlah_jam')->where('gurus.status', 1)->get();
+
+
+        $data['guru'] = $teachers->sortByDesc(function ($teacher) {
+            return $teacher->jadwalmengajar->count();
+        })->values();
         $data['tahunajaran'] = $tahunajaran;
+
         return view('pages.jadwalmengajar.guru', $data);
     }
 }

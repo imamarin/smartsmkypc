@@ -41,7 +41,8 @@
                                     <th>#</th>
                                     <th>Kode Guru</th>
                                     <th>Nama</th>
-                                    <th>Jumlah Jam Mengajar</th>
+                                    <th>Total Jam Mengajar</th>
+                                    <th>Jadwal hari ini</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -49,16 +50,25 @@
                                 @foreach ($guru as $key => $item)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
+                                        <td>
                                             {{ $item->kode_guru }}
                                         </td>
-                                        <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
+                                        <td>
                                             {{ $item->nama }}
                                         </td>
                                         <td>
-                                            <span class="{{ $item->jadwal_mengajar_count < 1 ? 'badge bg-danger' : 'badge bg-success' }}">
-                                                {{ $item->jadwal_mengajar_count ?? 0 }} Jam
+                                            <span class="{{ $item->jadwal_mengajar_sum < 1 ? 'badge bg-danger' : 'badge bg-info' }}">
+                                                {{ $item->jadwal_mengajar_sum ?? 0 }} Jam
                                             </span>
+                                        </td>
+                                        <td>
+                                            @foreach ($item->jadwalmengajar as $value)
+                                            @if ($value->presensi->count() > 0)
+                                                <span class="badge bg-success">Jam Ke: {{ $value->jampel->jam }}</span>
+                                            @else
+                                                <span class="badge bg-danger">Jam Ke: {{ $value->jampel->jam }}</span>    
+                                            @endif
+                                            @endforeach
                                         </td>
                                         <td>
                                             <a href="{{ route('data-jadwal-mengajar-guru.show', Crypt::encrypt($item->kode_guru.'*'.$tahunajaran->semester.'*'.$tahunajaran->id)) }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>

@@ -333,6 +333,77 @@ class PresensiController extends Controller
         return view('pages.presensi.rekap-presensi-siswa', $data);
     }
 
+    public function rekapGuru(String $id = null)
+    {
+        if ($id) {
+            $id = explode("*", Crypt::decrypt($id));
+            if (count($id) != 3) {
+                return redirect()->back()->with('warning', 'Data presensi tidak tersedia!');
+            }
+
+            $tahunajaran = TahunAjaran::where([
+                'id' => $id[1],
+                'semester' => $id[2]
+            ])->first();
+
+            if (!$tahunajaran) {
+                return redirect()->back()->with('warning', 'Data presensi tidak tersedia!');
+            }
+
+            $data['guru'] = Guru::select('nip', 'nama')->where('kode_guru', $id[0])->first();
+            $kode_guru = $id[0];
+        } else {
+            $tahunajaran = TahunAjaran::where('status', 1)->first();
+            $kode_guru = Auth::user()->guru->kode_guru;
+        }
+
+
+        $jadwalmengajar = JadwalMengajar::whereHas('sistemblok', function ($query) use ($tahunajaran) {
+            $query->where([
+                'idtahunajaran' => $tahunajaran->id,
+                'semester' => $tahunajaran->semester
+            ]);
+        })->where('kode_guru', $kode_guru)->get();
+        $mappingPresensi = $jadwalmengajar->map(function ($item) use ($tahunajaran) {
+            $first = strtotime($tahunajaran->tgl_mulai);
+            $end = strtotime(date('Y-m-d'));
+            $presensi = [];
+            while ($first <= $end) {
+                if (date('N', $first) == $item->jampel->hari) {
+                    foreach ($item->presensi as  $value) {
+                        # code...
+                        if (date('Y-m-d', $first) == date('Y-m-d', strtotime($value->created_at))) {
+                            return [
+                                'jadwal' => $item->id,
+                                'matpel' => $item->matpel->matpel,
+                                'kelas' => $item->kelas->kelas,
+                                'tanggal' => date('Y-m-d', $first),
+                                'hari' => date('N', $first),
+                                'jam' => $item->jampel->jam,
+                                'keterangan' => 'hadir'
+                            ];
+                        }
+                    }
+
+                    return [
+                        'jadwal' => $item->id,
+                        'matpel' => $item->matpel->matpel,
+                        'kelas' => $item->kelas->kelas,
+                        'tanggal' => date('Y-m-d', $first),
+                        'hari' => date('N', $first),
+                        'jam' => $item->jampel->jam,
+                        'keterangan' => 'Tidak Hadir'
+                    ];
+                }
+                $first = strtotime('+1 day', $first);
+            }
+        })->sortBy('tanggal')->sortBy('jam');
+
+        $data['presensi'] = json_decode(json_encode($mappingPresensi));
+
+        return view('pages.presensi.guru', $data);
+    }
+
     public function rekapPresensiGuru(Request $request)
     {
         //

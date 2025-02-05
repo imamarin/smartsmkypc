@@ -7,11 +7,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0">Rekap Presensi Siswa</h4>
+                <h4 class="mb-0">Rekap Presensi Mengajar</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Rekap Presensi Siswa</li>
+                        <li class="breadcrumb-item active">Rekap Presensi Mengajar</li>
                     </ol>
                 </div>
             </div>
@@ -23,52 +23,50 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <div class="col">
-                        <h4 class="card-title">Rekap Presensi Siswa</h4>
+                        <h4 class="card-title">Rekap Presensi Mengajar</h4>
                     </div>
                 </div><!-- end card header -->
                 <div class="card-body">
+                    @if(isset($guru))
+                    <div class="row">
+                        <div class="col-12 col-md-2">
+                            <div class="row">
+                                <div class="col-6 col-md-5"><h6>NIP</h6></div>
+                                <div class="col-6 col-md-7"><h6>: {{ $guru->nip }}</h6></div>
+                                <hr>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-5"><h6>Nama Guru</h6></div>
+                                <div class="col-6 col-md-7"><h6>: {{ $guru->nama }}</h6></div>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     <div class="table-responsive">
                         <table class="table display nowrap" id="example">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Mata Pelajaran</th>
+                                    <th>Tanggal</th>
+                                    <th>Jam Ke</th>
                                     <th>Kelas</th>
-                                    <th class="text-center">Presentasi Kehadiran Siswa</th>
-                                    <th>Aksi</th>
+                                    <th>Mata Pelajaran</th>
+                                    <th>Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($rekap as $subject)
-                                    @php
-                                    if($subject->hadir_count == 0 || $subject->presensi_count == 0){
-                                        $presentasi_hadir = 0;
-                                    }else{
-                                        $presentasi_hadir = round(($subject->hadir_count / $subject->presensi_count)*100);
-                                    }
-                                    @endphp
+                                @foreach ($presensi as $subject)
                                     <tr>
                                         <td>{{ $loop->iteration }} </td>
-                                        <td>{{ $subject->matpel->matpel }}</td>
-                                        <td>{{ $subject->kelas->kelas }}</td>
+                                        <td>{{ $subject->tanggal }}</td>
+                                        <td>{{ $subject->jam }}</td>
+                                        <td>{{ $subject->kelas }}</td>
+                                        <td>{{ $subject->matpel }}</td>
                                         <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="progress w-50">
-                                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:{{ $presentasi_hadir }}%">{{ $presentasi_hadir }}%</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('rekap-presensi-siswa-detail', Crypt::encrypt($subject->kode_matpel."-".$subject->idkelas)) }}" class="btn btn-sm btn-info">Rekap Presensi</a>
-                                            <button class="btn btn-sm btn-warning" id="historyPresensi"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#addSubjectModal" 
-                                                data-id="{{ Crypt::encrypt($subject->kode_matpel."-".$subject->idkelas) }}"
-                                                data-matpel="{{ $subject->matpel->matpel }}"
-                                                data-kelas="{{ $subject->kelas->kelas }}">
-                                                
-                                                Histori Presensi
-                                            </button>
+                                            <span class="badge {{ $subject->keterangan=='hadir'?'bg-success':'bg-danger' }}">
+                                                {{ $subject->keterangan }}
+                                            </span>
                                         </td>
                                     </tr>
                                 @endforeach

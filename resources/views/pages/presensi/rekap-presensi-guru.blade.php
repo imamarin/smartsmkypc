@@ -22,31 +22,37 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <form action="{{ route('rekap-presensi-guru') }}" method="post">
-                        @csrf
-                        <div class="row">
-                            <div class="col-2">
-                                <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
-                                <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
-                                    @foreach ($tahunajaran as $item)
-                                        <option value="{{ $item->id }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
-                                            {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-2">
-                                <label for="semester" class="form-label">Semester</label>
-                                <select name="semester" id="semester" class="form-select select2">
-                                    <option value="ganjil" {{ $semester_selected == 'ganjil'?'selected':'' }}>Ganjil</option>
-                                    <option value="genap" {{ $semester_selected == 'genap'?'selected':'' }}>Genap</option>
-                                </select>
-                            </div>
-                            <div class="col-2 d-flex align-items-end mb-1">
-                                <input type="submit" class="btn btn-primary" value="Tampilkan Rekapan">
-                            </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <form action="{{ route('data-rekap-presensi-guru') }}" method="post">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-12 col-md-3">
+                                        <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
+                                        <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
+                                            @foreach ($tahunajaran as $item)
+                                                <option value="{{ $item->id }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
+                                                    {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <label for="semester" class="form-label">Semester</label>
+                                        <select name="semester" id="semester" class="form-select select2">
+                                            <option value="ganjil" {{ $semester_selected == 'ganjil'?'selected':'' }}>Ganjil</option>
+                                            <option value="genap" {{ $semester_selected == 'genap'?'selected':'' }}>Genap</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-3 d-flex align-items-end mb-1">
+                                        <input type="submit" class="btn btn-primary" value="Tampilkan Rekapan">
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
+                    
+                    
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">
@@ -78,12 +84,21 @@
                                             @endphp
                                             <div class="d-flex justify-content-center">
                                                 <div class="progress w-50">
-                                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:{{ $persentasi_hadir }}%">{{ $persentasi_hadir }}%</div>
+                                                    @php
+                                                        if($persentasi_hadir > 80){
+                                                            $bg = 'bg-success';
+                                                        }elseif($persentasi_hadir > 60){
+                                                            $bg = 'bg-warning';
+                                                        }else{
+                                                            $bg = 'bg-danger';
+                                                        }
+                                                    @endphp
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated {{ $bg }}" style="width:{{ $persentasi_hadir }}%">{{ $persentasi_hadir }}%</div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-warning">Lihat Detail Kehadiran</a>
+                                            <a href="{{ route('data-rekap-presensi-guru-detail', Crypt::encrypt($subject->kode_guru."*".$tahunajaran_selected."*".$semester_selected)) }}" class="btn btn-sm btn-warning">Lihat Detail Kehadiran</a>
                                         </td>
                                     </tr>
                                 @endforeach

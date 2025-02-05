@@ -22,7 +22,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <form action="{{ route('rekap-presensi-siswa') }}" method="post">
+                    <form action="{{ route('data-rekap-presensi-siswa') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-2">

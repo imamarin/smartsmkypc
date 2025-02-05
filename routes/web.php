@@ -82,15 +82,17 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/masuk-mengajar/catatan/{id}', [MasukMengajarController::class, 'updateCatatan'])->name('masuk-mengajar.updateCatatan');
         //presensi
         Route::get('/rekap-presensi-siswa', [PresensiController::class, 'rekapSiswa'])->name('rekap-presensi-siswa');
+        Route::get('/rekap-presensi-mengajar', [PresensiController::class, 'rekapGuru'])->name('rekap-presensi-mengajar');
         Route::get('/rekap-presensi-siswa-detail/{id}', [PresensiController::class, 'rekapSiswaDetail'])->name('rekap-presensi-siswa-detail');
         Route::get('/history-presensi/{id}', [PresensiController::class, 'historyPresensi'])->name('history-presensi');
         Route::get('/show-presensi/{id}/tanggal/{tgl}', [MasukMengajarController::class, 'show'])->name('show-presensi.tanggal');
         Route::resource('/presensi', PresensiController::class);
-        //rekap presensi
+        //data rekap presensi
         Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa']);
         Route::get('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru']);
-        Route::post('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('rekap-presensi-siswa');
-        Route::post('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('rekap-presensi-guru');
+        Route::get('/data-rekap-presensi-guru/{id}', [PresensiController::class, 'rekapGuru'])->name('data-rekap-presensi-guru-detail');
+        Route::post('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa');
+        Route::post('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru');
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');
