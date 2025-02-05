@@ -32,4 +32,9 @@ class Kelas extends Model
     {
         return $this->hasMay(Presensi::class, 'idkelas');
     }
+
+    public function walikelas()
+    {
+        return $this->hasOne(Walikelas::class, 'idkelas');
+    }
 }

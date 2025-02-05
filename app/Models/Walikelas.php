@@ -14,9 +14,9 @@ class Walikelas extends Model
         return $this->belongsTo(Guru::class, 'kode_guru', 'kode_guru');
     }
 
-    public function rombel()
+    public function kelas()
     {
-        return $this->belongsTo(Rombel::class, 'idrombel');
+        return $this->belongsTo(Kelas::class, 'idkelas');
     }
 
     public function tahunajaran()

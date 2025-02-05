@@ -53,8 +53,8 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}</td>
-                                        <td>{{ $subject->kelas->kelas }}</td>
-                                        <td>{{ $subject->walikelas != null ? $subject->walikelas->guru->nama : '-' }}</td>
+                                        <td>{{ $subject->kelas }}</td>
+                                        <td>{{ $subject->walikelas->guru->nama ?? '-' }}</td>
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn {{ $subject->walikelas != null ? 'btn-secondary' : 'btn-primary' }} btn-sm" data-bs-toggle="modal"
@@ -63,9 +63,9 @@
                                                 data-kodeguru="{{  $subject->walikelas?->kode_guru }}" 
                                                 data-idtahunajaran="{{ $subject->idtahunajaran }}"
                                                 data-tahunajaran="{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}"
-                                                data-kelas="{{ $subject->kelas->kelas }}"
-                                                data-rombel="{{ $subject->id }}"
-                                                data-idkelas="{{ $subject->idkelas }}">
+                                                data-kelas="{{ $subject->kelas }}"
+                                                {{-- data-rombel="{{ $subject->id }}" --}}
+                                                data-idkelas="{{ $subject->id }}">
                                                 {{ $subject->walikelas != null ? 'Edit Walikelas' : 'Tambahkan Walikelas' }}
                                             </button>
                                             @if($subject->walikelas != null)
@@ -94,7 +94,7 @@
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" id="subjectId" name="id">
-                        <input type="hidden" id="idrombel" name="idrombel">
+                        {{-- <input type="hidden" id="idrombel" name="idrombel"> --}}
                         <input type="hidden" name="_method" id="formMethod" value="POST">
                         <div class="mb-3">
                             <label for="idtahunajaran" class="form-label">Tahun Ajaran </label>
@@ -136,7 +136,7 @@
             const kelas = button.getAttribute('data-kelas');
             const idtahunajaran = button.getAttribute('data-idtahunajaran');
             const tahunajaran = button.getAttribute('data-tahunajaran');
-            const idrombel = button.getAttribute('data-rombel');
+            // const idrombel = button.getAttribute('data-rombel');
 
             const form = document.querySelector('#subjectForm');
             const submitBtn = document.getElementById('submitBtn');
@@ -150,7 +150,7 @@
                 modalTitle.textContent = 'Edit Walikelas';
                 subjectId.value = id;
                 formMethod.value = 'PUT';
-                form.querySelector('#idrombel').value = idrombel;
+                // form.querySelector('#idrombel').value = idrombel;
                 let optionkelas = new Option(kelas, idkelas);
                 form.querySelector('#idkelas').add(optionkelas);
                 form.querySelector('#kode_guru').value = kodeguru;
@@ -162,7 +162,7 @@
                 submitBtn.textContent = 'Simpan';
                 modalTitle.textContent = 'Tambahkan Walikelas';
                 formMethod.value = 'POST';
-                form.querySelector('#idrombel').value = idrombel;
+                // form.querySelector('#idrombel').value = idrombel;
                 let optionkelas = new Option(kelas, idkelas);
                 form.querySelector('#idkelas').add(optionkelas);
                 let optiontahunajaran = new Option(tahunajaran, idtahunajaran);

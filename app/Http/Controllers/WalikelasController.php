@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guru;
+use App\Models\Kelas;
 use App\Models\Rombel;
 use App\Models\Walikelas;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class WalikelasController extends Controller
     {
         //
         $data['guru'] = Guru::all();
-        $data['walikelas'] = Rombel::whereHas('tahunajaran', function ($query) {
+        $data['walikelas'] = Kelas::whereHas('tahunajaran', function ($query) {
             $query->where('status', 1);
         })->get();
 
@@ -35,7 +36,7 @@ class WalikelasController extends Controller
         //
         $validate = $request->validate([
             'idtahunajaran' => 'required',
-            'idrombel' => 'required',
+            'idkelas' => 'required',
             'kode_guru' => 'required'
         ]);
 
