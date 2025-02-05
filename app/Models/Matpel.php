@@ -25,4 +25,14 @@ class Matpel extends Model
     {
         return $this->hasMany(Presensi::class, 'kode_guru', 'kode_guru');
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(Matpel::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Matpel::class, 'parent_id');
+    }
 }
