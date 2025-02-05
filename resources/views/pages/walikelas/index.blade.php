@@ -25,7 +25,24 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <div class="col">
-                        <h4 class="card-title">List Walikelas</h4>
+                        <form action="{{ route('data-walikelas.tahunajaran') }}" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="col-12 col-md-3">
+                                    <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
+                                    <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
+                                        @foreach ($tahunajaran as $item)
+                                            <option value="{{ $item->id }}" {{ $item->id == $idtahunajaran ? 'selected':'' }}>
+                                                {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-3 d-flex align-items-end mb-1">
+                                    <input type="submit" class="btn btn-primary" value="Tampilkan">
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
