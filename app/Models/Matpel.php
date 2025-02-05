@@ -28,11 +28,11 @@ class Matpel extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Matpel::class, 'parent_id');
+        return $this->belongsTo(Matpel::class, 'matpels_kode', 'kode_matpel');
     }
 
     public function children()
     {
-        return $this->hasMany(Matpel::class, 'parent_id');
+        return $this->hasMany(Matpel::class, 'matpels_kode', 'kode_matpel');
     }
 }

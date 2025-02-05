@@ -36,8 +36,7 @@ class MataPelajaranController extends Controller
             'kode_matpel' => 'required|unique:matpels,kode_matpel',
             'matpel' => 'required',
             'kelompok' => 'required',
-            'kelompok2' => 'required',
-            'kategori' => 'nullable',
+            'matpels_kode' => 'nullable',
         ]);
 
         Matpel::create($validate);
@@ -68,9 +67,8 @@ class MataPelajaranController extends Controller
         $validate = $request->validate([
             'matpel' => 'required',
             'kelompok' => 'required',
-            'kelompok2' => 'required',
-            'kategori' => 'nullable',
         ]);
+        $validate['matpels_kode'] = $request->matpels_kode;
 
         Matpel::find($id)->update($validate);
         return redirect()->back()->with('success', 'Data Berhasil Diubah');
@@ -83,6 +81,7 @@ class MataPelajaranController extends Controller
     {
         try {
             //code...
+            Matpel::where('matpels_kode', $id)->delete;
             Matpel::find($id)->delete();
             return redirect()->back()->with('success', 'Data Berhasil Dihapus');
         } catch (\Throwable $th) {

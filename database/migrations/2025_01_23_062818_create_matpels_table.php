@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('matpels', function (Blueprint $table) {
             $table->string('kode_matpel', 20)->primary();
             $table->string('matpel');
-            $table->string('kelompok');
-            $table->string('kelompok2');
+            $table->enum('kelompok', ['adaptif', 'normatif', 'kejuruan', 'pilihan']);
             $table->string('matpels_kode')->nullable();
             $table->foreign('matpels_kode')->references('kode_matpel')->on('matpels');
             $table->timestamps();

@@ -46,8 +46,7 @@
                                     <th>Kode</th>
                                     <th>Mata Pelajaran</th>
                                     <th>Kelompok</th>
-                                    <th>Kolompok 2</th>
-                                    <th>Kategori</th>
+                                    <th>Gabungan Mata Pelajaran</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -58,16 +57,14 @@
                                         <td>{{ $subject->kode_matpel }}</td>
                                         <td>{{ $subject->matpel }}</td>
                                         <td>{{ $subject->kelompok }}</td>
-                                        <td>{{ $subject->kelompok2 }}</td>
-                                        <td>{{ $subject->kategori ?? '-' }}</td>
+                                        <td>{{ $subject->parent->matpel ?? '-' }}</td>
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" data-id="{{ $subject->kode_matpel }}"
                                                 data-kode="{{ $subject->kode_matpel }}" data-matpel="{{ $subject->matpel }}"
                                                 data-kelompok="{{ $subject->kelompok }}"
-                                                data-kelompok2="{{ $subject->kelompok2 }}"
-                                                data-kategori="{{ $subject->kategori }}">
+                                                data-kategori="{{ $subject->matpels_kode }}">
                                                 Edit
                                             </button>
                                             <a href="{{ route('data-mata-pelajaran.destroy', $subject->kode_matpel) }}"
@@ -105,16 +102,24 @@
                             <input type="text" class="form-control" id="matpel" name="matpel" required>
                         </div>
                         <div class="mb-3">
-                            <label for="kelompok" class="form-label">Kelompok</label>
-                            <input type="text" class="form-control" id="kelompok" name="kelompok" required>
+                            <label for="kelompok" class="form-label">Kelompok Mata Pelajaran</label>
+                            <select name="kelompok" id="kelompok" class="form-select select2">
+                                <option value="" disabled selected>Tidak Ada</option>
+                                <option value="adaptif">Adaptif</option>
+                                <option value="normatif">Normatif</option>
+                                <option value="kejuruan">Kejuruan</option>
+                                <option value="pilihan">Pilihan</option>
+                                
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="kelompok2" class="form-label">Kelompok 2</label>
-                            <input type="text" class="form-control" id="kelompok2" name="kelompok2" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="kategori" class="form-label">Kategori</label>
-                            <input type="text" class="form-control" id="kategori" name="kategori">
+                            <label for="matpels_kode" class="form-label">Gabungan Mata Pelajaran</label>
+                            <select name="matpels_kode" id="matpels_kode" class="form-select select2">
+                                <option value="">Tidak Ada</option>
+                                @foreach ($matpel as $subject)
+                                <option value="{{ $subject->kode_matpel }}">{{ $subject->matpel }}</option>    
+                                @endforeach
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" id="submitBtn">Simpan</button>
@@ -136,7 +141,6 @@
             const kode = button.getAttribute('data-kode');
             const matpel = button.getAttribute('data-matpel');
             const kelompok = button.getAttribute('data-kelompok');
-            const kelompok2 = button.getAttribute('data-kelompok2');
             const kategori = button.getAttribute('data-kategori');
 
             const form = document.getElementById('subjectForm');
@@ -152,10 +156,10 @@
                 subjectId.value = id;
                 formMethod.value = 'PUT';
                 document.getElementById('kode_matpel').value = kode;
+                document.getElementById('kode_matpel').readOnly = true;
                 document.getElementById('matpel').value = matpel;
                 document.getElementById('kelompok').value = kelompok;
-                document.getElementById('kelompok2').value = kelompok2;
-                document.getElementById('kategori').value = kategori;
+                document.getElementById('matpels_kode').value = kategori;
             } else {
                 form.action = '{{ route('data-mata-pelajaran.store') }}';
                 submitBtn.textContent = 'Simpan';
