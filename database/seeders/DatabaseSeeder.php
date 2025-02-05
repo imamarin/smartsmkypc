@@ -120,8 +120,15 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Kategori::create([
-            'kategori' => 'Pengaturan',
+            'kategori' => 'Walikelas',
             'posisi' => 5,
+            'icon' => 'book',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Kategori::create([
+            'kategori' => 'Pengaturan',
+            'posisi' => 6,
             'icon' => 'settings',
             'created_at' => now(),
             'updated_at' => now()
@@ -272,10 +279,34 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Data Siswa',
+            'url' => '/pages/walikelas-siswa',
+            'posisi' => 1,
+            'idkategori' => 5,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Presensi Harian Siswa',
+            'url' => '/pages/presensi-harian-siswa',
+            'posisi' => 2,
+            'idkategori' => 5,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Rekap Presensi Harian',
+            'url' => '/pages/rekap-presensi-harian-siswa',
+            'posisi' => 3,
+            'idkategori' => 5,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Role & Hak Akses',
             'url' => '/pages/role',
             'posisi' => 1,
-            'idkategori' => 5,
+            'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -283,7 +314,7 @@ class DatabaseSeeder extends Seeder
             'menu' => 'Sistem Blok',
             'url' => '/pages/sistem-blok',
             'posisi' => 2,
-            'idkategori' => 5,
+            'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -291,7 +322,7 @@ class DatabaseSeeder extends Seeder
             'menu' => 'Tahun Ajaran',
             'url' => '/pages/tahun-ajaran',
             'posisi' => 3,
-            'idkategori' => 5,
+            'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
         ]);
