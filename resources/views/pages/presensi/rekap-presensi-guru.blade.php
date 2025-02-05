@@ -74,9 +74,11 @@
                                         <td>{{ $subject->nama }}</td>
                                         <td>
                                             @php
+                                            
                                                 $jmlPertemuan = $jumlahPertemuan[$subject->kode_guru] ?? 0;
                                                 $totPertemuan = $totalPertemuan[$subject->kode_guru] ?? 0;
-                                                if( $jmlPertemuan > 0 || $totPertemuan > 0 ){
+
+                                                if( $jmlPertemuan > 0 && $totPertemuan > 0 ){
                                                     $persentasi_hadir = round($jumlahPertemuan[$subject->kode_guru] / $totalPertemuan[$subject->kode_guru] * 100);
                                                 }else{
                                                     $persentasi_hadir = 0;
