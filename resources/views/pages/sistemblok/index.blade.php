@@ -46,6 +46,7 @@
                                     <th>Nama Sesi</th>
                                     <th>Semester</th>
                                     <th>Tahun Ajaran</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -56,6 +57,22 @@
                                         <td>{{ $subject->nama_sesi }}</td>
                                         <td>{{ $subject->semester }}</td>
                                         <td>{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}</td>
+                                        <td>
+                                            <form action="{{ route('sistemblok.updateStatus', Crypt::encrypt($subject->id)) }}"
+                                                method="post">
+                                                @csrf
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                        id="flexSwitchCheckDefault"
+                                                        {{ $subject->status == 1 ? 'checked' : '' }}
+                                                        onchange="this.form.submit()">
+                                                    <span
+                                                        class="badge {{ $subject->status == 1 ? 'bg-success' : 'bg-danger' }}">{{ $subject->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</span>
+                                                </div>
+                                                <input type="hidden" name="status"
+                                                    value="{{ $subject->status == 1 ? 0 : 1 }}">
+                                            </form>
+                                        </td>
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
@@ -97,19 +114,20 @@
                         </div>
                         <div class="mb-3">
                             <label for="semester" class="form-label">Semester</label>
-                            <select name="semester" id="semester" class="form-control select2">
+                            <select name="semester" id="semester" class="form-control">
+                                @if($tahunajaran->semester == 'ganjil')
                                 <option value="ganjil">Ganjil</option>
+                                @else
                                 <option value="genap">Genap</option>
+                                @endif
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
-                            <select name="idtahunajaran" id="idtahunajaran" class="form-control select2">
-                                @foreach ($tahunajaran as $item)
-                                    <option value="{{ $item->id }}" {{ $item->status==1?'selected':'' }}>
-                                        {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
-                                    </option>
-                                @endforeach
+                            <select name="idtahunajaran" id="idtahunajaran" class="form-control">
+                                <option value="{{ $tahunajaran->id }}" {{ $tahunajaran->status==1?'selected':'' }}>
+                                    {{ $tahunajaran->awal_tahun_ajaran }}/{{ $tahunajaran->akhir_tahun_ajaran }}
+                                </option>
                             </select>
                         </div>
                         <div class="modal-footer">

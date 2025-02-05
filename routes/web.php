@@ -72,6 +72,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/role', RoleController::class);
         //sistem-blok
         Route::resource('/sistem-blok', SistemBlokController::class);
+        Route::post('/sistem-blok/{id}/updateStatus', [SistemBlokController::class, 'updateStatus'])->name('sistemblok.updateStatus');
         //jadwal-Mengajar
         Route::get('/data-jadwal-mengajar-guru', [JadwalMengajarController::class, 'dataJadwalMengajarGuru'])->name('data-jadwal-mengajar-guru');
         Route::get('/data-jadwal-mengajar-guru/{id}', [JadwalMengajarController::class, 'show'])->name('data-jadwal-mengajar-guru.show');

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_sesi');
             $table->string('semester', 6);
+            $table->enum('status', [0, 1]);
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->timestamps();
         });

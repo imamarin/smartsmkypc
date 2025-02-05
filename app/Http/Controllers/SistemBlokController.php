@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SistemBlok;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class SistemBlokController extends Controller
 {
@@ -14,8 +15,14 @@ class SistemBlokController extends Controller
     public function index()
     {
         //
-        $data['sistemblok'] = SistemBlok::orderBy('idtahunajaran', 'desc')->get();
-        $data['tahunajaran'] = TahunAjaran::all();
+        $title = 'Hapus Sesi!';
+        $text = "Yakin ingin menghapus data ini?";
+        confirmDelete($title, $text);
+
+        $data['sistemblok'] = SistemBlok::whereHas('tahunajaran', function ($query) {
+            $query->where('status', 1);
+        })->orderBy('idtahunajaran', 'desc')->get();
+        $data['tahunajaran'] = TahunAjaran::where('status', 1)->first();
         return view('pages.sistemblok.index', $data);
     }
 
@@ -67,5 +74,18 @@ class SistemBlokController extends Controller
         //
         SistemBlok::find($id)->delete();
         return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $id = Crypt::decrypt($id);
+        SistemBlok::query()->update([
+            'status' => 0
+        ]);
+        SistemBlok::find($id)->update([
+            'status' => 1
+        ]);
+
+        return redirect()->back()->with('success', 'Status Berhasil Diubah');
     }
 }
