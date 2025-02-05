@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h2 class="mb-0">Selamat Datang, Nabilah!</h2>
+                <h1 class="mb-0 display-6 font-size-26">Selamat Datang, {{ Auth::user()->guru->nama }}</h2>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -21,11 +21,11 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h6>Selamat datang di fasilitas layanan akademik SMK YPC Tasikmalaya.
+                    <p>Selamat datang di fasilitas layanan akademik SMK YPC Tasikmalaya.
                         Fasilitas ini dirancang sebagai salah satu bentuk layanan informasi yang ditujukan untuk seluruh
                         pihak yang terkait dengan SMK YPC Tasikmalaya. Kami berharap fasilitas ini dapat mempermudah akses
                         informasi bagi seluruh jajaran secara efektif dan efisien.
-                    </h6>
+                    </p>
                 </div><!-- end card header -->
                 <div class="card-body">
                 </div>
