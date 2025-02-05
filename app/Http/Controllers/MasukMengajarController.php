@@ -29,7 +29,11 @@ class MasukMengajarController extends Controller
                 AND jp.jam = jam_keluar) as waktu_keluar')
             ->whereHas('jampel', function ($query) use ($tahunajaran) {
                 $query->where('hari', date('N'))->where('idtahunajaran', $tahunajaran->id);
-            })->where([
+            })
+            ->whereHas('sistemblok', function ($query) {
+                $query->where('status', 1);
+            })
+            ->where([
                 'kode_guru' => Auth::user()->guru->kode_guru,
             ])->get();
 
