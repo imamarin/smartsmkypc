@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('matpel');
             $table->string('kelompok');
             $table->string('kelompok2');
-            $table->string('kategori')->nullable();
+            $table->string('matpels_kode')->nullable();
+            $table->foreign('matpels_kode')->references('kode_matpel')->on('matpels');
             $table->timestamps();
         });
     }

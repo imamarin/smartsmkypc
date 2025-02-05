@@ -547,7 +547,7 @@ class DatabaseSeeder extends Seeder
             'matpel' => 'Matematika',
             'kelompok' => '-',
             'kelompok2' => '-',
-            'kategori' => '-',
+            'matpels_kode' => null,
         ]);
 
         Matpel::create([
@@ -555,7 +555,55 @@ class DatabaseSeeder extends Seeder
             'matpel' => 'Bahasa Indonesia',
             'kelompok' => '-',
             'kelompok2' => '-',
-            'kategori' => '-',
+            'matpels_kode' => null,
+        ]);
+
+        Matpel::create([
+            'kode_matpel' => 'KKRPL',
+            'matpel' => 'Konsentrasi Keahlian RPL',
+            'kelompok' => '-',
+            'kelompok2' => '-',
+            'matpels_kode' => null,
+        ]);
+
+        Matpel::create([
+            'kode_matpel' => 'KKTKJ',
+            'matpel' => 'Konsentrasi Keahlian TKJ',
+            'kelompok' => '-',
+            'kelompok2' => '-',
+            'matpels_kode' => null,
+        ]);
+
+        Matpel::create([
+            'kode_matpel' => 'PWCS',
+            'matpel' => 'Pemrograman Web Cliet Side',
+            'kelompok' => '-',
+            'kelompok2' => '-',
+            'matpels_kode' => 'KKRPL',
+        ]);
+
+        Matpel::create([
+            'kode_matpel' => 'PWSS',
+            'matpel' => 'Pemrograman Web Server Side',
+            'kelompok' => '-',
+            'kelompok2' => '-',
+            'matpels_kode' => 'KKRPL',
+        ]);
+
+        Matpel::create([
+            'kode_matpel' => 'AS',
+            'matpel' => 'Administrasi Server',
+            'kelompok' => '-',
+            'kelompok2' => '-',
+            'matpels_kode' => 'KKTKJ',
+        ]);
+
+        Matpel::create([
+            'kode_matpel' => 'KJ',
+            'matpel' => 'Keamanan Jaringan',
+            'kelompok' => '-',
+            'kelompok2' => '-',
+            'matpels_kode' => 'KKTKJ',
         ]);
     }
 }
