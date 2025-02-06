@@ -50,8 +50,8 @@ class User extends Authenticatable
         return $this->hasOne(Siswa::class, 'iduser');
     }
 
-    public function guru()
+    public function staf()
     {
-        return $this->hasOne(Guru::class, 'iduser');
+        return $this->hasOne(Staf::class, 'iduser');
     }
 }

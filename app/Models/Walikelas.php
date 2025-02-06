@@ -9,9 +9,9 @@ class Walikelas extends Model
     //
     protected $guarded = [];
 
-    public function guru()
+    public function staf()
     {
-        return $this->belongsTo(Guru::class, 'kode_guru', 'kode_guru');
+        return $this->belongsTo(Staf::class, 'nip', 'nip');
     }
 
     public function kelas()

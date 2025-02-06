@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('walikelas', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_guru', 20);
-            $table->foreign('kode_guru')->references('kode_guru')->on('gurus');
-            $table->foreignId('idrombel')->references('id')->on('rombels');
+            $table->string('nip', 20);
+            $table->foreign('nip')->references('nip')->on('stafs');
+            $table->foreignId('idkelas')->references('id')->on('kelas');
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->timestamps();
         });

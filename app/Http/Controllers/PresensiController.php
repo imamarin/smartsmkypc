@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetailPresensi;
-use App\Models\Guru;
+use App\Models\Staf;
 use App\Models\JadwalMengajar;
 use App\Models\Kelas;
 use App\Models\MatpelPengampu;
@@ -34,7 +34,7 @@ class PresensiController extends Controller
         $idjadwalmengajar = Crypt::decrypt($request->idjadwalmengajar);
         $idkelas = Crypt::decrypt($request->idkelas);
         $kode_matpel = Crypt::decrypt($request->kode_matpel);
-        $kode_guru = Crypt::decrypt($request->kode_guru);
+        $nip = Crypt::decrypt($request->nip);
         $tanggal = Crypt::decrypt($request->tanggal);
 
         $date = date('Y-m-d', strtotime($tanggal));
@@ -50,7 +50,7 @@ class PresensiController extends Controller
                 'semester' => $tahunajaran->semester,
                 'idkelas' => $idkelas,
                 'kode_matpel' => $kode_matpel,
-                'kode_guru' => $kode_guru,
+                'nip' => $nip,
                 'pokok_bahasan' => $request->pokok_bahasan
             ]);
         } else {
@@ -59,7 +59,7 @@ class PresensiController extends Controller
                 'semester' => $tahunajaran->semester,
                 'idkelas' => $idkelas,
                 'kode_matpel' => $kode_matpel,
-                'kode_guru' => $kode_guru,
+                'nip' => $nip,
                 'idjadwalmengajar' => $idjadwalmengajar,
                 'pokok_bahasan' => $request->pokok_bahasan
             ]);
@@ -119,14 +119,14 @@ class PresensiController extends Controller
                 (SELECT COUNT(*) FROM detail_presensis as dp 
                 JOIN presensis as p ON dp.idpresensi = p.id
                 WHERE dp.keterangan = 'h' 
-                AND p.kode_guru = jadwal_mengajars.kode_guru
+                AND p.nip = jadwal_mengajars.nip
                 AND p.kode_matpel = jadwal_mengajars.kode_matpel
                 AND p.idtahunajaran = '$tahunajaran->id'
                 AND p.semester = '$tahunajaran->semester') as hadir_count")
             ->selectRaw("
                 (SELECT COUNT(*) FROM detail_presensis as dp 
                 JOIN presensis as p ON dp.idpresensi = p.id 
-                WHERE p.kode_guru = jadwal_mengajars.kode_guru
+                WHERE p.nip = jadwal_mengajars.nip
                 AND p.kode_matpel = jadwal_mengajars.kode_matpel
                 AND p.idtahunajaran = '$tahunajaran->id'
                 AND p.semester = '$tahunajaran->semester') as presensi_count")
@@ -136,7 +136,7 @@ class PresensiController extends Controller
                     'semester' => $tahunajaran->semester
                 ]);
             })->where([
-                'kode_guru' => Auth::user()->guru->kode_guru,
+                'nip' => Auth::user()->staf->nip,
             ])->groupBy('kode_matpel', 'idkelas')->get();
 
         return view('pages.presensi.siswa', $data);
@@ -161,7 +161,7 @@ class PresensiController extends Controller
 
             $query = Presensi::where([
                 'kode_matpel' => $id[0],
-                'kode_guru' => Auth::user()->guru->kode_guru,
+                'nip' => Auth::user()->staf->nip,
                 'idkelas' => $id[1],
                 'semester' => $tahunajaran->semester,
                 'idtahunajaran' => $tahunajaran->id
@@ -206,7 +206,7 @@ class PresensiController extends Controller
             $tahunajaran = TahunAjaran::where('status', 1)->first();
 
             $presensi = Presensi::select('idjadwalmengajar', 'created_at')->where([
-                'kode_guru' => Auth::user()->guru->kode_guru,
+                'nip' => Auth::user()->staf->nip,
                 'kode_matpel' => $id[0],
                 'idkelas' => $id[1],
                 'semester' => $tahunajaran->semester,
@@ -350,11 +350,11 @@ class PresensiController extends Controller
                 return redirect()->back()->with('warning', 'Data presensi tidak tersedia!');
             }
 
-            $data['guru'] = Guru::select('nip', 'nama')->where('kode_guru', $id[0])->first();
-            $kode_guru = $id[0];
+            $data['staf'] = Staf::select('nip', 'nama')->where('nip', $id[0])->first();
+            $nip = $id[0];
         } else {
             $tahunajaran = TahunAjaran::where('status', 1)->first();
-            $kode_guru = Auth::user()->guru->kode_guru;
+            $nip = Auth::user()->staf->nip;
         }
 
 
@@ -363,7 +363,7 @@ class PresensiController extends Controller
                 'idtahunajaran' => $tahunajaran->id,
                 'semester' => $tahunajaran->semester
             ]);
-        })->where('kode_guru', $kode_guru)->get();
+        })->where('nip', $nip)->get();
         $mappingPresensi = $jadwalmengajar->map(function ($item) use ($tahunajaran) {
             $first = strtotime($tahunajaran->tgl_mulai);
             $end = strtotime(date('Y-m-d'));
@@ -414,7 +414,7 @@ class PresensiController extends Controller
 
         $data['tahunajaran'] = TahunAjaran::all();
         $data['kelas'] = Kelas::where('idtahunajaran', $idtahunajaran)->get();
-        $data['guru'] = Guru::where('status', 1)->get();
+        $data['staf'] = Staf::where('status', 1)->get();
         $jadwalmengajar = JadwalMengajar::whereHas('sistemblok', function ($query) use ($idtahunajaran, $semester) {
             $query->where([
                 'idtahunajaran' => $idtahunajaran,
@@ -427,17 +427,17 @@ class PresensiController extends Controller
         foreach ($jadwalmengajar as $jadwal) {
             # code...
 
-            if (isset($jumlahJamPerHari[$jadwal->kode_guru][$jadwal->jampel->hari])) {
-                $jumlahJamPerHari[$jadwal->kode_guru][$jadwal->jampel->hari]++;
+            if (isset($jumlahJamPerHari[$jadwal->nip][$jadwal->jampel->hari])) {
+                $jumlahJamPerHari[$jadwal->nip][$jadwal->jampel->hari]++;
             } else {
-                $jumlahJamPerHari[$jadwal->kode_guru][$jadwal->jampel->hari] = 1;
+                $jumlahJamPerHari[$jadwal->nip][$jadwal->jampel->hari] = 1;
             }
 
             if ($jadwal->presensi->count() > 0) {
-                if (isset($jumlahPertemuan[$jadwal->kode_guru])) {
-                    $jumlahPertemuan[$jadwal->kode_guru] += $jadwal->presensi->count();
+                if (isset($jumlahPertemuan[$jadwal->nip])) {
+                    $jumlahPertemuan[$jadwal->nip] += $jadwal->presensi->count();
                 } else {
-                    $jumlahPertemuan[$jadwal->kode_guru] = $jadwal->presensi->count();
+                    $jumlahPertemuan[$jadwal->nip] = $jadwal->presensi->count();
                 }
             }
         }
@@ -446,14 +446,14 @@ class PresensiController extends Controller
         $first = strtotime($tahunajaran->tgl_mulai);
         $end = strtotime(date('Y-m-d'));
 
-        foreach ($jumlahJamPerHari as $key_guru => $guru) {
+        foreach ($jumlahJamPerHari as $key_staf => $staf) {
             # code...
             while ($first <= $end) {
-                if (isset($guru[date('N', $first)])) {
-                    if (isset($totalPertemuan[$key_guru])) {
-                        $totalPertemuan[$key_guru] += $guru[date('N', $first)];
+                if (isset($staf[date('N', $first)])) {
+                    if (isset($totalPertemuan[$key_staf])) {
+                        $totalPertemuan[$key_staf] += $staf[date('N', $first)];
                     } else {
-                        $totalPertemuan[$key_guru] = $guru[date('N', $first)];
+                        $totalPertemuan[$key_staf] = $staf[date('N', $first)];
                     }
                 }
                 $first = strtotime('+1 day', $first);

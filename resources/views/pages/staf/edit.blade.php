@@ -4,13 +4,13 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0">Input Data Guru</h4>
+                <h4 class="mb-0">Input Data Staf</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('data-guru.index') }}">Data Guru</a></li>
-                        <li class="breadcrumb-item active">Form Guru</li>
+                        <li class="breadcrumb-item"><a href="{{ route('data-staf.index') }}">Data Staf</a></li>
+                        <li class="breadcrumb-item active">Form Staf</li>
                     </ol>
                 </div>
 
@@ -18,31 +18,31 @@
         </div>
     </div>
     <!-- end page title -->
-    <form action="{{ route('data-guru.update', $guru->user->id) }}" method="POST">
+    <form action="{{ route('data-staf.update', $staf->user->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header justify-content-between d-flex align-items-center">
-                        <h4 class="card-title">Identitas Guru</h4>
+                        <h4 class="card-title">Identitas Staf</h4>
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="mb-3 row">
-                                    <label class="col-md-2 col-form-label">Kode Guru<span
+                                    <label class="col-md-2 col-form-label">NIP<span
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="number" name="kode_guru"
-                                            value="{{ $guru->kode_guru }}" required>
+                                        <input class="form-control" type="number" name="nip"
+                                            value="{{ $staf->nip }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Nama<span class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="text" name="nama"
-                                            value="{{ $guru->nama }}" required>
+                                            value="{{ $staf->nama }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
@@ -50,7 +50,7 @@
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="text" name="tempat_lahir"
-                                            value="{{ $guru->tempat_lahir }}" required>
+                                            value="{{ $staf->tempat_lahir }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
@@ -58,7 +58,7 @@
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="date" name="tanggal_lahir"
-                                            value="{{ $guru->tanggal_lahir }}" required>
+                                            value="{{ $staf->tanggal_lahir }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
@@ -67,14 +67,14 @@
                                     <div class="col-md-10">
                                         <div class="form-check mb-2">
                                             <input class="form-check-input" type="radio" name="jenis_kelamin"
-                                                value="P" {{ $guru->jenis_kelamin == 'P' ? 'checked' : '' }} required>
+                                                value="P" {{ $staf->jenis_kelamin == 'P' ? 'checked' : '' }} required>
                                             <label class="form-check-label">
                                                 Perempuan
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="jenis_kelamin"
-                                                value="L" {{ $guru->jenis_kelamin == 'L' ? 'checked' : '' }} required>
+                                                value="L" {{ $staf->jenis_kelamin == 'L' ? 'checked' : '' }} required>
                                             <label class="form-check-label">
                                                 Laki-laki
                                             </label>
@@ -85,30 +85,23 @@
                                     <label class="col-md-2 col-form-label">NUPTK</label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="number" name="nuptk"
-                                            value="{{ $guru->nuptk }}">
+                                            value="{{ $staf->nuptk }}">
                                     </div>
                                 </div><!-- end row -->
                             </div><!-- end col -->
 
                             <div class="col-xl-6">
-                                <div class="row mb-3">
-                                    <label class="col-md-2 col-form-label">NIP<span class="text-danger">*</span></label>
-                                    <div class="col-md-10">
-                                        <input class="form-control" type="number" name="nip"
-                                            value="{{ $guru->nip }}" required>
-                                    </div>
-                                </div><!-- end row -->
                                 <div class="row mb-3 mt-3 mt-xl-0">
                                     <label class="col-md-2 col-form-label">Alamat<span class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <textarea name="alamat" class="form-control" cols="30" rows="5" required>{{ $guru->alamat }}</textarea>
+                                        <textarea name="alamat" class="form-control" cols="30" rows="5" required>{{ $staf->alamat }}</textarea>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="row mb-3">
                                     <label class="col-md-2 col-form-label">No HP<span class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="number" name="no_hp"
-                                            value="{{ $guru->no_hp }}" required>
+                                            value="{{ $staf->no_hp }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="row">
@@ -116,8 +109,8 @@
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <select name="status" class="form-select select2" required>
-                                            <option value="{{ $guru->status }}" selected>
-                                                {{ $guru->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</option>
+                                            <option value="{{ $staf->status }}" selected>
+                                                {{ $staf->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</option>
                                             <option value="1">Aktif</option>
                                             <option value="0">Tidak Aktif</option>
                                         </select>
@@ -141,7 +134,7 @@
                                 <div class="mb-3 row">
                                     <label class="col-md-2 col-form-label">Username</label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="text" name="username" value="{{ $guru->user->username }}">
+                                        <input class="form-control" type="text" name="username" value="{{ $staf->user->username }}">
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">

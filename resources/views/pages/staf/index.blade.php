@@ -7,12 +7,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0">Data Guru</h4>
+                <h4 class="mb-0">Data Staf</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Guru</li>
+                        <li class="breadcrumb-item active">Data Staf</li>
                     </ol>
                 </div>
 
@@ -25,13 +25,13 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <div class="col">
-                        <h4 class="card-title">List Guru</h4>
+                        <h4 class="card-title">List Staf</h4>
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
-                            <a href="{{ route('data-guru.export') }}" class="btn btn-info me-2">Export Data</a>
+                            <a href="{{ route('data-staf.export') }}" class="btn btn-info me-2">Export Data</a>
                             <a href="#" class="btn btn-success me-2">Import Data</a>
-                            <a href="{{ route('data-guru.create') }}" class="btn btn-primary">Tambah Data</a>
+                            <a href="{{ route('data-staf.create') }}" class="btn btn-primary">Tambah Data</a>
                         </div>
                     </div>
                 </div><!-- end card header -->
@@ -41,12 +41,11 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Kode Guru</th>
+                                    <th>NIP</th>
                                     <th>Nama</th>
                                     <th>Tempat, Tanggal Lahir</th>
                                     <th>Jenis Kelamin</th>
                                     <th>NUPTK</th>
-                                    <th>NIP</th>
                                     <th>Alamat</th>
                                     <th>No HP</th>
                                     <th>Status</th>
@@ -54,11 +53,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($guru as $key => $item)
+                                @foreach ($staf as $key => $item)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
-                                            {{ $item->kode_guru }}</td>
+                                            {{ $item->nip }}</td>
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">{{ $item->nama }}</td>
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->tempat_lahir }},
@@ -68,13 +67,11 @@
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->nuptk ?? '-' }}</td>
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
-                                            {{ $item->nip }}</td>
-                                        <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->alamat }}</td>
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->no_hp }}</td>
                                         <td>
-                                            <form action="{{ route('data-guru.updateStatus', $item->kode_guru) }}"
+                                            <form action="{{ route('data-staf.updateStatus', $item->nip) }}"
                                                 method="post">
                                                 @csrf
                                                 <button type="submit"
@@ -87,11 +84,11 @@
                                         </td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('data-guru.edit', $item->user->id) }}"
+                                                <a href="{{ route('data-staf.edit', $item->user->id) }}"
                                                     class="btn btn-sm btn-secondary me-2">
                                                     Edit
                                                 </a>
-                                                <a href="{{ route('data-guru.destroy', $item->user->id) }}"
+                                                <a href="{{ route('data-staf.destroy', $item->user->id) }}"
                                                     class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                             </div>
                                         </td>

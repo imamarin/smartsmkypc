@@ -22,7 +22,7 @@ class MatpelPengampuController extends Controller
         $data['tahunajaran'] = TahunAjaran::where('status', 1)->first();
         $data['matpelpengampu'] = MatpelPengampu::whereHas('tahunajaran', function ($query) {
             $query->where('status', 1);
-        })->where('kode_guru', Auth::user()->guru->kode_guru)->get();
+        })->where('nip', Auth::user()->staf->nip)->get();
 
         $title = 'Matpel Pengampu!';
         $text = "Yakin ingin menghapus data ini?";
@@ -41,7 +41,7 @@ class MatpelPengampuController extends Controller
             'idtahunajaran' => 'required',
             'kode_matpel' => 'required',
         ]);
-        $validate['kode_guru'] = Auth::user()->guru->kode_guru;
+        $validate['nip'] = Auth::user()->staf->nip;
 
         MatpelPengampu::create($validate);
         return redirect()->back()->with('success', 'Data berhasil disimpan');
@@ -77,7 +77,7 @@ class MatpelPengampuController extends Controller
     {
         $data['matpelpengampu'] = MatpelPengampu::whereHas('tahunajaran', function ($query) {
             $query->where('status', 1);
-        })->where('kode_guru', Auth::user()->guru->kode_guru)->get();
+        })->where('nip', Auth::user()->staf->nip)->get();
         return Excel::download(new MatpelPengampuExport($data['matpelpengampu']), 'Matpel Pengampu.xlsx');
     }
 }

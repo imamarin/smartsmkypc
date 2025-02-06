@@ -34,7 +34,7 @@ class MasukMengajarController extends Controller
                 $query->where('status', 1);
             })
             ->where([
-                'kode_guru' => Auth::user()->guru->kode_guru,
+                'nip' => Auth::user()->staf->nip,
             ])->get();
 
         return view('pages.masukmengajar.index', $data);
@@ -74,7 +74,7 @@ class MasukMengajarController extends Controller
             $data['jadwal'] = $jadwal;
             $data['siswa'] = $jadwal->kelas->rombel;
             $data['catatan'] = Presensi::select('catatan_pembelajaran', 'updated_at')->where([
-                'kode_guru' => Auth::user()->guru->kode_guru,
+                'nip' => Auth::user()->staf->nip,
                 'kode_matpel' => $jadwal->kode_matpel,
                 'idkelas' => $jadwal->idkelas
             ])->orderBy('updated_at', 'desc')->get();
@@ -83,7 +83,7 @@ class MasukMengajarController extends Controller
             $data['presensi'] = $presensi;
             $data['siswa'] = $presensi->detailpresensi;
             $data['catatan'] = Presensi::select('catatan_pembelajaran', 'updated_at')->where([
-                'kode_guru' => Auth::user()->guru->kode_guru,
+                'nip' => Auth::user()->staf->nip,
                 'kode_matpel' => $presensi->kode_matpel,
                 'idkelas' => $presensi->idkelas
             ])->orderBy('updated_at', 'desc')->get();

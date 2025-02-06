@@ -18,10 +18,11 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        $data['siswa'] = Siswa::all();
         $title = 'Hapus Siswa!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
+        
+        $data['siswa'] = Siswa::all();
         return view('pages.siswa.index', $data);
     }
 

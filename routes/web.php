@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\GuruController;
+use App\Http\Controllers\StafController;
 use App\Http\Controllers\JadwalMengajarController;
 use App\Http\Controllers\JamPelajaranController;
 use App\Http\Controllers\JurusanController;
@@ -45,10 +45,10 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/data-siswa', SiswaController::class);
         Route::post('/data-siswa/{id}/updateStatus', [SiswaController::class, 'updateStatus'])->name('data-siswa.updateStatus');
         Route::get('/data-siswa/export/data', [SiswaController::class, 'export'])->name('data-siswa.export');
-        //data-guru
-        Route::resource('/data-guru', GuruController::class);
-        Route::post('/data-guru/{id}/updateStatus', [GuruController::class, 'updateStatus'])->name('data-guru.updateStatus');
-        Route::get('/data-guru/export/data', [GuruController::class, 'export'])->name('data-guru.export');
+        //data-staf
+        Route::resource('/data-staf', StafController::class);
+        Route::post('/data-staf/{id}/updateStatus', [StafController::class, 'updateStatus'])->name('data-staf.updateStatus');
+        Route::get('/data-staf/export/data', [StafController::class, 'export'])->name('data-staf.export');
         //data-rombel
         Route::resource('/data-rombel', RombelController::class);
         Route::post('/data-rombel/siswarombel', [RombelController::class, 'SiswaRombel'])->name('data-rombel.siswaRombel');
@@ -88,7 +88,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/rekap-presensi-mengajar', [PresensiController::class, 'rekapGuru'])->name('rekap-presensi-mengajar');
         Route::get('/rekap-presensi-siswa-detail/{id}', [PresensiController::class, 'rekapSiswaDetail'])->name('rekap-presensi-siswa-detail');
         Route::get('/history-presensi/{id}', [PresensiController::class, 'historyPresensi'])->name('history-presensi');
-        Route::get('/show-presensi/{id}/tanggal/{tgl}', [MasukMengajarController::class, 'show'])->name('show-presensi.tanggal');
+        Route::get('/rekap-presensi-siswa/{id}/tanggal/{tgl}', [MasukMengajarController::class, 'show'])->name('show-presensi.tanggal');
         Route::resource('/presensi', PresensiController::class);
         //data rekap presensi
         Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa']);
@@ -96,6 +96,8 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/data-rekap-presensi-guru/{id}', [PresensiController::class, 'rekapGuru'])->name('data-rekap-presensi-guru-detail');
         Route::post('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa');
         Route::post('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru');
+        //walikelas
+        Route::get('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas');
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');

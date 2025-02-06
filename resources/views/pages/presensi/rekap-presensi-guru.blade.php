@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0">Rekap Presensi Guru</h4>
+                <h4 class="mb-0">Rekap Presensi Staf</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -61,13 +61,13 @@
                                 <tr>
                                     <th>#</th>
                                     <th>NIP</th>
-                                    <th>Nama Guru</th>
+                                    <th>Nama Staf</th>
                                     <th class="text-center">Persentase Kehadiran</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($guru as $subject)
+                                @foreach ($staf as $subject)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $subject->nip }}</td>
@@ -75,11 +75,11 @@
                                         <td>
                                             @php
                                             
-                                                $jmlPertemuan = $jumlahPertemuan[$subject->kode_guru] ?? 0;
-                                                $totPertemuan = $totalPertemuan[$subject->kode_guru] ?? 0;
+                                                $jmlPertemuan = $jumlahPertemuan[$subject->nip] ?? 0;
+                                                $totPertemuan = $totalPertemuan[$subject->nip] ?? 0;
 
                                                 if( $jmlPertemuan > 0 && $totPertemuan > 0 ){
-                                                    $persentasi_hadir = round($jumlahPertemuan[$subject->kode_guru] / $totalPertemuan[$subject->kode_guru] * 100);
+                                                    $persentasi_hadir = round($jumlahPertemuan[$subject->nip] / $totalPertemuan[$subject->nip] * 100);
                                                 }else{
                                                     $persentasi_hadir = 0;
                                                 }
@@ -100,7 +100,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="{{ route('data-rekap-presensi-guru-detail', Crypt::encrypt($subject->kode_guru."*".$tahunajaran_selected."*".$semester_selected)) }}" class="btn btn-sm btn-warning">Lihat Detail Kehadiran</a>
+                                            <a href="{{ route('data-rekap-presensi-guru-detail', Crypt::encrypt($subject->nip."*".$tahunajaran_selected."*".$semester_selected)) }}" class="btn btn-sm btn-warning">Lihat Detail Kehadiran</a>
                                         </td>
                                     </tr>
                                 @endforeach

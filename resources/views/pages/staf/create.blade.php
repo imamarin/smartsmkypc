@@ -4,13 +4,13 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0">Input Data Guru</h4>
+                <h4 class="mb-0">Input Data Staf</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('data-guru.index') }}">Data Guru</a></li>
-                        <li class="breadcrumb-item active">Form Guru</li>
+                        <li class="breadcrumb-item"><a href="{{ route('data-staf.index') }}">Data Staf</a></li>
+                        <li class="breadcrumb-item active">Form Staf</li>
                     </ol>
                 </div>
 
@@ -18,22 +18,22 @@
         </div>
     </div>
     <!-- end page title -->
-    <form action="{{ route('data-guru.store') }}" method="POST">
+    <form action="{{ route('data-staf.store') }}" method="POST">
         @csrf
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header justify-content-between d-flex align-items-center">
-                        <h4 class="card-title">Identitas Guru</h4>
+                        <h4 class="card-title">Identitas Staf</h4>
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="mb-3 row">
-                                    <label class="col-md-2 col-form-label">Kode Guru<span
+                                    <label class="col-md-2 col-form-label">NIP<span
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
-                                        <input class="form-control" type="number" name="kode_guru" value="{{ old('kode_guru') }}" required>
+                                        <input class="form-control" type="number" name="nip" value="{{ old('nip') }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
@@ -85,12 +85,7 @@
                             </div><!-- end col -->
 
                             <div class="col-xl-6">
-                                <div class="row mb-3">
-                                    <label class="col-md-2 col-form-label">NIP<span class="text-danger">*</span></label>
-                                    <div class="col-md-10">
-                                        <input class="form-control" type="number" name="nip" value="{{ old('nip') }}">
-                                    </div>
-                                </div><!-- end row -->
+                                <!-- end row -->
                                 <div class="row mb-3 mt-3 mt-xl-0">
                                     <label class="col-md-2 col-form-label">Alamat<span class="text-danger">*</span></label>
                                     <div class="col-md-10">

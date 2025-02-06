@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guru;
+use App\Models\Staf;
 use App\Models\JadwalMengajar;
 use App\Models\JamPelajaran;
 use App\Models\Kelas;
@@ -33,7 +33,7 @@ class JadwalMengajarController extends Controller
             'semester' => $tahunajaran->semester
         ])->get();
 
-        $data['matpel'] = MatpelPengampu::where('kode_guru', Auth::user()->guru->kode_guru)->get();
+        $data['matpel'] = MatpelPengampu::where('nip', Auth::user()->staf->nip)->get();
         $data['jampel'] = JamPelajaran::where('idtahunajaran', $tahunajaran->id)->get();
         $data['kelas'] = Kelas::where('idtahunajaran', $tahunajaran->id)->get();
         $data['jadwal'] = JadwalMengajar::join('jam_pelajarans', 'jam_pelajarans.id', '=', 'jadwal_mengajars.idjampel')
@@ -49,11 +49,11 @@ class JadwalMengajarController extends Controller
                     'idtahunajaran' => $tahunajaran->id,
                 ]);
             })->where([
-                'kode_guru' => Auth::user()->guru->kode_guru,
+                'nip' => Auth::user()->staf->nip,
             ])->orderBy('jam_pelajarans.hari')
             ->orderBy('jam_pelajarans.jam')->get();
 
-        $data['guru'] = Guru::where('kode_guru', Auth::user()->guru->kode_guru)->first();
+        $data['staf'] = Staf::where('nip', Auth::user()->staf->nip)->first();
         return view('pages.jadwalmengajar.index', $data);
     }
 
@@ -63,7 +63,7 @@ class JadwalMengajarController extends Controller
     public function store(Request $request)
     {
         //
-        $kode_guru = Crypt::decrypt($request->kode_guru);
+        $nip = Crypt::decrypt($request->nip);
         $validate = $request->validate([
             'kode_matpel' => 'required',
             'hari' => 'required',
@@ -82,7 +82,7 @@ class JadwalMengajarController extends Controller
         if ($jampel) {
             unset($validate['hari']);
             $validate['idjampel'] = $jampel->id;
-            $validate['kode_guru'] = $kode_guru;
+            $validate['nip'] = $nip;
             JadwalMengajar::create($validate);
             return redirect()->back()->with('success', 'Jadwal Mengajar berhasil disimpan!');
         } else {
@@ -108,7 +108,7 @@ class JadwalMengajarController extends Controller
                 'idtahunajaran' => $id[2],
                 'semester' => $id[1]
             ])->get();
-            $data['matpel'] = MatpelPengampu::where('kode_guru', $id[0])->get();
+            $data['matpel'] = MatpelPengampu::where('nip', $id[0])->get();
             $data['jampel'] = JamPelajaran::where('idtahunajaran', $id[2])->get();
             $data['kelas'] = Kelas::where('idtahunajaran', $id[2])->get();
             $data['jadwal'] = JadwalMengajar::join('jam_pelajarans', 'jam_pelajarans.id', '=', 'jadwal_mengajars.idjampel')
@@ -124,9 +124,9 @@ class JadwalMengajarController extends Controller
                         'idtahunajaran' => $id[2]
                     ]);
                 })->where([
-                    'kode_guru' => $id[0],
+                    'nip' => $id[0],
                 ])->orderBy('jam_pelajarans.hari')->orderBy('jam_pelajarans.jam')->get();
-            $data['guru'] = Guru::where('kode_guru', $id[0])->first();
+            $data['staf'] = Staf::where('nip', $id[0])->first();
             return view('pages.jadwalmengajar.index', $data);
         }
 
@@ -140,7 +140,7 @@ class JadwalMengajarController extends Controller
     {
         //
         $id = Crypt::decrypt($id);
-        $kode_guru = Crypt::decrypt($request->kode_guru);
+        $nip = Crypt::decrypt($request->nip);
 
         $validate = $request->validate([
             'kode_matpel' => 'required',
@@ -160,7 +160,7 @@ class JadwalMengajarController extends Controller
         if ($jampel) {
             unset($validate['hari']);
             $validate['idjampel'] = $jampel->id;
-            $validate['kode_guru'] = $kode_guru;
+            $validate['nip'] = $nip;
             JadwalMengajar::find($id)->update($validate);
             return redirect()->back()->with('success', 'Jadwal Mengajar berhasil diubah!');
         } else {
@@ -187,7 +187,7 @@ class JadwalMengajarController extends Controller
     public function dataJadwalMengajarGuru()
     {
         $tahunajaran = TahunAjaran::where('status', 1)->first();
-        $teachers = Guru::with(['jadwalmengajar' => function ($query) use ($tahunajaran) {
+        $teachers = Staf::with(['jadwalmengajar' => function ($query) use ($tahunajaran) {
             $query->with(['sistemblok' => function ($query) use ($tahunajaran) {
                 $query->where([
                     'semester' => $tahunajaran->semester,
@@ -203,10 +203,10 @@ class JadwalMengajarController extends Controller
                     'idtahunajaran' => $tahunajaran->id,
                 ]);
             });
-        }], 'jumlah_jam')->where('gurus.status', 1)->get();
+        }], 'jumlah_jam')->where('stafs.status', 1)->get();
 
 
-        $data['guru'] = $teachers->sortByDesc(function ($teacher) {
+        $data['staf'] = $teachers->sortByDesc(function ($teacher) {
             return $teacher->jadwalmengajar->count();
         })->values();
         $data['tahunajaran'] = $tahunajaran;

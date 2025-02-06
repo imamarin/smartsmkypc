@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('presensis', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_guru', 20);
-            $table->foreign('kode_guru')->references('kode_guru')->on('gurus');
+            $table->string('nip', 20);
+            $table->foreign('nip')->references('nip')->on('stafs');
             $table->string('kode_matpel', 20);
             $table->foreign('kode_matpel')->references('kode_matpel')->on('matpels');
             $table->foreignId('idkelas')->references('id')->on('kelas');

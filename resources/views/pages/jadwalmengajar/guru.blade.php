@@ -47,11 +47,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($guru as $key => $item)
+                                @foreach ($staf as $key => $item)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>
-                                            {{ $item->kode_guru }}
+                                            {{ $item->nip }}
                                         </td>
                                         <td>
                                             {{ $item->nama }}
@@ -71,7 +71,7 @@
                                             @endforeach
                                         </td>
                                         <td>
-                                            <a href="{{ route('data-jadwal-mengajar-guru.show', Crypt::encrypt($item->kode_guru.'*'.$tahunajaran->semester.'*'.$tahunajaran->id)) }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
+                                            <a href="{{ route('data-jadwal-mengajar-guru.show', Crypt::encrypt($item->nip.'*'.$tahunajaran->semester.'*'.$tahunajaran->id)) }}" class="btn btn-sm btn-primary">Lihat Jadwal</a>
                                         </td>
                                     </tr>
                                 @endforeach

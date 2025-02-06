@@ -54,7 +54,7 @@
                                 <td>{{ $item->kelas }}</td>
                                 <td>{{ $item->jurusan->jurusan }}</td>
                                 <td>{{ $item->rombel->count() }}</td>
-                                <td>{{ $item->walikelas->guru->nama ?? '-' }}</td>
+                                <td>{{ $item->walikelas->staf->nama ?? '-' }}</td>
                                 <td>
                                     <a href="{{ route('data-rombel.showStudents', [$item->id, $item->idtahunajaran]) }}"
                                         class="btn btn-sm btn-info">Lihat Siswa</a>

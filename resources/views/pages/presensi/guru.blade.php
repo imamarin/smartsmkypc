@@ -27,17 +27,17 @@
                     </div>
                 </div><!-- end card header -->
                 <div class="card-body">
-                    @if(isset($guru))
+                    @if(isset($staf))
                     <div class="row">
                         <div class="col-12 col-md-2">
                             <div class="row">
                                 <div class="col-6 col-md-5"><h6>NIP</h6></div>
-                                <div class="col-6 col-md-7"><h6>: {{ $guru->nip }}</h6></div>
+                                <div class="col-6 col-md-7"><h6>: {{ $staf->nip }}</h6></div>
                                 <hr>
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-5"><h6>Nama Guru</h6></div>
-                                <div class="col-6 col-md-7"><h6>: {{ $guru->nama }}</h6></div>
+                                <div class="col-6 col-md-7"><h6>: {{ $staf->nama }}</h6></div>
                                 <hr>
                             </div>
                         </div>

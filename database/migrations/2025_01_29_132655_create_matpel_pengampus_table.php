@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('matpel_pengampus', function (Blueprint $table) {
             $table->id();
             $table->string('kode_matpel', 20);
-            $table->string('kode_guru', 20);
+            $table->string('nip', 20);
             $table->foreign('kode_matpel')->references('kode_matpel')->on('matpels');
-            $table->foreign('kode_guru')->references('kode_guru')->on('gurus');
+            $table->foreign('nip')->references('nip')->on('stafs');
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->timestamps();
         });

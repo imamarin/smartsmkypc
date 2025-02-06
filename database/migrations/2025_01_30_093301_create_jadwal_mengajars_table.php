@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('jadwal_mengajars', function (Blueprint $table) {
             $table->id();
             $table->string('kode_matpel', 20);
-            $table->string('kode_guru', 20);
+            $table->string('nip', 20);
             $table->foreign('kode_matpel')->references('kode_matpel')->on('matpels');
-            $table->foreign('kode_guru')->references('kode_guru')->on('gurus');
+            $table->foreign('nip')->references('nip')->on('stafs');
             $table->foreignId('idkelas')->references('id')->on('kelas');
             $table->foreignId('idjampel')->references('id')->on('jam_pelajarans');
             $table->foreignId('idsistemblok')->references('id')->on('sistem_bloks');

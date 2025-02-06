@@ -71,13 +71,13 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}</td>
                                         <td>{{ $subject->kelas }}</td>
-                                        <td>{{ $subject->walikelas->guru->nama ?? '-' }}</td>
+                                        <td>{{ $subject->walikelas->staf->nama ?? '-' }}</td>
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn {{ $subject->walikelas != null ? 'btn-secondary' : 'btn-primary' }} btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" 
                                                 data-id="{{  $subject->walikelas?->id }}"
-                                                data-kodeguru="{{  $subject->walikelas?->kode_guru }}" 
+                                                data-kodestaf="{{  $subject->walikelas?->nip }}" 
                                                 data-idtahunajaran="{{ $subject->idtahunajaran }}"
                                                 data-tahunajaran="{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}"
                                                 data-kelas="{{ $subject->kelas }}"
@@ -124,10 +124,10 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="kode_guru" class="form-label">Guru</label>
-                            <select name="kode_guru" id="kode_guru" class="form-control select2">
-                                @foreach ($guru as $item)
-                                    <option value="{{ $item->kode_guru }}">{{ $item->nama }}</option>
+                            <label for="nip" class="form-label">Staf</label>
+                            <select name="nip" id="nip" class="form-control select2">
+                                @foreach ($staf as $item)
+                                    <option value="{{ $item->nip }}">{{ $item->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -148,7 +148,7 @@
         modal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const id = button.getAttribute('data-id');
-            const kodeguru = button.getAttribute('data-kodeguru');
+            const kodestaf = button.getAttribute('data-kodestaf');
             const idkelas = button.getAttribute('data-idkelas');
             const kelas = button.getAttribute('data-kelas');
             const idtahunajaran = button.getAttribute('data-idtahunajaran');
@@ -170,7 +170,7 @@
                 // form.querySelector('#idrombel').value = idrombel;
                 let optionkelas = new Option(kelas, idkelas);
                 form.querySelector('#idkelas').add(optionkelas);
-                form.querySelector('#kode_guru').value = kodeguru;
+                form.querySelector('#nip').value = kodestaf;
 
                 let optiontahunajaran = new Option(tahunajaran, idtahunajaran);
                 form.querySelector('#idtahunajaran').add(optiontahunajaran);

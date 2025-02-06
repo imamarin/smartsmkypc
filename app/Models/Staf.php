@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Guru extends Model
+class Staf extends Model
 {
     protected $guarded = [];
-    protected $primaryKey = "kode_guru";
+    protected $primaryKey = "nip";
     public $incrementing = false;
     protected $keyType = "string";
 
@@ -18,17 +18,17 @@ class Guru extends Model
 
     public function walikelas()
     {
-        return $this->hasMany(Walikelas::class, 'kode_guru', 'kode_guru');
+        return $this->hasMany(Walikelas::class, 'nip', 'nip');
     }
 
     public function jadwalmengajar()
     {
-        return $this->hasMany(JadwalMengajar::class, 'kode_guru', 'kode_guru');
+        return $this->hasMany(JadwalMengajar::class, 'nip', 'nip');
     }
 
     public function presensi()
     {
-        return $this->hasMany(Presensi::class, 'kode_guru', 'kode_guru');
+        return $this->hasMany(Presensi::class, 'nip', 'nip');
     }
 
     protected $casts = [

@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h1 class="mb-0 display-6 font-size-26">Selamat Datang, {{ Auth::user()->guru->nama }}</h2>
+                <h1 class="mb-0 display-6 font-size-26">Selamat Datang, {{ Auth::user()->staf->nama }}</h2>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">

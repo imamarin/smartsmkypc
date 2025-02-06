@@ -162,7 +162,7 @@
                                             <div class="mb-3 d-flex justify-content-end">
                                                 <input type="hidden" name="idjadwalmengajar" value="{{ Crypt::encrypt($jadwal->id)}}">
                                                 <input type="hidden" name="kode_matpel" value="{{ Crypt::encrypt($jadwal->kode_matpel) }}">
-                                                <input type="hidden" name="kode_guru" value="{{ Crypt::encrypt($jadwal->kode_guru) }}">
+                                                <input type="hidden" name="nip" value="{{ Crypt::encrypt($jadwal->nip) }}">
                                                 <input type="hidden" name="idkelas" value="{{ Crypt::encrypt($jadwal->idkelas) }}">
                                                 <input type="hidden" name="tanggal" value="{{ Crypt::encrypt($tanggal)}}">
                                                 <input type="submit" value="Simpan Presensi" class="btn btn-primary">

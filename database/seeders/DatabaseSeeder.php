@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Fitur;
-use App\Models\Guru;
+use App\Models\Staf;
 use App\Models\HakAkses;
 use App\Models\Jurusan;
 use App\Models\Kategori;
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Role::create([
-            'role' => 'Guru',
+            'role' => 'Staf',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -150,8 +150,8 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Data Guru',
-            'url' => '/pages/data-guru',
+            'menu' => 'Data Staf',
+            'url' => '/pages/data-staf',
             'posisi' => 2,
             'idkategori' => 2,
             'created_at' => now(),
@@ -207,17 +207,9 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Rekap Presensi Siswa',
-            'url' => '/pages/rekap-presensi-siswa',
-            'posisi' => 4,
-            'idkategori' => 3,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        Menu::create([
             'menu' => 'Matpel Pengampu',
             'url' => '/pages/matpel-pengampu',
-            'posisi' => 5,
+            'posisi' => 4,
             'idkategori' => 3,
             'created_at' => now(),
             'updated_at' => now()
@@ -225,7 +217,7 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Jadwal Mengajar',
             'url' => '/pages/jadwal-mengajar',
-            'posisi' => 6,
+            'posisi' => 5,
             'idkategori' => 3,
             'created_at' => now(),
             'updated_at' => now()
@@ -280,7 +272,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Menu::create([
             'menu' => 'Data Siswa',
-            'url' => '/pages/walikelas-siswa',
+            'url' => '/pages/walikelas/siswa',
             'posisi' => 1,
             'idkategori' => 5,
             'created_at' => now(),
@@ -514,10 +506,9 @@ class DatabaseSeeder extends Seeder
             'no_hp_ortu' => '888'
         ]);
 
-        Guru::create([
-            'kode_guru' => '1122233',
-            'nama' => 'Guru Satu',
-            'nip' => '22333444',
+        Staf::create([
+            'nip' => '1122233',
+            'nama' => 'Staf Satu',
             'alamat' => '-',
             'tempat_lahir' => '-',
             'tanggal_lahir' => '1991-03-12',
@@ -528,10 +519,9 @@ class DatabaseSeeder extends Seeder
             'iduser' => 2,
         ]);
 
-        Guru::create([
-            'kode_guru' => '1122234',
-            'nama' => 'Guru Dua',
-            'nip' => '22333445',
+        Staf::create([
+            'nip' => '1122234',
+            'nama' => 'Staf Dua',
             'alamat' => '-',
             'tempat_lahir' => '-',
             'tanggal_lahir' => '1991-03-12',

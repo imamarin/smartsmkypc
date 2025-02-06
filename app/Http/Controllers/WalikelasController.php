@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guru;
+use App\Models\Staf;
 use App\Models\Kelas;
 use App\Models\Rombel;
+use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use App\Models\Walikelas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WalikelasController extends Controller
 {
@@ -17,7 +19,7 @@ class WalikelasController extends Controller
     public function index(Request $request)
     {
         //
-        $data['guru'] = Guru::all();
+        $data['staf'] = Staf::all();
         $data['tahunajaran'] = TahunAjaran::orderBy('status', 'desc')->get();
         if ($request->isMethod('post')) {
             $data['walikelas'] = Kelas::whereHas('tahunajaran', function ($query) use ($request) {
@@ -47,7 +49,7 @@ class WalikelasController extends Controller
         $validate = $request->validate([
             'idtahunajaran' => 'required',
             'idkelas' => 'required',
-            'kode_guru' => 'required'
+            'nip' => 'required'
         ]);
 
         Walikelas::create($validate);
@@ -69,7 +71,7 @@ class WalikelasController extends Controller
     {
         //
         $validate = $request->validate([
-            'kode_guru' => 'required'
+            'nip' => 'required'
         ]);
 
         Walikelas::findOrFail($id)->update($validate);
@@ -85,5 +87,16 @@ class WalikelasController extends Controller
         Walikelas::findOrFail($id)->delete();
 
         return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
+
+    public function siswa()
+    {
+        $data['walikelas'] = Walikelas::where([
+            'nip' => Auth::user()->staf->nip,
+        ])->whereHas('tahunajaran', function ($query) {
+            $query->where('status', '1');
+        })->first();
+
+        return view('pages.walikelas.siswa', $data);
     }
 }
