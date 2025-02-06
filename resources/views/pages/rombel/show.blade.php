@@ -163,7 +163,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="pindahTingkatModal" tabindex="-1" aria-labelledby="pindahTingkatModalLabel" aria-hidden="true">
+<div class="modal modal-lg fade" id="pindahTingkatModal" tabindex="-1" aria-labelledby="pindahTingkatModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -176,26 +176,33 @@
                     <input type="hidden" id="subjectIdPindahTingkat" name="id">
                     <input type="hidden" id="nisn" name="nisn">
                     <input type="hidden" name="_method" id="formMethodPindahTingkat" value="POST">
-                    <div class="mb-3">
-                        <label for="idtahunajaran" class="form-label">Tahun Ajaran </label>
-                        <select name="idtahunajaran" id="idtahunajaran" class="form-control select2">
-                            @foreach ($tahunajaran as $item)
-                                @if($item->id < $idtahunajaran)
-                                <option value="{{ $item->id }}">{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="idtahunajaran" class="form-label">Tahun Ajaran </label>
+                                <select name="idtahunajaran" id="idtahunajaran" class="form-control select2">
+                                    @foreach ($tahunajaran as $item)
+                                        @if($item->id < $idtahunajaran)
+                                        <option value="{{ $item->id }}">{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">                                                 
+                            <div class="mb-3">
+                                <label for="idkelas" class="form-label">Kelas</label>
+                                <select name="idkelas" id="idkelas" class="form-control select2">
+                                    @foreach ($kelas as $item)
+                                        @if($item->tingkat < $tingkat)
+                                        <option value="{{ $item->id }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="idkelas" class="form-label">Kelas</label>
-                        <select name="idkelas" id="idkelas" class="form-control select2">
-                            @foreach ($kelas as $item)
-                                @if($item->tingkat < $tingkat)
-                                <option value="{{ $item->id }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
+
                     <div class="mb-3">
                         <label for="nisn" class="form-label">Siswa</label>
                         <table class="table display nowrap" id="example2">

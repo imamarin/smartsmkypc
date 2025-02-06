@@ -118,10 +118,10 @@ class RombelController extends Controller
         $kdkelas = $kelas->kelas;
         $tingkat = $kelas->tingkat;
         $tahunajaran = TahunAjaran::orderBy('status', 'desc')->get();
-        $siswa = Siswa::select('nisn', 'nama')->where('status', 1)->get();
         $kelas = Kelas::select('id', 'kelas', 'tingkat')->orderBy('tingkat', 'asc')->get();
         $rombel = Rombel::where(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran])->get();
         $idtahunajaran = $idtahunajaran;
+        $siswa = Siswa::select('nisn', 'nama')->where('status', 1)->whereNotIn('nisn', Rombel::where('idtahunajaran', $idtahunajaran)->pluck('nisn'))->get();
 
         $title = 'Data Kelas!';
         $text = "Yakin ingin menghapus data ini?";
@@ -139,8 +139,9 @@ class RombelController extends Controller
         foreach ($request->nisn as $key => $value) {
             Rombel::updateOrCreate([
                 'idtahunajaran' => $idtahunajaran,
-                'idkelas' => $idkelas,
                 'nisn' => $value
+            ], [
+                'idkelas' => $idkelas,
             ]);
         }
         return redirect()->back()->with('success', 'Data berhasil diproses');
