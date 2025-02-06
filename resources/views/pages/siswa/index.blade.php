@@ -105,7 +105,7 @@
                                                     value="{{ $item->status == 1 ? 0 : 1 }}">
                                             </form>
                                         </td>
-                                        <td>{{ $item->kelas }}</td>
+                                        <td>{{ $item->rombel[0]->kelas->kelas ?? '-' }}</td>
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('data-siswa.edit', $item->user->id) }}"

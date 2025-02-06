@@ -21,8 +21,13 @@ class SiswaController extends Controller
         $title = 'Hapus Siswa!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
-        
-        $data['siswa'] = Siswa::all();
+
+        $data['siswa'] = Siswa::with(['rombel' => function ($query) {
+            $query->whereHas('tahunajaran', function ($query) {
+                $query->where('status', 1)->limit(1);
+            });
+        }])->get();
+        // dd($data['siswa']);
         return view('pages.siswa.index', $data);
     }
 
