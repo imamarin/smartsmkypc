@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('nip')->references('nip')->on('stafs');
             $table->foreignId('idkelas')->references('id')->on('kelas');
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
+            $table->string('petugas_presensi', 20)->nullable();
             $table->timestamps();
         });
     }

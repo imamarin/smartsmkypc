@@ -20,9 +20,12 @@ class RombelController extends Controller
     {
         $tahunajaran = TahunAjaran::orderBy('status', 'desc')->get();
         $siswa = Siswa::select('nisn', 'nama')->where('status', 1)->get();
-        $kelas = Kelas::whereHas('tahunajaran', function ($query) {
-            $query->where('status', 1);
-        })->orderBy('tingkat', 'asc')->get();
+        $kelas = Kelas::with(['walikelas' => function ($query) {
+            $query->limit(1);
+        }])
+            ->whereHas('tahunajaran', function ($query) {
+                $query->where('status', 1);
+            })->orderBy('tingkat', 'asc')->get();
 
         $title = 'Data Kelas!';
         $text = "Yakin ingin menghapus data ini?";

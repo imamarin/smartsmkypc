@@ -71,13 +71,13 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}</td>
                                         <td>{{ $subject->kelas }}</td>
-                                        <td>{{ $subject->walikelas->staf->nama ?? '-' }}</td>
+                                        <td>{{ $subject->walikelas[0]->staf->nama ?? '-' }}</td>
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn {{ $subject->walikelas != null ? 'btn-secondary' : 'btn-primary' }} btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" 
-                                                data-id="{{  $subject->walikelas?->id }}"
-                                                data-kodestaf="{{  $subject->walikelas?->nip }}" 
+                                                data-id="{{  $subject->walikelas[0]->id ?? '' }}"
+                                                data-kodestaf="{{  $subject->walikelas[0]->nip ?? '' }}" 
                                                 data-idtahunajaran="{{ $subject->idtahunajaran }}"
                                                 data-tahunajaran="{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}"
                                                 data-kelas="{{ $subject->kelas }}"
@@ -86,7 +86,7 @@
                                                 {{ $subject->walikelas != null ? 'Edit Walikelas' : 'Tambahkan Walikelas' }}
                                             </button>
                                             @if($subject->walikelas != null)
-                                            <a href="{{ route('data-walikelas.destroy', $subject->walikelas->id) }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
+                                            <a href="{{ route('data-walikelas.destroy', $subject->walikelas[0]->id ?? '') }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                             @endif
                                         </td>
                                     </tr>

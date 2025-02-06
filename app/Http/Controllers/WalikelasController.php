@@ -10,6 +10,7 @@ use App\Models\TahunAjaran;
 use App\Models\Walikelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class WalikelasController extends Controller
 {
@@ -89,14 +90,53 @@ class WalikelasController extends Controller
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 
-    public function siswa()
+    public function siswa(Request $request)
     {
-        $data['walikelas'] = Walikelas::where([
-            'nip' => Auth::user()->staf->nip,
-        ])->whereHas('tahunajaran', function ($query) {
+
+        if ($request->idkelas) {
+            $where = [
+                'nip' => Auth::user()->staf->nip,
+                'idkelas' => $request->idkelas
+            ];
+        } else {
+            $where = [
+                'nip' => Auth::user()->staf->nip
+            ];
+        }
+
+        $data['kelas'] = Walikelas::whereHas('tahunajaran', function ($query) {
+            $query->where('status', '1');
+        })->get();
+
+        $data['walikelas'] = Walikelas::with(['kelas' =>  function ($query) {
+            $query->withCount([
+                'rombel as laki_count' => function ($query) {
+                    $query->whereHas('siswa', function ($query) {
+                        $query->where('jenis_kelamin', 'L');
+                    });
+                },
+                'rombel as perempuan_count' => function ($query) {
+                    $query->whereHas('siswa', function ($query) {
+                        $query->where('jenis_kelamin', 'P');
+                    });
+                },
+            ]);
+        }])->where($where)->whereHas('tahunajaran', function ($query) {
             $query->where('status', '1');
         })->first();
 
         return view('pages.walikelas.siswa', $data);
+    }
+
+    public function petugasPresensi(Request $request, String $id)
+    {
+        $id = Crypt::decrypt($id);
+
+        $walikelas = Walikelas::find($id);
+        $walikelas->update([
+            'petugas_presensi' => $request->nisn
+        ]);
+
+        return redirect()->route('walikelas.tahunajaran', ['idkelas' => $walikelas->idkelas])->with('success', 'Petugas presensi harian berhasil disimpan');
     }
 }

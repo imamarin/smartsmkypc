@@ -35,6 +35,6 @@ class Kelas extends Model
 
     public function walikelas()
     {
-        return $this->hasOne(Walikelas::class, 'idkelas');
+        return $this->hasMany(Walikelas::class, 'idkelas');
     }
 }
