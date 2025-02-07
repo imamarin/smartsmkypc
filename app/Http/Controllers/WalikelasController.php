@@ -106,7 +106,11 @@ class WalikelasController extends Controller
 
         $data['kelas'] = Walikelas::whereHas('tahunajaran', function ($query) {
             $query->where('status', '1');
-        })->get();
+        })->where($where)->get();
+
+        if ($data['kelas']->count() < 1) {
+            return redirect()->back()->with('warning', 'Walikelas tidak tersedia!');
+        }
 
         $data['walikelas'] = Walikelas::with(['kelas' =>  function ($query) {
             $query->withCount([

@@ -83,9 +83,9 @@
                                                 data-kelas="{{ $subject->kelas }}"
                                                 {{-- data-rombel="{{ $subject->id }}" --}}
                                                 data-idkelas="{{ $subject->id }}">
-                                                {{ $subject->walikelas != null ? 'Edit Walikelas' : 'Tambahkan Walikelas' }}
+                                                {{ isset($subject->walikelas[0]) ? 'Edit Walikelas' : 'Tambahkan Walikelas' }}
                                             </button>
-                                            @if($subject->walikelas != null)
+                                            @if(isset($subject->walikelas[0]) != null)
                                             <a href="{{ route('data-walikelas.destroy', $subject->walikelas[0]->id ?? '') }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                             @endif
                                         </td>

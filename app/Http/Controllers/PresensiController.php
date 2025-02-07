@@ -8,6 +8,7 @@ use App\Models\JadwalMengajar;
 use App\Models\Kelas;
 use App\Models\MatpelPengampu;
 use App\Models\Presensi;
+use App\Models\PresensiHarianSiswa;
 use App\Models\Rombel;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
@@ -468,6 +469,4 @@ class PresensiController extends Controller
 
         return view('pages.presensi.rekap-presensi-guru', $data);
     }
-
-    public function showPresensi(String $id) {}
 }

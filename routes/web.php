@@ -12,6 +12,7 @@ use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\MatpelPengampuController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\PresensiHarianController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RombelController;
 use App\Http\Controllers\SistemBlokController;
@@ -100,6 +101,12 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas');
         Route::post('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas.tahunajaran');
         Route::post('/walikelas/petugas-presensi/{id}', [WalikelasController::class, 'petugasPresensi'])->name('walikelas.petugaspresensi');
+        Route::get('/walikelas/presensi-harian-siswa', [PresensiHarianController::class, 'siswa'])->name('presensi-harian-siswa');
+        Route::post('/walikelas/presensi-harian-siswa', [PresensiHarianController::class, 'siswa'])->name('presensi-harian-siswa');
+        Route::get('/walikelas/rekap-presensi-harian-siswa', [PresensiHarianController::class, 'rekapSiswa'])->name('rekap-presensi-harian-siswa');
+        Route::post('/walikelas/rekap-presensi-harian-siswa', [PresensiHarianController::class, 'rekapSiswa'])->name('rekap-presensi-harian-siswa');
+        Route::get('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'create'])->name('presensi-harian-siswa-create');
+        Route::post('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'store'])->name('presensi-harian-siswa-store');
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');

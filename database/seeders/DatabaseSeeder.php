@@ -280,7 +280,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Menu::create([
             'menu' => 'Presensi Harian Siswa',
-            'url' => '/pages/presensi-harian-siswa',
+            'url' => '/pages/walikelas/presensi-harian-siswa',
             'posisi' => 2,
             'idkategori' => 5,
             'created_at' => now(),
@@ -288,7 +288,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Menu::create([
             'menu' => 'Rekap Presensi Harian',
-            'url' => '/pages/rekap-presensi-harian-siswa',
+            'url' => '/pages/walikelas/rekap-presensi-harian-siswa',
             'posisi' => 3,
             'idkategori' => 5,
             'created_at' => now(),

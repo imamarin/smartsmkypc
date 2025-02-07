@@ -80,10 +80,10 @@ class SistemBlokController extends Controller
     {
         $id = Crypt::decrypt($id);
         SistemBlok::query()->update([
-            'status' => 0
+            'status' => '0'
         ]);
         SistemBlok::find($id)->update([
-            'status' => 1
+            'status' => '1'
         ]);
 
         return redirect()->back()->with('success', 'Status Berhasil Diubah');
