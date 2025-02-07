@@ -20,14 +20,12 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-body">
                     <p>Selamat datang di fasilitas layanan akademik SMK YPC Tasikmalaya.
                         Fasilitas ini dirancang sebagai salah satu bentuk layanan informasi yang ditujukan untuk seluruh
                         pihak yang terkait dengan SMK YPC Tasikmalaya. Kami berharap fasilitas ini dapat mempermudah akses
                         informasi bagi seluruh jajaran secara efektif dan efisien.
                     </p>
-                </div><!-- end card header -->
-                <div class="card-body">
                 </div>
             </div>
         </div>
