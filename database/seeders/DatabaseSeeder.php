@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Role::create([
-            'role' => 'Staf',
+            'role' => 'Guru',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -508,7 +508,7 @@ class DatabaseSeeder extends Seeder
 
         Staf::create([
             'nip' => '1122233',
-            'nama' => 'Staf Satu',
+            'nama' => 'Guru Satu',
             'alamat' => '-',
             'tempat_lahir' => '-',
             'tanggal_lahir' => '1991-03-12',
@@ -521,7 +521,7 @@ class DatabaseSeeder extends Seeder
 
         Staf::create([
             'nip' => '1122234',
-            'nama' => 'Staf Dua',
+            'nama' => 'Guru Dua',
             'alamat' => '-',
             'tempat_lahir' => '-',
             'tanggal_lahir' => '1991-03-12',
