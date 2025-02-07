@@ -59,14 +59,14 @@
                                         <td>{{ $item->siswa->jenis_kelamin }}</td>
                                         <td>
                                             <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#movingClassModal" data-id="{{ $item->id }}"
+                                                data-bs-target="#movingClassModal" data-id="{{ Crypt::encrypt($item->id) }}"
                                                 data-nisn="{{ $item->nisn }}"
                                                 data-idkelas="{{ $item->idkelas }}"
                                                 data-idtahunajaran="{{ $item->kelas->idtahunajaran }}"
                                                 data-subject="pindahkelas">
                                                 Pindah Kelas
                                             </button>
-                                            <a href="{{ route('data-rombel.destroy', $item->id) }}"
+                                            <a href="{{ route('data-rombel.destroy', Crypt::encrypt($item->id)) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                         </td>
                                     </tr>
@@ -150,7 +150,9 @@
                         <label for="idkelas" class="form-label">Kelas</label>
                         <select name="idkelas" id="idkelas" class="form-control select2">
                             @foreach ($kelas as $item)
+                                @if($tingkat == $item->tingkat)
                                 <option value="{{ $item->id }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
@@ -170,7 +172,7 @@
                 <h5 class="modal-title" id="pindahTingkatModalLabel">Pindah Tingkat</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="pindahTingkatForm" action="{{ route('data-rombel.pindahTingkat',[$idkelas,$idtahunajaran]) }}" method="POST">
+            <form id="pindahTingkatForm" action="{{ route('data-rombel.pindahTingkat', Crypt::encrypt($idkelas.'*'.$idtahunajaran)) }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" id="subjectIdPindahTingkat" name="id">

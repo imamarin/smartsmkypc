@@ -58,7 +58,7 @@
                                     {{ $item->walikelas[0]->staf->nama ?? '-'}}
                                 </td>
                                 <td>
-                                    <a href="{{ route('data-rombel.showStudents', [$item->id, $item->idtahunajaran]) }}"
+                                    <a href="{{ route('data-rombel.showStudents', Crypt::encrypt($item->id.'*'.$item->idtahunajaran)) }}"
                                         class="btn btn-sm btn-info">Lihat Siswa</a>
                                 </td>
                             </tr>

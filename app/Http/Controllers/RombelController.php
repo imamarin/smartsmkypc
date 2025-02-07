@@ -7,7 +7,9 @@ use App\Models\Kelas;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -55,14 +57,11 @@ class RombelController extends Controller
 
         foreach ($request->nisn as $key => $value) {
             # code...
-            Rombel::firstOrCreate([
+            Rombel::upadteOrCreate([
                 'idtahunajaran' => $request->idtahunajaran,
-                'idkelas' => $request->idkelas,
                 'nisn' => $value
             ], [
-                'idtahunajaran' => $request->idtahunajaran,
                 'idkelas' => $request->idkelas,
-                'nisn' => $value
             ]);
         }
 
@@ -91,11 +90,19 @@ class RombelController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $request->validate([
             'nisn' => 'required',
             'idkelas' => 'required',
             'idtahunajaran' => 'required'
         ]);
+
+
         Rombel::find($id)->update($request->all());
         return redirect()->back()->with('success', 'Data berhasil diubah');
     }
@@ -110,9 +117,16 @@ class RombelController extends Controller
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 
-    public function showStudents(String $idkelas, String $idtahunajaran)
+    public function showStudents(String $id)
     {
         //
+        try {
+            $id = explode('*', Crypt::decrypt($id));
+            $idkelas = $id[0];
+            $idtahunajaran = $id[1];
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
         $kelas = Kelas::find($idkelas);
         $idkelas = $kelas->id;
         $kdkelas = $kelas->kelas;
@@ -130,11 +144,18 @@ class RombelController extends Controller
         return view('pages.rombel.show', compact('rombel', 'siswa', 'kelas', 'tahunajaran', 'idkelas', 'kdkelas', 'idtahunajaran', 'tingkat'));
     }
 
-    public function pindahTingkat(Request $request, String $idkelas, String $idtahunajaran)
+    public function pindahTingkat(Request $request, String $id)
     {
         $request->validate([
             'nisn' => 'required'
         ]);
+
+        try {
+            $id = Crypt::decrypt($id);
+            $idkelas = $id[0];
+            $idtahunajaran = $id[1];
+        } catch (DecryptException $e) {
+        }
 
         foreach ($request->nisn as $key => $value) {
             Rombel::updateOrCreate([

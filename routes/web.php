@@ -54,10 +54,10 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/data-rombel', RombelController::class);
         Route::post('/data-rombel/siswarombel', [RombelController::class, 'SiswaRombel'])->name('data-rombel.siswaRombel');
         Route::post('/data-rombel/deletesiswa', [RombelController::class, 'deleteSiswa'])->name('data-rombel.deleteSiswa');
-        Route::post('/data-rombel/pindahtingkat/{idkelas}/{idtahunajaran}', [RombelController::class, 'pindahTingkat'])->name('data-rombel.pindahTingkat');
+        Route::post('/data-rombel/pindahtingkat/{id}', [RombelController::class, 'pindahTingkat'])->name('data-rombel.pindahTingkat');
         Route::post('/data-rombel/updaterombel/{idkelas}/{idtahunajaran}', [RombelController::class, 'updateRombel'])->name('data-rombel.updateRombel');
         Route::get('/data-rombel/export/data', [RombelController::class, 'export'])->name('data-rombel.export');
-        Route::get('/data-rombel/{idkelas}/{idtahunajaran}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
+        Route::get('/data-rombel/siswa/{id}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
 
         //data-mata-pelajaran
         Route::resource('/data-mata-pelajaran', MataPelajaranController::class);

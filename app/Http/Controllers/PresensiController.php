@@ -269,6 +269,8 @@ class PresensiController extends Controller
                 foreach ($presensi as $value) {
                     # code...
                     $matpel = $value->matpel->matpel;
+
+                    //mengumpulka data mata pelajaran
                     if (!in_array($matpel, $matpel_presensi)) {
                         array_push($matpel_presensi, $matpel);
                     }
