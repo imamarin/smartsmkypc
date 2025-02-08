@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('kompetensi');
             $table->string('program_keahlian');
             $table->string('bidang_keahlian');
-            $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
+            // $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->timestamps();
         });
     }
