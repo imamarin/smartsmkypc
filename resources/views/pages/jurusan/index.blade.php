@@ -39,11 +39,10 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table display nowrap" id="example">
+                        <table class="table display nowrap" id="example2">
                             <thead>
                                 <tr>
                                     <th style="width: 5%">#</th>
-                                    <th>Tahun Ajaran</th>
                                     <th>Jurusan</th>
                                     <th>Kompetensi</th>
                                     <th>Program Keahlian</th>
@@ -55,9 +54,6 @@
                                 @foreach ($jurusan as $key => $item)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $item->tahunajaran->awal_tahun_ajaran }}/{{ $item->tahunajaran->akhir_tahun_ajaran }}
-                                            ({{ $item->tahunajaran->semester == 'ganjil' ? 'Ganjil' : 'Genap' }})
-                                        </td>
                                         <td>{{ $item->jurusan }}</td>
                                         <td>{{ $item->kompetensi }}</td>
                                         <td>{{ $item->program_keahlian }}</td>

@@ -25,7 +25,7 @@
         <div class="card">
             <div class="card-header d-flex align-items-center">
                 <div class="col">
-                    <h4 class="card-title">List Mata Pelajaran</h4>
+                    <h4 class="card-title">Data Kelas</h4>
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
@@ -39,7 +39,7 @@
             </div><!-- end card header -->
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table display nowrap" id="example">
+                    <table class="table display nowrap" id="example2">
                         <thead>
                             <tr>
                                 <th style="width: 5%">#</th>

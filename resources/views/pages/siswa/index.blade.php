@@ -37,7 +37,7 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table display nowrap" id="example">
+                        <table class="table display nowrap" id="example2">
                             <thead>
                                 <tr>
                                     <th>#</th>

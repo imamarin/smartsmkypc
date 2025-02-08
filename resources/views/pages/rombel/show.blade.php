@@ -207,7 +207,7 @@
 
                     <div class="mb-3">
                         <label for="nisn" class="form-label">Siswa</label>
-                        <table class="table display nowrap" id="example2">
+                        <table class="table display nowrap" id="example3">
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" id="select-all"></th>
@@ -267,7 +267,7 @@
         });
 
         $(document).ready(function(){
-            let table = new DataTable("#example2", {
+            let table = new DataTable("#example3", {
                 ajax: {
                     url: "{{ route('data-rombel.siswaRombel') }}",
                     data: function(d){

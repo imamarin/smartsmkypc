@@ -37,7 +37,7 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table display nowrap" id="example">
+                        <table class="table display nowrap" id="example2">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -67,7 +67,7 @@
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->nuptk ?? '-' }}</td>
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
-                                            {{ $item->alamat }}</td>
+                                            {{ strtolower($item->alamat) }}</td>
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->no_hp }}</td>
                                         <td>

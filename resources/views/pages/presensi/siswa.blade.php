@@ -102,7 +102,7 @@
                             
                         </li>
                     </ul>
-                    <table class="table display nowrap" id="example2">
+                    <table class="table display nowrap" id="example3">
                         <thead>
                             <th>#</th>
                             <th>Tanggal Presensi</th>
@@ -147,7 +147,7 @@
         })
 
     $(document).ready(function() {
-        $('#example2').DataTable({
+        $('#example3').DataTable({
             searching: false,
             lengthChange: false
         });
