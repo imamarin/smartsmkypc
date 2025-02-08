@@ -22,7 +22,8 @@ class SiswaController extends Controller
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
 
-        $data['siswa'] = Siswa::where('status', 1)->get();
+        $data['siswa'] = Siswa::select('nisn', 'nama', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat_siswa', 'no_hp_siswa', 'status', 'iduser')
+            ->with(['user:id'])->where('status', 1)->get();
 
         return view('pages.siswa.index', $data);
     }
