@@ -408,103 +408,103 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        TahunAjaran::create([
-            'awal_tahun_ajaran' => '2023',
-            'akhir_tahun_ajaran' => '2024',
-            'status' => 1,
-            'semester' => 'ganjil',
-            'tgl_mulai' => now(),
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        Jurusan::create([
-            'idtahunajaran' => 1,
-            'jurusan' => 'RPL',
-            'kompetensi' => 'Rekayan Perangkat Lunak',
-            'program_keahlian' => 'Teknik Komputer dan Informatika',
-            'bidang_keahlian' => 'Teknik Informasi dan Komunikasi',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        Kelas::create([
-            'idtahunajaran' => 1,
-            'kelas' => 'X RPL 1',
-            'tingkat' => 'X',
-            'idjurusan' => 1,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        Kelas::create([
-            'idtahunajaran' => 1,
-            'kelas' => 'X RPL 2',
-            'tingkat' => 'X',
-            'idjurusan' => 1,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        Kelas::create([
-            'idtahunajaran' => 1,
-            'kelas' => 'XI RPL 1',
-            'tingkat' => 'XI',
-            'idjurusan' => 1,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        Kelas::create([
-            'idtahunajaran' => 1,
-            'kelas' => 'XI RPL 2',
-            'tingkat' => 'XI',
-            'idjurusan' => 1,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        Siswa::create([
-            'nisn' => '12341234',
-            'nis' => '12345',
-            'nama' => 'Siswa Test 1',
-            'iduser' => 4,
-            'idtahunajaran' => 1,
-            'nik' => '77777',
-            'asal_sekolah' => 'smp',
-            'alamat_siswa' => 'tasik',
-            'tempat_lahir' => 'Tasikmalaya',
-            'tanggal_lahir' => '1991-03-12',
-            'jenis_kelamin' => 'L',
-            'diterima_tanggal' => '2024-07-01',
-            'kelas' => 'X RPL 1',
-            'no_hp_siswa' => '67667',
-            'status' => '1',
-            'nama_ayah' => 'ayah',
-            'nama_ibu' => 'ibu',
-            'pekerjaan_ayah' => '-',
-            'pekerjaan_ibu' => '-',
-            'alamat_ortu' => '-',
-            'no_hp_ortu' => '888'
-        ]);
+        // TahunAjaran::create([
+        //     'awal_tahun_ajaran' => '2023',
+        //     'akhir_tahun_ajaran' => '2024',
+        //     'status' => 1,
+        //     'semester' => 'ganjil',
+        //     'tgl_mulai' => now(),
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
+        // Jurusan::create([
+        //     'idtahunajaran' => 1,
+        //     'jurusan' => 'RPL',
+        //     'kompetensi' => 'Rekayan Perangkat Lunak',
+        //     'program_keahlian' => 'Teknik Komputer dan Informatika',
+        //     'bidang_keahlian' => 'Teknik Informasi dan Komunikasi',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
+        // Kelas::create([
+        //     'idtahunajaran' => 1,
+        //     'kelas' => 'X RPL 1',
+        //     'tingkat' => 'X',
+        //     'idjurusan' => 1,
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
+        // Kelas::create([
+        //     'idtahunajaran' => 1,
+        //     'kelas' => 'X RPL 2',
+        //     'tingkat' => 'X',
+        //     'idjurusan' => 1,
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
+        // Kelas::create([
+        //     'idtahunajaran' => 1,
+        //     'kelas' => 'XI RPL 1',
+        //     'tingkat' => 'XI',
+        //     'idjurusan' => 1,
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
+        // Kelas::create([
+        //     'idtahunajaran' => 1,
+        //     'kelas' => 'XI RPL 2',
+        //     'tingkat' => 'XI',
+        //     'idjurusan' => 1,
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
+        // Siswa::create([
+        //     'nisn' => '12341234',
+        //     'nis' => '12345',
+        //     'nama' => 'Siswa Test 1',
+        //     'iduser' => 4,
+        //     'idtahunajaran' => 1,
+        //     'nik' => '77777',
+        //     'asal_sekolah' => 'smp',
+        //     'alamat_siswa' => 'tasik',
+        //     'tempat_lahir' => 'Tasikmalaya',
+        //     'tanggal_lahir' => '1991-03-12',
+        //     'jenis_kelamin' => 'L',
+        //     'diterima_tanggal' => '2024-07-01',
+        //     'kelas' => 'X RPL 1',
+        //     'no_hp_siswa' => '67667',
+        //     'status' => '1',
+        //     'nama_ayah' => 'ayah',
+        //     'nama_ibu' => 'ibu',
+        //     'pekerjaan_ayah' => '-',
+        //     'pekerjaan_ibu' => '-',
+        //     'alamat_ortu' => '-',
+        //     'no_hp_ortu' => '888'
+        // ]);
 
-        Siswa::create([
-            'nisn' => '12341235',
-            'nis' => '12346',
-            'nama' => 'Siswa Test 2',
-            'iduser' => 4,
-            'idtahunajaran' => 1,
-            'nik' => '77778',
-            'asal_sekolah' => 'smp',
-            'alamat_siswa' => 'tasik',
-            'tempat_lahir' => 'Tasikmalaya',
-            'tanggal_lahir' => '1991-03-12',
-            'jenis_kelamin' => 'L',
-            'diterima_tanggal' => '2024-07-01',
-            'kelas' => 'X RPL 1',
-            'no_hp_siswa' => '67667',
-            'status' => '1',
-            'nama_ayah' => 'ayah',
-            'nama_ibu' => 'ibu',
-            'pekerjaan_ayah' => '-',
-            'pekerjaan_ibu' => '-',
-            'alamat_ortu' => '-',
-            'no_hp_ortu' => '888'
-        ]);
+        // Siswa::create([
+        //     'nisn' => '12341235',
+        //     'nis' => '12346',
+        //     'nama' => 'Siswa Test 2',
+        //     'iduser' => 4,
+        //     'idtahunajaran' => 1,
+        //     'nik' => '77778',
+        //     'asal_sekolah' => 'smp',
+        //     'alamat_siswa' => 'tasik',
+        //     'tempat_lahir' => 'Tasikmalaya',
+        //     'tanggal_lahir' => '1991-03-12',
+        //     'jenis_kelamin' => 'L',
+        //     'diterima_tanggal' => '2024-07-01',
+        //     'kelas' => 'X RPL 1',
+        //     'no_hp_siswa' => '67667',
+        //     'status' => '1',
+        //     'nama_ayah' => 'ayah',
+        //     'nama_ibu' => 'ibu',
+        //     'pekerjaan_ayah' => '-',
+        //     'pekerjaan_ibu' => '-',
+        //     'alamat_ortu' => '-',
+        //     'no_hp_ortu' => '888'
+        // ]);
 
         Staf::create([
             'nip' => '1122233',
@@ -519,73 +519,73 @@ class DatabaseSeeder extends Seeder
             'iduser' => 2,
         ]);
 
-        Staf::create([
-            'nip' => '1122234',
-            'nama' => 'Guru Dua',
-            'alamat' => '-',
-            'tempat_lahir' => '-',
-            'tanggal_lahir' => '1991-03-12',
-            'jenis_kelamin' => 'L',
-            'no_hp' => '032434',
-            'status' => '1',
-            'nuptk' => '12324',
-            'iduser' => 3,
-        ]);
+        // Staf::create([
+        //     'nip' => '1122234',
+        //     'nama' => 'Guru Dua',
+        //     'alamat' => '-',
+        //     'tempat_lahir' => '-',
+        //     'tanggal_lahir' => '1991-03-12',
+        //     'jenis_kelamin' => 'L',
+        //     'no_hp' => '032434',
+        //     'status' => '1',
+        //     'nuptk' => '12324',
+        //     'iduser' => 3,
+        // ]);
 
-        Matpel::create([
-            'kode_matpel' => 'MTK',
-            'matpel' => 'Matematika',
-            'kelompok' => 'adaptif',
-            'matpels_kode' => null,
-        ]);
+        // Matpel::create([
+        //     'kode_matpel' => 'MTK',
+        //     'matpel' => 'Matematika',
+        //     'kelompok' => 'adaptif',
+        //     'matpels_kode' => null,
+        // ]);
 
-        Matpel::create([
-            'kode_matpel' => 'BIND',
-            'matpel' => 'Bahasa Indonesia',
-            'kelompok' => 'normatif',
-            'matpels_kode' => null,
-        ]);
+        // Matpel::create([
+        //     'kode_matpel' => 'BIND',
+        //     'matpel' => 'Bahasa Indonesia',
+        //     'kelompok' => 'normatif',
+        //     'matpels_kode' => null,
+        // ]);
 
-        Matpel::create([
-            'kode_matpel' => 'KKRPL',
-            'matpel' => 'Konsentrasi Keahlian RPL',
-            'kelompok' => 'kejuruan',
-            'matpels_kode' => null,
-        ]);
+        // Matpel::create([
+        //     'kode_matpel' => 'KKRPL',
+        //     'matpel' => 'Konsentrasi Keahlian RPL',
+        //     'kelompok' => 'kejuruan',
+        //     'matpels_kode' => null,
+        // ]);
 
-        Matpel::create([
-            'kode_matpel' => 'KKTKJ',
-            'matpel' => 'Konsentrasi Keahlian TKJ',
-            'kelompok' => 'kejuruan',
-            'matpels_kode' => null,
-        ]);
+        // Matpel::create([
+        //     'kode_matpel' => 'KKTKJ',
+        //     'matpel' => 'Konsentrasi Keahlian TKJ',
+        //     'kelompok' => 'kejuruan',
+        //     'matpels_kode' => null,
+        // ]);
 
-        Matpel::create([
-            'kode_matpel' => 'PWCS',
-            'matpel' => 'Pemrograman Web Cliet Side',
-            'kelompok' => 'kejuruan',
-            'matpels_kode' => 'KKRPL',
-        ]);
+        // Matpel::create([
+        //     'kode_matpel' => 'PWCS',
+        //     'matpel' => 'Pemrograman Web Cliet Side',
+        //     'kelompok' => 'kejuruan',
+        //     'matpels_kode' => 'KKRPL',
+        // ]);
 
-        Matpel::create([
-            'kode_matpel' => 'PWSS',
-            'matpel' => 'Pemrograman Web Server Side',
-            'kelompok' => 'kejuruan',
-            'matpels_kode' => 'KKRPL',
-        ]);
+        // Matpel::create([
+        //     'kode_matpel' => 'PWSS',
+        //     'matpel' => 'Pemrograman Web Server Side',
+        //     'kelompok' => 'kejuruan',
+        //     'matpels_kode' => 'KKRPL',
+        // ]);
 
-        Matpel::create([
-            'kode_matpel' => 'AS',
-            'matpel' => 'Administrasi Server',
-            'kelompok' => 'kejuruan',
-            'matpels_kode' => 'KKTKJ',
-        ]);
+        // Matpel::create([
+        //     'kode_matpel' => 'AS',
+        //     'matpel' => 'Administrasi Server',
+        //     'kelompok' => 'kejuruan',
+        //     'matpels_kode' => 'KKTKJ',
+        // ]);
 
-        Matpel::create([
-            'kode_matpel' => 'KJ',
-            'matpel' => 'Keamanan Jaringan',
-            'kelompok' => 'kejuruan',
-            'matpels_kode' => 'KKTKJ',
-        ]);
+        // Matpel::create([
+        //     'kode_matpel' => 'KJ',
+        //     'matpel' => 'Keamanan Jaringan',
+        //     'kelompok' => 'kejuruan',
+        //     'matpels_kode' => 'KKTKJ',
+        // ]);
     }
 }
