@@ -13,24 +13,23 @@ return new class extends Migration
     {
         Schema::create('siswas', function (Blueprint $table) {
             $table->string('nisn', 20)->primary();
-            $table->string('nis')->unique();
+            $table->string('nis');
             $table->string('nama');
-            $table->string('tempat_lahir');
-            $table->date('tanggal_lahir');
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
             $table->enum('jenis_kelamin', ['L', 'P']);
-            $table->string('nik')->unique();
-            $table->string('asal_sekolah');
+            $table->string('nik')->nullable();
+            $table->string('asal_sekolah')->nullable();
             $table->string('no_hp_siswa')->nullable();
-            $table->string('nama_ayah');
-            $table->string('nama_ibu');
-            $table->string('pekerjaan_ayah');
-            $table->string('pekerjaan_ibu');
+            $table->string('nama_ayah')->nullable();
+            $table->string('nama_ibu')->nullable();
+            $table->string('pekerjaan_ayah')->nullable();
+            $table->string('pekerjaan_ibu')->nullable();
             $table->string('no_hp_ortu')->nullable();
-            $table->text('alamat_ortu');
-            $table->text('alamat_siswa');
-            $table->string('diterima_tanggal');
+            $table->text('alamat_ortu')->nullable();
+            $table->text('alamat_siswa')->nullable();
+            $table->string('diterima_tanggal')->nullable();
             $table->integer('status')->default(1);
-            $table->string('kelas');
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->foreignId('iduser')->references('id')->on('users');
             $table->timestamps();
