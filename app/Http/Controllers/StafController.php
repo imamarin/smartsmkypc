@@ -17,7 +17,7 @@ class StafController extends Controller
      */
     public function index()
     {
-        $data['staf'] = Staf::all();
+        $data['staf'] = Staf::where('status', 1)->orderBy('nip', 'desc')->get();
         $title = 'Hapus Staf!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
