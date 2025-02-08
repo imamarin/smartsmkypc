@@ -12,7 +12,7 @@ class TahunAjaranController extends Controller
      */
     public function index()
     {
-        $data['tahun_ajaran'] = TahunAjaran::all();
+        $data['tahun_ajaran'] = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
         $title = 'Data Tahun Ajaran!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
