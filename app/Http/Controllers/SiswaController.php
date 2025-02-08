@@ -22,12 +22,8 @@ class SiswaController extends Controller
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
 
-        $data['siswa'] = Siswa::with(['rombel' => function ($query) {
-            $query->whereHas('tahunajaran', function ($query) {
-                $query->where('status', 1)->limit(1);
-            });
-        }])->get();
-        // dd($data['siswa']);
+        $data['siswa'] = Siswa::where('status', 1)->get();
+
         return view('pages.siswa.index', $data);
     }
 
@@ -62,7 +58,6 @@ class SiswaController extends Controller
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
             'diterima_tanggal' => 'required',
-            'kelas' => 'required',
             'idtahunajaran' => 'required',
             'status' => 'required',
             'nama_ayah' => 'required',
@@ -150,7 +145,6 @@ class SiswaController extends Controller
                 'tanggal_lahir' => 'required',
                 'jenis_kelamin' => 'required',
                 'diterima_tanggal' => 'required',
-                'kelas' => 'required',
                 'no_hp_siswa' => 'required',
                 'idtahunajaran' => 'required',
                 'status' => 'required',
