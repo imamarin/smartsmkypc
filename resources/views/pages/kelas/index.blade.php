@@ -55,10 +55,9 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $item->tahunajaran->awal_tahun_ajaran }}/{{ $item->tahunajaran->akhir_tahun_ajaran }}
-                                    ({{ $item->tahunajaran->semester == 'ganjil' ? 'Ganjil' : 'Genap' }})
                                 </td>
                                 <td>{{ $item->kelas }}</td>
-                                <td>{{ ($item->tingkat == 'X' ? '10' : $item->tingkat == 'XI') ? '11' : '12' }}
+                                <td>{{ $item->tingkat }}
                                 </td>
                                 <td>{{ $item->jurusan->jurusan }}</td>
                                 <td>
