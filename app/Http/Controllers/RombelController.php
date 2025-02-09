@@ -113,8 +113,13 @@ class RombelController extends Controller
     public function destroy(string $id)
     {
         //
-        Rombel::find($id)->delete();
-        return redirect()->back()->with('success', 'Data berhasil dihapus');
+        try {
+            $id = Crypt::decrypt($id);
+            Rombel::find($id)->delete();
+            return redirect()->back()->with('success', 'Data berhasil dihapus');
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Data gagal dihapus');
+        }
     }
 
     public function showStudents(String $id)
