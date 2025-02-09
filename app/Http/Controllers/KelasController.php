@@ -16,7 +16,9 @@ class KelasController extends Controller
      */
     public function index()
     {
-        $data['kelas'] = Kelas::with('tahunAjaran')->get();
+        $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) {
+            $query->where('status', 1);
+        })->get();
         $data['tahun_ajaran'] = TahunAjaran::all();
         $data['jurusan'] = Jurusan::all();
         $title = 'Data Kelas!';
@@ -86,9 +88,15 @@ class KelasController extends Controller
      */
     public function destroy(string $id)
     {
-        $kelas = Kelas::find($id);
-        $kelas->delete();
-        return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        try {
+            //code...
+            $kelas = Kelas::find($id);
+            $kelas->delete();
+            return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Data Gagal Dihapus');
+        }
     }
 
     public function export()
