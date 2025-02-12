@@ -31,6 +31,11 @@ class Staf extends Model
         return $this->hasMany(Presensi::class, 'nip', 'nip');
     }
 
+    public function nilaisiswa()
+    {
+        return $this->hasMany(NilaiSiswa::class, 'nip', 'nip');
+    }
+
     protected $casts = [
         'id' => 'string',
     ];

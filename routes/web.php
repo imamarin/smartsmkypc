@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MasukMengajarController;
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\MatpelPengampuController;
+use App\Http\Controllers\NilaiSiswaController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PresensiHarianController;
@@ -114,6 +115,11 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/walikelas/rekap-presensi-harian-siswa', [PresensiHarianController::class, 'rekapSiswa'])->name('rekap-presensi-harian-siswa');
         Route::get('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'create'])->name('presensi-harian-siswa-create');
         Route::post('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'store'])->name('presensi-harian-siswa-store');
+        //pengolahan nilai siswa
+        Route::get('/pengolahan-nilai-siswa', [NilaiSiswaController::class, 'index'])->name('nilai-siswa');
+        Route::post('/pengolahan-nilai-siswa', [NilaiSiswaController::class, 'store'])->name('nilai-siswa-store');
+        Route::post('/pengolahan-nilai-siswa/{id}', [NilaiSiswaController::class, 'update'])->name('nilai-siswa-update');
+        Route::delete('/pengolahan-nilai-siswa/{id}', [NilaiSiswaController::class, 'destroy'])->name('nilai-siswa-destroy');
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');

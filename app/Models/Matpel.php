@@ -35,4 +35,9 @@ class Matpel extends Model
     {
         return $this->hasMany(Matpel::class, 'matpels_kode', 'kode_matpel');
     }
+
+    public function nilaisiswa()
+    {
+        return $this->hasMany(NilaiSiswa::class, 'kode_matpel', 'kode_matpel');
+    }
 }

@@ -37,4 +37,9 @@ class Kelas extends Model
     {
         return $this->hasMany(Walikelas::class, 'idkelas');
     }
+
+    public function nilaisiswa()
+    {
+        return $this->hasMany(NilaiSiswa::class, 'idkelas');
+    }
 }
