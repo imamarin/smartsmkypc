@@ -29,7 +29,11 @@
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
-                            <a href="#" class="btn btn-danger">Kunci Jadwal Mengajar</a>
+                            @if($tahunajaran->kunci_jadwal == '1')
+                            <a href="{{ route('kunci', Crypt::encrypt($tahunajaran->id)) }}" class="btn btn-success">Jadwal Mengajar Dibuka</a>
+                            @else
+                            <a href="{{ route('kunci', Crypt::encrypt($tahunajaran->id)) }}" class="btn btn-danger">Jadwal Mengajar Dikunci</a>
+                            @endif
                         </div>
                     </div>
                 </div><!-- end card header -->

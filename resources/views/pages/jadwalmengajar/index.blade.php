@@ -32,9 +32,11 @@
                             <a href="#" class="btn btn-info me-2">Export Data</a>
                             <a href="#" class="btn btn-success me-2">Import Data</a>
                             <!-- Button to trigger modal -->
+                            @if(!$kunci_jadwal)
                             <button class="btn btn-primary" 
                             data-bs-toggle="modal" 
                             data-bs-target="#addSubjectModal">TambahData</button>
+                            @endif
                         </div>
                     </div>
                 </div><!-- end card header -->
@@ -82,6 +84,7 @@
                                         <td>{{ $subject->kelas->kelas }}</td>
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
+                                            @if(!$kunci_jadwal)
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" 
                                                 data-id="{{ Crypt::encrypt($subject->id) }}"
@@ -96,6 +99,9 @@
                                             </button>
                                             <a href="{{ route('jadwal-mengajar.destroy', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
+                                            @else
+                                            <button type="button" class="btn btn-sm btn-warning">Jadwal Dikunci</button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

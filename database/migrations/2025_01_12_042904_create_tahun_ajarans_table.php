@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('semester');
             $table->date('tgl_mulai');
             $table->integer('status')->nullable()->default(0);
+            $table->boolean('kunci_jadwal')->nullable()->default(0);
             $table->timestamps();
         });
     }

@@ -9,6 +9,7 @@ use App\Models\Kelas;
 use App\Models\MatpelPengampu;
 use App\Models\SistemBlok;
 use App\Models\TahunAjaran;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -56,6 +57,7 @@ class JadwalMengajarController extends Controller
             ])->orderBy('jam_pelajarans.hari')
             ->orderBy('jam_pelajarans.jam')->get();
 
+        $data['kunci_jadwal'] = $tahunajaran->kunci_jadwal;
         $data['staf'] = Staf::where('nip', Auth::user()->staf->nip)->first();
         return view('pages.jadwalmengajar.index', $data);
     }
@@ -67,6 +69,7 @@ class JadwalMengajarController extends Controller
     {
         //
         $nip = Crypt::decrypt($request->nip);
+
         $validate = $request->validate([
             'kode_matpel' => 'required',
             'hari' => 'required',
@@ -217,10 +220,38 @@ class JadwalMengajarController extends Controller
         })->values();
         $data['tahunajaran'] = $tahunajaran;
 
+        $jadwalmengajar = JadwalMengajar::first();
+        if ($jadwalmengajar->kunci == 0) {
+            $data['kunci'] = "ditutup";
+        } else {
+            $data['kunci'] = "dibuka";
+        }
+
         return view('pages.jadwalmengajar.guru', $data);
     }
 
-    public function getJamPel(){
+    public function getJamPel() {}
 
+    public function kunci(String $id)
+    {
+        //
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('success', $e->getMessage());
+        }
+
+        $tahunajaran = TahunAjaran::find($id);
+        $tahunajaran->update([
+            'kunci_jadwal' => DB::raw('1 - kunci_jadwal')
+        ]);
+
+        if ($tahunajaran->kunci_jadwal == '0') {
+            $kunci = "ditutup";
+        } else {
+            $kunci = "dibuka";
+        }
+
+        return redirect()->back()->with('success', 'Jadwal mangajar berhasil di ' . $kunci);
     }
 }
