@@ -113,4 +113,13 @@ class JamPelajaranController extends Controller
         JamPelajaran::whereIn('id', $request->jampel)->delete();
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
+
+    public function getJam(String $id)
+    {
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+        $jampel = JamPelajaran::select('jam')->where('idtahunajaran', $tahunajaran->id)->where('hari', $id)->orderBy('jam')->get();
+        return response()->json([
+            'data' => $jampel
+        ]);
+    }
 }

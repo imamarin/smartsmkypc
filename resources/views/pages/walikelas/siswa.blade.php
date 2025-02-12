@@ -158,7 +158,7 @@
                                         <td>{{ $item->siswa->kelas }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('data-siswa.edit', $item->siswa->user->id) }}"
+                                                <a href="{{ route('walikelas.siswa.edit', Crypt::encrypt($item->siswa->user->id)) }}"
                                                     class="btn btn-sm btn-secondary me-2">
                                                     Edit
                                                 </a>

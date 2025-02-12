@@ -62,11 +62,16 @@
                                             </span>
                                         </td>
                                         <td>
-                                            @foreach ($item->jadwalmengajar as $value)
+                                            @php
+                                            $jadwalmengajar = $item->jadwalmengajar->sortBy(function($jadwalmengajar){
+                                                return $jadwalmengajar->jampel->jam;
+                                            })
+                                            @endphp
+                                            @foreach ($jadwalmengajar as $value)
                                             @if ($value->presensi->count() > 0)
-                                                <span class="badge bg-success">Jam Ke: {{ $value->jampel->jam }}</span>
+                                                <span class="badge bg-success">Jam Ke: {{ $value->jampel->jam }} - {{ $value->kelas->kelas }}</span>
                                             @else
-                                                <span class="badge bg-danger">Jam Ke: {{ $value->jampel->jam }}</span>    
+                                                <span class="badge bg-danger">Jam Ke: {{ $value->jampel->jam }} - {{ $value->kelas->kelas }}</span>    
                                             @endif
                                             @endforeach
                                         </td>

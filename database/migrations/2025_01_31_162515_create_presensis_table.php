@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('kode_matpel', 20);
             $table->foreign('kode_matpel')->references('kode_matpel')->on('matpels');
             $table->foreignId('idkelas')->references('id')->on('kelas');
-            $table->string('catatan_pembelajaran');
-            $table->text('pokok_bahasan');
+            $table->string('catatan_pembelajaran')->nullable();
+            $table->text('pokok_bahasan')->nullable();
             $table->enum('semester', ['ganjil', 'genap']);
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->foreignId('idjadwalmengajar')->references('id')->on('jadwal_mengajars')->onDelete('no action');

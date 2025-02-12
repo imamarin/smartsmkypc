@@ -8,6 +8,7 @@ class Siswa extends Model
 {
     protected $guarded = [];
     protected $primaryKey = "nisn";
+    protected $keyType = "string";
 
     public function tahunajaran()
     {

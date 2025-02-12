@@ -271,6 +271,14 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Jadwal Sistem Blok',
+            'url' => '/pages/data-jam-pelajaran',
+            'posisi' => 8,
+            'idkategori' => 4,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Data Siswa',
             'url' => '/pages/walikelas/siswa',
             'posisi' => 1,

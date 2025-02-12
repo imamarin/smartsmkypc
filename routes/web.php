@@ -59,6 +59,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/data-rombel/export/data', [RombelController::class, 'export'])->name('data-rombel.export');
         Route::get('/data-rombel/siswa/{id}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
 
+
         //data-mata-pelajaran
         Route::resource('/data-mata-pelajaran', MataPelajaranController::class);
         //data-matpel-pengampu
@@ -69,6 +70,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/data-walikelas/tahunajaran', [WalikelasController::class, 'index'])->name('data-walikelas.tahunajaran');
         Route::resource('/data-walikelas', WalikelasController::class);
         //data-jam-pelajaran
+        Route::get('/jam-pelajaran/{id}', [JamPelajaranController::class, 'getJam'])->name('jam-pelajaran.getjam');
         Route::resource('/data-jam-pelajaran', JamPelajaranController::class);
         Route::post('/data-jam-pelajaran/delete', [JamPelajaranController::class, 'delete'])->name('data-jam-pelajaran.delete');
         //role
@@ -76,6 +78,9 @@ Route::middleware('cek-status-login')->group(function () {
         //sistem-blok
         Route::resource('/sistem-blok', SistemBlokController::class);
         Route::post('/sistem-blok/{id}/updateStatus', [SistemBlokController::class, 'updateStatus'])->name('sistemblok.updateStatus');
+        Route::get('/jadwal-sistem-blok', [SistemBlokController::class, 'jadwal'])->name('jadwal-sistem-blok');
+        Route::post('/jadwal-sistem-blok', [SistemBlokController::class, 'simpanJadwal'])->name('jadwal-sistem-blok.store');
+        Route::get('/jadwal-sistem-blok/{id}', [SistemBlokController::class, 'hapusJadwal'])->name('jadwal-sistem-blok.destroy');
         //jadwal-Mengajar
         Route::get('/data-jadwal-mengajar-guru', [JadwalMengajarController::class, 'dataJadwalMengajarGuru'])->name('data-jadwal-mengajar-guru');
         Route::get('/data-jadwal-mengajar-guru/{id}', [JadwalMengajarController::class, 'show'])->name('data-jadwal-mengajar-guru.show');
@@ -100,6 +105,7 @@ Route::middleware('cek-status-login')->group(function () {
         //walikelas
         Route::get('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas');
         Route::post('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas.tahunajaran');
+        Route::get('/walikelas/siswa/{id}', [SiswaController::class, 'edit'])->name('walikelas.siswa.edit');
         Route::post('/walikelas/petugas-presensi/{id}', [WalikelasController::class, 'petugasPresensi'])->name('walikelas.petugaspresensi');
         Route::get('/walikelas/presensi-harian-siswa', [PresensiHarianController::class, 'siswa'])->name('presensi-harian-siswa');
         Route::post('/walikelas/presensi-harian-siswa', [PresensiHarianController::class, 'siswa'])->name('presensi-harian-siswa');

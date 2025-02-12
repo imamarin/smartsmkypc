@@ -8,7 +8,9 @@ use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use App\Models\User;
 use App\Models\UserRole;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
@@ -106,6 +108,11 @@ class SiswaController extends Controller
      */
     public function edit(string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
         $data['siswa'] = Siswa::with(['tahunajaran', 'user'])->where('iduser', $id)->first();
         $data['tahun_ajaran'] = TahunAjaran::all();
         $data['role'] = Role::all();

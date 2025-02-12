@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JadwalMengajar;
+use App\Models\JadwalSistemBlok;
 use App\Models\Presensi;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
@@ -31,7 +32,9 @@ class MasukMengajarController extends Controller
                 $query->where('hari', date('N'))->where('idtahunajaran', $tahunajaran->id);
             })
             ->whereHas('sistemblok', function ($query) {
-                $query->where('status', 1);
+                $query->whereHas('jadwalsistemblok', function ($query) {
+                    $query->where('tanggal_mulai', '<=', date('Y-m-d'))->where('tanggal_akhir', '>=', date('Y-m-d'));
+                });
             })
             ->where([
                 'nip' => Auth::user()->staf->nip,

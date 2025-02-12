@@ -27,13 +27,16 @@ class JadwalMengajarController extends Controller
         confirmDelete($title, $text);
 
         $tahunajaran = TahunAjaran::where('status', 1)->first();
+
         $data['tahunajaran'] = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
         $data['sistemblok'] = SistemBlok::where([
             'idtahunajaran' => $tahunajaran->id,
             'semester' => $tahunajaran->semester
         ])->get();
 
-        $data['matpel'] = MatpelPengampu::where('nip', Auth::user()->staf->nip)->get();
+        $data['matpel'] = MatpelPengampu::whereHas('tahunajaran', function ($query) {
+            $query->where('status', 1);
+        })->where('nip', Auth::user()->staf->nip)->get();
         $data['jampel'] = JamPelajaran::where('idtahunajaran', $tahunajaran->id)->get();
         $data['kelas'] = Kelas::where('idtahunajaran', $tahunajaran->id)->get();
         $data['jadwal'] = JadwalMengajar::join('jam_pelajarans', 'jam_pelajarans.id', '=', 'jadwal_mengajars.idjampel')
@@ -187,17 +190,20 @@ class JadwalMengajarController extends Controller
     public function dataJadwalMengajarGuru()
     {
         $tahunajaran = TahunAjaran::where('status', 1)->first();
+
         $teachers = Staf::with(['jadwalmengajar' => function ($query) use ($tahunajaran) {
-            $query->with(['sistemblok' => function ($query) use ($tahunajaran) {
+            $query->with(['presensi' => function ($query) {
+                $query->whereDate('created_at', date('Y-m-d'));
+            }])->whereHas('sistemblok', function ($query) use ($tahunajaran) {
                 $query->where([
                     'semester' => $tahunajaran->semester,
                     'idtahunajaran' => $tahunajaran->id,
                 ]);
-            }])->whereHas('jampel', function ($query) {
-                $query->where('hari', date('N'));
-            })->orderBy('idjampel');
+            })->whereHas('jampel', function ($query) use ($tahunajaran) {
+                $query->where('hari', date('N'))->where('idtahunajaran', $tahunajaran->id);
+            });
         }])->withSum(['jadwalmengajar as jadwal_mengajar_sum' => function ($query) use ($tahunajaran) {
-            $query->with('sistemblok', function ($query) use ($tahunajaran) {
+            $query->whereHas('sistemblok', function ($query) use ($tahunajaran) {
                 $query->where([
                     'semester' => $tahunajaran->semester,
                     'idtahunajaran' => $tahunajaran->id,
@@ -212,5 +218,9 @@ class JadwalMengajarController extends Controller
         $data['tahunajaran'] = $tahunajaran;
 
         return view('pages.jadwalmengajar.guru', $data);
+    }
+
+    public function getJamPel(){
+
     }
 }

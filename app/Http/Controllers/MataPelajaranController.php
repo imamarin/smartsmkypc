@@ -12,7 +12,7 @@ class MataPelajaranController extends Controller
      */
     public function index()
     {
-        $data['matpel'] = Matpel::orderBy('matpel', 'asc')->get();
+        $data['matpel'] = Matpel::orderBy('matpels_kode', 'asc')->orderBy('kode_matpel', 'asc')->get();
         $title = 'Data Kelas!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);

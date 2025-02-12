@@ -18,4 +18,9 @@ class SistemBlok extends Model
     {
         return $this->hasMany(JadwalMengajar::class, 'idsistemblok');
     }
+
+    public function jadwalsistemblok()
+    {
+        return $this->hasMany(JadwalSistemBlok::class, 'idsistemblok');
+    }
 }

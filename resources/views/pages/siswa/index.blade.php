@@ -84,7 +84,7 @@
                                         </td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('data-siswa.edit', $item->user->id) }}"
+                                                <a href="{{ route('data-siswa.edit', Crypt::encrypt($item->user->id)) }}"
                                                     class="btn btn-sm btn-secondary me-2">
                                                     Edit
                                                 </a>

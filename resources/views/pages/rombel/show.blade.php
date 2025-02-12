@@ -150,7 +150,7 @@
                         <label for="idkelas" class="form-label">Kelas</label>
                         <select name="idkelas" id="idkelas" class="form-control select2">
                             @foreach ($kelas as $item)
-                                @if($tingkat == $item->tingkat)
+                                @if($tingkat == $item->tingkat && $item->idtahunajaran == $idtahunajaran)
                                 <option value="{{ $item->id }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
                                 @endif
                             @endforeach
@@ -365,5 +365,20 @@
             });
         });
 
+        const tahunajaran = $('#pindahTingkatForm #idtahunajaran');
+        const kelas = $('#pindahTingkatForm #idkelas');
+
+        tahunajaran.on('change',function(event){
+            let url = '{{ route('data-kelas.json-tahunajaran', ':id') }}'.replace(':id', tahunajaran.val());
+            $.get(url, function(data,status){
+                kelas.html("");
+                if(data.data.length > 0){
+                    data.data.forEach(element => {
+                        let option = new Option(element.kelas, element.id);
+                        kelas.append(option);
+                    });
+                }
+            })
+        })
     </script>
 @endpush

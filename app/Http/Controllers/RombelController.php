@@ -24,11 +24,14 @@ class RombelController extends Controller
         $siswa = Siswa::select('nisn', 'nama')->where('status', 1)->get();
         $kelas = Kelas::with(['walikelas' => function ($query) {
             $query->limit(1);
-        }])
+        }, 'rombel'])
             ->whereHas('tahunajaran', function ($query) {
                 $query->where('status', 1);
             })->orderBy('tingkat', 'asc')->get();
 
+        $kelas = $kelas->sortByDesc(function ($kls) {
+            return $kls->rombel->count();
+        })->values();
         $title = 'Data Kelas!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
@@ -136,9 +139,11 @@ class RombelController extends Controller
         $idkelas = $kelas->id;
         $kdkelas = $kelas->kelas;
         $tingkat = $kelas->tingkat;
-        $tahunajaran = TahunAjaran::orderBy('status', 'desc')->get();
-        $kelas = Kelas::select('id', 'kelas', 'tingkat')->orderBy('tingkat', 'asc')->get();
-        $rombel = Rombel::where(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran])->get();
+        $tahunajaran = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
+        $kelas = Kelas::select('id', 'kelas', 'tingkat', 'idtahunajaran')->orderBy('tingkat', 'asc')->get();
+        $rombel = Rombel::where(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran])->get()->sortBy(function ($rombel) {
+            return $rombel->siswa->nama;
+        })->values();
         $idtahunajaran = $idtahunajaran;
         $siswa = Siswa::select('nisn', 'nama')->where('status', 1)->whereNotIn('nisn', Rombel::where('idtahunajaran', $idtahunajaran)->pluck('nisn'))->get();
 

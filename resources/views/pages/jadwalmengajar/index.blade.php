@@ -40,7 +40,7 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-md-4">
                             <div class="row">
                                 <div class="col-6 col-md-5"><h6>NIP</h6></div>
                                 <div class="col-6 col-md-7"><h6>: {{ $staf->nip }}</h6></div>
@@ -233,5 +233,20 @@
                 form.reset();
             }
         });
+
+        const hari = $('#hari');
+        const idjampel = $('#idjampel');
+        hari.on('change',function(event){
+            let url = '{{ route('jam-pelajaran.getjam', ':id') }}'.replace(':id', hari.val());
+            $.get(url, function(data,status){
+                idjampel.html("");
+                if(data.data.length > 0){
+                    data.data.forEach(element => {
+                        let option = new Option(element.jam, element.jam);
+                        idjampel.append(option);
+                    });
+                }
+            })
+        })
     </script>
 @endpush

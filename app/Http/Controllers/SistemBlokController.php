@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JadwalSistemBlok;
 use App\Models\SistemBlok;
 use App\Models\TahunAjaran;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -21,7 +23,7 @@ class SistemBlokController extends Controller
 
         $data['sistemblok'] = SistemBlok::whereHas('tahunajaran', function ($query) {
             $query->where('status', 1);
-        })->orderBy('idtahunajaran', 'desc')->get();
+        })->orderBy('idtahunajaran', 'desc')->orderBy('status', 'desc')->get();
         $data['tahunajaran'] = TahunAjaran::where('status', 1)->first();
         return view('pages.sistemblok.index', $data);
     }
@@ -87,5 +89,45 @@ class SistemBlokController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Status Berhasil Diubah');
+    }
+
+    public function jadwal(Request $request)
+    {
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+        $data['sistemblok'] = JadwalSistemBlok::whereHas('sistemblok', function ($query) use ($tahunajaran) {
+            $query->where([
+                'semester' => $tahunajaran->semester,
+                'idtahunajaran' => $tahunajaran->id
+            ]);
+        })->get();
+        $data['sesi'] = SistemBlok::where([
+            'semester' => $tahunajaran->semester,
+            'idtahunajaran' => $tahunajaran->id
+        ])->get();
+
+        return view('pages.sistemblok.jadwal', $data);
+    }
+
+    public function simpanJadwal(Request $request)
+    {
+        $validate = $request->validate([
+            'idsistemblok' => 'required',
+            'tanggal_mulai' => 'required',
+            'tanggal_akhir' => 'required'
+        ]);
+
+        JadwalSistemBlok::create($validate);
+        return redirect()->back()->with('success', 'Jadwal sesi berhasil disimpan');
+    }
+
+    public function hapusJadwal($id)
+    {
+        try {
+            $id = Crypt::decrypt($id);
+            JadwalSistemBlok::find($id)->delete();
+            return redirect()->back()->with('success', 'Jadwal sesi berhasil dihapus');
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
     }
 }

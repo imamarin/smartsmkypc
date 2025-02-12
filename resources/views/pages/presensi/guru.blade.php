@@ -29,7 +29,7 @@
                 <div class="card-body">
                     @if(isset($staf))
                     <div class="row">
-                        <div class="col-12 col-md-2">
+                        <div class="col-12 col-md-4">
                             <div class="row">
                                 <div class="col-6 col-md-5"><h6>NIP</h6></div>
                                 <div class="col-6 col-md-7"><h6>: {{ $staf->nip }}</h6></div>
@@ -64,7 +64,7 @@
                                         <td>{{ $subject->kelas }}</td>
                                         <td>{{ $subject->matpel }}</td>
                                         <td>
-                                            <span class="badge {{ $subject->keterangan=='hadir'?'bg-success':'bg-danger' }}">
+                                            <span class="badge {{ $subject->keterangan=='Hadir'?'bg-success':'bg-danger' }}">
                                                 {{ $subject->keterangan }}
                                             </span>
                                         </td>

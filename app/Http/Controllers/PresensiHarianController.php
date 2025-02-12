@@ -169,7 +169,7 @@ class PresensiHarianController extends Controller
 
     public function rekapSiswa(Request $request)
     {
-        $tahunajaran = TahunAjaran::orderBy('status', 'desc')->get();
+        $tahunajaran = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
 
         $kelas = Kelas::whereHas('tahunajaran', function ($query) {
             $query->where('status', '1');
