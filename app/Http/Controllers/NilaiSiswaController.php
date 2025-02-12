@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailNilaiSiswa;
 use App\Models\JadwalMengajar;
 use App\Models\MatpelPengampu;
 use App\Models\NilaiSiswa;
+use App\Models\Rombel;
 use App\Models\TahunAjaran;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -38,7 +40,7 @@ class NilaiSiswaController extends Controller
             'idtahunajaran' => $tahunajaran->id
         ])->where('nip', Auth::user()->staf->nip)->groupBy('kode_matpel')->get();
 
-        $nilaisiswa = NilaiSiswa::where([
+        $nilaisiswa = NilaiSiswa::WithAvg('detailnilaisiswa', 'nilai')->where([
             'semester' => $tahunajaran->semester,
             'idtahunajaran' => $tahunajaran->id,
             'nip' => Auth::user()->staf->nip
@@ -52,7 +54,7 @@ class NilaiSiswaController extends Controller
         $data['uts'] = $nilaisiswa->where('kategori', 'uts');
         $data['uas'] = $nilaisiswa->where('kategori', 'uas');
         $data['kategori'] = $request->kategori ?? 'tugas';
-        // dd($request->kategori);
+
         return view('pages.nilaisiswa.index', $data);
     }
 
@@ -119,5 +121,67 @@ class NilaiSiswaController extends Controller
         return redirect()->route('nilai-siswa', [
             'kategori' => $nilaisiswa->kategori,
         ])->with('success', 'Data berhasil dihapus');
+    }
+
+    public function inputNilai(String $kategori, String $id)
+    {
+        //
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->route('pengolahan-nilai-siswa', [
+                'kategori' => $kategori
+            ])->with('warning', $e->getMessage());
+        }
+        $nilaisiswa = NilaiSiswa::where([
+            'id' => $id,
+            'kategori' => $kategori
+        ])->first();
+
+        if (!$nilaisiswa) {
+            return redirect()->route('pengolahan-nilai-siswa', [
+                'kategori' => $kategori
+            ])->with('warning', 'Nilai siswa tidak tersedia');
+        }
+
+        $rombel = Rombel::where('idkelas', $nilaisiswa->idkelas)->get();
+        $detailnilaisiswa = DetailNilaiSiswa::where('idnilaisiswa', $id)->get();
+
+        $nilai = [];
+        foreach ($detailnilaisiswa as $key => $value) {
+            $nilai[$value->nisn] = $value->nilai;
+        }
+
+        $data['nilai'] = $nilai;
+        $data['nilaisiswa'] = $nilaisiswa;
+        $data['rombel'] = $rombel;
+        return view('pages.nilaisiswa.input', $data);
+    }
+
+    public function simpanNilai(Request $request, String $kategori, String $id)
+    {
+        //
+        $request->validate([
+            'nilai' => 'required|array',
+            'nilai.*' => 'integer|min:0|max:100',
+        ]);
+
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->route('nilai-siswa')->with('warning', $e->getMessage());
+        }
+
+        foreach ($request->nilai as $key => $value) {
+            # code...
+            DetailNilaiSiswa::updateOrCreate([
+                'nisn' => $key,
+                'idnilaisiswa' => $id,
+            ], [
+                'nilai' => $value,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Nilai siswa berhasil di simpan');
     }
 }

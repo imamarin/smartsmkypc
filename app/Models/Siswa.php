@@ -34,4 +34,9 @@ class Siswa extends Model
     {
         return $this->hasMany(PresensiHarianSiswa::class, 'nisn', 'nisn');
     }
+
+    public function detailnilaisiswa()
+    {
+        return $this->hasMany(DetailNilaiSiswa::class, 'nisn', 'nisn');
+    }
 }

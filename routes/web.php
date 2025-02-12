@@ -120,6 +120,8 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/pengolahan-nilai-siswa', [NilaiSiswaController::class, 'store'])->name('nilai-siswa-store');
         Route::post('/pengolahan-nilai-siswa/{id}', [NilaiSiswaController::class, 'update'])->name('nilai-siswa-update');
         Route::delete('/pengolahan-nilai-siswa/{id}', [NilaiSiswaController::class, 'destroy'])->name('nilai-siswa-destroy');
+        Route::get('/pengolahan-nilai-siswa/{kategori}/{id}', [NilaiSiswaController::class, 'inputNilai'])->name('nilai-siswa.input');
+        Route::post('/pengolahan-nilai-siswa/{kategori}/{id}', [NilaiSiswaController::class, 'simpanNilai'])->name('nilai-siswa.simpan');
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');

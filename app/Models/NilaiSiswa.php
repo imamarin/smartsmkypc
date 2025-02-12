@@ -28,4 +28,9 @@ class NilaiSiswa extends Model
     {
         return $this->belongsTo(TahunAjaran::class, 'idtahunajaran');
     }
+
+    public function detailnilaisiswa()
+    {
+        return $this->hasMany(DetailNilaiSiswa::class, 'idnilaisiswa');
+    }
 }

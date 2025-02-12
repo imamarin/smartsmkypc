@@ -62,8 +62,9 @@
                                         <th>#</th>
                                         <th>Kelas</th>
                                         <th>Mata Pelajaran</th>
-                                        <th>Keterangan</th>
                                         <th>Tanggal Pelaksanaan</th>
+                                        <th>Nilai Rata-Rata</th>
+                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -74,9 +75,10 @@
                                         <td>{{ $item->kelas->kelas }}</td>
                                         <td>{{ $item->matpel->matpel }}</td>
                                         <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
+                                        <td>{{ floor($item->detailnilaisiswa_avg_nilai) ?? 0 }}</td>
                                         <td>{{ $item->keterangan }}</td>
                                         <td>
-                                            <a href="" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
+                                            <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
                                             <button class="btn btn-sm btn-info" id="editModal"
                                                 data-id = "{{ Crypt::encrypt($item->id) }}"
                                                 data-nilai = "{{ base64_encode(json_encode($item)) }}"
@@ -97,35 +99,36 @@
                                         <th>#</th>
                                         <th>Kelas</th>
                                         <th>Mata Pelajaran</th>
-                                        <th>Keterangan</th>
                                         <th>Tanggal Pelaksanaan</th>
+                                        <th>Nilai Rata-Rata</th>
+                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($sumatif as $item)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->kelas->kelas }}</td>
-                                            <td>{{ $item->matpel->matpel }}</td>
-                                            <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
-                                            <td>{{ $item->keterangan }}</td>
-                                            <td>
-                                                <a href="" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
-                                                <button class="btn btn-sm btn-info" id="editModal"
-                                                    data-id = "{{ Crypt::encrypt($item->id) }}"
-                                                    data-nilai = "{{ base64_encode(json_encode($item)) }}"
-                                                    data-bs-toggle="modal" data-bs-target="#addSubjectModal">Edit</button>
-                                                <a href="{{ route('nilai-siswa-destroy', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->kelas->kelas }}</td>
+                                        <td>{{ $item->matpel->matpel }}</td>
+                                        <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
+                                        <td>{{ floor($item->detailnilaisiswa_avg_nilai) ?? 0 }}</td>
+                                        <td>{{ $item->keterangan }}</td>
+                                        <td>
+                                            <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
+                                            <button class="btn btn-sm btn-info" id="editModal"
+                                                data-id = "{{ Crypt::encrypt($item->id) }}"
+                                                data-nilai = "{{ base64_encode(json_encode($item)) }}"
+                                                data-bs-toggle="modal" data-bs-target="#addSubjectModal">Edit</button>
+                                            <a href="{{ route('nilai-siswa-destroy', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                        </td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="tab-pane {{ $kategori == 'uts' ? 'active' : 'fade' }}" id="uts">
-                        asdad
                         <div class="table-responsive">
                             <table class="table display nowrap">
                                 <thead>
@@ -133,8 +136,9 @@
                                         <th>#</th>
                                         <th>Kelas</th>
                                         <th>Mata Pelajaran</th>
-                                        <th>Keterangan</th>
                                         <th>Tanggal Pelaksanaan</th>
+                                        <th>Nilai Rata-Rata</th>
+                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -145,9 +149,10 @@
                                         <td>{{ $item->kelas->kelas }}</td>
                                         <td>{{ $item->matpel->matpel }}</td>
                                         <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
+                                        <td>{{ floor($item->detailnilaisiswa_avg_nilai) ?? 0 }}</td>
                                         <td>{{ $item->keterangan }}</td>
                                         <td>
-                                            <a href="" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
+                                            <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
                                             <button class="btn btn-sm btn-info" id="editModal"
                                                 data-id = "{{ Crypt::encrypt($item->id) }}"
                                                 data-nilai = "{{ base64_encode(json_encode($item)) }}"
@@ -168,8 +173,9 @@
                                         <th>#</th>
                                         <th>Kelas</th>
                                         <th>Mata Pelajaran</th>
-                                        <th>Keterangan</th>
                                         <th>Tanggal Pelaksanaan</th>
+                                        <th>Nilai Rata-Rata</th>
+                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -180,9 +186,10 @@
                                         <td>{{ $item->kelas->kelas }}</td>
                                         <td>{{ $item->matpel->matpel }}</td>
                                         <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
+                                        <td>{{ floor($item->detailnilaisiswa_avg_nilai) ?? 0 }}</td>
                                         <td>{{ $item->keterangan }}</td>
                                         <td>
-                                            <a href="" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
+                                            <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
                                             <button class="btn btn-sm btn-info" id="editModal"
                                                 data-id = "{{ Crypt::encrypt($item->id) }}"
                                                 data-nilai = "{{ base64_encode(json_encode($item)) }}"
