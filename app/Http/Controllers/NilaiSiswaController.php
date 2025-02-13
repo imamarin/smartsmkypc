@@ -184,4 +184,17 @@ class NilaiSiswaController extends Controller
 
         return redirect()->back()->with('success', 'Nilai siswa berhasil di simpan');
     }
+
+    public function rekapNilaiSiswa()
+    {
+        $tahunajaran = $this->tahunajaran;
+        $rekap = NilaiSiswa::where([
+            'semester' => $tahunajaran->semester,
+            'idtahunajaran' => $tahunajaran->id
+        ])->groupBy('kode_matpel')->groupBy('idkelas')->get();
+
+        $data['rekap'] = $rekap;
+
+        return view('pages.nilaisiswa.rekap', $data);
+    }
 }

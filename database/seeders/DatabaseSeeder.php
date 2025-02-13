@@ -231,6 +231,14 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Rekapan Nilai Siswa',
+            'url' => '/pages/rekap-nilai-siswa',
+            'posisi' => 7,
+            'idkategori' => 3,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Data Mata Pelajaran',
             'url' => '/pages/data-mata-pelajaran',
             'posisi' => 1,
