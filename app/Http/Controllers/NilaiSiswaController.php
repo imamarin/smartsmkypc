@@ -54,7 +54,7 @@ class NilaiSiswaController extends Controller
         $data['uts'] = $nilaisiswa->where('kategori', 'uts');
         $data['uas'] = $nilaisiswa->where('kategori', 'uas');
         $data['kategori'] = $request->kategori ?? 'tugas';
-
+        $data['data_kategori'] = ['tugas', 'sumatif', 'uts', 'uas'];
         return view('pages.nilaisiswa.index', $data);
     }
 

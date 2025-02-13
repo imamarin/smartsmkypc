@@ -54,7 +54,8 @@
             </div><!-- end card header -->
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="tab-pane {{ $kategori == 'tugas' ? 'active' : 'fade' }}" id="tugas">
+                    @foreach ($data_kategori as $value)
+                    <div class="tab-pane {{ $kategori == $value ? 'active' : 'fade' }}" id="{{ $value }}">
                         <div class="table-responsive">
                             <table class="table display nowrap">
                                 <thead>
@@ -69,7 +70,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($tugas as $item)
+                                    @foreach ($$value as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->kelas->kelas }}</td>
@@ -91,117 +92,9 @@
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane {{ $kategori == 'sumatif' ? 'active' : 'fade' }}" id="sumatif">
-                        <div class="table-responsive">
-                            <table class="table display nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Kelas</th>
-                                        <th>Mata Pelajaran</th>
-                                        <th>Tanggal Pelaksanaan</th>
-                                        <th>Nilai Rata-Rata</th>
-                                        <th>Keterangan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($sumatif as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->kelas->kelas }}</td>
-                                        <td>{{ $item->matpel->matpel }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
-                                        <td>{{ floor($item->detailnilaisiswa_avg_nilai) ?? 0 }}</td>
-                                        <td>{{ $item->keterangan }}</td>
-                                        <td>
-                                            <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
-                                            <button class="btn btn-sm btn-info" id="editModal"
-                                                data-id = "{{ Crypt::encrypt($item->id) }}"
-                                                data-nilai = "{{ base64_encode(json_encode($item)) }}"
-                                                data-bs-toggle="modal" data-bs-target="#addSubjectModal">Edit</button>
-                                            <a href="{{ route('nilai-siswa-destroy', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane {{ $kategori == 'uts' ? 'active' : 'fade' }}" id="uts">
-                        <div class="table-responsive">
-                            <table class="table display nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Kelas</th>
-                                        <th>Mata Pelajaran</th>
-                                        <th>Tanggal Pelaksanaan</th>
-                                        <th>Nilai Rata-Rata</th>
-                                        <th>Keterangan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($uts as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->kelas->kelas }}</td>
-                                        <td>{{ $item->matpel->matpel }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
-                                        <td>{{ floor($item->detailnilaisiswa_avg_nilai) ?? 0 }}</td>
-                                        <td>{{ $item->keterangan }}</td>
-                                        <td>
-                                            <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
-                                            <button class="btn btn-sm btn-info" id="editModal"
-                                                data-id = "{{ Crypt::encrypt($item->id) }}"
-                                                data-nilai = "{{ base64_encode(json_encode($item)) }}"
-                                                data-bs-toggle="modal" data-bs-target="#addSubjectModal">Edit</button>
-                                            <a href="{{ route('nilai-siswa-destroy', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane {{ $kategori == 'uas' ? 'active' : 'fade' }}" id="uas">
-                        <div class="table-responsive">
-                            <table class="table display nowrap" id="example5">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Kelas</th>
-                                        <th>Mata Pelajaran</th>
-                                        <th>Tanggal Pelaksanaan</th>
-                                        <th>Nilai Rata-Rata</th>
-                                        <th>Keterangan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($uas as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->kelas->kelas }}</td>
-                                        <td>{{ $item->matpel->matpel }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
-                                        <td>{{ floor($item->detailnilaisiswa_avg_nilai) ?? 0 }}</td>
-                                        <td>{{ $item->keterangan }}</td>
-                                        <td>
-                                            <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
-                                            <button class="btn btn-sm btn-info" id="editModal"
-                                                data-id = "{{ Crypt::encrypt($item->id) }}"
-                                                data-nilai = "{{ base64_encode(json_encode($item)) }}"
-                                                data-bs-toggle="modal" data-bs-target="#addSubjectModal">Edit</button>
-                                            <a href="{{ route('nilai-siswa-destroy', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    @endforeach
+                    
+                
                 </div>
                 
             </div>
