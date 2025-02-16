@@ -22,8 +22,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <form action="{{ route($route) }}" method="post">
-                    <form action="{{ route($route) }}" method="post">
+                    <form action="" id="formSearchPresensi" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-2">
@@ -54,14 +53,15 @@
                                 </select>
                             </div>
                             <div class="col-2 d-flex align-items-end mb-1 gap-1">
-                                <input type="submit" class="btn btn-primary" value="Presensi KBM">
-                                <input type="submit" class="btn btn-warning" value="Presensi Harian">
+                                <input type="submit" class="btn btn-primary" name="kbm" id="kbm" value="Presensi KBM">
+                                <input type="submit" class="btn btn-warning" name="harian" id="harian" value="Presensi Harian">
                             </div>
                         </div>
                     </form>
                 </div><!-- end card header -->
                 <div class="card-body">
-                <div class="table-responsive">
+                    @if(isset($presensi_kbm_siswa))
+                    <div class="table-responsive">
                         <table class="table table-striped table-bordered display nowrap" id="exapmle">
                             <thead>
                                 <tr>
@@ -115,10 +115,10 @@
                                         <td>{{ $subject->nisn }}</td>
                                         <td>{{ $subject->siswa->nama }}</td>
                                         @foreach($matpel_presensi as $item)
-                                        <td>{{ $presensi_siswa[$item][$subject->nisn]['h'] ?? 0 }}</td>
-                                        <td>{{ $presensi_siswa[$item][$subject->nisn]['s'] ?? 0 }}</td>
-                                        <td>{{ $presensi_siswa[$item][$subject->nisn]['i'] ?? 0 }}</td>
-                                        <td>{{ $presensi_siswa[$item][$subject->nisn]['a'] ?? 0 }}</td>
+                                        <td>{{ $presensi_kbm_siswa[$item][$subject->nisn]['h'] ?? 0 }}</td>
+                                        <td>{{ $presensi_kbm_siswa[$item][$subject->nisn]['s'] ?? 0 }}</td>
+                                        <td>{{ $presensi_kbm_siswa[$item][$subject->nisn]['i'] ?? 0 }}</td>
+                                        <td>{{ $presensi_kbm_siswa[$item][$subject->nisn]['a'] ?? 0 }}</td>
                                         @endforeach
                                         <td>{{ $total_hadir[$subject->nisn] ?? 0 }}</td>
                                         <td>{{ $total_sakit[$subject->nisn] ?? 0 }}</td>
@@ -130,6 +130,38 @@
                             </tbody>
                         </table>
                     </div>
+                    @elseif(isset($presensi_harian_siswa))
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered display nowrap" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nisn</th>
+                                        <th>Nama Siswa</th>
+                                        <th>Hadir</th>
+                                        <th>Sakit</th>
+                                        <th>Izin</th>
+                                        <th>Tanpa Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($presensi_harian_siswa as $key => $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->nisn }}</td>
+                                            <td>{{ $item->siswa->nama }}</td>
+                                            <td>{{ $item->total_hadir }}</td>
+                                            <td>{{ $item->total_sakit }}</td>
+                                            <td>{{ $item->total_izin }}</td>
+                                            <td>{{ $item->total_alfa }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -154,6 +186,16 @@
                     });
                 }
             })
-        })
+        });
+
+        $('#kbm').on('click', function(event){
+            $('#formSearchPresensi').attr('action', '{{ route($route_kbm) }}');
+            $('#formSearchPresensi').submit();
+        });
+
+        $('#harian').on('click', function(event){
+            $('#formSearchPresensi').attr('action', '{{ route($route_harian) }}');
+            $('#formSearchPresensi').submit();
+        });
     </script>
 @endpush

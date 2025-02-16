@@ -100,10 +100,11 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/rekap-presensi-siswa/{id}/tanggal/{tgl}', [MasukMengajarController::class, 'show'])->name('show-presensi.tanggal');
         Route::resource('/presensi', PresensiController::class);
         //data rekap presensi
-        Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa']);
+        Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa');
+        Route::post('/data-rekap-presensi-siswa/kbm', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa.kbm');
+        Route::post('/data-rekap-presensi-siswa/harian', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa.harian');
         Route::get('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru']);
         Route::get('/data-rekap-presensi-guru/{id}', [PresensiController::class, 'rekapGuru'])->name('data-rekap-presensi-guru-detail');
-        Route::post('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa');
         Route::post('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru');
         //walikelas
         Route::get('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas');
@@ -116,8 +117,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/walikelas/rekap-presensi-harian-siswa', [PresensiHarianController::class, 'rekapSiswa'])->name('rekap-presensi-harian-siswa');
         Route::get('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'create'])->name('presensi-harian-siswa-create');
         Route::post('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'store'])->name('presensi-harian-siswa-store');
-        Route::get('/walikelas/rekap-presensi-kbm-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('presensi-kbm-siswa');
-        Route::post('/walikelas/rekap-presensi-kbm-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('presensi-kbm-siswa');
+        Route::get('/walikelas/rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa');
+        Route::post('/walikelas/rekap-presensi-siswa/kbm', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa.kbm');
+        Route::post('/walikelas/rekap-presensi-siswa/harian', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa.harian');
         //grafik
         Route::get('/walikelas/grafik-presensi-siswa', [DiagramController::class, 'siswa'])->name('walikelas.grafik-presensi-siswa');
         //pengolahan nilai siswa

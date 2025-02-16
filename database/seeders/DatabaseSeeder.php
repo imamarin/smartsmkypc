@@ -311,25 +311,18 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Rekap Presensi Harian',
-            'url' => '/pages/walikelas/rekap-presensi-harian-siswa',
+            'menu' => 'Rekap Presensi Siswa',
+            'url' => '/pages/walikelas/rekap-presensi-siswa',
             'posisi' => 3,
             'idkategori' => 5,
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        Menu::create([
-            'menu' => 'Rekap Presensi KBM',
-            'url' => '/pages/walikelas/rekap-presensi-kbm-siswa',
-            'posisi' => 4,
-            'idkategori' => 5,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+
         Menu::create([
             'menu' => 'Grafik Presensi Siswa',
             'url' => '/pages/walikelas/grafik-presensi-siswa',
-            'posisi' => 5,
+            'posisi' => 4,
             'idkategori' => 5,
             'created_at' => now(),
             'updated_at' => now()

@@ -251,105 +251,147 @@ class PresensiController extends Controller
             $data['kelas'] = Kelas::select('kelas.id', 'kelas.kelas')->join('walikelas', 'walikelas.idkelas', '=', 'kelas.id')
                 ->where('walikelas.idtahunajaran', $tahunajaran->id)
                 ->where('walikelas.nip', Auth::user()->staf->nip)->get();
-            $data['route'] = 'presensi-kbm-siswa';
+            $data['route_kbm'] = 'walikelas.rekap-presensi-siswa.kbm';
+            $data['route_harian'] = 'walikelas.rekap-presensi-siswa.harian';
         } else {
             $data['kelas'] = Kelas::where('idtahunajaran', $tahunajaran->id)->get();
-            $data['route'] = 'data-rekap-presensi-siswa';
+            $data['route_kbm'] = 'data-rekap-presensi-siswa.kbm';
+            $data['route_harian'] = 'data-rekap-presensi-siswa.harian';
         }
 
-        if ($request->isMethod('post')) {
-            $data['siswa'] = Rombel::whereHas(
-                'kelas',
-                function ($query) use ($request) {
-                    $query->where([
-                        'idkelas' => $request->idkelas,
-                        'idtahunajaran' => $request->idtahunajaran
-                    ]);
-                }
-            )->get();
-
-            $query = Presensi::where([
-                'idkelas' => $request->idkelas,
-                'semester' => $request->semester,
-                'idtahunajaran' => $request->idtahunajaran
-            ]);
-
-            $presensi = $query->get();
-            $presensi_siswa = [];
-            $matpel_presensi = [];
-            if ($presensi->count() > 0) {
-                $total_hadir = [];
-                $total_sakit = [];
-                $total_izin = [];
-                $total_alfa = [];
-                foreach ($presensi as $value) {
-                    # code...
-                    $matpel = $value->matpel->matpel;
-
-                    //mengumpulka data mata pelajaran
-                    if (!in_array($matpel, $matpel_presensi)) {
-                        array_push($matpel_presensi, $matpel);
-                    }
-
-                    foreach ($value->kelas->rombel as $siswa) {
-                        # code...
-                        $detailpresensi = $value->detailpresensi()->select('keterangan')->where('nisn', $siswa->nisn)->first();
-                        if ($detailpresensi) {
-                            if ($detailpresensi->keterangan == 'h') {
-                                if (isset($presensi_siswa[$matpel][$siswa->nisn]['h'])) {
-                                    $presensi_siswa[$matpel][$siswa->nisn]['h']++;
-                                    $total_hadir[$siswa->nisn]++;
-                                } else {
-                                    $presensi_siswa[$matpel][$siswa->nisn]['h'] = 1;
-                                    isset($total_hadir[$siswa->nisn]) ? $total_hadir[$siswa->nisn]++ : $total_hadir[$siswa->nisn] = 1;
-                                }
-                            } elseif ($detailpresensi->keterangan == 's') {
-                                if (isset($presensi_siswa[$matpel][$siswa->nisn]['s'])) {
-                                    $presensi_siswa[$matpel][$siswa->nisn]['s']++;
-                                    $total_sakit[$siswa->nisn]++;
-                                } else {
-                                    $presensi_siswa[$matpel][$siswa->nisn]['s'] = 1;
-                                    isset($total_sakit[$siswa->nisn]) ? $total_sakit[$siswa->nisn]++ : $total_sakit[$siswa->nisn] = 1;
-                                }
-                            } elseif ($detailpresensi->keterangan == 'i') {
-                                if (isset($presensi_siswa[$matpel][$siswa->nisn]['i'])) {
-                                    $presensi_siswa[$matpel][$siswa->nisn]['i']++;
-                                    $total_izin[$siswa->nisn]++;
-                                } else {
-                                    $presensi_siswa[$matpel][$siswa->nisn]['i'] = 1;
-                                    isset($total_izin[$siswa->nisn]) ? $total_izin[$siswa->nisn]++ : $total_izin[$siswa->nisn] = 1;
-                                }
-                            } elseif ($detailpresensi->keterangan == 'a') {
-                                if (isset($presensi_siswa[$matpel][$siswa->nisn]['a'])) {
-                                    $presensi_siswa[$matpel][$siswa->nisn]['a']++;
-                                    $total_alfa[$siswa->nisn]++;
-                                } else {
-                                    $presensi_siswa[$matpel][$siswa->nisn]['a'] = 1;
-                                    isset($total_alfa[$siswa->nisn]) ? $total_alfa[$siswa->nisn]++ : $total_alfa[$siswa->nisn] = 1;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // dd($total_hadir);    
-
-                $data['presensi_siswa'] = $presensi_siswa;
-                $data['matpel_presensi'] = $matpel_presensi;
-                $data['total_hadir'] = $total_hadir;
-                $data['total_izin'] = $total_izin;
-                $data['total_sakit'] = $total_sakit;
-                $data['total_alfa'] = $total_alfa;
-            } else {
-                return redirect()->back()->with('warning', 'Data Presensi tidak tersedia');
-            }
-        }
 
         $data['kelas_selected'] = $request->idkelas;
         $data['tahunajaran_selected'] = $request->idtahunajaran;
         $data['semester_selected'] = $request->semester ?? $tahunajaran->semester;
 
+        if ($request->isMethod('post')) {
+            if ($request->kbm) {
+                $kbm = $this->kbmSiswa($request);
+                $data = array_merge($data, $kbm);
+            }
+
+            if ($request->harian) {
+                $harian = $this->harianSiswa($request, $tahunajaran);
+                $data = array_merge($data, $harian);
+            }
+        }
+
         return view('pages.presensi.rekap-presensi-siswa', $data);
+    }
+
+    public function kbmSiswa(Request $request)
+    {
+        $data['siswa'] = Rombel::whereHas(
+            'kelas',
+            function ($query) use ($request) {
+                $query->where([
+                    'idkelas' => $request->idkelas,
+                    'idtahunajaran' => $request->idtahunajaran
+                ]);
+            }
+        )->get();
+
+        $query = Presensi::where([
+            'idkelas' => $request->idkelas,
+            'semester' => $request->semester,
+            'idtahunajaran' => $request->idtahunajaran
+        ]);
+
+        $presensi = $query->get();
+        $presensi_siswa = [];
+        $matpel_presensi = [];
+        if ($presensi->count() > 0) {
+            $total_hadir = [];
+            $total_sakit = [];
+            $total_izin = [];
+            $total_alfa = [];
+            foreach ($presensi as $value) {
+                # code...
+                $matpel = $value->matpel->matpel;
+
+                //mengumpulka data mata pelajaran
+                if (!in_array($matpel, $matpel_presensi)) {
+                    array_push($matpel_presensi, $matpel);
+                }
+
+                foreach ($value->kelas->rombel as $siswa) {
+                    # code...
+                    $detailpresensi = $value->detailpresensi()->select('keterangan')->where('nisn', $siswa->nisn)->first();
+                    if ($detailpresensi) {
+                        if ($detailpresensi->keterangan == 'h') {
+                            if (isset($presensi_siswa[$matpel][$siswa->nisn]['h'])) {
+                                $presensi_siswa[$matpel][$siswa->nisn]['h']++;
+                                $total_hadir[$siswa->nisn]++;
+                            } else {
+                                $presensi_siswa[$matpel][$siswa->nisn]['h'] = 1;
+                                isset($total_hadir[$siswa->nisn]) ? $total_hadir[$siswa->nisn]++ : $total_hadir[$siswa->nisn] = 1;
+                            }
+                        } elseif ($detailpresensi->keterangan == 's') {
+                            if (isset($presensi_siswa[$matpel][$siswa->nisn]['s'])) {
+                                $presensi_siswa[$matpel][$siswa->nisn]['s']++;
+                                $total_sakit[$siswa->nisn]++;
+                            } else {
+                                $presensi_siswa[$matpel][$siswa->nisn]['s'] = 1;
+                                isset($total_sakit[$siswa->nisn]) ? $total_sakit[$siswa->nisn]++ : $total_sakit[$siswa->nisn] = 1;
+                            }
+                        } elseif ($detailpresensi->keterangan == 'i') {
+                            if (isset($presensi_siswa[$matpel][$siswa->nisn]['i'])) {
+                                $presensi_siswa[$matpel][$siswa->nisn]['i']++;
+                                $total_izin[$siswa->nisn]++;
+                            } else {
+                                $presensi_siswa[$matpel][$siswa->nisn]['i'] = 1;
+                                isset($total_izin[$siswa->nisn]) ? $total_izin[$siswa->nisn]++ : $total_izin[$siswa->nisn] = 1;
+                            }
+                        } elseif ($detailpresensi->keterangan == 'a') {
+                            if (isset($presensi_siswa[$matpel][$siswa->nisn]['a'])) {
+                                $presensi_siswa[$matpel][$siswa->nisn]['a']++;
+                                $total_alfa[$siswa->nisn]++;
+                            } else {
+                                $presensi_siswa[$matpel][$siswa->nisn]['a'] = 1;
+                                isset($total_alfa[$siswa->nisn]) ? $total_alfa[$siswa->nisn]++ : $total_alfa[$siswa->nisn] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // dd($total_hadir);    
+
+            $data['presensi_kbm_siswa'] = $presensi_siswa;
+            $data['matpel_presensi'] = $matpel_presensi;
+            $data['total_hadir'] = $total_hadir;
+            $data['total_izin'] = $total_izin;
+            $data['total_sakit'] = $total_sakit;
+            $data['total_alfa'] = $total_alfa;
+
+            return $data;
+        } else {
+            return redirect()->back()->with('warning', 'Data Presensi tidak tersedia');
+        }
+    }
+
+    public function harianSiswa(Request $request, TahunAjaran $tahunajaran)
+    {
+        $presensiHarian = PresensiHarianSiswa::select('*')->selectRaw("
+            SUM(keterangan = 'h') as total_hadir,
+            SUM(keterangan = 's') as total_sakit,
+            SUM(keterangan = 'i') as total_izin,
+            SUM(keterangan = 'a') as total_alfa
+        ")->whereHas('siswa.rombel', function ($query) use ($request) {
+            $query->where('idkelas', $request->idkelas)->whereHas('tahunajaran', function ($query) use ($request) {
+                $query->where('id', $request->idtahunajaran);
+            });
+        })->where([
+            'semester' => $request->semester,
+            'idtahunajaran' => $request->idtahunajaran
+        ])->groupBy('nisn')->get();
+
+        $data['presensi_harian_siswa'] = $presensiHarian;
+        $data['idkelas'] = $request->idkelas;
+        $data['idtahunajaran'] = $request->idtahunajaran;
+        $data['semester'] = $request->semester;
+
+        return $data;
     }
 
     public function rekapGuru(String $id = null)
