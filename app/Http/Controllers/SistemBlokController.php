@@ -34,6 +34,9 @@ class SistemBlokController extends Controller
     public function store(Request $request)
     {
         //
+        $idtahunajaran = decryptSmart($request->idtahunajaran);
+        $request->merge(['idtahunajaran' => $idtahunajaran]);
+
         $validate = $request->validate([
             'nama_sesi' => 'required',
             'semester' => 'required',
@@ -58,6 +61,13 @@ class SistemBlokController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try {
+            $id = Crypt::decrypt($id);
+            $idtahunajaran = decryptSmart($request->idtahunajaran);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+        $request->merge(['idtahunajaran' => $idtahunajaran]);
         $validate = $request->validate([
             'nama_sesi' => 'required',
             'semester' => 'required',
@@ -74,13 +84,24 @@ class SistemBlokController extends Controller
     public function destroy(string $id)
     {
         //
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         SistemBlok::find($id)->delete();
         return redirect()->back()->with('success', 'Data Berhasil Dihapus');
     }
 
     public function updateStatus(Request $request, $id)
     {
-        $id = Crypt::decrypt($id);
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         SistemBlok::query()->update([
             'status' => '0'
         ]);

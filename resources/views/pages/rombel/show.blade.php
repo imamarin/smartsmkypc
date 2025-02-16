@@ -43,7 +43,7 @@
                                 <tr>
                                     <th><input type="checkbox" id="select-all"></th>
                                     <th>No</th>
-                                    <th>Nisn / Nis</th>
+                                    <th>Nisn</th>
                                     <th>Nama Siswa</th>
                                     <th>Jenis Kelamin</th>
                                     <th>Aksi</th>
@@ -61,8 +61,8 @@
                                             <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#movingClassModal" data-id="{{ Crypt::encrypt($item->id) }}"
                                                 data-nisn="{{ $item->nisn }}"
-                                                data-idkelas="{{ $item->idkelas }}"
-                                                data-idtahunajaran="{{ $item->kelas->idtahunajaran }}"
+                                                data-idkelas="{{ encryptSmart($item->idkelas) }}"
+                                                data-idtahunajaran="{{ encryptSmart($item->kelas->idtahunajaran) }}"
                                                 data-subject="pindahkelas">
                                                 Pindah Kelas
                                             </button>
@@ -96,7 +96,7 @@
                         <label for="idtahunajaran" class="form-label">Tahun Ajaran </label>
                         <select name="idtahunajaran" id="idtahunajaran" class="form-control">
                             @foreach ($tahunajaran as $item)
-                                <option value="{{ $item->id }}" {{ $item->id==$idtahunajaran?'selected':'' }}>{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
+                                <option value="{{ encryptSmart($item->id) }}" {{ $item->id==$idtahunajaran?'selected':'' }}>{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -104,7 +104,7 @@
                         <label for="idkelas" class="form-label">Kelas</label>
                         <select name="idkelas" id="idkelas" class="form-control">
                             @foreach ($kelas as $item)
-                                <option value="{{ $item->id }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
+                                <option value="{{ encryptSmart($item->id) }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -142,7 +142,7 @@
                         <label for="idtahunajaran" class="form-label">Tahun Ajaran </label>
                         <select name="idtahunajaran" id="idtahunajaran" class="form-control">
                             @foreach ($tahunajaran as $item)
-                                <option value="{{ $item->id }}" {{ $item->id==$idtahunajaran?'selected':'' }}>{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
+                                <option value="{{ encryptSmart($item->id) }}" {{ $item->id==$idtahunajaran?'selected':'' }}>{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -151,7 +151,7 @@
                         <select name="idkelas" id="idkelas" class="form-control select2">
                             @foreach ($kelas as $item)
                                 @if($tingkat == $item->tingkat && $item->idtahunajaran == $idtahunajaran)
-                                <option value="{{ $item->id }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
+                                <option value="{{ encryptSmart($item->id) }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
                                 @endif
                             @endforeach
                         </select>
@@ -185,7 +185,7 @@
                                 <select name="idtahunajaran" id="idtahunajaran" class="form-control select2">
                                     @foreach ($tahunajaran as $item)
                                         @if($item->id < $idtahunajaran)
-                                        <option value="{{ $item->id }}">{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
+                                        <option value="{{ encryptSmart($item->id) }}">{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -197,7 +197,7 @@
                                 <select name="idkelas" id="idkelas" class="form-control select2">
                                     @foreach ($kelas as $item)
                                         @if($item->tingkat < $tingkat)
-                                        <option value="{{ $item->id }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
+                                        <option value="{{ encryptSmart($item->id) }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -313,6 +313,7 @@
 
         const modalMoving = document.getElementById('movingClassModal');
         modalMoving.addEventListener('show.bs.modal', function(event) {
+            console.log("asdsd");
             
             const button = event.relatedTarget;
             const id = button.getAttribute('data-id');
@@ -320,7 +321,9 @@
             const subject = button.getAttribute('data-subject');
             const idkelas = button.getAttribute('data-idkelas');
             const idtahunajaran = button.getAttribute('data-idtahunajaran');
-
+            
+            console.log(idkelas);
+            
             const form = document.querySelector('#movingForm');
             const submitBtn = document.getElementById('submitBtnMove');
             const subjectId = document.getElementById('subjectIdMove');

@@ -211,7 +211,9 @@ class PresensiHarianController extends Controller
         $data['tahunajaran'] = $tahunajaran;
         $data['idtahunajaran'] = $idtahunajaran;
         $data['semester'] = $semester;
-
+            
         return view('pages.presensi.rekap-harian-siswa', $data);
     }
+
+    
 }

@@ -32,7 +32,7 @@
                                     <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
                                     <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
                                         @foreach ($tahunajaran as $item)
-                                            <option value="{{ $item->id }}" {{ $item->id == $idtahunajaran ? 'selected':'' }}>
+                                            <option value="{{ encryptSmart($item->id) }}" {{ $item->id == $idtahunajaran ? 'selected':'' }}>
                                                 {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
                                             </option>
                                         @endforeach
@@ -76,17 +76,17 @@
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn {{ $subject->walikelas != null ? 'btn-secondary' : 'btn-primary' }} btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" 
-                                                data-id="{{  $subject->walikelas[0]->id ?? '' }}"
+                                                data-id="{{  isset($subject->walikelas[0]->id) ? Crypt::encrypt($subject->walikelas[0]->id) : '' }}"
                                                 data-kodestaf="{{  $subject->walikelas[0]->nip ?? '' }}" 
-                                                data-idtahunajaran="{{ $subject->idtahunajaran }}"
+                                                data-idtahunajaran="{{ encryptSmart($subject->idtahunajaran) }}"
                                                 data-tahunajaran="{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}"
                                                 data-kelas="{{ $subject->kelas }}"
                                                 {{-- data-rombel="{{ $subject->id }}" --}}
-                                                data-idkelas="{{ $subject->id }}">
+                                                data-idkelas="{{ encryptSmart($subject->id) }}">
                                                 {{ isset($subject->walikelas[0]) ? 'Edit Walikelas' : 'Tambahkan Walikelas' }}
                                             </button>
                                             @if(isset($subject->walikelas[0]) != null)
-                                            <a href="{{ route('data-walikelas.destroy', $subject->walikelas[0]->id ?? '') }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
+                                            <a href="{{ route('data-walikelas.destroy', isset($subject->walikelas[0]->id) ? Crypt::encrypt($subject->walikelas[0]->id) : '') }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                             @endif
                                         </td>
                                     </tr>
@@ -168,10 +168,11 @@
                 subjectId.value = id;
                 formMethod.value = 'PUT';
                 // form.querySelector('#idrombel').value = idrombel;
+                form.querySelector('#idkelas').innerHTML = "";
                 let optionkelas = new Option(kelas, idkelas);
                 form.querySelector('#idkelas').add(optionkelas);
                 form.querySelector('#nip').value = kodestaf;
-
+                form.querySelector('#idtahunajaran').innerHTML = "";
                 let optiontahunajaran = new Option(tahunajaran, idtahunajaran);
                 form.querySelector('#idtahunajaran').add(optiontahunajaran);
             }else{
@@ -179,9 +180,10 @@
                 submitBtn.textContent = 'Simpan';
                 modalTitle.textContent = 'Tambahkan Walikelas';
                 formMethod.value = 'POST';
-                // form.querySelector('#idrombel').value = idrombel;
+                form.querySelector('#idkelas').innerHTML = "";
                 let optionkelas = new Option(kelas, idkelas);
                 form.querySelector('#idkelas').add(optionkelas);
+                form.querySelector('#idtahunajaran').innerHTML = "";
                 let optiontahunajaran = new Option(tahunajaran, idtahunajaran);
                 form.querySelector('#idtahunajaran').add(optiontahunajaran);
             }

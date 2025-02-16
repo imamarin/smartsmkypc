@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TahunAjaran;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 
 class TahunAjaranController extends Controller
 {
@@ -64,6 +66,12 @@ class TahunAjaranController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $validate = $request->validate([
             'awal_tahun_ajaran' => 'required',
             'akhir_tahun_ajaran' => 'required',
@@ -80,6 +88,12 @@ class TahunAjaranController extends Controller
      */
     public function destroy(string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $tahun_ajaran = TahunAjaran::find($id);
         try {
             if ($tahun_ajaran->status != 1) {
@@ -97,6 +111,12 @@ class TahunAjaranController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $tahun_ajaran = TahunAjaran::find($id);
         if ($request->status == 1) {
             $activeTahunAjaran = TahunAjaran::where('status', 1)->first();

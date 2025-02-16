@@ -319,6 +319,22 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Rekap Presensi KBM',
+            'url' => '/pages/walikelas/rekap-presensi-kbm-siswa',
+            'posisi' => 4,
+            'idkategori' => 5,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Grafik Presensi Siswa',
+            'url' => '/pages/walikelas/grafik-presensi-siswa',
+            'posisi' => 5,
+            'idkategori' => 5,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Role & Hak Akses',
             'url' => '/pages/role',
             'posisi' => 1,

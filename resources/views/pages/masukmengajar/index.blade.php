@@ -55,17 +55,6 @@
                     <div class="col">
                         <h4 class="card-title">Jadwal Hari ini</h4>
                     </div>
-                    {{-- <div class="col">
-                        <div class="d-flex justify-content-end">
-                            <i>*Jika ada kendala pada masuk mengajar</i>
-                        </div>
-                        <div class="d-flex justify-content-end mb-3">
-                            <!-- Button to trigger modal -->
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
-                                Ajuan Kehadiran Mengajar
-                            </button>
-                        </div>
-                    </div> --}}
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">
@@ -79,7 +68,6 @@
                                     <th>Jam Keluar</th>
                                     <th>Mata Pelajaran</th>
                                     <th>Kelas</th>
-                                    {{-- <th>Aksi</th> --}}
                                 </tr>
                             </thead>
                             <tbody>

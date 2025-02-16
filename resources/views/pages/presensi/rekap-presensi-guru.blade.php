@@ -31,7 +31,7 @@
                                         <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
                                         <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
                                             @foreach ($tahunajaran as $item)
-                                                <option value="{{ $item->id }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
+                                                <option value="{{ encryptSmart($item->id) }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
                                                     {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
                                                 </option>
                                             @endforeach

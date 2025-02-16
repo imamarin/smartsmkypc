@@ -22,14 +22,15 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <form action="{{ route('data-rekap-presensi-siswa') }}" method="post">
+                    <form action="{{ route($route) }}" method="post">
+                    <form action="{{ route($route) }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-2">
                                 <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
                                 <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
                                     @foreach ($tahunajaran as $item)
-                                        <option value="{{ $item->id }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
+                                        <option value="{{ encryptSmart($item->id) }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
                                             {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
                                         </option>
                                     @endforeach
@@ -39,27 +40,28 @@
                                 <label for="idkelas" class="form-label">Kelas</label>
                                 <select name="idkelas" id="idkelas" class="form-select select2">
                                     @foreach ($kelas as $item)
-                                        <option value="{{ $item->id }}" {{ $kelas_selected == $item->id?'selected':'' }}>
+                                        <option value="{{ encryptSmart($item->id) }}" {{ $kelas_selected == $item->id?'selected':'' }}>
                                             {{ $item->kelas }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-2">
-                                <label for="semester" class="form-label">Semester</label>
+                            <label for="semester" class="form-label">Semester</label>
                                 <select name="semester" id="semester" class="form-select select2">
                                     <option value="ganjil" {{ $semester_selected == 'ganjil'?'selected':'' }}>Ganjil</option>
                                     <option value="genap" {{ $semester_selected == 'genap'?'selected':'' }}>Genap</option>
                                 </select>
                             </div>
-                            <div class="col-2 d-flex align-items-end mb-1">
-                                <input type="submit" class="btn btn-primary" value="Tampilkan Rekapan">
+                            <div class="col-2 d-flex align-items-end mb-1 gap-1">
+                                <input type="submit" class="btn btn-primary" value="Presensi KBM">
+                                <input type="submit" class="btn btn-warning" value="Presensi Harian">
                             </div>
                         </div>
                     </form>
                 </div><!-- end card header -->
                 <div class="card-body">
-                    <div class="table-responsive">
+                <div class="table-responsive">
                         <table class="table table-striped table-bordered display nowrap" id="exapmle">
                             <thead>
                                 <tr>

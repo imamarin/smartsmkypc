@@ -62,12 +62,13 @@
                                 <td>{{ $item->jurusan->jurusan }}</td>
                                 <td>
                                     <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
-                                        data-bs-target="#addSubjectModal" data-id="{{ $item->id }}" data-kelas="{{ $item->kelas }}"
-                                        data-tahun_ajaran="{{ $item->tahunajaran->id }}" data-tingkat="{{ $item->tingkat }}"
-                                        data-jurusan="{{ $item->jurusan->id }}">
+                                        data-bs-target="#addSubjectModal" data-id="{{ Crypt::encrypt($item->id) }}" 
+                                        data-kelas="{{ $item->kelas }}"
+                                        data-tahun_ajaran="{{ encryptSmart($item->tahunajaran->id) }}" data-tingkat="{{ $item->tingkat }}"
+                                        data-jurusan="{{ encryptSmart($item->jurusan->id) }}">
                                         Edit
                                     </button>
-                                    <a href="{{ route('data-kelas.destroy', $item->id) }}"
+                                    <a href="{{ route('data-kelas.destroy', Crypt::encrypt($item->id)) }}"
                                         class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                 </td>
                             </tr>
@@ -98,7 +99,7 @@
                         <select class="form-select" id="tahun_ajaran" name="idtahunajaran" required>
                             <option selected disabled>--- Pilih Tahun Ajaran ---</option>
                             @foreach ($tahun_ajaran as $tahun)
-                            <option value="{{ $tahun->id }}">
+                            <option value="{{ encryptSmart($tahun->id) }}">
                                 {{ $tahun->awal_tahun_ajaran }}/{{ $tahun->akhir_tahun_ajaran }}
                                 ({{ $tahun->semester == 'ganjil' ? 'Ganjil' : 'Genap' }})
                             </option>
@@ -126,7 +127,7 @@
                         <select class="form-select" id="jurusan" name="idjurusan" required>
                             <option selected disabled>--- Pilih Jurusan ---</option>
                             @foreach ($jurusan as $item)
-                            <option value="{{ $item->id }}">{{ $item->jurusan }}</option>
+                            <option value="{{ encryptSmart($item->id) }}">{{ $item->jurusan }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -147,10 +148,6 @@
         modal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget; // Tombol yang memicu modal
             const id = button.getAttribute('data-id');
-            const tahun_ajaran = button.getAttribute('data-tahun_ajaran');
-            const tingkat = button.getAttribute('data-tingkat');
-            const jurusan = button.getAttribute('data-jurusan');
-            const kelas = button.getAttribute('data-kelas');
 
             const form = document.getElementById('kelasForm');
             const submitBtn = document.getElementById('submitBtn');
@@ -158,6 +155,11 @@
             const formMethod = document.getElementById('formMethod');
 
             if (id) {
+                const tahun_ajaran = button.getAttribute('data-tahun_ajaran');
+                const kelas = button.getAttribute('data-kelas');
+                const tingkat = button.getAttribute('data-tingkat');
+                const jurusan = button.getAttribute('data-jurusan');
+                
                 form.action = '{{ route('data-kelas.update', ':id') }}'.replace(':id', id);
                 submitBtn.textContent = 'Simpan Perubahan';
                 modalTitle.textContent = 'Update Data Kelas';

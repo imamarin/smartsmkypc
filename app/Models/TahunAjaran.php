@@ -53,6 +53,11 @@ class TahunAjaran extends Model
         return $this->hasMany(Presensi::class, 'idtahunajaran');
     }
 
+    public function presensihariansiswa()
+    {
+        return $this->hasMany(PresensiHarianSiswa::class, 'idtahunajaran');
+    }
+
     public function nilaisiswa()
     {
         return $this->hasMany(NilaiSiswa::class, 'idtahunajaran');

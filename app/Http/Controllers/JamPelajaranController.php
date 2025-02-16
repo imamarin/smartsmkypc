@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\JamPelajaran;
 use App\Models\TahunAjaran;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class JamPelajaranController extends Controller
 {
@@ -32,6 +34,8 @@ class JamPelajaranController extends Controller
     public function store(Request $request)
     {
         //
+        $idtahunajaran = decryptSmart($request->idtahunajaran);
+        $request->merge(['idtahunajaran' => $idtahunajaran]);
         $request->validate([
             'idtahunajaran' => 'required',
             'hari' => 'required',
@@ -87,6 +91,14 @@ class JamPelajaranController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try {
+            $id = Crypt::decrypt($id);
+            $idtahunajaran = decryptSmart($request->idtahunajaran);
+            $request->merge(['idtahunajaran' => $idtahunajaran]);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+        
         $validate = $request->validate([
             'idtahunajaran' => 'required',
             'hari' => 'required|min:1',

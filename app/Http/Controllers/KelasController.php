@@ -7,6 +7,8 @@ use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\TahunAjaran;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 
 class KelasController extends Controller
@@ -40,11 +42,20 @@ class KelasController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            $idjurusan = decryptSmart($request->idjurusan);
+            $idtahunajaran = decryptSmart($request->idtahunajaran);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $request->merge(['idjurusan' => $idjurusan, 'idtahunajaran' => $idtahunajaran]);
+
         $validate = $request->validate([
-            'idtahunajaran' => 'required',
+            'idtahunajaran' => ['required', 'exists:tahun_ajarans,id'],
             'kelas' => 'required',
             'tingkat' => 'required',
-            'idjurusan' => 'required',
+            'idjurusan' => ['required', 'exists:jurusans,id'],
         ]);
 
         Kelas::create($validate);
@@ -72,15 +83,25 @@ class KelasController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+            $idjurusan = decryptSmart($request->idjurusan);
+            $idtahunajaran = decryptSmart($request->idtahunajaran);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $request->merge(['idjurusan' => $idjurusan, 'idtahunajaran' => $idtahunajaran]);
+
         $validate = $request->validate([
-            'idtahunajaran' => 'required',
+            'idtahunajaran' => ['required', 'exists:tahun_ajarans,id'],
             'kelas' => 'required',
             'tingkat' => 'required',
-            'idjurusan' => 'required',
+            'idjurusan' => ['required', 'exists:jurusans,id']
         ]);
 
         Kelas::find($id)->update($validate);
-        return redirect()->back()->with('success', 'Data Berhasil Ditambahkan');
+        return redirect()->back()->with('success', 'Data Berhasil Diubah');
     }
 
     /**
@@ -88,6 +109,12 @@ class KelasController extends Controller
      */
     public function destroy(string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         try {
             //code...
             $kelas = Kelas::find($id);
@@ -106,7 +133,20 @@ class KelasController extends Controller
 
     public function getJsonByIdTahunAjaran(String $id)
     {
+        try {
+            $id = decryptSmart($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $kelas = Kelas::where('idtahunajaran', $id)->get();
+
+        $kelas = $kelas->map(function ($item) {
+            return [
+                'id' => encryptSmart($item->id),
+                'kelas' => $item->kelas
+            ];
+        });
         $tahunajaran = TahunAjaran::find($id);
         return response()->json([
             'idtahunajaran' => $tahunajaran->id,

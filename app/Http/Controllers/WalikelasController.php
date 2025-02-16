@@ -8,9 +8,11 @@ use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use App\Models\Walikelas;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use League\Flysystem\DecoratedAdapter;
 
 class WalikelasController extends Controller
 {
@@ -24,7 +26,7 @@ class WalikelasController extends Controller
         $data['tahunajaran'] = TahunAjaran::orderBy('status', 'desc')->get();
         if ($request->isMethod('post')) {
             $data['walikelas'] = Kelas::whereHas('tahunajaran', function ($query) use ($request) {
-                $query->where('id', $request->idtahunajaran);
+                $query->where('id', decryptSmart($request->idtahunajaran));
             })->get();
             $data['idtahunajaran'] = $request->idtahunajaran;
         } else {
@@ -47,6 +49,9 @@ class WalikelasController extends Controller
     public function store(Request $request)
     {
         //
+        $idtahunajaran = decryptSmart($request->idtahunajaran);
+        $idkelas = decryptSmart($request->idkelas);
+        $request->merge(['idtahunajaran' => $idtahunajaran, 'idkelas' => $idkelas]);
         $validate = $request->validate([
             'idtahunajaran' => 'required',
             'idkelas' => 'required',
@@ -71,12 +76,18 @@ class WalikelasController extends Controller
     public function update(Request $request, String $id)
     {
         //
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
         $validate = $request->validate([
             'nip' => 'required'
         ]);
 
-        Walikelas::findOrFail($id)->update($validate);
-        return redirect()->back()->with('Data berhasil diubah');
+        Walikelas::find($id)->update($validate);
+
+        return redirect()->back()->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -85,7 +96,13 @@ class WalikelasController extends Controller
     public function destroy(String $id)
     {
         //
-        Walikelas::findOrFail($id)->delete();
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        Walikelas::find($id)->delete();
 
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }

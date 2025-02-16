@@ -71,7 +71,7 @@
                                         <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->no_hp }}</td>
                                         <td>
-                                            <form action="{{ route('data-staf.updateStatus', $item->nip) }}"
+                                            <form action="{{ route('data-staf.updateStatus', Crypt::encrypt($item->nip)) }}"
                                                 method="post">
                                                 @csrf
                                                 <button type="submit"
@@ -84,11 +84,11 @@
                                         </td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('data-staf.edit', $item->user->id) }}"
+                                                <a href="{{ route('data-staf.edit', Crypt::encrypt($item->user->id)) }}"
                                                     class="btn btn-sm btn-secondary me-2">
                                                     Edit
                                                 </a>
-                                                <a href="{{ route('data-staf.destroy', $item->user->id) }}"
+                                                <a href="{{ route('data-staf.destroy', Crypt::encrypt($item->user->id)) }}"
                                                     class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                             </div>
                                         </td>

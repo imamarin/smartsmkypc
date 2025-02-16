@@ -102,7 +102,14 @@ class JadwalMengajarController extends Controller
     public function show(string $id)
     {
         //
-        $id = explode('*', Crypt::decrypt($id));
+        try {
+            $id = explode('*', Crypt::decrypt($id));
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+
         if (count($id) == 3) {
             $title = 'Hapus Jadwal Mengajar!';
             $text = "Yakin ingin menghapus data ini?";
@@ -133,6 +140,8 @@ class JadwalMengajarController extends Controller
                     'nip' => $id[0],
                 ])->orderBy('jam_pelajarans.hari')->orderBy('jam_pelajarans.jam')->get();
             $data['staf'] = Staf::where('nip', $id[0])->first();
+            $data['kunci_jadwal'] = $tahunajaran->kunci_jadwal;
+
             return view('pages.jadwalmengajar.index', $data);
         }
 

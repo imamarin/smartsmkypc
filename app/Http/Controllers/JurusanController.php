@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\TahunAjaran;
 use App\Models\Jurusan;
 use App\Models\Siswa;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 
 class JurusanController extends Controller
@@ -39,7 +41,7 @@ class JurusanController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'idtahunajaran' => 'required',
+            // 'idtahunajaran' => 'required',
             'jurusan' => 'required',
             'kompetensi' => 'required',
             'program_keahlian' => 'required',
@@ -71,8 +73,14 @@ class JurusanController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('success', 'Data Berhasil Diubah');
+        }
+
         $validate = $request->validate([
-            'idtahunajaran' => 'required',
+            // 'idtahunajaran' => 'required',
             'jurusan' => 'required',
             'kompetensi' => 'required',
             'program_keahlian' => 'required',
@@ -88,6 +96,12 @@ class JurusanController extends Controller
      */
     public function destroy(string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('success', 'Data Berhasil Diubah');
+        }
+
         $jurusan = Jurusan::find($id);
         $jurusan->delete();
         return redirect()->back()->with('success', 'Data Berhasil Dihapus');

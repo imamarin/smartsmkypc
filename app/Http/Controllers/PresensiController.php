@@ -237,11 +237,25 @@ class PresensiController extends Controller
 
     public function rekapPresensiSiswa(Request $request)
     {
+        $idtahunajaran = decryptSmart($request->idtahunajaran);
+        $idkelas = decryptSmart($request->idkelas);
+        $request->merge([
+            'idtahunajaran' => $idtahunajaran,
+            'idkelas' => $idkelas
+        ]);
 
         $tahunajaran = TahunAjaran::where('status', 1)->first();
-
         $data['tahunajaran'] = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
-        $data['kelas'] = Kelas::where('idtahunajaran', $tahunajaran->id)->get();
+
+        if ($request->segment(2) == 'walikelas') {
+            $data['kelas'] = Kelas::select('kelas.id', 'kelas.kelas')->join('walikelas', 'walikelas.idkelas', '=', 'kelas.id')
+                ->where('walikelas.idtahunajaran', $tahunajaran->id)
+                ->where('walikelas.nip', Auth::user()->staf->nip)->get();
+            $data['route'] = 'presensi-kbm-siswa';
+        } else {
+            $data['kelas'] = Kelas::where('idtahunajaran', $tahunajaran->id)->get();
+            $data['route'] = 'data-rekap-presensi-siswa';
+        }
 
         if ($request->isMethod('post')) {
             $data['siswa'] = Rombel::whereHas(
@@ -333,7 +347,7 @@ class PresensiController extends Controller
 
         $data['kelas_selected'] = $request->idkelas;
         $data['tahunajaran_selected'] = $request->idtahunajaran;
-        $data['semester_selected'] = $request->semester;
+        $data['semester_selected'] = $request->semester ?? $tahunajaran->semester;
 
         return view('pages.presensi.rekap-presensi-siswa', $data);
     }
@@ -472,12 +486,15 @@ class PresensiController extends Controller
         //
         $tahunajaran = TahunAjaran::where('status', 1)->first();
 
-        $idtahunajaran = $request->idtahunajaran ?? $tahunajaran->id;
+        $idtahunajaran = $request->idtahunajaran ? decryptSmart($request->idtahunajaran) : $tahunajaran->id;
         $semester = $request->semester ?? $tahunajaran->semester;
 
-        $data['tahunajaran'] = TahunAjaran::all();
+        $data['tahunajaran'] = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
         $data['kelas'] = Kelas::where('idtahunajaran', $idtahunajaran)->get();
-        $data['staf'] = Staf::where('status', 1)->get();
+
+        $data['staf'] = Staf::where('status', 1)->whereHas('jadwalmengajar.sistemblok', function ($query) use ($idtahunajaran) {
+            $query->where('idtahunajaran', $idtahunajaran);
+        })->get();
 
         $jadwalsistemblok = JadwalSistemBlok::whereHas('sistemblok', function ($query) use ($idtahunajaran, $semester) {
             $query->where([

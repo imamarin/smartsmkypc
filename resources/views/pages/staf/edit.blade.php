@@ -18,7 +18,7 @@
         </div>
     </div>
     <!-- end page title -->
-    <form action="{{ route('data-staf.update', $staf->user->id) }}" method="POST">
+    <form action="{{ route('data-staf.update', Crypt::encrypt($staf->user->id)) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="row">

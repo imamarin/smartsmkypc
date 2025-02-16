@@ -13,4 +13,9 @@ class PresensiHarianSiswa extends Model
     {
         return $this->belongsTo(Siswa::class, 'nisn', 'nisn');
     }
+
+    public function tahunajaran()
+    {
+        return $this->belongsTo(TahunAjaran::class, 'idtahunajaran');
+    }
 }

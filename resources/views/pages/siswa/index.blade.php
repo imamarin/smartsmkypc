@@ -47,8 +47,8 @@
                                     <th>Jenis Kelamin</th>
                                     <th>Alamat Siswa</th>
                                     <th>No HP Siswa</th>
-                                    <th>status</th>
                                     <th>Kelas</th>
+                                    <th>status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -88,7 +88,7 @@
                                                     class="btn btn-sm btn-secondary me-2">
                                                     Edit
                                                 </a>
-                                                <a href="{{ route('data-siswa.destroy', $item->user->id) }}"
+                                                <a href="{{ route('data-siswa.destroy', Crypt::encrypt($item->user->id)) }}"
                                                     class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                             </div>
                                         </td>

@@ -76,14 +76,13 @@
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#addSubjectModal" data-id="{{ $subject->id }}"
+                                                data-bs-target="#addSubjectModal" data-id="{{ Crypt::encrypt($subject->id) }}"
                                                 data-sesi="{{ $subject->nama_sesi }}"
                                                 data-semester="{{ $subject->semester }}"
-                                                data-tahunajaran="{{ $subject->tahunajaran->id }}">
+                                                data-tahunajaran="{{ encryptSmart($subject->tahunajaran->id) }}">
                                                 Edit
                                             </button>
-                                            <a href="{{ route('sistem-blok.destroy', $subject->id) }}"
-                                                class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
+                                            <a href="{{ route('sistem-blok.destroy', Crypt::encrypt($subject->id)) }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -125,7 +124,7 @@
                         <div class="mb-3">
                             <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
                             <select name="idtahunajaran" id="idtahunajaran" class="form-control">
-                                <option value="{{ $tahunajaran->id }}" {{ $tahunajaran->status==1?'selected':'' }}>
+                                <option value="{{ encryptSmart($tahunajaran->id) }}" {{ $tahunajaran->status==1?'selected':'' }}>
                                     {{ $tahunajaran->awal_tahun_ajaran }}/{{ $tahunajaran->akhir_tahun_ajaran }}
                                 </option>
                             </select>

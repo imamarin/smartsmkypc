@@ -105,6 +105,8 @@
     </style>
 
     @stack('styles')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 </head>
 
@@ -242,7 +244,13 @@
             }
         });
 
-        
+        function encodeBase64(str) {
+            return btoa(unescape(encodeURIComponent(str)));
+        }
+
+        function decodeBase64(encoded) {
+            return decodeURIComponent(escape(atob(encoded)));
+        }
 
         function formatTanggal(isoString) {
             const date = new Date(isoString);

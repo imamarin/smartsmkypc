@@ -7,7 +7,9 @@ use App\Models\Staf;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 
 class StafController extends Controller
@@ -92,6 +94,12 @@ class StafController extends Controller
      */
     public function edit(string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $data['staf'] = Staf::where('iduser', $id)->first();
         $data['role'] = Role::all();
         $data['roleUser'] = UserRole::where('iduser', $id)->get()->pluck('idrole')->toArray();
@@ -103,6 +111,12 @@ class StafController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $users = User::find($id);
         if ($users) {
             if ($users->username != $request->username) {
@@ -155,6 +169,12 @@ class StafController extends Controller
      */
     public function destroy(string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $role = UserRole::where('iduser', $id);
         $staf = Staf::where('iduser', $id);
         $user = User::find($id);
@@ -166,6 +186,12 @@ class StafController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $staf = Staf::where('nip', $id);
         $staf->update([
             'status' => $request->status,

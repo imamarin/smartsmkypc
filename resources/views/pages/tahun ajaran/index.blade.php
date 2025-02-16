@@ -57,7 +57,7 @@
                                         <td>{{ $item->semester == 'ganjil' ? 'Ganjil' : 'Genap' }}</td>
                                         <td>{{ Carbon\Carbon::parse($item->tgl_mulai)->format('d-m-Y') }}</td>
                                         <td>
-                                            <form action="{{ route('tahun-ajaran.updateStatus', $item->id) }}"
+                                            <form action="{{ route('tahun-ajaran.updateStatus', Crypt::encrypt($item->id)) }}"
                                                 method="post">
                                                 @csrf
                                                 <div class="form-check form-switch">
@@ -75,14 +75,14 @@
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#modalTambahData" data-id="{{ $item->id }}"
+                                                data-bs-target="#modalTambahData" data-id="{{ Crypt::encrypt($item->id) }}"
                                                 data-awal_tahun_ajaran="{{ $item->awal_tahun_ajaran }}"
                                                 data-akhir_tahun_ajaran="{{ $item->akhir_tahun_ajaran }}"
                                                 data-semester="{{ $item->semester }}"
                                                 data-tgl_mulai="{{ $item->tgl_mulai }}">
                                                 Edit
                                             </button>
-                                            <a href="{{ route('tahun-ajaran.destroy', $item->id) }}"
+                                            <a href="{{ route('tahun-ajaran.destroy', Crypt::encrypt($item->id)) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                         </td>
                                     </tr>

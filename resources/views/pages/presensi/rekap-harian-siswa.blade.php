@@ -70,7 +70,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nisn1</th>
+                                    <th>Nisn</th>
                                     <th>Nama Siswa</th>
                                     <th>Hadir</th>
                                     <th>Sakit</th>

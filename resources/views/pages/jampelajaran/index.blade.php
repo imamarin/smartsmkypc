@@ -70,12 +70,12 @@
                                             <td>
                                                 <!-- Trigger modal untuk Edit -->
                                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#editJampelModal" data-id="{{ $subject->id }}"
+                                                    data-bs-target="#editJampelModal" data-id="{{ Crypt::encrypt($subject->id) }}"
                                                     data-jam="{{ $subject->jam }}" 
                                                     data-hari="{{ $subject->hari }}" 
                                                     data-mulai="{{ $subject->mulai }}"
                                                     data-akhir="{{ $subject->akhir }}"
-                                                    data-idtahunajaran="{{ $subject->idtahunajaran }}">
+                                                    data-idtahunajaran="{{ encryptSmart($subject->idtahunajaran) }}">
                                                     Edit Jam Pelajaran
                                                 </button>
                                             </td>
@@ -170,7 +170,7 @@
                             <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
                             <select name="idtahunajaran" id="idtahunajaran" class="form-control select2">
                                 @foreach ($tahunajaran as $item)
-                                    <option value="{{ $item->id }}" {{ $item->status==1?'selected':'' }}>{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
+                                    <option value="{{ encryptSmart($item->id) }}" {{ $item->status==1?'selected':'' }}>{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
                                 @endforeach
                             </select>
                         </div>

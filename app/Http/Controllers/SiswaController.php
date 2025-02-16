@@ -186,6 +186,12 @@ class SiswaController extends Controller
      */
     public function destroy(string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $userRole = UserRole::where('iduser', $id);
         $siswa = Siswa::where('iduser', $id);
         $user = User::find($id);

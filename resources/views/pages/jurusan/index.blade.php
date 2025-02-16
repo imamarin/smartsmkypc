@@ -61,15 +61,11 @@
                                         <td>{{ $item->bidang_keahlian }}</td>
                                         <td>
                                             <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
-                                                data-bs-target="#addJurusanModal" data-id="{{ $item->id }}"
-                                                data-jurusan="{{ $item->jurusan }}"
-                                                data-kompetensi="{{ $item->kompetensi }}"
-                                                data-program_keahlian="{{ $item->program_keahlian }}"
-                                                data-bidang_keahlian="{{ $item->bidang_keahlian }}"
-                                                data-tahun_ajaran="{{ $item->idtahunajaran }}">
+                                                data-bs-target="#addJurusanModal"  data-id="{{ Crypt::encrypt($item->id) }}"
+                                                data-jurusan="{{ base64_encode(json_encode($item)) }}">
                                                 Edit
                                             </button>
-                                            <a href="{{ route('data-jurusan.destroy', $item->id) }}"
+                                            <a href="{{ route('data-jurusan.destroy', Crypt::encrypt($item->id)) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                         </td>
                                     </tr>
@@ -96,18 +92,18 @@
                         <input type="hidden" name="_method" id="formMethod" value="POST">
 
                         <!-- Input Tahun Ajaran -->
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
                             <select class="form-select" id="tahun_ajaran" name="idtahunajaran" required>
                                 <option selected disabled>--- Pilih Tahun Ajaran ---</option>
                                 @foreach ($tahun_ajaran as $item)
-                                    <option value="{{ $item->id }}">
+                                    <option value="{{ base64_encode($item->id) }}">
                                         {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
                                         ({{ $item->semester == 'ganjil' ? 'Ganjil' : 'Genap' }})
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
 
                         <!-- Input Jurusan -->
                         <div class="mb-3">
@@ -150,11 +146,8 @@
         modal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget; // tombol yang memicu modal
             const id = button.getAttribute('data-id');
-            const jurusan = button.getAttribute('data-jurusan');
-            const kompetensi = button.getAttribute('data-kompetensi');
-            const program_keahlian = button.getAttribute('data-program_keahlian');
-            const bidang_keahlian = button.getAttribute('data-bidang_keahlian');
-            const tahun_ajaran = button.getAttribute('data-tahun_ajaran');
+            
+            // const tahun_ajaran = decodedData.idtahunajaran;
 
             const form = document.getElementById('jurusanForm');
             const submitBtn = document.getElementById('submitBtn');
@@ -162,6 +155,12 @@
             const formMethod = document.getElementById('formMethod');
 
             if (id) {
+                const decodedData = JSON.parse(atob(button.getAttribute('data-jurusan')));
+                const jurusan = decodedData.jurusan;
+                const kompetensi = decodedData.kompetensi;
+                const program_keahlian = decodedData.program_keahlian;
+                const bidang_keahlian = decodedData.bidang_keahlian;
+                
                 form.action = '{{ route('data-jurusan.update', ':id') }}'.replace(':id', id);
                 submitBtn.textContent = 'Simpan Perubahan';
                 modalTitle.textContent = 'Update Data Jurusan';
@@ -173,8 +172,10 @@
                 document.getElementById('kompetensi').value = kompetensi;
                 document.getElementById('program_keahlian').value = program_keahlian;
                 document.getElementById('bidang_keahlian').value = bidang_keahlian;
-                document.getElementById('tahun_ajaran').value = tahun_ajaran;
+                // document.getElementById('tahun_ajaran').value = tahun_ajaran;
             } else {
+                console.log("ss ss");
+                
                 form.action = '{{ route('data-jurusan.store') }}';
                 submitBtn.textContent = 'Simpan';
                 modalTitle.textContent = 'Input Data Jurusan Baru';

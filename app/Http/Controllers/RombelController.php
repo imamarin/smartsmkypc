@@ -52,6 +52,11 @@ class RombelController extends Controller
     public function store(Request $request)
     {
         //
+        $idtahunajaran = decryptSmart($request->idtahunajaran);
+        $idkelas = decryptSmart($request->idkelas);
+
+        $request->merge(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran]);
+
         $request->validate([
             'idtahunajaran' => 'required',
             'idkelas' => 'required',
@@ -95,9 +100,13 @@ class RombelController extends Controller
         //
         try {
             $id = Crypt::decrypt($id);
+            $idtahunajaran = decryptSmart($request->idtahunajaran);
+            $idkelas = decryptSmart($request->idkelas);
         } catch (DecryptException $e) {
             return redirect()->back()->with('warning', $e->getMessage());
         }
+
+        $request->merge(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran]);
 
         $request->validate([
             'nisn' => 'required',
@@ -141,7 +150,7 @@ class RombelController extends Controller
         $tingkat = $kelas->tingkat;
         $tahunajaran = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
         $kelas = Kelas::select('id', 'kelas', 'tingkat', 'idtahunajaran')->orderBy('tingkat', 'asc')->get();
-        $rombel = Rombel::where(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran])->get()->sortBy(function ($rombel) {
+        $rombel = Rombel::with('kelas')->where(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran])->get()->sortBy(function ($rombel) {
             return $rombel->siswa->nama;
         })->values();
         $idtahunajaran = $idtahunajaran;
@@ -181,6 +190,11 @@ class RombelController extends Controller
     public function updateRombel(Request $request, string $idkelas, string $idtahunajaran)
     {
         //
+        $idtahunajaran = decryptSmart($request->idtahunajaran);
+        $idkelas = decryptSmart($request->idkelas);
+
+        $request->merge(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran]);
+        
         $requestRombel = $request->validate([
             'idkelas' => 'required',
             'idtahunajaran' => 'required'
