@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AjuanPresensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\StafController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\WalikelasController;
 use App\Http\Middleware\CekStatusLogin;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('pages.auth.login');
@@ -99,6 +101,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/history-presensi/{id}', [PresensiController::class, 'historyPresensi'])->name('history-presensi');
         Route::get('/rekap-presensi-siswa/{id}/tanggal/{tgl}', [MasukMengajarController::class, 'show'])->name('show-presensi.tanggal');
         Route::resource('/presensi', PresensiController::class);
+        //Ajuan Kehadiran Mengajar
+        Route::post('/ajuan-kehadiran-mengajar', [AjuanPresensiController::class, 'store'])->name('ajuan-kehadiran-mengajar.store');
+        Route::post('/ajuan-kehadiran-mengajar/{id}', [AjuanPresensiController::class, 'update'])->name('ajuan-kehadiran-mengajar.update');
         //data rekap presensi
         Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa');
         Route::post('/data-rekap-presensi-siswa/kbm', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa.kbm');
@@ -134,5 +139,16 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');
         Route::post('/pengaturan/menu', [PengaturanController::class, 'menuFormStore'])->name('pengaturan.menuForm.store');
+
+        //download
+        Route::get('/download-bukti-mengajar/{filename}', function ($filename) {
+            $filePath = public_path("storage/bukti_ajuan_mengajar/{$filename}");
+
+            if (!file_exists($filePath)) {
+                abort(404, 'File not found.');
+            }
+
+            return response()->download($filePath);
+        })->name('download-bukti-mengajar');
     });
 });

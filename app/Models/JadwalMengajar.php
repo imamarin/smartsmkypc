@@ -41,4 +41,9 @@ class JadwalMengajar extends Model
     {
         return $this->hasMany(Presensi::class, 'idjadwalmengajar');
     }
+
+    public function ajuanpresensimengajar()
+    {
+        return $this->hasMany(AjuanPresensiMengajar::class, 'idjawalmengajar');
+    }
 }

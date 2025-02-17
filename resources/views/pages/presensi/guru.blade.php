@@ -53,6 +53,7 @@
                                     <th>Kelas</th>
                                     <th>Mata Pelajaran</th>
                                     <th>Keterangan</th>
+                                    <th>Ajuan Kehadiran Mengajar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,6 +69,53 @@
                                                 {{ $subject->keterangan }}
                                             </span>
                                         </td>
+                                        <td>
+                                            @if($subject->keterangan == 'Tidak Hadir')
+                                                @if($subject->ajuan)
+                                                    @if($subject->ajuan->status == '2')
+                                                    <a href="#" class="btn btn-sm btn-primary">Input Kehadiran</a>
+                                                    @elseif($subject->ajuan->status == '1')
+                                                    <a href="javascript:void(0)" class="btn btn-sm btn-success"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#addSubjectModal"
+                                                    data-id="{{ Crypt::encrypt($subject->ajuan->id) }}"
+                                                    data-tanggal="{{ $subject->tanggal }}"
+                                                    data-jam="{{ $subject->jam }}"
+                                                    data-kelas="{{ $subject->kelas }}"
+                                                    data-matpel="{{ $subject->matpel }}"
+                                                    data-ajuan = "{{ Crypt::encrypt($subject->ajuan->id) }}"
+                                                    data-alasan = "{{ $subject->ajuan->alasan }}"
+                                                    data-bukti = "{{ $subject->ajuan->bukti_file }}"
+                                                    data-tanggapan = "{{ $subject->ajuan->tanggapan }}"
+                                                    data-status_ajuan = "{{ $subject->ajuan->status }}"
+                                                    >Revisi Pengajuan</a>
+                                                    @else
+                                                    <a href="javascript:void(0)" class="btn btn-sm btn-warning"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#addSubjectModal"
+                                                    data-id="{{ Crypt::encrypt($subject->jadwal.'*'.$subject->tanggal) }}"
+                                                    data-tanggal="{{ $subject->tanggal }}"
+                                                    data-jam="{{ $subject->jam }}"
+                                                    data-kelas="{{ $subject->kelas }}"
+                                                    data-matpel="{{ $subject->matpel }}"
+                                                    data-ajuan = "{{ Crypt::encrypt($subject->ajuan->id) }}"
+                                                    data-alasan = "{{ $subject->ajuan->alasan }}"
+                                                    data-bukti = "{{ $subject->ajuan->bukti_file }}"
+                                                    >Menunggu Persetujuan</a>
+                                                    @endif
+                                                @else
+                                                    <a href="javascript:void(0)" class="btn btn-sm btn-info"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#addSubjectModal"
+                                                    data-id="{{ Crypt::encrypt($subject->jadwal.'*'.$subject->tanggal) }}"
+                                                    data-tanggal="{{ $subject->tanggal }}"
+                                                    data-jam="{{ $subject->jam }}"
+                                                    data-kelas="{{ $subject->kelas }}"
+                                                    data-matpel="{{ $subject->matpel }}"
+                                                    >Ajukan</a>
+                                                @endif
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -81,36 +129,57 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addSubjectModalLabel">Histori Presensi</h5>
+                    <h5 class="modal-title" id="addSubjectModalLabel">Ajukan Kehadiran Mengajar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form id="subjectForm" action="{{ route('ajuan-kehadiran-mengajar.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <div class="modal-body">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6">
-                                    <label for="">Mata Pelajaran:</label><br>
-                                    <label style="font-weight: normal" id="matpel"></label>
-                                </div>
-                                <div class="col-6 text-end">
-                                    <label for="">Kelas</label><br>
-                                    <label style="font-weight: normal" id="kelas"></label>
-                                </div>
-                            </div>
-                            
-                        </li>
-                    </ul>
-                    <table class="table display nowrap" id="example3">
-                        <thead>
-                            <th>#</th>
-                            <th>Tanggal Presensi</th>
-                            <th>Aksi</th>
-                        </thead>
-                        <tbody id="tbodyHistory">
-
-                        </tbody>
-                    </table>
+                    <input type="hidden" id="subjectId" name="id">
+                    <input type="hidden" name="_method" id="formMethod" value="POST">
+                    
+                    <div class="row mb-3">
+                        <div for="idkelas" class="col-md-3 fw-semibold">Kelas</div>
+                        <div id="idkelas" class="col-md-9">: -</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div for="matpel" class="col-md-3 fw-semibold">Mata Pelajaran</div>
+                        <div id="matpel" class="col-md-9">: -</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div for="tanggal" class="col-md-3 fw-semibold">Tanggal</div>
+                        <div id="tanggal" class="col-md-9">: -</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div for="jam" class="col-md-3 fw-semibold">Jam Ke</div>
+                        <div id="jam" class="col-md-9">: -</div>
+                    </div>
+                    <div class="mb-3" id="input_alasan">
+                        <label for="alasan" class="fw-semibold">Alasan Tidak Melakukan Presensi: </label><br>
+                        <textarea id="alasan" name="alasan" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3" id="lihat_alasan">
+                        <label for="lihat_alasan" class="fw-semibold">Alasan Tidak Melakukan Presensi: </label><br>
+                        <p></p>
+                    </div>
+                    <div class="mb-3" id="upload_bukti_mengajar">
+                        <label for="bukti_file" class="fw-semibold">Bukti Mengajar: </label>
+                        <input type="file" name="bukti_file" id="bukti_file" class="form-control"></input>
+                        <p><i>*Upload file image atau pdf minimal ukuran 3 MB</i></p>
+                    </div>
+                    <div class="mb-3" id="lihat_bukti_mengajar">
+                        <label for="download_bukti" class="fw-semibold">Bukti Mengajar: </label>
+                        <a href="" class="btn btn-sm btn-secondary" id="download_bukti" download>Download Bukti Mengajar</a>
+                    </div>
+                    <div class="mb-3" id="tanggapan">
+                        <label for="tanggapan" class="fw-semibold">Catatan: </label><br>
+                        <p></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Ajukan</button>
+                    </div>
                 </div>
+            </form>
             </div>
         </div>
     </div>
@@ -119,35 +188,88 @@
 
 @push('scripts')
     <script>
-        const history = document.querySelector('#addSubjectModal');
-        history.addEventListener('show.bs.modal', function(event){
-            const button = event.relatedTarget;
-            const id = button.getAttribute('data-id');
-            const matpel = button.getAttribute('data-matpel');
-            const kelas = button.getAttribute('data-kelas');
+        // const history = document.querySelector('#addSubjectModal');
+        // history.addEventListener('show.bs.modal', function(event){
+        //     const button = event.relatedTarget;
+        //     const id = button.getAttribute('data-id');
+        //     const matpel = button.getAttribute('data-matpel');
+        //     const kelas = button.getAttribute('data-kelas');
 
-            document.querySelector('#matpel').textContent = matpel;
-            document.querySelector('#kelas').textContent = kelas;
-            let tbodyHistory = document.querySelector('#tbodyHistory');
-            $.get('{{ route('history-presensi', ':id') }}'.replace(':id',id), function(data, status){
-                tbodyHistory.innerHTML = "";               
-                data.data.forEach((element, index) => {
-                    let no = index + 1
-                    let url = '{{ route('show-presensi.tanggal', ['id'=>':id','tgl'=>':tgl']) }}'.replace(':id', element.id).replace(':tgl', element.created_at)
-                    tbodyHistory.innerHTML += "<tr>"+
-                        "<td>"+no+"</td>"+
-                        "<td>" + element.created_at + "</td>"+
-                        "<td><a href='"+url+"' class='btn btn-sm btn-primary'>Ubah Presensi</a></td>"+
-                        "</tr>";
-                });
+        //     document.querySelector('#matpel').textContent = matpel;
+        //     document.querySelector('#kelas').textContent = kelas;
+        //     let tbodyHistory = document.querySelector('#tbodyHistory');
+        //     $.get('{{ route('history-presensi', ':id') }}'.replace(':id',id), function(data, status){
+        //         tbodyHistory.innerHTML = "";               
+        //         data.data.forEach((element, index) => {
+        //             let no = index + 1
+        //             let url = '{{ route('show-presensi.tanggal', ['id'=>':id','tgl'=>':tgl']) }}'.replace(':id', element.id).replace(':tgl', element.created_at)
+        //             tbodyHistory.innerHTML += "<tr>"+
+        //                 "<td>"+no+"</td>"+
+        //                 "<td>" + element.created_at + "</td>"+
+        //                 "<td><a href='"+url+"' class='btn btn-sm btn-primary'>Ubah Presensi</a></td>"+
+        //                 "</tr>";
+        //         });
                 
-            })
-        })
+        //     })
+        // })
 
     $(document).ready(function() {
         $('#example3').DataTable({
             searching: false,
             lengthChange: false
+        });
+
+        $('#addSubjectModal').on('show.bs.modal', function(event){
+            const data = event.relatedTarget;
+            const id = data.getAttribute('data-id');
+            const idkelas = data.getAttribute('data-kelas');
+            const matpel = data.getAttribute('data-matpel');
+            const jam = data.getAttribute('data-jam');
+            const tanggal = data.getAttribute('data-tanggal');
+            const ajuan = data.getAttribute('data-ajuan');
+  
+            $('#subjectId').val(id);
+            $('#idkelas').text(': '+idkelas);
+            $('#matpel').text(': '+matpel);
+            $('#jam').text(': '+jam);
+            $('#tanggal').text(': '+tanggal);
+            $('#subjectForm').attr('action','{{ route('ajuan-kehadiran-mengajar.store') }}');
+            $('#submitBtn').text('Ajukan');
+            if(ajuan){
+                if(data.getAttribute('data-status_ajuan') == '1'){
+                    $('#subjectForm').attr('action','{{ route('ajuan-kehadiran-mengajar.update',':id') }}'.replace(':id', id));
+                    $('#upload_bukti_mengajar').show();
+                    $('#lihat_bukti_mengajar').hide();
+                    $('#lihat_alasan').hide();
+                    $('#input_alasan').show();
+                    $('#input_alasan textarea').text(data.getAttribute('data-alasan'));
+                    $('#tanggapan').show();
+                    $('#tanggapan p').text(data.getAttribute('data-tanggapan'));
+                    $('#submitBtn').show();
+                    $('#submitBtn').text('Ajukan Perbaikan');
+                }else{
+                    $('#subjectForm').attr('action','');
+                    $('#upload_bukti_mengajar').hide();
+                    $('#lihat_bukti_mengajar').show();
+                    $('#lihat_alasan').show();
+                    $('#lihat_alasan p').text(data.getAttribute('data-alasan'))
+                    $('#input_alasan').hide();
+                    $('#submitBtn').hide();
+                    $('#tanggapan').hide();
+                    if(data.getAttribute('data-bukti')){
+                        $('#download_bukti').attr('href','{{ route('download-bukti-mengajar', ':id') }}'.replace(':id', data.getAttribute('data-bukti')))
+                    }
+                    $('#submitBtn').text('Batalkan Perbaikan');
+                }
+            }else{
+                $('#upload_bukti_mengajar').show();
+                $('#lihat_bukti_mengajar').hide();
+                $('#lihat_alasan').hide();
+                $('#tanggapan').hide();
+                $('#input_alasan').show();
+                $('#input_alasan textarea').text('');
+                $('#submitBtn').show();
+            }
         });
 
     });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AjuanPresensiMengajar;
 use App\Models\DetailPresensi;
 use App\Models\Staf;
 use App\Models\JadwalMengajar;
@@ -303,7 +304,8 @@ class PresensiController extends Controller
                 'presensi_harian_siswas.idtahunajaran' => $tahunajaran->id
             ])
             ->whereIn('rombels.idkelas', $kelasList)
-            ->groupBy('rombels.idkelas')->get();
+            ->groupBy('rombels.idkelas')
+            ->get();
 
         $kelas = [];
         $presensi_kelas = [];
@@ -311,27 +313,27 @@ class PresensiController extends Controller
         foreach ($presensi as $key => $value) {
             # code...
             if (isset($presensi_kelas['Hadir'])) {
-                array_push($presensi_kelas['Hadir'], ceil($value->total_hadir / $value->total_pertemuan * 100));
+                array_push($presensi_kelas['Hadir'], floor($value->total_hadir / $value->total_pertemuan * 100));
             } else {
-                $presensi_kelas['Hadir'][0] = ceil($value->total_hadir / $value->total_pertemuan * 100);
+                $presensi_kelas['Hadir'][0] = floor($value->total_hadir / $value->total_pertemuan * 100);
             }
 
             if (isset($presensi_kelas['Sakit'])) {
-                array_push($presensi_kelas['Sakit'], ceil($value->total_sakit / $value->total_pertemuan * 100));
+                array_push($presensi_kelas['Sakit'], floor($value->total_sakit / $value->total_pertemuan * 100));
             } else {
-                $presensi_kelas['Sakit'][0] = ceil($value->total_sakit / $value->total_pertemuan * 100);
+                $presensi_kelas['Sakit'][0] = floor($value->total_sakit / $value->total_pertemuan * 100);
             }
 
             if (isset($presensi_kelas['Izin'])) {
-                array_push($presensi_kelas['Izin'], ceil($value->total_izin / $value->total_pertemuan * 100));
+                array_push($presensi_kelas['Izin'], floor($value->total_izin / $value->total_pertemuan * 100));
             } else {
-                $presensi_kelas['Izin'][0] = ceil($value->total_izin / $value->total_pertemuan * 100);
+                $presensi_kelas['Izin'][0] = floor($value->total_izin / $value->total_pertemuan * 100);
             }
 
             if (isset($presensi_kelas['Tanpa Keterangan'])) {
-                array_push($presensi_kelas['Tanpa Keterangan'], ceil($value->total_alfa / $value->total_pertemuan * 100));
+                array_push($presensi_kelas['Tanpa Keterangan'], floor($value->total_alfa / $value->total_pertemuan * 100));
             } else {
-                $presensi_kelas['Tanpa Keterangan'][0] = ceil($value->total_alfa / $value->total_pertemuan * 100);
+                $presensi_kelas['Tanpa Keterangan'][0] = floor($value->total_alfa / $value->total_pertemuan * 100);
             }
         }
 
@@ -562,6 +564,12 @@ class PresensiController extends Controller
                             }
                         }
 
+                        $ajuan = [];
+                        if ($result == false) {
+                            $ajuan = AjuanPresensiMengajar::where('idjadwalmengajar', $item->id)->whereDate('tanggal_mengajar', date('Y-m-d', strtotime($item_tanggal)))->first();
+                        }
+
+
                         $ket =  [
                             'jadwal' => $item->id,
                             'matpel' => $item->matpel->matpel,
@@ -569,7 +577,8 @@ class PresensiController extends Controller
                             'tanggal' => date('Y-m-d', strtotime($item_tanggal)),
                             'hari' => date('N', strtotime($item_tanggal)),
                             'jam' => $item->jampel->jam,
-                            'keterangan' => $result ? 'Hadir' : 'Tidak Hadir'
+                            'keterangan' => $result ? 'Hadir' : 'Tidak Hadir',
+                            'ajuan' => $ajuan
                         ];
 
                         array_push($presensi, $ket);
@@ -581,7 +590,8 @@ class PresensiController extends Controller
                             'tanggal' => date('Y-m-d', strtotime($item_tanggal)),
                             'hari' => date('N', strtotime($item_tanggal)),
                             'jam' => $item->jampel->jam,
-                            'keterangan' => 'Tidak Hadir'
+                            'keterangan' => 'Tidak Hadir 1',
+                            'ajuan' => AjuanPresensiMengajar::where('idjadwalmengajar', $item->id)->whereDate('tanggal_mengajar', date('Y-m-d', strtotime($item_tanggal)))->first(),
                         ];
                         array_push($presensi, $ket);
                     }

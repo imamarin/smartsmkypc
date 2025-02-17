@@ -55,7 +55,7 @@
                                         data: {
                                             labels: ['Hadir','Sakit','Izin','Tanpa Keterangan'],
                                             datasets: [{
-                                                label: 'Persentase Kehadiran {{ $item["kelas"] }}',
+                                                label: 'Persentase Kehadiran',
                                                 data: {!! json_encode($item['keterangan']) !!},
                                                 backgroundColor: ['#4BC0C0', '#FFCD56',  '#36A2EB', '#FF9F40'],
                                             }]

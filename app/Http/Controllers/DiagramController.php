@@ -8,6 +8,7 @@ use App\Models\Kelas;
 use App\Models\Presensi;
 use App\Models\PresensiHarianSiswa;
 use App\Models\Rombel;
+use App\Models\TahunAjaran;
 use App\Models\Walikelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,11 +40,12 @@ class DiagramController extends Controller
 
     public function presensi_kelas()
     {
+
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+
         $kelas = Walikelas::where([
             'nip' => Auth::user()->staf->nip
-        ])->whereHas('tahunajaran', function ($query) {
-            $query->where('status', 1);
-        })->get()->pluck('idkelas');
+        ])->where('idtahunajaran', $tahunajaran->id)->get()->pluck('idkelas');
 
         $presensi = PresensiHarianSiswa::select('*')->selectRaw("
             COUNT(*) as total_pertemuan,
@@ -53,7 +55,11 @@ class DiagramController extends Controller
             SUM(keterangan = 'a') as total_alfa
         ")->whereHas('siswa.rombel', function ($query) use ($kelas) {
             $query->whereIn('idkelas', $kelas);
-        })->get();
+        })->where([
+            'semester' => $tahunajaran->semester,
+            'idtahunajaran' => $tahunajaran->id
+        ])->get();
+
 
         $data['presensi_kelas'] = $presensi->map(function ($item) {
             $kelas = $item->siswa->rombel[0]->kelas->kelas;
@@ -73,6 +79,8 @@ class DiagramController extends Controller
 
     public function presensi_harian_siswa(String $id)
     {
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+
         $labels_presensi_harian  = [];
         $nilai_presensi_harian  = [];
 
@@ -80,9 +88,9 @@ class DiagramController extends Controller
             $nisn = $id;
             $presensiHarian = PresensiHarianSiswa::where([
                 'nisn' => $nisn
-            ])->whereHas('tahunajaran', function ($query) {
-                $query->where('status', 1);
-            })->get();
+            ])->where([
+                'idtahunajaran' => $tahunajaran->id
+            ])->get();
 
             $bulan = [];
             $jml_hadir_harian = [];
@@ -123,12 +131,16 @@ class DiagramController extends Controller
 
     public function presensi_matpel_siswa(String $id)
     {
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+
         $labels_presensi_matpel = [];
         $nilai_presensi_matpel = [];
 
         if ($id) {
-            $presensiMatpel = DetailPresensi::join('presensis', 'presensis.id', '=', 'detail_presensis.idpresensi')->whereHas('presensi.tahunajaran', function ($query) {
-                $query->where('status', 1);
+            $presensiMatpel = DetailPresensi::join('presensis', 'presensis.id', '=', 'detail_presensis.idpresensi')->whereHas('presensi', function ($query) use ($tahunajaran) {
+                $query->where([
+                    'idtahunajaran' => $tahunajaran->id,
+                ]);
             })->where('nisn', $id)->get();
 
             $jml_presensi_matpel = [];
