@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Nette\Utils\ArrayList;
+use Nette\Utils\Arrays;
 
 class PresensiController extends Controller
 {
@@ -274,9 +276,86 @@ class PresensiController extends Controller
                 $harian = $this->harianSiswa($request, $tahunajaran);
                 $data = array_merge($data, $harian);
             }
+        } else {
+            $kelasList = $data['kelas']->pluck('id')->toArray();
+            $semuakelas = $this->semuaKelas($tahunajaran, $kelasList);
+            $data = array_merge($data, $semuakelas);
         }
 
         return view('pages.presensi.rekap-presensi-siswa', $data);
+    }
+
+    public function semuaKelas(TahunAjaran $tahunajaran, array $kelasList)
+    {
+        $presensi = PresensiHarianSiswa::selectRaw("
+                rombels.idkelas as idkelas,
+                kelas.kelas as kelas,
+                COUNT(keterangan) as total_pertemuan,
+                SUM(keterangan = 'h') as total_hadir,
+                SUM(keterangan = 's') as total_sakit,
+                SUM(keterangan = 'i') as total_izin,
+                SUM(keterangan = 'a') as total_alfa
+            ")
+            ->join('rombels', 'rombels.nisn', '=', 'presensi_harian_siswas.nisn')
+            ->join('kelas', 'kelas.id', '=', 'rombels.idkelas')
+            ->where([
+                'presensi_harian_siswas.semester' => $tahunajaran->semester,
+                'presensi_harian_siswas.idtahunajaran' => $tahunajaran->id
+            ])
+            ->whereIn('rombels.idkelas', $kelasList)
+            ->groupBy('rombels.idkelas')->get();
+
+        $kelas = [];
+        $presensi_kelas = [];
+
+        foreach ($presensi as $key => $value) {
+            # code...
+            if (isset($presensi_kelas['Hadir'])) {
+                array_push($presensi_kelas['Hadir'], ceil($value->total_hadir / $value->total_pertemuan * 100));
+            } else {
+                $presensi_kelas['Hadir'][0] = ceil($value->total_hadir / $value->total_pertemuan * 100);
+            }
+
+            if (isset($presensi_kelas['Sakit'])) {
+                array_push($presensi_kelas['Sakit'], ceil($value->total_sakit / $value->total_pertemuan * 100));
+            } else {
+                $presensi_kelas['Sakit'][0] = ceil($value->total_sakit / $value->total_pertemuan * 100);
+            }
+
+            if (isset($presensi_kelas['Izin'])) {
+                array_push($presensi_kelas['Izin'], ceil($value->total_izin / $value->total_pertemuan * 100));
+            } else {
+                $presensi_kelas['Izin'][0] = ceil($value->total_izin / $value->total_pertemuan * 100);
+            }
+
+            if (isset($presensi_kelas['Tanpa Keterangan'])) {
+                array_push($presensi_kelas['Tanpa Keterangan'], ceil($value->total_alfa / $value->total_pertemuan * 100));
+            } else {
+                $presensi_kelas['Tanpa Keterangan'][0] = ceil($value->total_alfa / $value->total_pertemuan * 100);
+            }
+        }
+
+        $mapPresensi  = [];
+        $warna = ['#4BC0C0', '#FFCD56',  '#36A2EB', '#FF9F40'];
+        $index = 0;
+        foreach ($presensi_kelas as $key => $value) {
+            # code...
+            $data = [
+                'label' => $key,
+                'data' => $value,
+                'backgroundColor' => $warna[$index],
+                'stack' => $index
+            ];
+            $mapPresensi[$index] = $data;
+            $index++;
+        }
+
+        $kelas = $presensi->pluck('kelas')->toArray();;
+
+        $data['presensi_kelas'] = $kelas;
+        $data['presensi_kelas_siswa'] = $mapPresensi;
+
+        return $data;
     }
 
     public function kbmSiswa(Request $request)

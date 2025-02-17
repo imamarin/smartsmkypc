@@ -172,18 +172,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 intersect: false,
             },
             scales: {
-                x: {
-                    stacked: true,
-                },
                 y: {
-                    stacked: true,
                     suggestedMin: 0,
                     suggestedMax: 100
                 }
             },
             plugins: {
                 datalabels: {
-                    display: false
+                    display: false,
+                    formatter: (value) => value +"%"
                 }
             }
         }

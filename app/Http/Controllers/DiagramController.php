@@ -123,11 +123,6 @@ class DiagramController extends Controller
 
     public function presensi_matpel_siswa(String $id)
     {
-        // $labels_presensi_matpel['ganjil']  = [];
-        // $nilai_presensi_matpel['ganjil']  = [];
-        // $labels_presensi_matpel['genap']  = [];
-        // $nilai_presensi_matpel['genap']  = [];
-
         $labels_presensi_matpel = [];
         $nilai_presensi_matpel = [];
 

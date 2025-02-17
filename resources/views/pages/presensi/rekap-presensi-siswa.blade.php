@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @push('styles')
+<style>
+    #barChart{
+        height: 90% !important;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -161,6 +166,13 @@
                             </table>
                         </div>
                     </div>
+                    @else
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Persentase Kehadiran Harian Siswa</h6>
+                            <canvas id="barChart" style="height: 400px;"></canvas>
+                        </div>
+                    </div>
                     @endif
                 </div>
             </div>
@@ -196,6 +208,36 @@
         $('#harian').on('click', function(event){
             $('#formSearchPresensi').attr('action', '{{ route($route_harian) }}');
             $('#formSearchPresensi').submit();
+        });
+
+        const barChart = document.getElementById('barChart').getContext('2d');
+        new Chart(barChart, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($presensi_kelas) !!},
+                datasets:  {!! json_encode($presensi_kelas_siswa) !!}
+            },
+            options: {
+                responsive: true,
+                    interaction: {
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true,
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        display: false
+                    }
+                }
+            }
         });
     </script>
 @endpush
