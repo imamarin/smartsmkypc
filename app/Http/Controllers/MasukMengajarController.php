@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JadwalMengajar;
 use App\Models\JadwalSistemBlok;
+use App\Models\KalenderAkademik;
 use App\Models\Presensi;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
@@ -39,6 +40,21 @@ class MasukMengajarController extends Controller
             ->where([
                 'nip' => Auth::user()->staf->nip,
             ])->get();
+
+        $kalenderakademik = KalenderAkademik::where('idtahunajaran', $tahunajaran->id)->get();
+        $tanggal_akademik = [];
+        foreach ($kalenderakademik as $value) {
+            # code...
+            $first = strtotime($value->tanggal_mulai);
+            $end = strtotime($value->tanggal_akhir);
+
+            while ($first <= $end) {
+                array_push($tanggal_akademik, date('Y-m-d', $first));
+                $first = strtotime('+1 day', $first);
+            }
+        }
+
+        $data['tanggal_akademik'] = $tanggal_akademik;
 
         return view('pages.masukmengajar.index', $data);
     }

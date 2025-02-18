@@ -7,6 +7,7 @@ use App\Http\Controllers\StafController;
 use App\Http\Controllers\JadwalMengajarController;
 use App\Http\Controllers\JamPelajaranController;
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\KalenderAkademikController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MasukMengajarController;
@@ -142,6 +143,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');
         Route::post('/pengaturan/menu', [PengaturanController::class, 'menuFormStore'])->name('pengaturan.menuForm.store');
+
+        //pengaturan
+        Route::resource('/kalender-akademik', KalenderAkademikController::class);
 
         //download
         Route::get('/download-bukti-mengajar/{filename}', function ($filename) {

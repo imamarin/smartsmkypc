@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('kalender_akademiks', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('kegiatan');
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_akhir');
+            $table->enum('status_kbm', ['efektif', 'tidak efektif', 'libur']);
+            $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->timestamps();
         });
     }

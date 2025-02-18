@@ -29,23 +29,26 @@
                 <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
 
                     <h1 id="timer">00:00:00</h1>
-                    @if($jadwal->count() > 0)
-                    <a href="#" id="masukMengajar" class="btn btn-info btn-lg mt-3">
-                        <span class="spinner-border spinner-border-sm"></span>
-                        Pengecekan Jadwal
-                    </a>
+                    @if(!in_array(date('Y-m-d'), $tanggal_akademik))
+                        @if($jadwal->count() > 0)
+                        <a href="#" id="masukMengajar" class="btn btn-info btn-lg mt-3">
+                            <span class="spinner-border spinner-border-sm"></span>
+                            Pengecekan Jadwal
+                        </a>
+                        @else
+                        <button class="btn btn-secondary btn-lg mt-3">
+                            Tidak Ada Jadwal
+                        </button>
+                        @endif
                     @else
-                    <button class="btn btn-secondary btn-lg mt-3">
-                        Tidak Ada Jadwal
-                    </button>
+                        <button class="btn btn-secondary btn-lg mt-3">
+                            Tidak Ada Aktivitas KBM
+                        </button>
                     @endif
                     
                 </div>
                 <div class="card-footer d-flex flex-column align-items-center justify-content-center text-center">
-                    <i>*Jika ada kendala pada masuk mengajar</i>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
-                        Ajuan Kehadiran Mengajar
-                    </button>
+                    <i>Selamat Melaksanakan Kegiatan Belajar dan Mengajar</i>
                 </div>
             </div>
         </div>

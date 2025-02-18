@@ -62,4 +62,9 @@ class TahunAjaran extends Model
     {
         return $this->hasMany(NilaiSiswa::class, 'idtahunajaran');
     }
+
+    public function kalenderakademik()
+    {
+        return $this->hasMany(KalenderAkademik::class, 'idtahunajaran');
+    }
 }

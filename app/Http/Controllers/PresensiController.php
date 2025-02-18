@@ -7,6 +7,7 @@ use App\Models\DetailPresensi;
 use App\Models\Staf;
 use App\Models\JadwalMengajar;
 use App\Models\JadwalSistemBlok;
+use App\Models\KalenderAkademik;
 use App\Models\Kelas;
 use App\Models\MatpelPengampu;
 use App\Models\Presensi;
@@ -523,18 +524,36 @@ class PresensiController extends Controller
             ]);
         })->get();
 
+        $kalenderakademik = KalenderAkademik::where('idtahunajaran', $tahunajaran->id)->get();
+
+        $tanggal_akademik = [];
+        foreach ($kalenderakademik as $value) {
+            # code...
+            $first = strtotime($value->tanggal_mulai);
+            $end = strtotime($value->tanggal_akhir);
+
+            while ($first <= $end) {
+                array_push($tanggal_akademik, date('Y-m-d', $first));
+                $first = strtotime('+1 day', $first);
+            }
+        }
+
+        // dd($tanggal_akademik);
+
         $tanggal = [];
         foreach ($jadwalsistemblok as $value) {
             # code...
             $first = strtotime($value->tanggal_mulai);
             $end = strtotime($value->tanggal_akhir);
             while ($first <= $end) {
-                if (isset($tanggal[$value->idsistemblok])) {
-                    if (!in_array(date('Y-m-d', $first), $tanggal[$value->idsistemblok])) {
-                        array_push($tanggal[$value->idsistemblok], date('Y-m-d', $first));
+                if (!in_array(date('Y-m-d', $first), $tanggal_akademik)) {
+                    if (isset($tanggal[$value->idsistemblok])) {
+                        if (!in_array(date('Y-m-d', $first), $tanggal[$value->idsistemblok])) {
+                            array_push($tanggal[$value->idsistemblok], date('Y-m-d', $first));
+                        }
+                    } else {
+                        $tanggal[$value->idsistemblok][0] = date('Y-m-d', $first);
                     }
-                } else {
-                    $tanggal[$value->idsistemblok][0] = date('Y-m-d', $first);
                 }
 
                 $first = strtotime('+1 day', $first);
@@ -640,18 +659,33 @@ class PresensiController extends Controller
             ]);
         })->get();
 
+        $kalenderakademik = KalenderAkademik::where('idtahunajaran', $idtahunajaran)->get();
+        $tanggal_akademik = [];
+        foreach ($kalenderakademik as $value) {
+            # code...
+            $first = strtotime($value->tanggal_mulai);
+            $end = strtotime($value->tanggal_akhir);
+
+            while ($first <= $end) {
+                array_push($tanggal_akademik, date('Y-m-d', $first));
+                $first = strtotime('+1 day', $first);
+            }
+        }
+
         $tanggal = [];
         foreach ($jadwalsistemblok as $value) {
             # code...
             $first = strtotime($value->tanggal_mulai);
             $end = strtotime($value->tanggal_akhir);
             while ($first <= $end) {
-                if (isset($tanggal[$value->idsistemblok])) {
-                    if (!in_array(date('Y-m-d', $first), $tanggal[$value->idsistemblok])) {
-                        array_push($tanggal[$value->idsistemblok], date('Y-m-d', $first));
+                if (!in_array(date('Y-m-d', $first), $tanggal_akademik)) {
+                    if (isset($tanggal[$value->idsistemblok])) {
+                        if (!in_array(date('Y-m-d', $first), $tanggal[$value->idsistemblok])) {
+                            array_push($tanggal[$value->idsistemblok], date('Y-m-d', $first));
+                        }
+                    } else {
+                        $tanggal[$value->idsistemblok][0] = date('Y-m-d', $first);
                     }
-                } else {
-                    $tanggal[$value->idsistemblok][0] = date('Y-m-d', $first);
                 }
 
                 $first = strtotime('+1 day', $first);
