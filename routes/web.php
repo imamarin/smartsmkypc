@@ -97,13 +97,16 @@ Route::middleware('cek-status-login')->group(function () {
         //presensi
         Route::get('/rekap-presensi-siswa', [PresensiController::class, 'rekapSiswa'])->name('rekap-presensi-siswa');
         Route::get('/rekap-presensi-mengajar', [PresensiController::class, 'rekapGuru'])->name('rekap-presensi-mengajar');
+        Route::get('/rekap-presensi-mengajar/{id}/presensi/{tgl}', [MasukMengajarController::class, 'show'])->name('ajuan-kehadiran-mengajar.presensi');
         Route::get('/rekap-presensi-siswa-detail/{id}', [PresensiController::class, 'rekapSiswaDetail'])->name('rekap-presensi-siswa-detail');
         Route::get('/history-presensi/{id}', [PresensiController::class, 'historyPresensi'])->name('history-presensi');
         Route::get('/rekap-presensi-siswa/{id}/tanggal/{tgl}', [MasukMengajarController::class, 'show'])->name('show-presensi.tanggal');
         Route::resource('/presensi', PresensiController::class);
         //Ajuan Kehadiran Mengajar
-        Route::post('/ajuan-kehadiran-mengajar', [AjuanPresensiController::class, 'store'])->name('ajuan-kehadiran-mengajar.store');
-        Route::post('/ajuan-kehadiran-mengajar/{id}', [AjuanPresensiController::class, 'update'])->name('ajuan-kehadiran-mengajar.update');
+        Route::get('/pengajuan-kehadiran-mengajar', [AjuanPresensiController::class, 'index'])->name('ajuan-kehadiran-mengajar.index');
+        Route::post('/pengajuan-kehadiran-mengajar', [AjuanPresensiController::class, 'store'])->name('ajuan-kehadiran-mengajar.store');
+        Route::post('/pengajuan-kehadiran-mengajar/{id}', [AjuanPresensiController::class, 'update'])->name('ajuan-kehadiran-mengajar.update');
+        Route::delete('/pengajuan-kehadiran-mengajar/{id}', [AjuanPresensiController::class, 'destroy'])->name('ajuan-kehadiran-mengajar.destroy');
         //data rekap presensi
         Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa');
         Route::post('/data-rekap-presensi-siswa/kbm', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa.kbm');

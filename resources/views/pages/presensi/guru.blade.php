@@ -53,7 +53,7 @@
                                     <th>Kelas</th>
                                     <th>Mata Pelajaran</th>
                                     <th>Keterangan</th>
-                                    <th>Ajuan Kehadiran Mengajar</th>
+                                    <th>Pengajuan Kehadiran Mengajar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,12 +73,12 @@
                                             @if($subject->keterangan == 'Tidak Hadir')
                                                 @if($subject->ajuan)
                                                     @if($subject->ajuan->status == '2')
-                                                    <a href="#" class="btn btn-sm btn-primary">Input Kehadiran</a>
+                                                    <a href="{{ route('ajuan-kehadiran-mengajar.presensi',['id' => Crypt::encrypt($subject->jadwal), 'tgl' => $subject->tanggal]) }}" class="btn btn-sm btn-primary">Input Kehadiran</a>
                                                     @elseif($subject->ajuan->status == '1')
                                                     <a href="javascript:void(0)" class="btn btn-sm btn-success"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#addSubjectModal"
-                                                    data-id="{{ Crypt::encrypt($subject->ajuan->id) }}"
+                                                    data-id="{{ Crypt::encrypt($subject->ajuan->id.'*0') }}"
                                                     data-tanggal="{{ $subject->tanggal }}"
                                                     data-jam="{{ $subject->jam }}"
                                                     data-kelas="{{ $subject->kelas }}"
@@ -103,6 +103,7 @@
                                                     data-bukti = "{{ $subject->ajuan->bukti_file }}"
                                                     >Menunggu Persetujuan</a>
                                                     @endif
+                                                    <a href="{{ route('ajuan-kehadiran-mengajar.destroy',  Crypt::encrypt($subject->ajuan->id)) }}" class="btn btn-sm btn-danger" data-confirm-delete="true">Batalkan</a>
                                                 @else
                                                     <a href="javascript:void(0)" class="btn btn-sm btn-info"
                                                     data-bs-toggle="modal"
@@ -168,7 +169,7 @@
                         <p><i>*Upload file image atau pdf minimal ukuran 3 MB</i></p>
                     </div>
                     <div class="mb-3" id="lihat_bukti_mengajar">
-                        <label for="download_bukti" class="fw-semibold">Bukti Mengajar: </label>
+                        <label for="download_bukti" class="fw-semibold">Bukti Mengajar: </label><br>
                         <a href="" class="btn btn-sm btn-secondary" id="download_bukti" download>Download Bukti Mengajar</a>
                     </div>
                     <div class="mb-3" id="tanggapan">
@@ -188,31 +189,6 @@
 
 @push('scripts')
     <script>
-        // const history = document.querySelector('#addSubjectModal');
-        // history.addEventListener('show.bs.modal', function(event){
-        //     const button = event.relatedTarget;
-        //     const id = button.getAttribute('data-id');
-        //     const matpel = button.getAttribute('data-matpel');
-        //     const kelas = button.getAttribute('data-kelas');
-
-        //     document.querySelector('#matpel').textContent = matpel;
-        //     document.querySelector('#kelas').textContent = kelas;
-        //     let tbodyHistory = document.querySelector('#tbodyHistory');
-        //     $.get('{{ route('history-presensi', ':id') }}'.replace(':id',id), function(data, status){
-        //         tbodyHistory.innerHTML = "";               
-        //         data.data.forEach((element, index) => {
-        //             let no = index + 1
-        //             let url = '{{ route('show-presensi.tanggal', ['id'=>':id','tgl'=>':tgl']) }}'.replace(':id', element.id).replace(':tgl', element.created_at)
-        //             tbodyHistory.innerHTML += "<tr>"+
-        //                 "<td>"+no+"</td>"+
-        //                 "<td>" + element.created_at + "</td>"+
-        //                 "<td><a href='"+url+"' class='btn btn-sm btn-primary'>Ubah Presensi</a></td>"+
-        //                 "</tr>";
-        //         });
-                
-        //     })
-        // })
-
     $(document).ready(function() {
         $('#example3').DataTable({
             searching: false,

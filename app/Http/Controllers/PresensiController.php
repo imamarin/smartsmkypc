@@ -29,6 +29,7 @@ class PresensiController extends Controller
     public function index()
     {
         //
+
     }
 
     /**
@@ -67,7 +68,8 @@ class PresensiController extends Controller
                 'kode_matpel' => $kode_matpel,
                 'nip' => $nip,
                 'idjadwalmengajar' => $idjadwalmengajar,
-                'pokok_bahasan' => $request->pokok_bahasan
+                'pokok_bahasan' => $request->pokok_bahasan,
+                'created_at' => date('Y-m-d H:i:s', strtotime($tanggal)) ?? date('Y-m-d H:i:s')
             ]);
         }
 
@@ -477,6 +479,10 @@ class PresensiController extends Controller
 
     public function rekapGuru(String $id = null)
     {
+        $title = 'Ajuan Kehadiran Mengajar!';
+        $text = "Yakin ingin menghapus data ini?";
+        confirmDelete($title, $text);
+
         if ($id) {
             try {
                 $id = explode("*", Crypt::decrypt($id));
@@ -590,7 +596,7 @@ class PresensiController extends Controller
                             'tanggal' => date('Y-m-d', strtotime($item_tanggal)),
                             'hari' => date('N', strtotime($item_tanggal)),
                             'jam' => $item->jampel->jam,
-                            'keterangan' => 'Tidak Hadir 1',
+                            'keterangan' => 'Tidak Hadir',
                             'ajuan' => AjuanPresensiMengajar::where('idjadwalmengajar', $item->id)->whereDate('tanggal_mengajar', date('Y-m-d', strtotime($item_tanggal)))->first(),
                         ];
                         array_push($presensi, $ket);
