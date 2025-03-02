@@ -267,7 +267,7 @@ class PresensiController extends Controller
 
 
         $data['kelas_selected'] = $request->idkelas;
-        $data['tahunajaran_selected'] = $request->idtahunajaran;
+        $data['tahunajaran_selected'] = $request->idtahunajaran ?? $tahunajaran->id;
         $data['semester_selected'] = $request->semester ?? $tahunajaran->semester;
 
         if ($request->isMethod('post')) {
@@ -288,6 +288,7 @@ class PresensiController extends Controller
 
         return view('pages.presensi.rekap-presensi-siswa', $data);
     }
+
 
     public function semuaKelas(TahunAjaran $tahunajaran, array $kelasList)
     {
@@ -310,9 +311,9 @@ class PresensiController extends Controller
             ->groupBy('rombels.idkelas')
             ->get();
 
+
         $kelas = [];
         $presensi_kelas = [];
-
         foreach ($presensi as $key => $value) {
             # code...
             if (isset($presensi_kelas['Hadir'])) {
@@ -355,7 +356,7 @@ class PresensiController extends Controller
             $index++;
         }
 
-        $kelas = $presensi->pluck('kelas')->toArray();;
+        $kelas = $presensi->pluck('kelas')->toArray();
 
         $data['presensi_kelas'] = $kelas;
         $data['presensi_kelas_siswa'] = $mapPresensi;

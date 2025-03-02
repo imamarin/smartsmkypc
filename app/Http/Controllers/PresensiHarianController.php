@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KalenderAkademik;
 use App\Models\Kelas;
 use App\Models\PresensiHarianSiswa;
 use App\Models\Rombel;
@@ -40,7 +41,7 @@ class PresensiHarianController extends Controller
                 return "Error: " . $e->getMessage();
             }
         } else {
-            $idkelas = $kelas[0]->id;
+            $idkelas = $kelas[0]->id ?? null;
         }
 
         $presensiHarian = PresensiHarianSiswa::select('*')->selectRaw("
@@ -61,6 +62,19 @@ class PresensiHarianController extends Controller
             $presensi[date('Y-m-d', strtotime($value->created_at))] = $value;
         }
 
+        $kalenderakademik = KalenderAkademik::where('idtahunajaran', $tahunajaran->id)->get();
+        $tanggal_akademik = [];
+        foreach ($kalenderakademik as $value) {
+            # code...
+            $first = strtotime($value->tanggal_mulai);
+            $end = strtotime($value->tanggal_akhir);
+
+            while ($first <= $end) {
+                array_push($tanggal_akademik, date('Y-m-d', $first));
+                $first = strtotime('+1 day', $first);
+            }
+        }
+
         $first = strtotime($tahunajaran->tgl_mulai);
         $end = strtotime(date('Y-m-d'));
 
@@ -68,12 +82,14 @@ class PresensiHarianController extends Controller
         $data_presensi = [];
         while ($end >= $first) {
             # code...
-            if (isset($presensi[date('Y-m-d', $end)])) {
-                array_push($data_presensi, $presensi[date('Y-m-d', $end)]);
-                array_push($tanggal, date('Y-m-d', $end));
-            } else {
-                array_push($data_presensi, null);
-                array_push($tanggal, date('Y-m-d', $end));
+            if (!in_array(date('Y-m-d', $end), $tanggal_akademik)) {
+                if (isset($presensi[date('Y-m-d', $end)])) {
+                    array_push($data_presensi, $presensi[date('Y-m-d', $end)]);
+                    array_push($tanggal, date('Y-m-d', $end));
+                } else {
+                    array_push($data_presensi, null);
+                    array_push($tanggal, date('Y-m-d', $end));
+                }
             }
 
             $end = strtotime('-1 day', $end);
@@ -211,9 +227,7 @@ class PresensiHarianController extends Controller
         $data['tahunajaran'] = $tahunajaran;
         $data['idtahunajaran'] = $idtahunajaran;
         $data['semester'] = $semester;
-            
+
         return view('pages.presensi.rekap-harian-siswa', $data);
     }
-
-    
 }

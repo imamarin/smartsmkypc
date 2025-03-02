@@ -169,7 +169,7 @@
                     @else
                     <div class="row">
                         <div class="col-md-12">
-                            <h6>Persentase Kehadiran Harian Siswa</h6>
+                            <h6>Persentase Kehadiran Harian Siswa Tahun Ajaran </h6>
                             <canvas id="barChart" style="height: 400px;"></canvas>
                         </div>
                     </div>
@@ -214,8 +214,8 @@
         new Chart(barChart, {
             type: 'bar',
             data: {
-                labels: {!! json_encode($presensi_kelas) !!},
-                datasets:  {!! json_encode($presensi_kelas_siswa) !!}
+                labels: {!! json_encode($presensi_kelas ?? null) !!},
+                datasets:  {!! json_encode($presensi_kelas_siswa ?? null) !!}
             },
             options: {
                 responsive: true,

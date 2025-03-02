@@ -36,7 +36,7 @@
                             </div>
                             
                             <div class="col-2 d-flex align-items-end mb-1">
-                                <input type="submit" class="btn btn-primary" value="Tampilkan Rekapan">
+                                <input type="submit" class="btn btn-primary" value="Tampilkan Grafik">
                             </div>
                         </div>
                     </form>
@@ -44,7 +44,45 @@
                 <div class="card-body">
                     <div class="row {{ $nisn ? 'd-none' : '' }}" class="d-flex justify-content-center">
                         <div class="col-12 d-flex justify-content-center">
-                            @foreach ($presensi_kelas as $key => $item)
+                            @foreach ($presensi_siswa_harian as $key => $item)
+                            <div class="col-md-9">
+                                <canvas id="chartkelas{{ $key }}"></canvas>
+                                <script>
+                                    const chartkelas{{ $key }} = document.getElementById('chartkelas{{ $key }}').getContext('2d');
+                                    Chart.register(ChartDataLabels);
+                                    new Chart(chartkelas{{ $key }}, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: {!! json_encode($item['labels']) !!},
+                                            datasets: {!! json_encode($item['datasets']) !!}
+                                        },
+                                        options: {
+                                            responsive: true,
+                                                interaction: {
+                                                intersect: false,
+                                            },
+                                            scales: {
+                                                y: {
+                                                    suggestedMin: 0,
+                                                    suggestedMax: 100
+                                                }
+                                            },
+                                            plugins: {
+                                                title: {
+                                                    display: true,
+                                                    text: 'Persentase Presensi Harian Kelas {{ $item["nama_kelas"] }}'
+                                                },
+                                                datalabels: {
+                                                    display: false,
+                                                    formatter: (value) => value +"%"
+                                                }
+                                            }
+                                        },
+                                    });
+                                </script>
+                            </div>
+                            @endforeach
+                            {{-- @foreach ($presensi_kelas as $key => $item)
                             <div class="col-md-4">
                                 <canvas id="chartkelas{{ $key }}"></canvas>
                                 <script>
@@ -80,7 +118,7 @@
                                     });
                                 </script>
                             </div>
-                            @endforeach
+                            @endforeach --}}
                         </div>
                     </div>
                     <div class="row {{ $nisn ? '' : 'd-none' }}">

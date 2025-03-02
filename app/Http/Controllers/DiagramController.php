@@ -24,18 +24,87 @@ class DiagramController extends Controller
             $query->where('status', 1);
         })->where('nip', Auth::user()->staf->nip)->pluck('idkelas');
 
+        $presensi_siswa_harian = $this->presensi_siswa();
         $presensi_kelas = $this->presensi_kelas();
 
         $data['siswa'] = Rombel::with('siswa')->whereIn('idkelas', $kelas)->get();
         $presensi_matpel_siswa = $this->presensi_matpel_siswa($nisn);
 
         $presensi_harian_siswa = $this->presensi_harian_siswa($nisn);
+
         $data['nisn'] = $nisn ?? '';
 
-        $data = array_merge($data, $presensi_harian_siswa, $presensi_matpel_siswa, $presensi_kelas);
+        $data = array_merge($data, $presensi_harian_siswa, $presensi_matpel_siswa, $presensi_kelas, $presensi_siswa_harian);
 
         // dd($data);
         return view('pages.diagram.siswa', $data);
+    }
+
+    public function presensi_siswa()
+    {
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+
+        $kelas = Walikelas::where([
+            'nip' => Auth::user()->staf->nip
+        ])->where('idtahunajaran', $tahunajaran->id)->get()->pluck('idkelas');
+
+        $rombel = Rombel::whereIn('idkelas', $kelas)->get();
+
+        $presensiharian = PresensiHarianSiswa::with('siswa.rombel.kelas')->selectRaw("
+            rombels.idkelas,
+            kelas.kelas,
+            DATE_FORMAT(presensi_harian_siswas.created_at, '%Y-%m') as bulan,
+            COUNT(*) as total_pertemuan,
+            SUM(presensi_harian_siswas.keterangan = 'h') as total_hadir,
+            SUM(presensi_harian_siswas.keterangan = 's') as total_sakit,
+            SUM(presensi_harian_siswas.keterangan = 'i') as total_izin,
+            SUM(presensi_harian_siswas.keterangan = 'a') as total_alfa
+        ")
+            ->join('siswas', 'siswas.nisn', '=', 'presensi_harian_siswas.nisn')
+            ->join('rombels', 'rombels.nisn', '=', 'siswas.nisn')
+            ->join('kelas', 'kelas.id', '=', 'rombels.idkelas')
+            ->where([
+                'presensi_harian_siswas.semester' => $tahunajaran->semester,
+                'presensi_harian_siswas.idtahunajaran' => $tahunajaran->id
+            ])
+            ->whereIn('rombels.idkelas', $kelas)->groupBy('bulan', 'rombels.idkelas')->get();
+
+
+        $data['presensi_siswa_harian'] = [];
+        $bulan = [];
+        $datasets = [];
+        foreach ($kelas as $value_kelas) {
+            # code...
+            $set['kelas'] = $value_kelas;
+            $set['labels'] = [];
+            $set['datasets'] = [];
+
+            $filterPresensiHarian = $presensiharian->filter(function ($item) use ($value_kelas) {
+                return stripos($item->idkelas, $value_kelas) !== false;
+            });
+
+            $hadir = ['label' => 'Hadir', 'data' => [], 'backgroundColor' => '#4BC0C0'];
+            $sakit = ['label' => 'Sakit', 'data' => [], 'backgroundColor' => '#FFCD56'];
+            $izin = ['label' => 'Izin', 'data' => [], 'backgroundColor' => '#36A2EB'];
+            $alfa = ['label' => 'Tanpa Keterangan', 'data' => [], 'backgroundColor' => '#FF9F40'];
+
+            $set['labels'] = [];
+
+            foreach ($filterPresensiHarian as $value_presensiharian) {
+                $set['labels'][] = $value_presensiharian->bulan;
+
+                $hadir['data'][] = $value_presensiharian->total_hadir == 0 ? 0 : round($value_presensiharian->total_hadir / $value_presensiharian->total_pertemuan * 100);
+                $sakit['data'][] = $value_presensiharian->total_sakit == 0 ? 0 : round($value_presensiharian->total_sakit / $value_presensiharian->total_pertemuan * 100);
+                $izin['data'][] = $value_presensiharian->total_izin == 0 ? 0 : round($value_presensiharian->total_izin / $value_presensiharian->total_pertemuan * 100);
+                $alfa['data'][] = $value_presensiharian->total_alfa == 0 ? 0 : round($value_presensiharian->total_alfa / $value_presensiharian->total_pertemuan * 100);
+                $set['nama_kelas'] = $value_presensiharian->kelas;
+            }
+            $set['datasets'] =  [$hadir, $sakit, $izin, $alfa];
+
+            array_push($data['presensi_siswa_harian'], $set);
+        }
+        // dd($data);
+        return $data;
     }
 
     public function presensi_kelas()
@@ -47,7 +116,8 @@ class DiagramController extends Controller
             'nip' => Auth::user()->staf->nip
         ])->where('idtahunajaran', $tahunajaran->id)->get()->pluck('idkelas');
 
-        $presensi = PresensiHarianSiswa::select('*')->selectRaw("
+
+        $presensi = PresensiHarianSiswa::selectRaw("
             COUNT(*) as total_pertemuan,
             SUM(keterangan = 'h') as total_hadir,
             SUM(keterangan = 's') as total_sakit,
@@ -60,9 +130,15 @@ class DiagramController extends Controller
             'idtahunajaran' => $tahunajaran->id
         ])->get();
 
-
         $data['presensi_kelas'] = $presensi->map(function ($item) {
-            $kelas = $item->siswa->rombel[0]->kelas->kelas;
+            if ($item->total_pertemuan < 1) {
+                return [
+                    'kelas' => null,
+                    'total_pertemuan' => null,
+                    'keterangan' => [null, null, null, null]
+                ];
+            }
+            $kelas = $item->siswa->rombel[0]->kelas->kelas ?? null;
             $hadir = floor($item->total_hadir / $item->total_pertemuan * 100);
             $sakit = floor($item->total_sakit / $item->total_pertemuan * 100);
             $izin = floor($item->total_izin / $item->total_pertemuan * 100);
