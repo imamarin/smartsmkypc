@@ -295,6 +295,14 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Pengajuan Kehadiran Mengajar',
+            'url' => '/pages/pengajuan-kehadiran-mengajar',
+            'posisi' => 8,
+            'idkategori' => 4,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Data Siswa',
             'url' => '/pages/walikelas/siswa',
             'posisi' => 1,
@@ -347,6 +355,14 @@ class DatabaseSeeder extends Seeder
             'menu' => 'Tahun Ajaran',
             'url' => '/pages/tahun-ajaran',
             'posisi' => 3,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Kalender Akademik',
+            'url' => '/pages/kalender-akademik',
+            'posisi' => 4,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
