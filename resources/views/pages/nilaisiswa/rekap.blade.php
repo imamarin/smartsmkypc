@@ -51,8 +51,8 @@
                                     <td>{{ $item->kelas->kelas }}</td>
                                     <td>{{ $item->matpel->matpel }}</td>
                                     <td>
-                                        {{-- <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
-                                        <button class="btn btn-sm btn-info" id="editModal"
+                                        <a href="{{ route('nilai-siswa.rekap.show', Crypt::encrypt($idtahunajaran.'*'.$semester.'*'.$item->idkelas.'*'.$item->kode_matpel)) }}" class="btn btn-sm btn-secondary">Lihat Nilai Siswa</a>
+                                        {{-- <button class="btn btn-sm btn-info" id="editModal"
                                             data-id = "{{ Crypt::encrypt($item->id) }}"
                                             data-nilai = "{{ base64_encode(json_encode($item)) }}"
                                             data-bs-toggle="modal" data-bs-target="#addSubjectModal">Edit</button>

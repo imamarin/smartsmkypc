@@ -83,10 +83,10 @@ class DiagramController extends Controller
                 return stripos($item->idkelas, $value_kelas) !== false;
             });
 
-            $hadir = ['label' => 'Hadir', 'data' => [], 'backgroundColor' => '#4BC0C0'];
-            $sakit = ['label' => 'Sakit', 'data' => [], 'backgroundColor' => '#FFCD56'];
-            $izin = ['label' => 'Izin', 'data' => [], 'backgroundColor' => '#36A2EB'];
-            $alfa = ['label' => 'Tanpa Keterangan', 'data' => [], 'backgroundColor' => '#FF9F40'];
+            $hadir = ['label' => 'Hadir', 'data' => [], 'backgroundColor' => 'rgba(75, 192, 192, 0.2)', 'borderColor' => 'rgba(75, 192, 192)', 'borderWidth' => 1];
+            $sakit = ['label' => 'Sakit', 'data' => [], 'backgroundColor' => 'rgba(255, 159, 64, 0.2)', 'borderColor' => 'rgb(255, 159, 64)', 'borderWidth' => 1];
+            $izin = ['label' => 'Izin', 'data' => [], 'backgroundColor' => 'rgba(54, 162, 235, 0.2)', 'borderColor' => 'rgb(54, 162, 235)', 'borderWidth' => 1];
+            $alfa = ['label' => 'Tanpa Keterangan', 'data' => [], 'backgroundColor' => 'rgba(255, 99, 132, 0.2)', 'borderColor' => 'rgb(255, 99, 132)', 'borderWidth' => 1];
 
             $set['labels'] = [];
 

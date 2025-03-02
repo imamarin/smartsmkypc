@@ -16,6 +16,6 @@ class DetailNilaiSiswa extends Model
 
     public function nilaisiswa()
     {
-        return $this->belongsTo(NilaiSiswa::class, 'idnilaisiswa', 'idnilaisiswa');
+        return $this->belongsTo(NilaiSiswa::class, 'idnilaisiswa');
     }
 }
