@@ -18,6 +18,7 @@ use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PresensiHarianController;
 use App\Http\Controllers\Raport\IdentitasController;
+use App\Http\Controllers\Raport\NilaiRaportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RombelController;
 use App\Http\Controllers\SistemBlokController;
@@ -153,6 +154,7 @@ Route::middleware('cek-status-login')->group(function () {
         //Raport
         Route::resource('/raport-identitas', IdentitasController::class);
         Route::post('/raport-aktivasi/{id}', [IdentitasController::class, 'aktivasi'])->name('raport.aktivasi');
+        Route::resource('/nilai-raport', NilaiRaportController::class);
 
         //download
         Route::get('/download-bukti-mengajar/{filename}', function ($filename) {

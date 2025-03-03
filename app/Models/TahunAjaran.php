@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Raport\IdentitasRaport;
+use App\Models\Raport\NilaiRaport;
 use Illuminate\Database\Eloquent\Model;
 
 class TahunAjaran extends Model
@@ -72,5 +73,10 @@ class TahunAjaran extends Model
     public function identitasraport()
     {
         return $this->hasMany(IdentitasRaport::class, 'idtahunajaran');
+    }
+
+    public function nilairaport()
+    {
+        return $this->hasMany(NilaiRaport::class, 'idtahunajaran');
     }
 }

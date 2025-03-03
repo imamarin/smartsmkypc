@@ -360,6 +360,14 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Pengaturan Raport',
+            'url' => '/pages/pengaturan-raport',
+            'posisi' => 3,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Role & Hak Akses',
             'url' => '/pages/role',
             'posisi' => 1,
