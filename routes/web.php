@@ -17,6 +17,7 @@ use App\Http\Controllers\NilaiSiswaController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PresensiHarianController;
+use App\Http\Controllers\Raport\IdentitasController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RombelController;
 use App\Http\Controllers\SistemBlokController;
@@ -148,6 +149,10 @@ Route::middleware('cek-status-login')->group(function () {
 
         //pengaturan
         Route::resource('/kalender-akademik', KalenderAkademikController::class);
+
+        //Raport
+        Route::resource('/raport-identitas', IdentitasController::class);
+        Route::post('/raport-aktivasi/{id}', [IdentitasController::class, 'aktivasi'])->name('raport.aktivasi');
 
         //download
         Route::get('/download-bukti-mengajar/{filename}', function ($filename) {

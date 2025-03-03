@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Raport\IdentitasRaport;
 use Illuminate\Database\Eloquent\Model;
 
 class TahunAjaran extends Model
@@ -66,5 +67,10 @@ class TahunAjaran extends Model
     public function kalenderakademik()
     {
         return $this->hasMany(KalenderAkademik::class, 'idtahunajaran');
+    }
+
+    public function identitasraport()
+    {
+        return $this->hasMany(IdentitasRaport::class, 'idtahunajaran');
     }
 }

@@ -127,12 +127,20 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Kategori::create([
-            'kategori' => 'Pengaturan',
+            'kategori' => 'E-Raport',
             'posisi' => 6,
+            'icon' => 'book',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Kategori::create([
+            'kategori' => 'Pengaturan',
+            'posisi' => 7,
             'icon' => 'settings',
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
         Menu::create([
             'menu' => 'Dashboard',
             'url' => '/pages/dashboard',
@@ -336,10 +344,26 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Aktivasi Raport',
+            'url' => '/pages/aktivasi-raport',
+            'posisi' => 1,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Nilai Raport',
+            'url' => '/pages/nilai-raport',
+            'posisi' => 2,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Role & Hak Akses',
             'url' => '/pages/role',
             'posisi' => 1,
-            'idkategori' => 6,
+            'idkategori' => 7,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -347,7 +371,7 @@ class DatabaseSeeder extends Seeder
             'menu' => 'Sistem Blok',
             'url' => '/pages/sistem-blok',
             'posisi' => 2,
-            'idkategori' => 6,
+            'idkategori' => 7,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -355,7 +379,7 @@ class DatabaseSeeder extends Seeder
             'menu' => 'Tahun Ajaran',
             'url' => '/pages/tahun-ajaran',
             'posisi' => 3,
-            'idkategori' => 6,
+            'idkategori' => 7,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -363,7 +387,7 @@ class DatabaseSeeder extends Seeder
             'menu' => 'Kalender Akademik',
             'url' => '/pages/kalender-akademik',
             'posisi' => 4,
-            'idkategori' => 6,
+            'idkategori' => 7,
             'created_at' => now(),
             'updated_at' => now()
         ]);
