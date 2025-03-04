@@ -56,6 +56,8 @@
                                     <td>{{ $item->semester }}</td>
                                     <td>{{ $item->tahunajaran->awal_tahun_ajaran }} / {{ $item->tahunajaran->akhir_tahun_ajaran }}</td>
                                     <td>
+                                        <a href="{{ route('detail-nilai-raport.input', Crypt::encrypt($item->id)) }}"
+                                            class="btn btn-sm btn-primary">Input Nilai Raport</a>
                                         <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
                                             data-bs-target="#addSubjectModal"  data-id="{{ Crypt::encrypt($item->id) }}"
                                             data-matpel="{{ base64_encode($item->kode_matpel) }}"

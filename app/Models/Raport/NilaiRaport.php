@@ -33,4 +33,9 @@ class NilaiRaport extends Model
     {
         return $this->belongsTo(TahunAjaran::class, 'idtahunajaran');
     }
+
+    public function detailnilairaport()
+    {
+        return $this->hasMany(DetailNilaiRaport::class, 'idnilairaport');
+    }
 }

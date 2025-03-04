@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Raport\DetailNilaiRaport;
 use Illuminate\Database\Eloquent\Model;
 
 class Siswa extends Model
@@ -38,5 +39,10 @@ class Siswa extends Model
     public function detailnilaisiswa()
     {
         return $this->hasMany(DetailNilaiSiswa::class, 'nisn', 'nisn');
+    }
+
+    public function detailnilairaport()
+    {
+        return $this->hasMany(DetailNilaiRaport::class, 'nisn', 'nisn');
     }
 }

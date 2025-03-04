@@ -17,7 +17,9 @@ use App\Http\Controllers\NilaiSiswaController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PresensiHarianController;
+use App\Http\Controllers\Raport\DetailNilaiRaportController;
 use App\Http\Controllers\Raport\IdentitasController;
+use App\Http\Controllers\Raport\MatpelKelasController;
 use App\Http\Controllers\Raport\NilaiRaportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RombelController;
@@ -151,10 +153,16 @@ Route::middleware('cek-status-login')->group(function () {
         //pengaturan
         Route::resource('/kalender-akademik', KalenderAkademikController::class);
 
+        Route::prefix('/raport')->group(function () {
+            Route::resource('/raport-identitas', IdentitasController::class);
+            Route::post('/raport-aktivasi/{id}', [IdentitasController::class, 'aktivasi'])->name('raport.aktivasi');
+            Route::get('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'input'])->name('detail-nilai-raport.input');
+            Route::post('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'store'])->name('detail-nilai-raport.store');
+            Route::resource('/nilai-raport', NilaiRaportController::class);
+            Route::resource('/matpel-kelas', MatpelKelasController::class);
+        });
         //Raport
-        Route::resource('/raport-identitas', IdentitasController::class);
-        Route::post('/raport-aktivasi/{id}', [IdentitasController::class, 'aktivasi'])->name('raport.aktivasi');
-        Route::resource('/nilai-raport', NilaiRaportController::class);
+
 
         //download
         Route::get('/download-bukti-mengajar/{filename}', function ($filename) {

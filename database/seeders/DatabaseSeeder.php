@@ -345,7 +345,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Menu::create([
             'menu' => 'Aktivasi Raport',
-            'url' => '/pages/aktivasi-raport',
+            'url' => '/pages/raport/aktivasi-raport',
             'posisi' => 1,
             'idkategori' => 6,
             'created_at' => now(),
@@ -353,16 +353,24 @@ class DatabaseSeeder extends Seeder
         ]);
         Menu::create([
             'menu' => 'Nilai Raport',
-            'url' => '/pages/nilai-raport',
+            'url' => '/pages/raport/nilai-raport',
             'posisi' => 2,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Pengaturan Raport',
-            'url' => '/pages/pengaturan-raport',
+            'menu' => 'Matpel Kelas',
+            'url' => '/pages/raport/matpel-kelas',
             'posisi' => 3,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Pengaturan Raport',
+            'url' => '/pages/raport/pengaturan-raport',
+            'posisi' => 4,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
