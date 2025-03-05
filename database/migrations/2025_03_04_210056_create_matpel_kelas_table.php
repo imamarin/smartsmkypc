@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('matpel_kelas', function (Blueprint $table) {
+        Schema::create('rpt_matpel_kelas', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_matpel', 20);
+            $table->foreign('kode_matpel')->references('kode_matpel')->on('matpels');
+            $table->string('nip', 20);
+            $table->foreign('nip')->references('nip')->on('stafs');
+            $table->foreignId('idkelas')->references('id')->on('kelas');
+            $table->enum('semester', ['ganjil', 'genap']);
+            $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->timestamps();
         });
     }

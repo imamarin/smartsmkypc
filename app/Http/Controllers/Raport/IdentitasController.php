@@ -8,6 +8,8 @@ use App\Models\TahunAjaran;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class IdentitasController extends Controller
 {
@@ -24,7 +26,7 @@ class IdentitasController extends Controller
         confirmDelete($title, $text);
 
         $data['identitas'] = IdentitasRaport::orderBy('id', 'desc')->get();
-
+        $data['aktivasi'] = Session::get('aktivasi');
         return view('pages.eraports.identitas.index', $data);
     }
 
@@ -92,13 +94,13 @@ class IdentitasController extends Controller
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
-        IdentitasRaport::query()->update([
-            'status_raport' => '0'
-        ]);
-        IdentitasRaport::find($id)->update([
-            'status_raport' => '1'
-        ]);
-
+        Session::put('aktivasi', IdentitasRaport::find($id));
+        // IdentitasRaport::query()->update([
+        //     'status_raport' => '0'
+        // ]);
+        // IdentitasRaport::find($id)->update([
+        //     'status_raport' => '1'
+        // ]);
         return redirect()->back()->with('success', 'Status Berhasil Diubah');
     }
 }

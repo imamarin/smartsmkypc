@@ -48,4 +48,9 @@ class Kelas extends Model
     {
         return $this->hasMany(NilaiRaport::class, 'idkelas');
     }
+
+    public function matpelkelas()
+    {
+        return $this->hasMany(Kelas::class, 'idkelas');
+    }
 }

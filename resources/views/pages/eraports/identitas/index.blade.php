@@ -26,6 +26,7 @@
                 <div class="card-header d-flex align-items-center">
                     <div class="col">
                         <h4 class="card-title">Daftar Aktivasi Raport</h4>
+                        {{ Storage::get('aktivasi'); }}
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
@@ -63,13 +64,13 @@
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" role="switch"
                                                         id="flexSwitchCheckDefault"
-                                                        {{ $item->status_raport == 1 ? 'checked' : '' }}
+                                                        {{ $aktivasi?->id == $item->id ? 'checked' : '' }}
                                                         onchange="this.form.submit()">
                                                     <span
-                                                        class="badge {{ $item->status_raport == 1 ? 'bg-success' : 'bg-danger' }}">{{ $item->status_raport == 1 ? 'Aktif' : 'Tidak Aktif' }}</span>
+                                                        class="badge {{ $aktivasi?->id == $item->id ? 'bg-success' : 'bg-danger' }}">{{ $aktivasi?->id == $item->id ? 'Aktif' : 'Tidak Aktif' }}</span>
                                                 </div>
                                                 <input type="hidden" name="status_raport"
-                                                    value="{{ $item->status_raport == 1 ? 0 : 1 }}">
+                                                    value="{{ $aktivasi?->id == $item->id ? 0 : 1 }}">
                                             </form>
                                         </td>
                                         <td>

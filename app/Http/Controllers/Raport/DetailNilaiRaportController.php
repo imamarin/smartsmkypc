@@ -11,6 +11,7 @@ use App\Models\Siswa;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
 
 class DetailNilaiRaportController extends Controller
 {
@@ -19,7 +20,7 @@ class DetailNilaiRaportController extends Controller
 
     public function __construct()
     {
-        $this->aktivasi = IdentitasRaport::where('status_raport', 1)->first();
+        $this->aktivasi = Session::get('aktivasi');
     }
 
     public function index()

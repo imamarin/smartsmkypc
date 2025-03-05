@@ -12,6 +12,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -23,7 +24,7 @@ class NilaiRaportController extends Controller
     public function __construct()
     {
         $this->tahunajaran = TahunAjaran::where('status', 1)->first();
-        $this->aktivasi = IdentitasRaport::where('status_raport', 1)->first();
+        $this->aktivasi = Session::get('aktivasi');
     }
     //
     public function index()

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Raport\MatpelKelas;
 use App\Models\Raport\NilaiRaport;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,6 +23,11 @@ class Staf extends Model
         return $this->hasMany(Walikelas::class, 'nip', 'nip');
     }
 
+    public function matpelpengampu()
+    {
+        return $this->hasMany(MatpelPengampu::class, 'nip', 'nip');
+    }
+
     public function jadwalmengajar()
     {
         return $this->hasMany(JadwalMengajar::class, 'nip', 'nip');
@@ -40,6 +46,11 @@ class Staf extends Model
     public function nilairaport()
     {
         return $this->hasMany(NilaiRaport::class, 'nip', 'nip');
+    }
+
+    public function matpelkelas()
+    {
+        return $this->hasMany(MatpelKelas::class, 'nip', 'nip');
     }
 
     protected $casts = [

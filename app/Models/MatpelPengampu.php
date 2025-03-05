@@ -18,4 +18,9 @@ class MatpelPengampu extends Model
     {
         return $this->belongsTo(TahunAjaran::class, 'idtahunajaran');
     }
+
+    public function staf()
+    {
+        return $this->belongsTo(Staf::class, 'nip', 'nip');
+    }
 }
