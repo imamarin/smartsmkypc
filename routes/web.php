@@ -20,6 +20,7 @@ use App\Http\Controllers\PresensiHarianController;
 use App\Http\Controllers\Raport\AbsensiRaportController;
 use App\Http\Controllers\Raport\DetailNilaiRaportController;
 use App\Http\Controllers\Raport\IdentitasController;
+use App\Http\Controllers\Raport\KategoriSikapController;
 use App\Http\Controllers\Raport\MatpelKelasController;
 use App\Http\Controllers\Raport\NilaiRaportController;
 use App\Http\Controllers\RoleController;
@@ -163,6 +164,7 @@ Route::middleware('cek-status-login')->group(function () {
             Route::resource('/nilai-raport', NilaiRaportController::class);
             Route::resource('/matpel-kelas', MatpelKelasController::class);
             Route::resource('/absensi-siswa', AbsensiRaportController::class);
+            Route::resource('/kategori-sikap', KategoriSikapController::class);
         });
 
 

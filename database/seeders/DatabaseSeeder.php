@@ -376,9 +376,17 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Data Sikap',
-            'url' => '/pages/raport/data-sikap',
+            'menu' => 'Nilai Sikap',
+            'url' => '/pages/raport/nilai-sikap',
             'posisi' => 5,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Kategori Sikap',
+            'url' => '/pages/raport/kategori-sikap',
+            'posisi' => 6,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
@@ -386,7 +394,7 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Pengaturan Raport',
             'url' => '/pages/raport/pengaturan-raport',
-            'posisi' => 6,
+            'posisi' => 7,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
