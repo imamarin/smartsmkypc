@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Raport\AbsensiRaport;
 use App\Models\Raport\DetailNilaiRaport;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,5 +45,10 @@ class Siswa extends Model
     public function detailnilairaport()
     {
         return $this->hasMany(DetailNilaiRaport::class, 'nisn', 'nisn');
+    }
+
+    public function absensiraport()
+    {
+        return $this->hasMany(AbsensiRaport::class, 'nisn', 'nisn');
     }
 }

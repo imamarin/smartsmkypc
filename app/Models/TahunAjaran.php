@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Raport\AbsensiRaport;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\MatpelKelas;
 use App\Models\Raport\NilaiRaport;
@@ -84,5 +85,10 @@ class TahunAjaran extends Model
     public function matpelkelas()
     {
         return $this->hasMany(MatpelKelas::class, 'idtahunajaran');
+    }
+
+    public function absensiraport()
+    {
+        return $this->hasMany(AbsensiRaport::class, 'idtahunajaran');
     }
 }

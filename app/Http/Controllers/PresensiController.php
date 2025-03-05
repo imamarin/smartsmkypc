@@ -471,7 +471,7 @@ class PresensiController extends Controller
             'idtahunajaran' => $request->idtahunajaran
         ])->groupBy('nisn')->get();
 
-        $data['presensi_harian_siswa'] = $presensiHarian;
+        $data['presensi_harian_siswa'] = $presensiHarian->sortBy('siswa.nama');
         $data['idkelas'] = $request->idkelas;
         $data['idtahunajaran'] = $request->idtahunajaran;
         $data['semester'] = $request->semester;
@@ -479,7 +479,7 @@ class PresensiController extends Controller
         return $data;
     }
 
-    public function rekapGuru(String $id = null)
+    public function rekapGuru(String $id)
     {
         $title = 'Ajuan Kehadiran Mengajar!';
         $text = "Yakin ingin menghapus data ini?";

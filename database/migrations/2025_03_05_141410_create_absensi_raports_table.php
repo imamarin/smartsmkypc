@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absensi_raports', function (Blueprint $table) {
+        Schema::create('rpt_absensi_raports', function (Blueprint $table) {
             $table->id();
+            $table->string('nisn', 20);
+            $table->foreign('nisn')->references('nisn')->on('siswas');
+            $table->integer('izin');
+            $table->integer('sakit');
+            $table->integer('alfa');
+            $table->string('semester');
+            $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->timestamps();
         });
     }
@@ -22,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('absensi_raports');
+        Schema::dropIfExists('rpt_absensi_raports');
     }
 };

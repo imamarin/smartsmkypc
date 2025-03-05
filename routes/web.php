@@ -17,6 +17,7 @@ use App\Http\Controllers\NilaiSiswaController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PresensiHarianController;
+use App\Http\Controllers\Raport\AbsensiRaportController;
 use App\Http\Controllers\Raport\DetailNilaiRaportController;
 use App\Http\Controllers\Raport\IdentitasController;
 use App\Http\Controllers\Raport\MatpelKelasController;
@@ -153,6 +154,7 @@ Route::middleware('cek-status-login')->group(function () {
         //pengaturan
         Route::resource('/kalender-akademik', KalenderAkademikController::class);
 
+        //Raport
         Route::prefix('/raport')->group(function () {
             Route::resource('/raport-identitas', IdentitasController::class);
             Route::post('/raport-aktivasi/{id}', [IdentitasController::class, 'aktivasi'])->name('raport.aktivasi');
@@ -160,8 +162,8 @@ Route::middleware('cek-status-login')->group(function () {
             Route::post('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'store'])->name('detail-nilai-raport.store');
             Route::resource('/nilai-raport', NilaiRaportController::class);
             Route::resource('/matpel-kelas', MatpelKelasController::class);
+            Route::resource('/absensi-siswa', AbsensiRaportController::class);
         });
-        //Raport
 
 
         //download

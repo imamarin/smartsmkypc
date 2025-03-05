@@ -368,9 +368,25 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Absensi Siswa',
+            'url' => '/pages/raport/absensi-siswa',
+            'posisi' => 4,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Data Sikap',
+            'url' => '/pages/raport/data-sikap',
+            'posisi' => 5,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Pengaturan Raport',
             'url' => '/pages/raport/pengaturan-raport',
-            'posisi' => 4,
+            'posisi' => 6,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
