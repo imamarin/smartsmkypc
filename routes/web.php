@@ -23,6 +23,7 @@ use App\Http\Controllers\Raport\IdentitasController;
 use App\Http\Controllers\Raport\KategoriSikapController;
 use App\Http\Controllers\Raport\MatpelKelasController;
 use App\Http\Controllers\Raport\NilaiRaportController;
+use App\Http\Controllers\Raport\NilaiSikapController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RombelController;
 use App\Http\Controllers\SistemBlokController;
@@ -165,6 +166,7 @@ Route::middleware('cek-status-login')->group(function () {
             Route::resource('/matpel-kelas', MatpelKelasController::class);
             Route::resource('/absensi-siswa', AbsensiRaportController::class);
             Route::resource('/kategori-sikap', KategoriSikapController::class);
+            Route::resource('/nilai-sikap', NilaiSikapController::class);
         });
 
 

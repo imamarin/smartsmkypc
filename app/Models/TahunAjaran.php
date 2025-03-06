@@ -6,6 +6,7 @@ use App\Models\Raport\AbsensiRaport;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\MatpelKelas;
 use App\Models\Raport\NilaiRaport;
+use App\Models\Raport\NilaiSikap;
 use Illuminate\Database\Eloquent\Model;
 
 class TahunAjaran extends Model
@@ -90,5 +91,10 @@ class TahunAjaran extends Model
     public function absensiraport()
     {
         return $this->hasMany(AbsensiRaport::class, 'idtahunajaran');
+    }
+
+    public function nilaisikap()
+    {
+        return $this->hasMany(NilaiSikap::class, 'idtahunajaran');
     }
 }
