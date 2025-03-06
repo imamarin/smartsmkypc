@@ -19,6 +19,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PresensiHarianController;
 use App\Http\Controllers\Raport\AbsensiRaportController;
 use App\Http\Controllers\Raport\DetailNilaiRaportController;
+use App\Http\Controllers\Raport\EkstrakurikulerController;
 use App\Http\Controllers\Raport\IdentitasController;
 use App\Http\Controllers\Raport\KategoriSikapController;
 use App\Http\Controllers\Raport\MatpelKelasController;
@@ -167,6 +168,7 @@ Route::middleware('cek-status-login')->group(function () {
             Route::resource('/absensi-siswa', AbsensiRaportController::class);
             Route::resource('/kategori-sikap', KategoriSikapController::class);
             Route::resource('/nilai-sikap', NilaiSikapController::class);
+            Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
         });
 
 

@@ -392,6 +392,14 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Ekstrakurikuler',
+            'url' => '/pages/raport/ekstrakurikuler',
+            'posisi' => 7,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Pengaturan Raport',
             'url' => '/pages/raport/pengaturan-raport',
             'posisi' => 7,
