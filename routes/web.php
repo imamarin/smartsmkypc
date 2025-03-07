@@ -23,6 +23,7 @@ use App\Http\Controllers\Raport\EkstrakurikulerController;
 use App\Http\Controllers\Raport\IdentitasController;
 use App\Http\Controllers\Raport\KategoriSikapController;
 use App\Http\Controllers\Raport\MatpelKelasController;
+use App\Http\Controllers\Raport\NilaiEkstraController;
 use App\Http\Controllers\Raport\NilaiRaportController;
 use App\Http\Controllers\Raport\NilaiSikapController;
 use App\Http\Controllers\RoleController;
@@ -169,6 +170,7 @@ Route::middleware('cek-status-login')->group(function () {
             Route::resource('/kategori-sikap', KategoriSikapController::class);
             Route::resource('/nilai-sikap', NilaiSikapController::class);
             Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
+            Route::resource('/nilai-ekstrakurikuler', NilaiEkstraController::class);
         });
 
 

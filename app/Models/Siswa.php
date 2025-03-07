@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Raport\AbsensiRaport;
 use App\Models\Raport\DetailNilaiRaport;
+use App\Models\Raport\NilaiEkstrakurikuler;
 use App\Models\Raport\NilaiSikap;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,5 +57,10 @@ class Siswa extends Model
     public function nilaisikap()
     {
         return $this->hasMany(NilaiSikap::class, 'nisn', 'nisn');
+    }
+
+    public function nilaiekstrakurikuler()
+    {
+        return $this->hasMany(NilaiEkstrakurikuler::class, 'nisn', 'nisn');
     }
 }

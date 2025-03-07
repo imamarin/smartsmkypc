@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Raport\AbsensiRaport;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\MatpelKelas;
+use App\Models\Raport\NilaiEkstrakurikuler;
 use App\Models\Raport\NilaiRaport;
 use App\Models\Raport\NilaiSikap;
 use Illuminate\Database\Eloquent\Model;
@@ -96,5 +97,10 @@ class TahunAjaran extends Model
     public function nilaisikap()
     {
         return $this->hasMany(NilaiSikap::class, 'idtahunajaran');
+    }
+
+    public function nilaiekstrakurikuler()
+    {
+        return $this->hasMany(NilaiEkstrakurikuler::class, 'idtahunajaran');
     }
 }
