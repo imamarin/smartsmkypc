@@ -104,6 +104,7 @@
                                     <th>#</th>
                                     <th>NISN</th>
                                     <th>Nama Siswa</th>
+                                    <th>Ekstrakurikuler</th>
                                     <th>Nilai</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -114,6 +115,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $subject->nisn }}</td>
                                         <td>{{ $subject->siswa->nama }}</td>
+                                        <td>{{ $subject->ekstrakurikuler->nama }}</td>
                                         <td>{{ $subject->nilai == 3 ? 'Sangat Baik' : ($subject->nilai == 2 ? 'Baik' : 'Cukup Baik') }}</td>
                                         <td>
                                             <!-- Trigger modal untuk Edit -->

@@ -479,7 +479,7 @@ class PresensiController extends Controller
         return $data;
     }
 
-    public function rekapGuru(String $id)
+    public function rekapGuru(String $id = null)
     {
         $title = 'Ajuan Kehadiran Mengajar!';
         $text = "Yakin ingin menghapus data ini?";

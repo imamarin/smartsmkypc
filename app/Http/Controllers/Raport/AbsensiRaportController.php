@@ -71,6 +71,7 @@ class AbsensiRaportController extends Controller
         $data['idkelas'] = $kelas[0]->idkelas;
         $data['kelas'] = $kelas;
         $data['siswa'] = $siswa;
+        
         return view('pages.eraports.absensiraport.index', $data);
     }
 
