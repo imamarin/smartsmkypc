@@ -21,6 +21,7 @@ use App\Http\Controllers\Raport\AbsensiRaportController;
 use App\Http\Controllers\Raport\CetakController;
 use App\Http\Controllers\Raport\DetailNilaiRaportController;
 use App\Http\Controllers\Raport\EkstrakurikulerController;
+use App\Http\Controllers\Raport\FormatController;
 use App\Http\Controllers\Raport\IdentitasController;
 use App\Http\Controllers\Raport\KategoriSikapController;
 use App\Http\Controllers\Raport\KenaikanKelasController;
@@ -175,6 +176,7 @@ Route::middleware('cek-status-login')->group(function () {
             Route::resource('/nilai-ekstrakurikuler', NilaiEkstraController::class);
             Route::resource('/kenaikan-kelas', KenaikanKelasController::class);
             Route::resource('/cetak', CetakController::class);
+            Route::resource('/format', FormatController::class);
         });
 
 

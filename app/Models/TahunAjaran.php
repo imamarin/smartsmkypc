@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Raport\AbsensiRaport;
+use App\Models\Raport\Format;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\MatpelKelas;
 use App\Models\Raport\NilaiEkstrakurikuler;
@@ -102,5 +103,10 @@ class TahunAjaran extends Model
     public function nilaiekstrakurikuler()
     {
         return $this->hasMany(NilaiEkstrakurikuler::class, 'idtahunajaran');
+    }
+
+    public function format()
+    {
+        return $this->hasMany(Format::class, 'idtahunjaran');
     }
 }
