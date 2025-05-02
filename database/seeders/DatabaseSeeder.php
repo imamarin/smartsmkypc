@@ -416,14 +416,29 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
-            'menu' => 'Pengaturan Raport',
-            'url' => '/pages/raport/pengaturan-raport',
+            'menu' => 'Cetak Raport',
+            'url' => '/pages/raport/cetak',
             'posisi' => 10,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
         ]);
-
+        Menu::create([
+            'menu' => 'Pengaturan Raport',
+            'url' => '/pages/raport/pengaturan-raport',
+            'posisi' => 11,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'menu' => 'Format Raport',
+            'url' => '/pages/raport/format',
+            'posisi' => 12,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
         Menu::create([
             'menu' => 'Role & Hak Akses',
             'url' => '/pages/role',
