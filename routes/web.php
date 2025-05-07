@@ -175,6 +175,7 @@ Route::middleware('cek-status-login')->group(function () {
             Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
             Route::resource('/nilai-ekstrakurikuler', NilaiEkstraController::class);
             Route::resource('/kenaikan-kelas', KenaikanKelasController::class);
+            Route::get('/cetak/{page}/{id}/{start}/{end}', [CetakController::class, 'page'])->name('cetak.raport');
             Route::resource('/cetak', CetakController::class);
             Route::resource('/format', FormatController::class);
         });

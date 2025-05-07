@@ -28,6 +28,13 @@ return new class extends Migration
             $table->string('no_hp_ortu')->nullable();
             $table->text('alamat_ortu')->nullable();
             $table->text('alamat_siswa')->nullable();
+            $table->string('agama', 20)->nullable();
+            $table->string('status_keluarga', 30)->nullable();
+            $table->string('anak_ke', 2)->nullable();
+            $table->string('walisiswa', 30)->nullable();
+            $table->text('alamat_wali')->nullable();
+            $table->string('no_hp_wali', 13)->nullable();
+            $table->string('pekerjaan_wali', 50)->nullable();
             $table->string('diterima_tanggal')->nullable();
             $table->integer('status')->default(1);
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
