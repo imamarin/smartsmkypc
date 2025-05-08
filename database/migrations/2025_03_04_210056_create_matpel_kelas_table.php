@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('kode_matpel', 20);
             $table->foreign('kode_matpel')->references('kode_matpel')->on('matpels');
+            $table->char('kelompok_matpel', 1);
             $table->string('nip', 20);
             $table->foreign('nip')->references('nip')->on('stafs');
             $table->foreignId('idkelas')->references('id')->on('kelas');

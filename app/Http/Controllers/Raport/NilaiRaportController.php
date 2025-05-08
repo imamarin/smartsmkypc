@@ -49,7 +49,10 @@ class NilaiRaportController extends Controller
             ]);
         })->where('nip', Auth::user()->staf->nip)->groupBy('idkelas')->get();
 
-        $data['nilairaport'] = NilaiRaport::orderBy('id', 'desc')->get();
+        $data['nilairaport'] = NilaiRaport::where([
+            'idtahunajaran' => $this->aktivasi->idtahunajaran,
+            'nip' => Auth::user()->staf->nip
+        ])->orderBy('id', 'desc')->get();
 
         return view('pages.eraports.nilairaport.index', $data);
     }

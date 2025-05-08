@@ -83,6 +83,7 @@ class MatpelKelasController extends Controller
         } catch (DecryptException $e) {
             return redirect()->back()->with('warning', $e->getMessage());
         }
+
         $request->validate([
             'idkelas' => 'required',
             'nip' => 'required',
@@ -95,7 +96,8 @@ class MatpelKelasController extends Controller
             'semester' => $this->aktivasi->semester,
             'idtahunajaran' => $this->aktivasi->idtahunajaran
         ], [
-            'nip' => $request->nip
+            'nip' => $request->nip,
+            'kelompok_matpel' => $request->kelompok_matpel,
         ]);
 
         return redirect()->back()->with('success', 'Data berhasil disimpan');

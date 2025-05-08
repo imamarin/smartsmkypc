@@ -34,7 +34,7 @@
 		}
 	</style>
 
-	<?php
+	@php
 	function Casef($n)
 	{
 		$kalimat = explode(" ", $n);
@@ -47,39 +47,37 @@
 		$newtext = implode(" ", $kalimatbaru);
 		return $newtext;
 	}
-	?>
+	@endphp
 </head>
 
 <body>
-	<?php
-
-	foreach ($siswa as $row) {
-	?>
+	@foreach ($siswa as $row) 
 		<div style="page-break-before:always;">
 			<center>
-				<h3 style="display:none;">LAPORAN HASIL PENILAIAN AKHIR SEMESTER <?php echo strtoupper($this->session->semesterraport); ?></h3>
+				<h3 style="display:none;">LAPORAN HASIL PENILAIAN AKHIR SEMESTER {{ strtoupper($aktivasi->semester) }}</h3>
 				<table style="width:100%;border-bottom:solid 1px #000000;">
 					<tr>
 						<td>Nama Sekolah</td>
-						<td>: <?php echo $dr->nmsekolah; ?></td>
+						<td>: {{ $aktivasi->nama_sekolah }}</td>
 						<td>Kelas</td>
-						<td>: <?php echo $row->kdkelas; ?></td>
+						<td>: {{ $row->rombel[0]->kelas->kelas }}</td>
 					</tr>
 					<tr>
 						<td>Nama Peserta Didik</td>
-						<td>: <?php echo casef($row->nama); ?></td>
+						<td>: {{ casef($row->nama) }}</td>
 						<td>Semester</td>
-						<td>: <?php echo $this->session->semesterraport; ?></td>
+						<td>: {{ $aktivasi->semester }}</td>
 					</tr>
 					<tr>
 						<td>No. Induk / NISN</td>
-						<td>: <?php echo $row->nisn3; ?></td>
+						<td>: {{ $row->nisn }}</td>
 						<td>Tahun Ajaran</td>
-						<td>: <?php echo $this->session->tahunraport; ?></td>
+						<td>: {{ $aktivasi->tahunajaran->awal_tahun_ajaran }}/{{ $aktivasi->tahunajaran->akhir_tahun_ajaran }}</td>
 					</tr>
 				</table>
 
-			</center><br />
+			</center>
+            <br />
 			<b>A. Nilai Akademik</b>
 			<br />
 			<table style="width:100%;" id="nilai" cellspacing="0">
@@ -87,148 +85,220 @@
 					<tr>
 						<th align="center" style="width:4%;">No</th>
 						<th valign="middle" align="center" style="width: 22%;">MATA PELAJARAN</th>
+						<th align="center" style="width:4%;">Pengetahuan</th>
+						<th align="center" style="width:4%;">Keterampilan</th>
 						<th align="center" style="width:4%;">Nilai Akhir</th>
-						<th align="center" style="width:70%;">CAPAIAN KOMPETENSI</th>
+						<th align="center" style="width:4%;">Predikat</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td colspan="6"><b>Mata Pelajaran Umum</b></td>
+						<td colspan="6"><b>A. Muatan Nasional</b></td>
 					</tr>
-					<?php
+					@php
 					$n = 1;
 					$arrmatpel = array();
-					foreach ($matpel_A as $row1) {
-					?>
+                    // dd($kkm);
+                    @endphp
+					@foreach ($kelompok_matpel_A as $row1)
 						<tr>
-							<td align="center" style="width:3%;"><?php echo $n; ?></td>
-							<td><?php echo Casef($row1->matpel); ?></td>
-							<?php
-							if (isset($pengetahuan[$row1->kdmatpel][$row->nisn])) {
-								$pengetahuanA = $pengetahuan[$row1->kdmatpel][$row->nisn];
-								$kkm = $pengetahuan[$row1->kdmatpel]['kkm'];
+							<td align="center" style="width:3%;">{{ $n }}</td>
+							<td>{{ Casef($row1->matpel->matpel) }}</td>
+							@php
+                            if(isset($kkm[$row1->kode_matpel][$row1->nip])){
+                                $nilai_kkm = $kkm[$row1->kode_matpel][$row1->nip];
+                            }else{
+								$nilai_kkm = 0;
+                            }
+                            
+							if (isset($pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
+								$pengetahuanA = $pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip];
 							} else {
 								$pengetahuanA = 0;
-								$kkm = 0;
 							}
-							?>
-							<td align="center"><?= $pengetahuanA; ?></td>
-							<td>
-								<?php
-								$txtcapaian = "";
-								if(isset($capaian[$row1->kdmatpel])){
-									foreach ($capaian[$row1->kdmatpel] as $key => $value) {
-										# code...
 
-										if (isset($capai[$row->nisn][$value->kdcp])) {
-											if ($capai[$row->nisn][$value->kdcp] == "1") {
-												if ($txtcapaian == "") {
-													# code...
-													$txtcapaian = $value->capaian;
-												} else {
-													$txtcapaian = $txtcapaian . "," . $value->capaian;
-												}
-											}
-										}
-									}
-								}
-								echo "Siswa sudah mencapai kompetensi: " . $txtcapaian . "<br>";
-								?>
-
-								<?php
-								$txtcapaian = "";
-								if(isset($capaian[$row1->kdmatpel])){
-									foreach ($capaian[$row1->kdmatpel] as $key => $value) {
-										# code...
-
-										if (isset($capai[$row->nisn][$value->kdcp])) {
-											if ($capai[$row->nisn][$value->kdcp] == "0") {
-												if ($txtcapaian == "") {
-													# code...
-													$txtcapaian = $value->capaian;
-												} else {
-													$txtcapaian = $txtcapaian . "," . $value->capaian;
-												}
-											}
-										}
-									}
-								}
-								echo "Siswa belum mencapai kompetensi: " . $txtcapaian . "<br>";
-								?>
-							</td>
-						</tr>
-					<?php
-						$n++;
-					}
-					?>
-					<tr>
-						<td colspan="6"><b>Mata Pelajaran Kejuruan</b></td>
-					</tr>
-					<?php
-					$n = 1;
-					foreach ($matpel_B as $row1) {
-					?>
-						<tr>
-							<td align="center" style="width:3%;"><?php echo $n; ?></td>
-							<td><?php echo Casef($row1->matpel); ?></td>
-							<?php
-							if (isset($pengetahuan[$row1->kdmatpel][$row->nisn])) {
-								$pengetahuanB = $pengetahuan[$row1->kdmatpel][$row->nisn];
-								$kkm = $pengetahuan[$row1->kdmatpel]['kkm'];
+                            if (isset($keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
+								$keterampilanA = $keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip];
 							} else {
-								$pengetahuanB = 0;
-								$kkm = 0;
+								$keterampilanA = 0;
 							}
-							?>
-							<td align="center"><?= $pengetahuanB; ?></td>
-							<td>
-								<?php
-								$txtcapaian = "";
-								if(isset($capaian[$row1->kdmatpel])){
-									foreach ($capaian[$row1->kdmatpel] as $key => $value) {
-										# code...
-										if (isset($capai[$row->nisn][$value->kdcp])) {
-											if ($capai[$row->nisn][$value->kdcp] == "1") {
-												if ($txtcapaian == "") {
-													# code...
-													$txtcapaian = $value->capaian;
-												} else {
-													$txtcapaian = $txtcapaian . "," . $value->capaian;
-												}
-											}
-										}
-									}
-								}
-								echo "Siswa sudah mencapai kompetensi: " . $txtcapaian . "<br>";
-								// echo print_r($capaian);
-								?>
 
-								<?php
-								$txtcapaian = "";
-								if(isset($capaian[$row1->kdmatpel])){
-									foreach ($capaian[$row1->kdmatpel] as $key => $value) {
-										# code...
-										if (isset($capai[$row->nisn][$value->kdcp])) {
-											if ($capai[$row->nisn][$value->kdcp] == "0") {
-												if ($txtcapaian == "") {
-													# code...
-													$txtcapaian = $value->capaian;
-												} else {
-													$txtcapaian = $txtcapaian . "," . $value->capaian;
-												}
-											}
-										}
-									}
-								}
-								echo "Siswa belum mencapai kompetensi: " . $txtcapaian;
-								?>
-							</td>
-						</tr>
-					<?php
+                            $nilbp = $bobot_pengetahuan[$row1->kode_matpel][$row1->nip] ?? 0;
+                            $nilbk = $bobot_pengetahuan[$row1->kode_matpel][$row1->nip] ?? 0;
+
+                            $nilaiakhir = ($pengetahuanA * $nilbp) + ($keterampilanA * $nilbk);
+                            $nilaiakhir = $nilaiakhir / 100;
+
+                            if ($nilaiakhir >= 95) {
+                                $predikat = "A+";
+                            } else if ($nilaiakhir >= 90) {
+                                $predikat = "A";
+                            } else if ($nilaiakhir >= 85) {
+                                $predikat = "A-";
+                            } else if ($nilaiakhir >= 80) {
+                                $predikat = "B+";
+                            } else if ($nilaiakhir >= 75) {
+                                $predikat = "B";
+                            } else if ($nilaiakhir >= 70) {
+                                $predikat = "B-";
+								$arrmatpel[] = Casef($row1->matpel->matpel);
+                            } else if ($nilaiakhir >= 60) {
+                                $predikat = "C";
+								$arrmatpel[] = Casef($row1->matpel->matpel);
+                            } else {
+                                $predikat = "D";
+                                $arrmatpel[] = Casef($row1->matpel->matpel);
+                            }
+
+							@endphp
+
+							<td align="center">{{ $pengetahuanA }}</td>
+							<td align="center">{{ $keterampilanA }}</td>
+							<td align="center">{{ ceil($nilaiakhir) }}</td>
+							<td align="center">{{ $predikat }}</td>
+					@php
 						$n++;
-					}
-					?>
+					@endphp
+					@endforeach
+                    <tr>
+						<td colspan="6"><b>B. Muatan Kewilayahan</b></td>
+					</tr>
+                    <tr>
+						<td colspan="6"><b>C. Muatan Peminatan Kejuruan</b></td>
+					</tr>
+                    <tr>
+						<td colspan="6"><b>C1. Dasar Bidang Keahlian</b></td>
+					</tr>
+					@php
+					$n = 1;
+                    @endphp
+					@foreach ($kelompok_matpel_B as $row1)
+						<tr>
+							<td align="center" style="width:3%;">{{ $n }}</td>
+							<td>{{ Casef($row1->matpel->matpel) }}</td>
+							@php
+                            if(isset($kkm[$row1->kode_matpel][$row1->nip])){
+                                $nilai_kkm = $kkm[$row1->kode_matpel][$row1->nip];
+                            }else{
+								$nilai_kkm = 0;
+                            }
+                            
+							if (isset($pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
+								$pengetahuan = $pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip];
+							} else {
+								$pengetahuan = 0;
+							}
 
+                            if (isset($keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
+								$keterampilan = $keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip];
+							} else {
+								$keterampilan = 0;
+							}
+
+                            $nilbp = $bobot_pengetahuan[$row1->kode_matpel][$row1->nip] ?? 0;
+                            $nilbk = $bobot_keterampilan[$row1->kode_matpel][$row1->nip] ?? 0;
+
+                            $nilaiakhir = ($pengetahuan * $nilbp) + ($keterampilan * $nilbk);
+                            $nilaiakhir = $nilaiakhir / 100;
+
+                            if ($nilaiakhir >= 95) {
+                                $predikat = "A+";
+                            } else if ($nilaiakhir >= 90) {
+                                $predikat = "A";
+                            } else if ($nilaiakhir >= 85) {
+                                $predikat = "A-";
+                            } else if ($nilaiakhir >= 80) {
+                                $predikat = "B+";
+                            } else if ($nilaiakhir >= 75) {
+                                $predikat = "B";
+                            } else if ($nilaiakhir >= 70) {
+                                $predikat = "B-";
+								$arrmatpel[] = Casef($row1->matpel->matpel);
+                            } else if ($nilaiakhir >= 60) {
+                                $predikat = "C";
+								$arrmatpel[] = Casef($row1->matpel->matpel);
+                            } else {
+                                $predikat = "D";
+                                $arrmatpel[] = Casef($row1->matpel->matpel);
+                            }
+
+							@endphp
+
+							<td align="center">{{ $pengetahuan }}</td>
+							<td align="center">{{ $keterampilan }}</td>
+							<td align="center">{{ ceil($nilaiakhir) }}</td>
+							<td align="center">{{ $predikat }}</td>
+					@php
+						$n++;
+					@endphp
+					@endforeach
+					
+                    <tr>
+						<td colspan="6"><b>C1. Dasar Bidang Keahlian</b></td>
+					</tr>
+					@php
+					$n = 1;
+                    @endphp
+					@foreach ($kelompok_matpel_C as $row1)
+						<tr>
+							<td align="center" style="width:3%;">{{ $n }}</td>
+							<td>{{ Casef($row1->matpel->matpel) }}</td>
+							@php
+                            if(isset($kkm[$row1->kode_matpel][$row1->nip])){
+                                $nilai_kkm = $kkm[$row1->kode_matpel][$row1->nip];
+                            }else{
+								$nilai_kkm = 0;
+                            }
+                            
+							if (isset($pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
+								$pengetahuan = $pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip];
+							} else {
+								$pengetahuan = 0;
+							}
+
+                            if (isset($keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
+								$keterampilan = $keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip];
+							} else {
+								$keterampilan = 0;
+							}
+
+                            $nilbp = $bobot_pengetahuan[$row1->kode_matpel][$row1->nip] ?? 0;
+                            $nilbk = $bobot_keterampilan[$row1->kode_matpel][$row1->nip] ?? 0;
+
+                            $nilaiakhir = ($pengetahuan * $nilbp) + ($keterampilan * $nilbk);
+                            $nilaiakhir = $nilaiakhir / 100;
+
+                            if ($nilaiakhir >= 95) {
+                                $predikat = "A+";
+                            } else if ($nilaiakhir >= 90) {
+                                $predikat = "A";
+                            } else if ($nilaiakhir >= 85) {
+                                $predikat = "A-";
+                            } else if ($nilaiakhir >= 80) {
+                                $predikat = "B+";
+                            } else if ($nilaiakhir >= 75) {
+                                $predikat = "B";
+                            } else if ($nilaiakhir >= 70) {
+                                $predikat = "B-";
+								$arrmatpel[] = Casef($row1->matpel->matpel);
+                            } else if ($nilaiakhir >= 60) {
+                                $predikat = "C";
+								$arrmatpel[] = Casef($row1->matpel->matpel);
+                            } else {
+                                $predikat = "D";
+                                $arrmatpel[] = Casef($row1->matpel->matpel);
+                            }
+
+							@endphp
+
+							<td align="center">{{ $pengetahuan }}</td>
+							<td align="center">{{ $keterampilan }}</td>
+							<td align="center">{{ ceil($nilaiakhir) }}</td>
+							<td align="center">{{ $predikat }}</td>
+					@php
+						$n++;
+					@endphp
+					@endforeach
 				</tbody>
 				<tfoot>
 				</tfoot>
@@ -239,16 +309,14 @@
 				<tr>
 					<td valign="top">
 						<label>
-							Ananda perlu meningkatkan kompetensi pengetahuan dan keterampilan pada mata pelajaran <?= implode(", ", $arrmatpel) ?> sebagai
+							Ananda perlu meningkatkan kompetensi pengetahuan dan keterampilan pada mata pelajaran {{ implode(", ", $arrmatpel) }} sebagai
 							bekal pembelajaran kompetensi kejuruan di tingkat berikutnya.
 						</label>
 					</td>
 				</tr>
 			</table>
 		</div>
-	<?php
-	}
-	?>
+	@endforeach
 </body>
 
 </html>

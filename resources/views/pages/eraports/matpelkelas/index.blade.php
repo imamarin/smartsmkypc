@@ -29,7 +29,7 @@
                             <form action="{{ route('matpel-kelas.store') }}" method="post">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-12 col-md-3">
+                                    <div class="col-12 col-md-2">
                                         <label for="idkelas" class="form-label">Kelas</label>
                                         <select name="idkelas" id="idkelas" class="form-select select2">
                                             <option value="">Pilih Kelas</option>
@@ -62,7 +62,18 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-3 d-flex align-items-end mb-1">
+                                    <div class="col-12 col-md-2">
+                                        <label for="kelompok_matpel" class="form-label">Kelompok Mata Pelajaran</label>
+                                        <select name="kelompok_matpel" id="Kelompok_matpel" class="form-select select2">
+                                            <option value="">Kelompok Mata Pelajaran</option>
+                                            @for ($i = "A"; $i <= "Z"; $i++)
+                                                <option value="{{ $i }}">
+                                                    {{ $i }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-2 d-flex align-items-end mb-1">
                                         <input type="submit" class="btn btn-primary" value="SIMPAN">
                                     </div>
                                 </div>
@@ -78,6 +89,7 @@
                                     <th>#</th>
                                     <th>Nama Guru</th>
                                     <th>Mata Pelajaran</th>
+                                    <th>Kelompok Matpel</th>
                                     <th>Kelas</th>
                                     <th>Semester</th>
                                     <th>Tahun Ajaran</th>
@@ -90,6 +102,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $subject->staf->nama }}</td>
                                         <td>{{ $subject->matpel->matpel }}</td>
+                                        <td>{{ $subject->kelompok_matpel }}</td>
                                         <td>{{ $subject->kelas->kelas }}</td>
                                         <td>{{ $subject->semester }}</td>
                                         <td>{{ $subject->tahunajaran->awal_tahun_ajaran }} / {{ $subject->tahunajaran->akhir_tahun_ajaran }}</td>
