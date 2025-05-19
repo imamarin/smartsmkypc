@@ -57,7 +57,6 @@
                                         <td>{{ $item->jurusan }}</td>
                                         <td>{{ $item->kompetensi }}</td>
                                         <td>{{ $item->program_keahlian }}</td>
-                                        </td>
                                         <td>{{ $item->bidang_keahlian }}</td>
                                         <td>
                                             <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"

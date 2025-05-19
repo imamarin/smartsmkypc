@@ -247,6 +247,14 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'CP & TP',
+            'url' => '/pages/capaian-tujuan-pembelajaran',
+            'posisi' => 8,
+            'idkategori' => 3,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Data Mata Pelajaran',
             'url' => '/pages/data-mata-pelajaran',
             'posisi' => 1,

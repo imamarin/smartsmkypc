@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AjuanPresensiController;
+use App\Http\Controllers\CPController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\StafController;
@@ -34,6 +35,7 @@ use App\Http\Controllers\RombelController;
 use App\Http\Controllers\SistemBlokController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\TPController;
 use App\Http\Controllers\WalikelasController;
 use App\Http\Middleware\CekStatusLogin;
 use Illuminate\Support\Facades\Route;
@@ -75,8 +77,6 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/data-rombel/updaterombel/{idkelas}/{idtahunajaran}', [RombelController::class, 'updateRombel'])->name('data-rombel.updateRombel');
         Route::get('/data-rombel/export/data', [RombelController::class, 'export'])->name('data-rombel.export');
         Route::get('/data-rombel/siswa/{id}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
-
-
         //data-mata-pelajaran
         Route::resource('/data-mata-pelajaran', MataPelajaranController::class);
         //data-matpel-pengampu
@@ -160,6 +160,10 @@ Route::middleware('cek-status-login')->group(function () {
 
         //pengaturan
         Route::resource('/kalender-akademik', KalenderAkademikController::class);
+
+        //Capaian dan Tujuan
+        Route::resource('/capaian-pembelajaran', CPController::class);
+        Route::get('/tujuan-pembelajaran/{id}', [TPController::class, 'index'])->name('tp.index');
 
         //Raport
         Route::prefix('/raport')->group(function () {

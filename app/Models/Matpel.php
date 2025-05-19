@@ -48,7 +48,13 @@ class Matpel extends Model
         return $this->hasMany(NilaiRaport::class, 'kode_matpel', 'kode_matpel');
     }
 
-    public function matpelkelas(){
+    public function matpelkelas()
+    {
         return $this->hasMany(MatpelKelas::class, 'kode_matpel', 'kode_matpel');
+    }
+
+    public function cp()
+    {
+        return $this->hasMany(CapaianPembelajaran::class, 'kode_matpel', 'kode_matpel');
     }
 }
