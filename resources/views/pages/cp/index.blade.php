@@ -46,6 +46,7 @@
                                     <th>Kode</th>
                                     <th>Mata Pelajaran</th>
                                     <th>Capaian Pembelajaran</th>
+                                    <th>Tujuan Pembelajaran</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -57,17 +58,20 @@
                                     @foreach($item->cp as $cp)
                                     <tr>
                                         <td>{{ $no++ }}</td>
+                                        <td>{{ $item->matpel }}</td>
                                         <td>{{ $cp->kode_cp }}</td>
                                         <td>{{ $cp->capaian }}</td>
-                                        <td>{{ $item->matpel }}</td>
+                                        <td><a href="capaian-pembelajaran/{{ Crypt::encrypt($cp->kode_cp) }}" class="btn btn-sm btn-info">{{ $cp->tp->count() }} Tujuan Pembelajaran</a></td>
                                         <td>
                                             <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
                                                 data-bs-target="#addCPModal"  data-id="{{ Crypt::encrypt($cp->kode_cp) }}"
                                                 data-cp="{{ base64_encode(json_encode($cp)) }}">
                                                 Edit
                                             </button>
+                                            @if($cp->tp->count() < 1)
                                             <a href="{{ route('capaian-pembelajaran.destroy', Crypt::encrypt($cp->kode_cp)) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach

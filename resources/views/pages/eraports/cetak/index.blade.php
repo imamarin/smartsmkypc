@@ -70,13 +70,13 @@
                                         </td>
                                         <td class="align-content-center">
                                             <div class="col-md-12">
-                                                <input type="button" value="Cover dan Identitas" onclick="cetak('cover','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-primary me-1">
-                                                <input type="button" value="Raport 1" onclick="cetak('raport1','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-success me-1">
-                                                <input type="button" value="Raport 2" onclick="cetak('raport2','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-success me-1">
-                                                <input type="button" value="Raport 3" onclick="cetak('raport3','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-success me-1">
-                                                <input type="button" value="Peringkat" onclick="cetak('peringkat','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-info me-1">
-                                                <input type="button" value="Transkrip" onclick="cetak('transkrip','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-warning me-1">
-                                                <input type="button" value="Surat Keluar" onclick="cetak('suratkeluar','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-danger me-1">
+                                                <input type="button" value="Cover dan Identitas" onclick="cetak('cover','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas.'*'.$subject->tingkat) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-primary me-1">
+                                                <input type="button" value="Raport 1" onclick="cetak('raport1','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas.'*'.$subject->tingkat) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-success me-1">
+                                                <input type="button" value="Raport 2" onclick="cetak('raport2','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas.'*'.$subject->tingkat) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-success me-1">
+                                                <input type="button" value="Raport 3" onclick="cetak('raport3','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas.'*'.$subject->tingkat) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-success me-1">
+                                                <input type="button" value="Peringkat" onclick="cetak('peringkat','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas.'*'.$subject->tingkat) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-info me-1">
+                                                <input type="button" value="Transkrip" onclick="cetak('transkrip','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas.'*'.$subject->tingkat) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-warning me-1">
+                                                <input type="button" value="Surat Keluar" onclick="cetak('suratkeluar','{{ Crypt::encrypt($subject->versi.'*'.$subject->idkelas.'*'.$subject->tingkat) }}', '{{ $loop->iteration-1 }}')" class="btn btn-sm btn-danger me-1">
                                             </div>
                                         </td>
                                     </tr>

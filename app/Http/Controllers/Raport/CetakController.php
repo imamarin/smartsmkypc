@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Raport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kelas;
 use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\Ekstrakurikuler;
+use App\Models\Raport\Format;
 use App\Models\Raport\MatpelKelas;
 use App\Models\Siswa;
 use App\Models\Walikelas;
@@ -18,6 +20,7 @@ use Illuminate\Support\Facades\Session;
 class CetakController extends Controller
 {
     protected $aktivasi;
+
 
     public function __construct()
     {
@@ -51,16 +54,17 @@ class CetakController extends Controller
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
+        $versi = Format::where('tingkat', $id[2])->first();
         if ($page == "cover") {
-            return $this->cover($id[1], $start, $end);
+            return $this->cover($id[1], $start, $end, $versi->versi);
         } else if ($page == "raport1") {
-            return $this->raport1($id[1], $start, $end);
+            return $this->raport1($id[1], $start, $end, $versi->versi);
         } else if ($page == "raport2") {
-            return $this->raport2($id[1], $start, $end);
+            return $this->raport2($id[1], $start, $end, $versi->versi);
         }
     }
 
-    public function cover($id, $start, $end)
+    public function cover($id, $start, $end, $versi)
     {
         $aktivasi = $this->aktivasi;
         $data['siswa'] = Siswa::whereHas('rombel', function ($query) use ($aktivasi, $id) {
@@ -71,7 +75,6 @@ class CetakController extends Controller
         })
             ->offset($start - 1)->limit($end)
             ->get();
-        // dd($data['siswa']);
         return view('pages.eraports.cetak.v1.cover', $data);
     }
 

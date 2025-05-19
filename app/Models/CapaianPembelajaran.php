@@ -14,7 +14,7 @@ class CapaianPembelajaran extends Model
 
     public function tp()
     {
-        return $this->hasMany(TujuanPembelajaran::class, 'kode_cp');
+        return $this->hasMany(TujuanPembelajaran::class, 'kode_cp', 'kode_cp');
     }
 
     public function matpel()

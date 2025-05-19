@@ -162,8 +162,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/kalender-akademik', KalenderAkademikController::class);
 
         //Capaian dan Tujuan
+        Route::get('/capaian-pembelajaran/{id}', [TPController::class, 'index'])->name('tp.index');
         Route::resource('/capaian-pembelajaran', CPController::class);
-        Route::get('/tujuan-pembelajaran/{id}', [TPController::class, 'index'])->name('tp.index');
+        Route::resource('/tujuan-pembelajaran', TPController::class);
 
         //Raport
         Route::prefix('/raport')->group(function () {
