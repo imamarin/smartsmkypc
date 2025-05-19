@@ -75,7 +75,6 @@
 						<td>: {{ $aktivasi->tahunajaran->awal_tahun_ajaran }}/{{ $aktivasi->tahunajaran->akhir_tahun_ajaran }}</td>
 					</tr>
 				</table>
-
 			</center>
             <br />
 			<b>A. Nilai Akademik</b>

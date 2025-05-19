@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Raport;
 
 use App\Http\Controllers\Controller;
 use App\Models\Raport\DetailNilaiRaport;
+use App\Models\Raport\Ekstrakurikuler;
 use App\Models\Raport\MatpelKelas;
 use App\Models\Siswa;
 use App\Models\Walikelas;
@@ -54,6 +55,8 @@ class CetakController extends Controller
             return $this->cover($id[1], $start, $end);
         } else if ($page == "raport1") {
             return $this->raport1($id[1], $start, $end);
+        } else if ($page == "raport2") {
+            return $this->raport2($id[1], $start, $end);
         }
     }
 
@@ -132,7 +135,43 @@ class CetakController extends Controller
         $data['kkm'] = $kkm;
         $data['bobot_pengetahuan'] = $bobot_pengetahuan;
         $data['bobot_keterampilan'] = $bobot_keterampilan;
-        // dd($data['pengetahuan']);
+
         return view('pages.eraports.cetak.v1.raport1', $data);
+    }
+
+    public function raport2($id, $start, $end)
+    {
+        //
+        $aktivasi = $this->aktivasi;
+        $data['aktivasi'] = $aktivasi;
+        $data['walikelas'] = Walikelas::where([
+            'idtahunajaran' => $aktivasi->idtahunajaran,
+            'idkelas' => $id
+        ])->first();
+
+        $data['siswa'] = Siswa::with(['nilaiekstrakurikuler' => function ($query) use ($aktivasi) {
+            $query->where([
+                'idtahunajaran' => $aktivasi->idtahunajaran,
+                'semester' => $aktivasi->semester
+            ]);
+        }, 'absensiraport' => function ($query) use ($aktivasi) {
+            $query->where([
+                'idtahunajaran' => $aktivasi->idtahunajaran,
+                'semester' => $aktivasi->semester
+            ]);
+        }, 'kenaikankelas' => function ($query) use ($aktivasi) {
+            $query->where([
+                'idtahunajaran' => $aktivasi->idtahunajaran,
+            ]);
+        }])->whereHas('rombel', function ($query) use ($aktivasi, $id) {
+            $query->where([
+                'idtahunajaran' => $aktivasi->idtahunajaran,
+                'idkelas' => $id
+            ]);
+        })
+            ->offset($start - 1)->limit($end)
+            ->get();
+
+        return view('pages.eraports.cetak.v1.raport2', $data);
     }
 }
