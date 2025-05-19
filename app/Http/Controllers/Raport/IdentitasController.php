@@ -37,6 +37,7 @@ class IdentitasController extends Controller
             'nama_sekolah' => 'required',
             'nss_sekolah' => 'required|numeric',
             'kepala_sekolah' => 'required',
+            'nip_kepala_sekolah' => 'required',
             'email' => 'required|email',
             'website' => 'required',
             'alamat' => 'required'
@@ -62,6 +63,7 @@ class IdentitasController extends Controller
             'nama_sekolah' => 'required',
             'nss_sekolah' => 'required|numeric',
             'kepala_sekolah' => 'required',
+            'nip_kepala_sekolah' => 'required',
             'email' => 'required|email',
             'website' => 'required',
             'alamat' => 'required'

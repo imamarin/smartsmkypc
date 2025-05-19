@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('website');
             $table->string('email');
             $table->string('kepala_sekolah');
+            $table->string('nip_kepala_sekolah');
             $table->date('tanggal_terima_raport');
             $table->enum('semester', ['ganjil', 'genap']);
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');

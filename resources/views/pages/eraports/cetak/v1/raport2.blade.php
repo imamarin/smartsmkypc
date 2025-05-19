@@ -267,7 +267,8 @@
                                     <br />
                                     <br />
                                     {{ strtoupper($aktivasi->kepala_sekolah) }}<br />
-                                    NIP:-
+                                    NIP: {{ $aktivasi->nip_kepala_sekolah }}
+
                                 </td>
                             </tr>
                         </table>

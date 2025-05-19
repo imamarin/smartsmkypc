@@ -239,8 +239,9 @@ $lhr=date("d-m-Y",strtotime($row->tanggal_lahir));
     <br />
     <br />
     <br />
-    DRS. UJANG SANUSI, MM<br />
-    NIP: 1968199704003
+    {{ strtoupper($aktivasi->kepala_sekolah) }}<br />
+
+    NIP: {{ $aktivasi->nip_kepala_sekolah }}
     </td>
     </tr>
     </table>
