@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Raport;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Raport\KurikulumMerdeka\DetailNilaiRaportController as KurikulumMerdekaDetailNilaiRaportController;
+use App\Http\Controllers\Raport\Kurtilas\DetailNilaiRaportController as KurtilasDetailNilaiRaportController;
 use App\Models\Raport\DetailNilaiRaport;
+use App\Models\Raport\Format;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\NilaiRaport;
 use App\Models\Rombel;
@@ -31,66 +34,49 @@ class DetailNilaiRaportController extends Controller
     public function input(String $id)
     {
         try {
-            $data['id'] = $id;
             $id = Crypt::decrypt($id);
         } catch (DecryptException $e) {
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
         $nilairaport = NilaiRaport::find($id);
-        $siswa = Siswa::whereHas('rombel', function ($query) use ($nilairaport) {
-            $query->where([
-                'idtahunajaran' => $nilairaport->idtahunajaran,
-                'idkelas' => $nilairaport->idkelas
-            ]);
-        })->orderBy('nama', 'asc')->get();
 
-        $detailnilairaport = DetailNilaiRaport::where([
-            'idnilairaport' => $id
-        ])->get();
-
-        $nilai_pengetahuan = [];
-        $nilai_keterampilan = [];
-        foreach ($detailnilairaport as $key => $value) {
-            $nilai_pengetahuan[$value->nisn] = $value->pengetahuan;
-            $nilai_keterampilan[$value->nisn] = $value->keterampilan;
+        $versi = Format::where('tingkat', $nilairaport->kelas->tingkat)->first();
+        if ($versi) {
+            if ($versi->kurikulum == 'kurikulummerdeka') {
+                $v = new KurikulumMerdekaDetailNilaiRaportController;
+                return $v->input($nilairaport, $id);
+            } else if ($versi->kurikulum == 'kurtilas') {
+                $v = new KurtilasDetailNilaiRaportController;
+                return $v->input($nilairaport, $id);
+            }
         }
 
-        $data['nilai_pengetahuan'] = $nilai_pengetahuan;
-        $data['nilai_keterampilan'] = $nilai_keterampilan;
-        $data['nilairaport'] = $nilairaport;
-        $data['siswa'] = $siswa;
-
-        return view('pages.eraports.detailnilairaport.index', $data);
+        return redirect()->back();
     }
 
     public function store(Request $request, String $id)
     {
         //
-        $request->validate([
-            'nilai_pengetahuan' => 'required|array',
-            'nilai_keterampilan' => 'required|array',
-            'nilai_pengetahuan.*' => 'integer|min:0|max:100',
-            'nilai_keterampilan.*' => 'integer|min:0|max:100',
-        ]);
-
         try {
             $id = Crypt::decrypt($id);
         } catch (DecryptException $e) {
             return redirect()->route('nilai-raport.index')->with('warning', $e->getMessage());
         }
 
-        foreach ($request->nilai_pengetahuan as $key => $value) {
-            # code...
-            DetailNilaiRaport::updateOrCreate([
-                'nisn' => $key,
-                'idnilairaport' => $id,
-            ], [
-                'pengetahuan' => $value,
-                'keterampilan' => $request->nilai_keterampilan[$key] ?? 0,
-            ]);
+        $nilairaport = NilaiRaport::find($id);
+
+        $versi = Format::where('tingkat', $nilairaport->kelas->tingkat)->first();
+        if ($versi) {
+            if ($versi->kurikulum == 'kurikulummerdeka') {
+                $v = new KurikulumMerdekaDetailNilaiRaportController;
+                return $v->store($request, $id);
+            } else if ($versi->kurikulum == 'kurtilas') {
+                $v = new KurtilasDetailNilaiRaportController;
+                return $v->store($request, $id);
+            }
         }
 
-        return redirect()->back()->with('success', 'Nilai raport berhasil di simpan');
+        return redirect()->back();
     }
 }

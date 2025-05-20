@@ -184,21 +184,21 @@
                             }
                             
 							if (isset($pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
-								$pengetahuan = $pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip];
+								$pengetahuanB = $pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip];
 							} else {
-								$pengetahuan = 0;
+								$pengetahuanB = 0;
 							}
 
                             if (isset($keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
-								$keterampilan = $keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip];
+								$keterampilanB = $keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip];
 							} else {
-								$keterampilan = 0;
+								$keterampilanB = 0;
 							}
 
                             $nilbp = $bobot_pengetahuan[$row1->kode_matpel][$row1->nip] ?? 0;
                             $nilbk = $bobot_keterampilan[$row1->kode_matpel][$row1->nip] ?? 0;
 
-                            $nilaiakhir = ($pengetahuan * $nilbp) + ($keterampilan * $nilbk);
+                            $nilaiakhir = ($pengetahuanB * $nilbp) + ($keterampilanB * $nilbk);
                             $nilaiakhir = $nilaiakhir / 100;
 
                             if ($nilaiakhir >= 95) {
@@ -224,8 +224,8 @@
 
 							@endphp
 
-							<td align="center">{{ $pengetahuan }}</td>
-							<td align="center">{{ $keterampilan }}</td>
+							<td align="center">{{ $pengetahuanB }}</td>
+							<td align="center">{{ $keterampilanB }}</td>
 							<td align="center">{{ ceil($nilaiakhir) }}</td>
 							<td align="center">{{ $predikat }}</td>
 						</tr>
@@ -252,21 +252,21 @@
                             }
                             
 							if (isset($pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
-								$pengetahuan = $pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip];
+								$pengetahuanC = $pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip];
 							} else {
-								$pengetahuan = 0;
+								$C = 0;
 							}
 
                             if (isset($keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
-								$keterampilan = $keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip];
+								$keterampilanC = $keterampilan[$row1->kode_matpel][$row->nisn][$row1->nip];
 							} else {
-								$keterampilan = 0;
+								$keterampilanC = 0;
 							}
 
                             $nilbp = $bobot_pengetahuan[$row1->kode_matpel][$row1->nip] ?? 0;
                             $nilbk = $bobot_keterampilan[$row1->kode_matpel][$row1->nip] ?? 0;
 
-                            $nilaiakhir = ($pengetahuan * $nilbp) + ($keterampilan * $nilbk);
+                            $nilaiakhir = ($pengetahuanC * $nilbp) + ($keterampilanC * $nilbk);
                             $nilaiakhir = $nilaiakhir / 100;
 
                             if ($nilaiakhir >= 95) {
@@ -292,8 +292,8 @@
 
 							@endphp
 
-							<td align="center">{{ $pengetahuan }}</td>
-							<td align="center">{{ $keterampilan }}</td>
+							<td align="center">{{ $pengetahuanC }}</td>
+							<td align="center">{{ $keterampilaCn }}</td>
 							<td align="center">{{ ceil($nilaiakhir) }}</td>
 							<td align="center">{{ $predikat }}</td>
 						</tr>

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('rpt_formats', function (Blueprint $table) {
             $table->id();
+            $table->string('kurikulum');
             $table->integer('versi');
             $table->string('tingkat', 4);
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');

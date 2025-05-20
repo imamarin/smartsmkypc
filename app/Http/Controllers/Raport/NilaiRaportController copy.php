@@ -63,6 +63,9 @@ class NilaiRaportController extends Controller
         $request->validate([
             'kode_matpel' => 'required',
             'idkelas' => 'required',
+            'kkm' => 'numeric|min:0|max:100',
+            'bobot_pengetahuan' => 'numeric|min:0|max:100',
+            'bobot_keterampilan' => 'numeric|min:0|max:100'
         ]);
 
         NilaiRaport::updateOrCreate([
@@ -71,6 +74,10 @@ class NilaiRaportController extends Controller
             'nip' =>  Auth::user()->staf->nip,
             'kode_matpel' => $request->kode_matpel,
             'idkelas' => $request->idkelas
+        ], [
+            'kkm' => $request->kkm,
+            'bobot_pengetahuan' => $request->bobot_pengetahuan,
+            'bobot_keterampilan' => $request->bobot_keterampilan
         ]);
         return redirect()->back()->with('success', 'Nilai raport berhasil disimpan');
     }
@@ -85,7 +92,10 @@ class NilaiRaportController extends Controller
 
         $validate = $request->validate([
             'kode_matpel' => 'required',
-            'idkelas' => 'required'
+            'idkelas' => 'required',
+            'kkm' => 'numeric|min:0|max:100',
+            'bobot_pengetahuan' => 'numeric|min:0|max:100',
+            'bobot_keterampilan' => 'numeric|min:0|max:100'
         ]);
 
         $validate['idtahunajaran'] = $this->aktivasi->idtahunajaran;

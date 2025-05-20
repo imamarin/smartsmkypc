@@ -63,7 +63,10 @@
                                             data-matpel="{{ base64_encode($item->kode_matpel) }}"
                                             data-kelas="{{ base64_encode($item->idkelas) }}"
                                             data-semester="{{ base64_encode($item->semester) }}"
-                                            data-tahunajaran="{{ base64_encode($item->idtahunajaran) }}">
+                                            data-tahunajaran="{{ base64_encode($item->idtahunajaran) }}"
+                                            data-kkm="{{ base64_encode($item->kkm) }}"
+                                            data-bobotpengetahuan="{{ base64_encode($item->bobot_pengetahuan) }}"
+                                            data-bobotketerampilan="{{ base64_encode($item->bobot_keterampilan) }}">
                                             Edit
                                         </button>
                                         <a href="{{ route('nilai-raport.destroy', Crypt::encrypt($item->id)) }}"
@@ -107,6 +110,18 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label for="kkm" class="form-label">KKM</label>
+                            <input type="number" class="form-control" id="kkm" name="kkm" required min="0" max="100">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bobot_pengetahuan" class="form-label">Bobot Pengetahuan</label>
+                            <input type="number" class="form-control" id="bobot_pengetahuan" name="bobot_pengetahuan" min="0" max="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bobot_keterampilan" class="form-label">Bobot Keterampilan</label>
+                            <input type="number" class="form-control" id="bobot_keterampilan" name="bobot_keterampilan" min="0" max="100" required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" id="submitBtn">Simpan</button>
@@ -134,20 +149,27 @@
             if (id) {
                 const matpel = atob(button.getAttribute('data-matpel'));
                 const kelas = atob(button.getAttribute('data-kelas'));
-
+                const kkm = atob(button.getAttribute('data-kkm'));
+                const bobotpengetahuan = atob(button.getAttribute('data-bobotpengetahuan'));
+                const bobotketerampilan = atob(button.getAttribute('data-bobotketerampilan'));
+                
                 form.action = '{{ route('nilai-raport.update', ':id') }}'.replace(':id', id);
                 submitBtn.textContent = 'Simpan Perubahan';
                 modalTitle.textContent = 'Update Data Nilai Raport';
                 formMethod.value = 'PUT';
+                console.log(kkm);
                 
                 // Isi data ke form
                 document.getElementById('nilairaportId').value = id;
                 document.getElementById('kode_matpel').value = matpel;
                 document.getElementById('idkelas').value = kelas;
+                document.getElementById('kkm').value = kkm;
+                document.getElementById('bobot_pengetahuan').value = bobotpengetahuan;
+                document.getElementById('bobot_keterampilan').value = bobotketerampilan;
             } else {
                 form.action = '{{ route('nilai-raport.store') }}';
                 submitBtn.textContent = 'Simpan';
-                modalTitle.textContent = 'Input Nilai Raport Baru';
+                modalTitle.textContent = 'Input Identitas Raport Baru';
                 formMethod.value = 'POST';
                 form.reset();
             }

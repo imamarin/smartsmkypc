@@ -1,11 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Raport;
+namespace App\Http\Controllers\Raport\KurikulumMerdeka;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Raport\KurikulumMerdeka\VersionCetak\V1Controller as VersionCetakV1Controller;
-use App\Http\Controllers\Raport\Kurtilas\VersionCetak\V1Controller as KurtilasVersionCetakV1Controller;
+use App\Http\Controllers\Raport\KurikulumMerdeka\VersionCetak\V1Controller;
+use App\Http\Controllers\Raport\Kurtilas\VersionCetak\V1Controller as VersionCetakV1Controller;
+use App\Models\Kelas;
+use App\Models\Raport\DetailNilaiRaport;
+use App\Models\Raport\Ekstrakurikuler;
 use App\Models\Raport\Format;
+use App\Models\Raport\MatpelKelas;
+use App\Models\Siswa;
 use App\Models\Walikelas;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -40,7 +45,7 @@ class CetakController extends Controller
                 'nip' => Auth::user()->staf->nip
             ])->get();
 
-        return view('pages.eraports.cetak.index', $data);
+        return view('pages.eraports.kurikulummerdeka.cetak.index', $data);
     }
 
     public function page(string $page, string $id, string $start, string $end)
@@ -52,15 +57,14 @@ class CetakController extends Controller
         }
 
         $versi = Format::where('tingkat', $id[2])->first();
-
         if ($versi->kurikulum == 'kurikulummerdeka') {
             if ($versi->versi == '1') {
-                $v = new VersionCetakV1Controller;
+                $v = new V1Controller;
                 return $v->index($this->aktivasi, $page, $id[1], $start, $end);
             }
         } else if ($versi->kurikulum == 'kurtilas') {
             if ($versi->versi == '1') {
-                $v = new KurtilasVersionCetakV1Controller;
+                $v = new VersionCetakV1Controller;
                 return $v->index($this->aktivasi, $page, $id[1], $start, $end);
             }
         }

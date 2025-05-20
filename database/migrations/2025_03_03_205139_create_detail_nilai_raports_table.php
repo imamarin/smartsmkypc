@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('rpt_detail_nilai_raports', function (Blueprint $table) {
             $table->id();
             $table->string('nisn', 20);
-            $table->string('pengetahuan');
-            $table->string('keterampilan');
+            $table->integer('nilai_1');
+            $table->integer('nilai_2');
             $table->foreignId('idnilairaport')->references('id')->on('rpt_nilai_raports');
             $table->timestamps();
         });
