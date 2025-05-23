@@ -27,6 +27,8 @@ class V1Controller extends Controller
             return $this->cover($aktivasi, $kelas, $start, $end);
         } else if ($page == "raport1") {
             return $this->raport1($aktivasi, $kelas, $start, $end);
+        } else if ($page == "peringkat") {
+            return $this->ranking($aktivasi, $kelas);
         } else {
             return redirect()->back();
         }
@@ -44,7 +46,7 @@ class V1Controller extends Controller
             ->offset($start - 1)->limit($end)
             ->get();
 
-        return view("pages.eraports.cetak.v2.cover", $data);
+        return view("pages.eraports.kurikulummerdeka.cetak.v1.cover", $data);
     }
 
     public function raport1($aktivasi, $id, $start, $end)
@@ -109,6 +111,33 @@ class V1Controller extends Controller
         }
 
         $data['pengetahuan'] = $pengetahuan;
-        return view("pages.eraports.cetak.v2.raport1", $data);
+        return view("pages.eraports.kurikulummerdeka.cetak.v1.raport1", $data);
+    }
+
+    public function ranking($aktivasi, $id)
+    {
+
+        $matpelkelas = MatpelKelas::where([
+            'idtahunajaran' => $aktivasi->idtahunajaran,
+            'semester' => $aktivasi->semester,
+            'idkelas' => $id
+        ])
+            ->orderBy('kelompok_matpel', 'asc')
+            ->get();
+
+        $data['detailnilairaport'] = DetailNilaiRaport::select('rpt_detail_nilai_raports.*')->selectRaw('AVG(rpt_detail_nilai_raports.nilai_1) AS rata')
+            ->whereHas('nilairaport', function ($query) use ($aktivasi, $id, $matpelkelas) {
+                $query->where([
+                    'idtahunajaran' => $aktivasi->idtahunajaran,
+                    'idkelas' => $id,
+                    'semester' => $aktivasi->semester
+                ])
+                    ->whereIn('kode_matpel', $matpelkelas->pluck('kode_matpel'))
+                    ->whereIn('nip', $matpelkelas->pluck('nip'));
+            })->groupBy('rpt_detail_nilai_raports.nisn')->orderBy('rata', 'desc')->get();
+
+        $data['aktivasi'] = $aktivasi;
+        $data['kelas'] = Kelas::find($id);
+        return view('pages.eraports.kurikulummerdeka.cetak.v1.ranking', $data);
     }
 }
