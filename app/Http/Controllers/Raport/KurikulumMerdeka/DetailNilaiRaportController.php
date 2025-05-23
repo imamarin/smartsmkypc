@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Raport\KurikulumMerdeka;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailNilaiSiswa;
+use App\Models\PersentaseNilaiSiswa;
 use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\NilaiRaport;
@@ -48,11 +50,20 @@ class DetailNilaiRaportController extends Controller
         ])->get();
 
         $nilai_pengetahuan = [];
-        foreach ($detailnilairaport as $key => $value) {
-            $nilai_pengetahuan[$value->nisn] = $value->nilai_1;
+        if ($detailnilairaport->count() > 0) {
+            foreach ($detailnilairaport as $key => $value) {
+                $nilai_pengetahuan[$value->nisn] = $value->nilai_1;
+            }
+            $data['nilai_pengetahuan'] = $nilai_pengetahuan;
+        } else {
+            $nilaiakhir = $this->nilaiakhir($nilairaport);
+            foreach ($nilaiakhir['nilaisiswa'] as $value) {
+                # code...
+                $nilai_pengetahuan[$value->nisn] = round(($value->nilai_tugas * $nilaiakhir['persen_tugas']) + ($value->nilai_sumatif * $nilaiakhir['persen_sumatif']) + ($value->nilai_uts * $nilaiakhir['persen_uts']) + ($value->nilai_uas * $nilaiakhir['persen_uas']));
+            }
+            $data['nilai_pengetahuan'] = $nilai_pengetahuan;
         }
 
-        $data['nilai_pengetahuan'] = $nilai_pengetahuan;
         $data['nilairaport'] = $nilairaport;
         $data['siswa'] = $siswa;
 
@@ -78,5 +89,43 @@ class DetailNilaiRaportController extends Controller
         }
 
         return redirect()->back()->with('success', 'Nilai raport berhasil di simpan');
+    }
+
+    public function nilaiakhir($nilairaport)
+    {
+        $data['nilaisiswa'] = DetailNilaiSiswa::selectRaw("
+            siswas.nisn,
+            siswas.nama,
+            AVG(IF(nilai_siswas.kategori = 'tugas', detail_nilai_siswas.nilai, NULL)) as nilai_tugas,
+            AVG(IF(nilai_siswas.kategori = 'sumatif', detail_nilai_siswas.nilai, NULL)) as nilai_sumatif,
+            AVG(IF(nilai_siswas.kategori = 'uts', detail_nilai_siswas.nilai, NULL)) as nilai_uts,
+            AVG(IF(nilai_siswas.kategori = 'uas', detail_nilai_siswas.nilai, NULL)) as nilai_uas
+        ")
+            ->join('siswas', 'siswas.nisn', '=', 'detail_nilai_siswas.nisn')
+            ->join('nilai_siswas', 'nilai_siswas.id', '=', 'detail_nilai_siswas.idnilaisiswa')
+            ->whereHas('nilaisiswa', function ($query) use ($nilairaport) {
+                $query->where([
+                    'idtahunajaran' => $nilairaport->idtahunajaran,
+                    'semester' => $nilairaport->semester,
+                    'kode_matpel' => $nilairaport->kode_matpel,
+                    'idkelas' => $nilairaport->idkelas,
+                    'nip' => $nilairaport->nip
+                ]);
+            })->groupBy('detail_nilai_siswas.nisn')->orderBy('siswas.nama')->get();
+
+        $persen = PersentaseNilaiSiswa::where([
+            'idtahunajaran' => $nilairaport->idtahunajaran,
+            'semester' => $nilairaport->semester,
+            'kode_matpel' => $nilairaport->kode_matpel,
+            'idkelas' => $nilairaport->idkelas,
+            'nip' => $nilairaport->nip
+        ])->first();
+
+        $data['persen_tugas'] = ($persen->tugas ?? 25) / 100;
+        $data['persen_sumatif'] = ($persen->sumatif ?? 25) / 100;
+        $data['persen_uts'] = ($persen->uts ?? 25) / 100;
+        $data['persen_uas'] = ($persen->uas ?? 25) / 100;
+
+        return $data;
     }
 }

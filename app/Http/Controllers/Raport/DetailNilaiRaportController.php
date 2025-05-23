@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Raport;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Raport\KurikulumMerdeka\DetailNilaiRaportController as KurikulumMerdekaDetailNilaiRaportController;
 use App\Http\Controllers\Raport\Kurtilas\DetailNilaiRaportController as KurtilasDetailNilaiRaportController;
+use App\Models\DetailNilaiSiswa;
 use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\Format;
 use App\Models\Raport\IdentitasRaport;
@@ -79,4 +80,6 @@ class DetailNilaiRaportController extends Controller
 
         return redirect()->back();
     }
+
+    
 }

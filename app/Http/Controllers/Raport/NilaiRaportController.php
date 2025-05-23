@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Raport;
 use App\Http\Controllers\Controller;
 use App\Models\JadwalMengajar;
 use App\Models\MatpelPengampu;
+use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\Format;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\NilaiRaport;
@@ -100,6 +101,7 @@ class NilaiRaportController extends Controller
     {
         try {
             $id = Crypt::decrypt($id);
+            DetailNilaiRaport::where('idnilairaport', $id)->delete();
             NilaiRaport::find($id)->delete();
             return redirect()->back()->with('success', 'Data nilai raport berhasil dihapus');
         } catch (DecryptException $e) {
