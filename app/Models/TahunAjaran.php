@@ -7,6 +7,7 @@ use App\Models\Raport\Format;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\MatpelKelas;
 use App\Models\Raport\NilaiEkstrakurikuler;
+use App\Models\Raport\NilaiPrakerin;
 use App\Models\Raport\NilaiRaport;
 use App\Models\Raport\NilaiSikap;
 use Illuminate\Database\Eloquent\Model;
@@ -108,5 +109,10 @@ class TahunAjaran extends Model
     public function format()
     {
         return $this->hasMany(Format::class, 'idtahunjaran');
+    }
+
+    public function nilaiprakerin()
+    {
+        return $this->hasMany(NilaiPrakerin::class, 'idtahunajaran');
     }
 }

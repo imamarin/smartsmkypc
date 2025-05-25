@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\HakAkses;
 use App\Models\Menu;
+use App\Models\UserRole;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,9 +25,32 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('layouts.app', function ($view) {
+        View::composer('*', function ($view) {
+            $idrole = UserRole::where('iduser', Auth::user()->id)->get()->pluck('idrole');
+
+            $menuKategori = Menu::with('kategori')->whereHas('fitur', function ($query) use ($idrole) {
+                $query->whereHas('hakakses', function ($query) use ($idrole) {
+                    $query->whereIn('idrole', $idrole);
+                });
+            })->get();
+
+            $fiturMenu = [];
+            foreach ($menuKategori as $menu) {
+                foreach ($menu->fitur as $fitur) {
+                    $fiturMenu[$menu->menu][] = $fitur->fitur;
+                }
+            }
+
             $menuKategori = Menu::with('kategori')->get();
-            $view->with('menuKategori', $menuKategori);
+
+            // dd($fiturMenu);
+            session(['fiturMenu' => $fiturMenu]);
+            $view->with(
+                [
+                    'menuKategori' => $menuKategori,
+                    'fiturMenu' => $fiturMenu
+                ]
+            );
         });
     }
 }

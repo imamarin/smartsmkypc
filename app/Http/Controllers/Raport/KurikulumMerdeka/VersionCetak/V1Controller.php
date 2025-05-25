@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Raport\KurikulumMerdeka\VersionCetak;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailNilaiSiswa;
 use App\Models\Kelas;
 use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\Ekstrakurikuler;
 use App\Models\Raport\Format;
 use App\Models\Raport\MatpelKelas;
 use App\Models\Siswa;
+use App\Models\TahunAjaran;
 use App\Models\Walikelas;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -29,6 +31,8 @@ class V1Controller extends Controller
             return $this->raport1($aktivasi, $kelas, $start, $end);
         } else if ($page == "peringkat") {
             return $this->ranking($aktivasi, $kelas);
+        } else if ($page == "transkrip") {
+            return $this->transkrip($aktivasi, $kelas, $start, $end);
         } else {
             return redirect()->back();
         }
@@ -63,6 +67,11 @@ class V1Controller extends Controller
                 'semester' => $aktivasi->semester
             ]);
         }, 'absensiraport' => function ($query) use ($aktivasi) {
+            $query->where([
+                'idtahunajaran' => $aktivasi->idtahunajaran,
+                'semester' => $aktivasi->semester
+            ]);
+        }, 'nilaiprakerin' => function ($query) use ($aktivasi) {
             $query->where([
                 'idtahunajaran' => $aktivasi->idtahunajaran,
                 'semester' => $aktivasi->semester
@@ -139,5 +148,92 @@ class V1Controller extends Controller
         $data['aktivasi'] = $aktivasi;
         $data['kelas'] = Kelas::find($id);
         return view('pages.eraports.kurikulummerdeka.cetak.v1.ranking', $data);
+    }
+
+    public function transkrip($aktivasi, $id, $start, $end)
+    {
+        $data['aktivasi'] = $aktivasi;
+
+        $data['walikelas'] = Walikelas::where([
+            'idtahunajaran' => $aktivasi->idtahunajaran,
+            'idkelas' => $id
+        ])->first();
+
+        $siswa = Siswa::with(['rombel' => function ($query) use ($aktivasi, $id) {
+            $query->where([
+                'idtahunajaran' => $aktivasi->idtahunajaran,
+                'idkelas' => $id
+            ]);
+        }])->whereHas('rombel', function ($query) use ($aktivasi, $id) {
+            $query->where([
+                'idtahunajaran' => $aktivasi->idtahunajaran,
+                'idkelas' => $id
+            ]);
+        })
+            ->offset($start - 1)->limit($end)
+            ->get();
+
+        $siswa = $siswa->map(function ($siswa) use ($aktivasi) {
+            return (object)[
+                'nisn' => $siswa->nisn,
+                'nama' => $siswa->nama,
+                'masuk_tahun' => $siswa->tahunajaran->awal_tahun_ajaran,
+                'rombel' => $siswa->rombel,
+                'kenaikankelas' => $siswa->kenaikankelas->where('idtahunajaran', $aktivasi->idtahunajaran)->first(),
+                'nilaiprakerin' => $siswa->nilaiprakerin->where('idtahunajaran', $aktivasi->idtahunajaran)->where('semester', $aktivasi->semester)->first(),
+                'absensi' => $siswa->absensiraport->where('idtahunajaran', $aktivasi->idtahunajaran)
+                    ->map(function ($absensi) {
+                        return (object)[
+                            'tahun_ajaran' => $absensi->tahunajaran->awal_tahun_ajaran,
+                            'semester' => $absensi->tahunajaran->semester,
+                            'sakit' => $absensi->sakit,
+                            'izin' => $absensi->izin,
+                            'alfa' => $absensi->alfa,
+                        ];
+                    })->sortBy([
+                        ['idtahunajaran', 'asc'],
+                        ['semester', 'asc'],
+                    ])->values(),
+                'matpel' => MatpelKelas::whereHas(
+                    'kelas',
+                    function ($query) use ($siswa) {
+                        $query->whereHas('rombel', function ($query) use ($siswa) {
+                            $query->where('nisn', $siswa->nisn);
+                        });
+                    }
+                )->groupBy('kode_matpel')->get()->map(function ($matpel) use ($siswa) {
+                    return (object)[
+                        'kode_matpel' => $matpel->kode_matpel,
+                        'matpel' => $matpel->matpel->matpel,
+                        'us' => DetailNilaiSiswa::select('nilai')->whereHas('nilaisiswa', function ($query) use ($matpel) {
+                            $query->where('kode_matpel', $matpel->kode_matpel)
+                                ->where('nip', $matpel->nip)
+                                ->where('kategori', 'uas');
+                        })->where('nisn', $siswa->nisn)->first(),
+                        'hasil' => DetailNilaiRaport::whereHas('nilairaport', function ($query) use ($matpel) {
+                            $query->where('kode_matpel', $matpel->kode_matpel);
+                            $query->where('nip', $matpel->nip);
+                        })
+                            ->where('nisn', $siswa->nisn)
+                            ->get()->map(function ($hasil) {
+                                return (object)[
+                                    'tahun_ajaran' => $hasil->nilairaport->tahunajaran->awal_tahun_ajaran,
+                                    'semester' => $hasil->nilairaport->semester,
+                                    'nilai' => $hasil->nilai_1
+                                ];
+                            })->sortBy([
+                                ['idtahunajaran', 'asc'],
+                                ['semester', 'asc'],
+                            ])->values(),
+                        ''
+                    ];
+                })->values(),
+            ];
+        })->values();
+
+
+        // dd($siswa);
+        $data['siswa'] = $siswa;
+        return view('pages.eraports.kurikulummerdeka.cetak.v1.transkrip', $data);
     }
 }

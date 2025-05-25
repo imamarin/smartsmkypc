@@ -11,12 +11,32 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Session;
 
 class StafController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $view;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $fiturMenu = session('fiturMenu');
+
+            if (!isset($fiturMenu['Data Staf'])) {
+                return redirect()->back();
+            }
+
+            $this->view = 'Data Staf';
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $data['staf'] = Staf::where('status', 1)->orderBy('nip', 'desc')->get();

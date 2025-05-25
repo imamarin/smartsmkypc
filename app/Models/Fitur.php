@@ -12,4 +12,9 @@ class Fitur extends Model
     {
         return $this->belongsTo(Menu::class, 'idmenu');
     }
+
+    public function hakakses()
+    {
+        return $this->hasMany(HakAkses::class, 'idfitur');
+    }
 }

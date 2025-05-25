@@ -28,6 +28,7 @@ use App\Http\Controllers\Raport\KategoriSikapController;
 use App\Http\Controllers\Raport\KenaikanKelasController;
 use App\Http\Controllers\Raport\MatpelKelasController;
 use App\Http\Controllers\Raport\NilaiEkstraController;
+use App\Http\Controllers\Raport\NilaiPrakerinController;
 use App\Http\Controllers\Raport\NilaiRaportController;
 use App\Http\Controllers\Raport\NilaiSikapController;
 use App\Http\Controllers\RoleController;
@@ -69,6 +70,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/data-staf', StafController::class);
         Route::post('/data-staf/{id}/updateStatus', [StafController::class, 'updateStatus'])->name('data-staf.updateStatus');
         Route::get('/data-staf/export/data', [StafController::class, 'export'])->name('data-staf.export');
+
         //data-rombel
         Route::resource('/data-rombel', RombelController::class);
         Route::post('/data-rombel/siswarombel', [RombelController::class, 'SiswaRombel'])->name('data-rombel.siswaRombel');
@@ -180,6 +182,7 @@ Route::middleware('cek-status-login')->group(function () {
             Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
             Route::resource('/nilai-ekstrakurikuler', NilaiEkstraController::class);
             Route::resource('/kenaikan-kelas', KenaikanKelasController::class);
+            Route::resource('/nilai-prakerin', NilaiPrakerinController::class);
             Route::get('/cetak/{page}/{id}/{start}/{end}', [CetakController::class, 'page'])->name('cetak.raport');
             Route::resource('/cetak', CetakController::class);
             Route::resource('/format', FormatController::class);

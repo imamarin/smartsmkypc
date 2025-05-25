@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Raport;
 
 use App\Http\Controllers\Controller;
-use App\Models\Raport\KenaikanKelas;
+use App\Models\Raport\NilaiPrakerin;
+use App\Models\Raport\NilaiRaport;
 use App\Models\Siswa;
 use App\Models\Walikelas;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 
-class KenaikanKelasController extends Controller
+class NilaiPrakerinController extends Controller
 {
     //
     protected $aktivasi;
@@ -40,8 +41,9 @@ class KenaikanKelasController extends Controller
             $aktivasi = $this->aktivasi;
 
             $siswa = Siswa::with([
-                'kenaikankelas' => function ($query) use ($aktivasi) {
+                'nilaiprakerin' => function ($query) use ($aktivasi) {
                     $query->where([
+                        'semester' => $aktivasi->semester,
                         'idtahunajaran' => $aktivasi->idtahunajaran
                     ]);
                 }
@@ -59,7 +61,7 @@ class KenaikanKelasController extends Controller
         $data['kelas'] = $kelas;
         $data['siswa'] = $siswa;
 
-        return view('pages.eraports.kenaikankelas.index', $data);
+        return view('pages.eraports.nilaiprakerin.index', $data);
     }
 
     public function show(String $id)
@@ -79,19 +81,26 @@ class KenaikanKelasController extends Controller
     {
         //
         $request->validate([
-            'keterangan' => 'required|array',
+            'dudi' => 'required|array',
+            'alamat' => 'required|array',
+            'nilai.*' => 'required|integer|min:0|max:100',
+            'waktu.*' => 'required|integer|min:0',
         ]);
 
-        foreach ($request->keterangan as $key => $value) {
+        foreach ($request->dudi as $key => $value) {
             # code...
-            KenaikanKelas::updateOrCreate([
+            NilaiPrakerin::updateOrCreate([
                 'nisn' => $key,
+                'semester' => $this->aktivasi->semester,
                 'idtahunajaran' => $this->aktivasi->idtahunajaran,
             ], [
-                'keterangan' => $value,
+                'dudi' => $value,
+                'alamat' => $request->alamat[$key],
+                'nilai' => $request->nilai[$key],
+                'waktu' => $request->waktu[$key],
             ]);
         }
 
-        return redirect()->back()->with('success', 'Kenaikan kelas siswa berhasil di simpan');
+        return redirect()->back()->with('success', 'Nilai prakerin siswa berhasil di simpan');
     }
 }

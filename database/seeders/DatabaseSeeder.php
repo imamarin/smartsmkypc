@@ -400,9 +400,17 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Menu::create([
+            'menu' => 'Nilai Prakerin',
+            'url' => '/pages/raport/nilai-prakerin',
+            'posisi' => 7,
+            'idkategori' => 6,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
             'menu' => 'Kategori Sikap',
             'url' => '/pages/raport/kategori-sikap',
-            'posisi' => 7,
+            'posisi' => 8,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
@@ -410,7 +418,7 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Ekstrakurikuler',
             'url' => '/pages/raport/ekstrakurikuler',
-            'posisi' => 8,
+            'posisi' => 9,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
@@ -418,7 +426,7 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Kenaikan Kelas',
             'url' => '/pages/raport/kenaikan-kelas',
-            'posisi' => 9,
+            'posisi' => 10,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
@@ -426,7 +434,7 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Cetak Raport',
             'url' => '/pages/raport/cetak',
-            'posisi' => 10,
+            'posisi' => 11,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
@@ -434,7 +442,7 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Pengaturan Raport',
             'url' => '/pages/raport/pengaturan-raport',
-            'posisi' => 11,
+            'posisi' => 12,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()
@@ -442,7 +450,7 @@ class DatabaseSeeder extends Seeder
         Menu::create([
             'menu' => 'Format Raport',
             'url' => '/pages/raport/format',
-            'posisi' => 12,
+            'posisi' => 13,
             'idkategori' => 6,
             'created_at' => now(),
             'updated_at' => now()

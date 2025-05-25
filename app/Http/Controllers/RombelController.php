@@ -12,12 +12,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Routing\Controller;
 
 class RombelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $view;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $fiturMenu = session('fiturMenu');
+
+            if (!isset($fiturMenu['Data Rombel'])) {
+                return redirect()->back();
+            }
+
+            $this->view = 'Data Rombel';
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $tahunajaran = TahunAjaran::orderBy('status', 'desc')->get();
@@ -194,7 +213,7 @@ class RombelController extends Controller
         $idkelas = decryptSmart($request->idkelas);
 
         $request->merge(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran]);
-        
+
         $requestRombel = $request->validate([
             'idkelas' => 'required',
             'idtahunajaran' => 'required'

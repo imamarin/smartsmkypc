@@ -6,6 +6,7 @@ use App\Models\Raport\AbsensiRaport;
 use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\KenaikanKelas;
 use App\Models\Raport\NilaiEkstrakurikuler;
+use App\Models\Raport\NilaiPrakerin;
 use App\Models\Raport\NilaiSikap;
 use Illuminate\Database\Eloquent\Model;
 
@@ -68,5 +69,10 @@ class Siswa extends Model
     public function kenaikankelas()
     {
         return $this->hasMany(KenaikanKelas::class, 'nisn', 'nisn');
+    }
+
+    public function nilaiprakerin()
+    {
+        return $this->hasOne(NilaiPrakerin::class, 'nisn', 'nisn');
     }
 }

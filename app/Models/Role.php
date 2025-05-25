@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     protected $guarded = [];
+    
     public function hak_akses()
     {
         return $this->hasMany(HakAkses::class, 'idrole');

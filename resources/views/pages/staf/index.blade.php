@@ -31,7 +31,10 @@
                         <div class="d-flex justify-content-end mb-3">
                             <a href="{{ route('data-staf.export') }}" class="btn btn-info me-2">Export Data</a>
                             <a href="#" class="btn btn-success me-2">Import Data</a>
+                            
+                            @if(in_array('Tambah', $fiturMenu[$view]))
                             <a href="{{ route('data-staf.create') }}" class="btn btn-primary">Tambah Data</a>
+                            @endif
                         </div>
                     </div>
                 </div><!-- end card header -->
