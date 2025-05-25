@@ -28,11 +28,13 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $idrole = UserRole::where('iduser', Auth::user()->id)->get()->pluck('idrole');
 
-            $menuKategori = Menu::with('kategori')->whereHas('fitur', function ($query) use ($idrole) {
-                $query->whereHas('hakakses', function ($query) use ($idrole) {
-                    $query->whereIn('idrole', $idrole);
-                });
-            })->get();
+            // $menuKategori = Menu::with('kategori')->whereHas('fitur', function ($query) use ($idrole) {
+            //     $query->whereHas('hakakses', function ($query) use ($idrole) {
+            //         $query->whereIn('idrole', $idrole);
+            //     });
+            // })->get();
+
+            $menuKategori = Menu::with('kategori')->get();
 
             $fiturMenu = [];
             foreach ($menuKategori as $menu) {
@@ -41,7 +43,6 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
-            $menuKategori = Menu::with('kategori')->get();
 
             // dd($fiturMenu);
             session(['fiturMenu' => $fiturMenu]);
