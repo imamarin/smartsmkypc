@@ -93,7 +93,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/data-jam-pelajaran', JamPelajaranController::class);
         Route::post('/data-jam-pelajaran/delete', [JamPelajaranController::class, 'delete'])->name('data-jam-pelajaran.delete');
         //role
-        Route::resource('/role', RoleController::class);
+        Route::resource('role', RoleController::class, ['except' => ['show']]);
+        Route::get('/role/{id}/access', [RoleController::class, 'getAccess']);
+        Route::put('/role/{id}/access', [RoleController::class, 'updateAccess']);
         //sistem-blok
         Route::resource('/sistem-blok', SistemBlokController::class);
         Route::post('/sistem-blok/{id}/updateStatus', [SistemBlokController::class, 'updateStatus'])->name('sistemblok.updateStatus');
