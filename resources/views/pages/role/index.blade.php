@@ -1,55 +1,69 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid">
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Manajemen Role dan Hak Akses</h1>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#addRoleModal">
-                <i class="fas fa-plus fa-sm"></i> Tambah Role
-            </button>
-        </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0">Role & Hak Akses</h4>
 
-        <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Daftar Role</h6>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Role & Hak Akses</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <div class="col">
+                        <h4 class="card-title">List Staf</h4>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="roleTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Role</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($roles as $role)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $role->role }}</td>
-                                            <td>
-                                                <button class="btn btn-info btn-sm" data-toggle="modal"
-                                                    data-target="#editRoleModal" onclick="editRole({{ $role->id }})">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                                    data-target="#accessModal" onclick="manageAccess({{ $role->id }})">
-                                                    <i class="fas fa-key"></i> Hak Akses
-                                                </button>
-                                                <button class="btn btn-danger btn-sm"
-                                                    onclick="deleteRole({{ $role->id }})">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                    <div class="col">
+                        <div class="d-flex justify-content-end mb-3">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#addRoleModal">
+                                <i class="fas fa-plus fa-sm"></i> Tambah Role
+                            </button>
                         </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table display nowrap" id="example2">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Role</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($roles as $role)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $role->role }}</td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm" data-toggle="modal"
+                                                data-target="#editRoleModal" onclick="editRole({{ $role->id }})">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                                data-target="#accessModal" onclick="manageAccess({{ $role->id }})">
+                                                <i class="fas fa-key"></i> Hak Akses
+                                            </button>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteRole({{ $role->id }})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -154,10 +168,6 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
-                $('#roleTable').DataTable();
-            });
-
             function editRole(roleId) {
                 $.get(`/pages/role/${roleId}/edit`, function(data) {
                     $('#edit_role').val(data.role);

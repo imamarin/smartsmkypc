@@ -98,7 +98,7 @@ class RoleController extends Controller
         $accessList = [];
 
         foreach ($menus as $menu) {
-            foreach ($menu->fiturs as $fitur) {
+            foreach ($menu->fitur as $fitur) { // Mengubah fiturs menjadi fitur
                 $accessList[] = [
                     'id' => $fitur->id,
                     'menu' => $menu->menu,
