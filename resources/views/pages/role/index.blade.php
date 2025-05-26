@@ -22,7 +22,7 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <div class="col">
-                        <h4 class="card-title">List Staf</h4>
+                        <h4 class="card-title">List Role</h4>
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
@@ -146,8 +146,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Menu</th>
-                                        <th>Fitur</th>
+                                        <th>Fitur Menu</th>
                                         <th>Akses</th>
                                     </tr>
                                 </thead>
@@ -176,6 +175,47 @@
             }
 
             function manageAccess(roleId) {
+                $.get(`/pages/role/${roleId}/access`, function(data) {
+                    let html = '';
+                    data.forEach(function(item) {
+                        html += `
+                        <tr>
+                            <td class='bg bg-secondary text-white'>
+                                <span>${item.menu}</span>
+                            </td>
+                            <td class='bg bg-secondary text-white' style='border-left:none;'>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input select-all"
+                                        data-menu-id="${item.id}" id="access_all_${item.id}" 
+                                        name="access_all[]" value="${item.id}"
+                                        ${item.has_access ? 'checked' : ''}>
+                                    <label class="custom-control-label" for="access_all_${item.id}"></label>
+                                </div>
+                            </td> 
+                        </tr>`;
+                        item.fitur.forEach(function(item, index){
+                            html += `
+                            <tr>
+                                <td>&#x2022 ${item.fitur}</td>
+                                <td>
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input fitur-checkbox"
+                                            data-menu-id="${item.menu_id}" id="access_${item.id}" 
+                                            name="access[]" value="${item.id}"
+                                            ${item.has_access ? 'checked' : ''}>
+                                        <label class="custom-control-label" for="access_${item.id}"></label>
+                                    </div>
+                                </td>
+                            </tr>`;
+                        });
+                        
+                    });
+                    $('#accessTableBody').html(html);
+                    $('#accessForm').attr('action', `/pages/role/${roleId}/access`);
+                });
+            }
+
+            function manageAccess2(roleId) {
                 $.get(`/pages/role/${roleId}/access`, function(data) {
                     let html = '';
                     data.forEach(function(item) {
@@ -237,6 +277,12 @@
                     }
                 });
             }
+
+            $(document).on('change', '.select-all', function () {
+                const menuId = $(this).data('menu-id');
+                const isChecked = $(this).is(':checked');
+                $(`.fitur-checkbox[data-menu-id="${menuId}"]`).prop('checked', isChecked);
+            });
         </script>
     @endpush
 @endsection

@@ -165,7 +165,7 @@
         </div>
     </div>
 </div>
-<div class="modal modal-lg fade" id="pindahTingkatModal" tabindex="-1" aria-labelledby="pindahTingkatModalLabel" aria-hidden="true">
+<div class="modal fade" id="pindahTingkatModal" tabindex="-1" aria-labelledby="pindahTingkatModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -197,7 +197,7 @@
                                 <select name="idkelas" id="idkelas" class="form-control select2">
                                     @foreach ($kelas as $item)
                                         @if($item->tingkat < $tingkat)
-                                        <option value="{{ encryptSmart($item->id) }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
+                                        <option value="{{ encryptSmart($item->kelas) }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -294,6 +294,8 @@
             }) 
 
             $("#pindahTingkatForm #idkelas").on('change', function(e){
+                console.log($("#pindahTingkatForm #idkelas").val());
+                
                 table.ajax.reload();
                 $("#pindahTingkatForm #select-all").prop("checked", false);
             });

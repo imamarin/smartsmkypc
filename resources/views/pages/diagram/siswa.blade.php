@@ -70,7 +70,7 @@
                                             plugins: {
                                                 title: {
                                                     display: true,
-                                                    text: 'Persentase Presensi Harian Kelas {{ $item["nama_kelas"] }}'
+                                                    text: 'Persentase Presensi Harian Kelas {{ $item["nama_kelas"] ?? "" }}'
                                                 },
                                                 datalabels: {
                                                     display: false,

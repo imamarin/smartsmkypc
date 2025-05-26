@@ -23,18 +23,18 @@ class RombelController extends Controller
 
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
-            $fiturMenu = session('fiturMenu');
+        // $this->middleware(function ($request, $next) {
+        //     $fiturMenu = session('fiturMenu');
 
-            if (!isset($fiturMenu['Data Rombel'])) {
-                return redirect()->back();
-            }
+        //     if (!isset($fiturMenu['Data Rombel'])) {
+        //         return redirect()->back();
+        //     }
 
-            $this->view = 'Data Rombel';
-            view()->share('view', $this->view);
+        //     $this->view = 'Data Rombel';
+        //     view()->share('view', $this->view);
 
-            return $next($request);
-        });
+        //     return $next($request);
+        // });
     }
 
     public function index()
@@ -51,6 +51,7 @@ class RombelController extends Controller
         $kelas = $kelas->sortByDesc(function ($kls) {
             return $kls->rombel->count();
         })->values();
+        
         $title = 'Data Kelas!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
@@ -238,7 +239,13 @@ class RombelController extends Controller
 
     public function siswaRombel(Request $request)
     {
-        $siswa = Rombel::where(['idkelas' => $request->idkelas, 'idtahunajaran' => $request->idtahunajaran])->get();
+        $idtahunajaran = decryptSmart($request->idtahunajaran);
+        $kelas = decryptSmart($request->idkelas);
+        $siswa = Rombel::whereHas('kelas', function ($query) use ($idtahunajaran, $kelas) {
+            $query->where(['kelas' => $kelas, 'idtahunajaran' => $idtahunajaran]);
+        })->get();
+        // $siswa = Rombel::where(['idkelas' => decryptSmart($request->idkelas), 'idtahunajaran' => decryptSmart($request->idtahunajaran)])->get();
+        // $siswa = Rombel::where(['idkelas' => $request->idkelas, 'idtahunajaran' => $request->idtahunajaran])->get();
         $result = $siswa->map(function ($item) {
             return [
                 'nisn' => $item->nisn,

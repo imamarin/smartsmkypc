@@ -26,32 +26,35 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            $idrole = UserRole::where('iduser', Auth::user()->id)->get()->pluck('idrole');
+            if (Auth::check()) {
 
-            // $menuKategori = Menu::with('kategori')->whereHas('fitur', function ($query) use ($idrole) {
-            //     $query->whereHas('hakakses', function ($query) use ($idrole) {
-            //         $query->whereIn('idrole', $idrole);
-            //     });
-            // })->get();
+                $idrole = UserRole::where('iduser', Auth::user()->id)->get()->pluck('idrole');
 
-            $menuKategori = Menu::with('kategori')->get();
+                $menuKategori = Menu::with('kategori')->whereHas('fitur', function ($query) use ($idrole) {
+                    $query->whereHas('hakakses', function ($query) use ($idrole) {
+                        $query->whereIn('idrole', $idrole);
+                    });
+                })->get();
 
-            $fiturMenu = [];
-            foreach ($menuKategori as $menu) {
-                foreach ($menu->fitur as $fitur) {
-                    $fiturMenu[$menu->menu][] = $fitur->fitur;
+                // $menuKategori = Menu::with('kategori')->get();
+
+                $fiturMenu = [];
+                foreach ($menuKategori as $menu) {
+                    foreach ($menu->fitur as $fitur) {
+                        $fiturMenu[$menu->menu][] = $fitur->fitur;
+                    }
                 }
+
+
+                // dd($fiturMenu);
+                session(['fiturMenu' => $fiturMenu]);
+                $view->with(
+                    [
+                        'menuKategori' => $menuKategori,
+                        'fiturMenu' => $fiturMenu
+                    ]
+                );
             }
-
-
-            // dd($fiturMenu);
-            session(['fiturMenu' => $fiturMenu]);
-            $view->with(
-                [
-                    'menuKategori' => $menuKategori,
-                    'fiturMenu' => $fiturMenu
-                ]
-            );
         });
     }
 }
