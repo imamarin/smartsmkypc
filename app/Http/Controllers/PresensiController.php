@@ -21,12 +21,42 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Nette\Utils\ArrayList;
 use Nette\Utils\Arrays;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class PresensiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            if (Route::currentRouteName() == 'rekap-presensi-mengajar') {
+                $this->view = 'Rekap Presensi Mengajar';
+            } else if (
+                Route::currentRouteName() == 'rekap-presensi-siswa' ||
+                Route::currentRouteName() == 'rekap-presensi-siswa-detail' ||
+                Route::currentRouteName() == 'history-presensi' ||
+                Route::currentRouteName() == 'presensi.store'
+            ) {
+                $this->view = 'Rekap Presensi Siswa';
+            }
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         //
@@ -481,6 +511,7 @@ class PresensiController extends Controller
 
     public function rekapGuru(String $id = null)
     {
+
         $title = 'Ajuan Kehadiran Mengajar!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);

@@ -10,12 +10,32 @@ use App\Models\TahunAjaran;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Routing\Controller;
 
 class KelasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+
+            if (!isset($this->fiturMenu['Data Kelas'])) {
+                return redirect()->back();
+            }
+
+            $this->view = 'Data Kelas';
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) {

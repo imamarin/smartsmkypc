@@ -24,6 +24,7 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header d-flex align-items-center">
+                @if(in_array('Tambah', $fiturMenu[$view]))
                 <div class="col">
                     {{-- <h4 class="card-title">List Matpel Pengampu</h4> --}}
                     <form action="{{ route('matpel-pengampu.store') }}" method="post" class="d-flex gap-2 w-100">
@@ -47,10 +48,15 @@
                         </div>
                     </form>
                 </div>
+                @endif
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
+                        @if(in_array('Eksport', $fiturMenu[$view]))
                         <a href="{{ route('matpel-pengampu.export') }}" class="btn btn-info me-2">Export Data</a>
+                        @endif
+                        @if(in_array('Import', $fiturMenu[$view]))
                         <a href="#" class="btn btn-success me-2">Import Data</a>
+                        @endif
                         <!-- Button to trigger modal -->
                         {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Walikelas</button> --}}
                     </div>
@@ -64,7 +70,9 @@
                                 <th>#</th>
                                 <th>Mata Pelajaran</th>
                                 <th>Tahun Ajaran</th>
+                                @if(in_array('Hapus', $fiturMenu[$view]))
                                 <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -73,9 +81,11 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $subject->matpel->matpel }}</td>
                                 <td>{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}</td>
+                                @if(in_array('Hapus', $fiturMenu[$view]))
                                 <td>
                                     <a href="{{ route('matpel-pengampu.destroy', $subject->id) }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

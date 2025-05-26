@@ -95,7 +95,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <form action="{{ route('masuk-mengajar.updateCatatan', Crypt::encrypt($jadwal->id)) }}" method="post">
+                            <form action="{{ route('masuk-mengajar.updateCatatan', Crypt::encrypt($jadwal->id.'*'.strtotime($tanggal))) }}" method="post">
                                 @csrf
                                 <textarea name="catatan" id="catatan" rows="3" class="form-control"></textarea>
                                 <div class="d-flex justify-content-end mt-2">

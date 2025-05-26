@@ -53,7 +53,9 @@
                                     <th>Kelas</th>
                                     <th>Mata Pelajaran</th>
                                     <th>Keterangan</th>
+                                    @if(in_array('Ajuan', $fiturMenu[$view]))
                                     <th>Pengajuan Kehadiran Mengajar</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,6 +71,7 @@
                                                 {{ $subject->keterangan }}
                                             </span>
                                         </td>
+                                        @if(in_array('Ajuan', $fiturMenu[$view]))
                                         <td>
                                             @if($subject->keterangan == 'Tidak Hadir')
                                                 @if($subject->ajuan)
@@ -117,6 +120,7 @@
                                                 @endif
                                             @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

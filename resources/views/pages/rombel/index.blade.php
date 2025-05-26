@@ -26,11 +26,12 @@
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
-                        <a href="{{ route('data-rombel.export') }}" class="btn btn-primary me-2">Export Data</a>
+                         @if(in_array('Eksport', $fiturMenu[$view]))
+                        <a href="{{ route('data-rombel.export') }}" class="btn btn-info me-2">Export Data</a>
+                        @endif
+                        @if(in_array('Import', $fiturMenu[$view]))
                         <a href="#" class="btn btn-success me-2">Import Data</a>
-                        <!-- Button to trigger modal -->
-                        {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah
-                            Data</button> --}}
+                        @endif
                     </div>
                 </div>
             </div><!-- end card header -->
@@ -44,7 +45,9 @@
                                 <th>Jurusan</th>
                                 <th>Jumlah Siswa</th>
                                 <th>Walikelas</th>
+                                @if(in_array('Tampil Siswa', $fiturMenu[$view]))
                                 <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -57,10 +60,12 @@
                                 <td>
                                     {{ $item->walikelas[0]->staf->nama ?? '-'}}
                                 </td>
+                                @if(in_array('Tampil Siswa', $fiturMenu[$view]))
                                 <td>
                                     <a href="{{ route('data-rombel.showStudents', Crypt::encrypt($item->id.'*'.$item->idtahunajaran)) }}"
                                         class="btn btn-sm btn-info">Lihat Siswa</a>
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

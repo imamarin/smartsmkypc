@@ -29,13 +29,19 @@
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
+                            @if(in_array('Eksport', $fiturMenu[$view]))
                             <a href="#" class="btn btn-info me-2">Export Data</a>
+                            @endif
+                            @if(in_array('Import', $fiturMenu[$view]))
                             <a href="#" class="btn btn-success me-2">Import Data</a>
+                            @endif
                             <!-- Button to trigger modal -->
+                            @if(in_array('Tambah', $fiturMenu[$view]))
                             @if(!$kunci_jadwal)
                             <button class="btn btn-primary" 
                             data-bs-toggle="modal" 
                             data-bs-target="#addSubjectModal">TambahData</button>
+                            @endif
                             @endif
                         </div>
                     </div>
@@ -66,7 +72,9 @@
                                     <th>Jam Keluar</th>
                                     <th>Mata Pelajaran</th>
                                     <th>Kelas</th>
+                                    @if(in_array('Edit', $fiturMenu[$view]) || in_array('Hapus', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,9 +90,11 @@
                                         <td>Jam Ke: {{ $subject->jam_keluar }} ({{ $subject->waktu_keluar }})</td>
                                         <td>{{ $subject->matpel->matpel }}</td>
                                         <td>{{ $subject->kelas->kelas }}</td>
+                                        @if(in_array('Edit', $fiturMenu[$view]) || in_array('Hapus', $fiturMenu[$view]))
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             @if(!$kunci_jadwal)
+                                            @if(in_array('Edit', $fiturMenu[$view]))
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" 
                                                 data-id="{{ Crypt::encrypt($subject->id) }}"
@@ -97,12 +107,16 @@
                                                 data-tahun-ajaran="{{ $subject->sistemblok->idtahunajaran }}">
                                                 Edit
                                             </button>
+                                            @endif
+                                            @if(in_array('Hapus', $fiturMenu[$view]))
                                             <a href="{{ route('jadwal-mengajar.destroy', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
+                                            @endif
                                             @else
                                             <button type="button" class="btn btn-sm btn-warning">Jadwal Dikunci</button>
                                             @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

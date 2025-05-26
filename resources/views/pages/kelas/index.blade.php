@@ -29,11 +29,16 @@
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
+                        @if(in_array('Eksport', $fiturMenu[$view]))
                         <a href="{{ route('data-kelas.export') }}" class="btn btn-info me-2">Export Data</a>
+                        @endif
+                        @if(in_array('Import', $fiturMenu[$view]))
                         <a href="#" class="btn btn-success me-2">Import Data</a>
-                        <!-- Button to trigger modal -->
+                        @endif
+                        @if(in_array('Tambah', $fiturMenu[$view]))
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah
                             Data</button>
+                        @endif
                     </div>
                 </div>
             </div><!-- end card header -->
@@ -47,7 +52,9 @@
                                 <th>Kelas</th>
                                 <th>Tingkat</th>
                                 <th>Jurusan</th>
+                                @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                 <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -60,7 +67,9 @@
                                 <td>{{ $item->tingkat }}
                                 </td>
                                 <td>{{ $item->jurusan->jurusan }}</td>
+                                @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                 <td>
+                                    @if(in_array('Hapus', $fiturMenu[$view]))
                                     <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
                                         data-bs-target="#addSubjectModal" data-id="{{ Crypt::encrypt($item->id) }}" 
                                         data-kelas="{{ $item->kelas }}"
@@ -68,9 +77,13 @@
                                         data-jurusan="{{ encryptSmart($item->jurusan->id) }}">
                                         Edit
                                     </button>
+                                    @endif
+                                    @if(in_array('Hapus', $fiturMenu[$view]))
                                     <a href="{{ route('data-kelas.destroy', Crypt::encrypt($item->id)) }}"
                                         class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                    @endif
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

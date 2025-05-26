@@ -20,21 +20,21 @@ class RombelController extends Controller
      * Display a listing of the resource.
      */
     protected $view;
-
+    protected $fiturMenu;
     public function __construct()
     {
-        // $this->middleware(function ($request, $next) {
-        //     $fiturMenu = session('fiturMenu');
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
 
-        //     if (!isset($fiturMenu['Data Rombel'])) {
-        //         return redirect()->back();
-        //     }
+            if (!isset($this->fiturMenu['Data Rombel'])) {
+                return redirect()->back();
+            }
 
-        //     $this->view = 'Data Rombel';
-        //     view()->share('view', $this->view);
+            $this->view = 'Data Rombel';
+            view()->share('view', $this->view);
 
-        //     return $next($request);
-        // });
+            return $next($request);
+        });
     }
 
     public function index()
@@ -51,7 +51,7 @@ class RombelController extends Controller
         $kelas = $kelas->sortByDesc(function ($kls) {
             return $kls->rombel->count();
         })->values();
-        
+
         $title = 'Data Kelas!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
@@ -157,6 +157,10 @@ class RombelController extends Controller
     public function showStudents(String $id)
     {
         //
+        if (!in_array('Tampil Siswa', $this->fiturMenu['Data Rombel'])) {
+            return redirect()->back();
+        }
+
         try {
             $id = explode('*', Crypt::decrypt($id));
             $idkelas = $id[0];

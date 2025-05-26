@@ -7,13 +7,43 @@ use App\Models\JadwalSistemBlok;
 use App\Models\KalenderAkademik;
 use App\Models\Presensi;
 use App\Models\TahunAjaran;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class MasukMengajarController extends Controller
 {
     //
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            if (
+                Route::currentRouteName() == 'masuk-mengajar.index' ||
+                Route::currentRouteName() == 'masuk-mengajar.show' ||
+                Route::currentRouteName() == 'masuk-mengajar.updateCatatan'
+            ) {
+                $this->view = 'Masuk Mengajar';
+            } else if (Route::currentRouteName() == 'show-presensi.tanggal') {
+                $this->view = 'Rekap Presensi Siswa';
+            }
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $title = 'Hapus Jadwal Mengajar!';
@@ -112,11 +142,15 @@ class MasukMengajarController extends Controller
 
     public function updateCatatan(Request $request, String $id)
     {
-        $idjadwalmengajar = Crypt::decrypt($id);
+        try {
+            $id = explode('*', Crypt::decrypt($id));
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
         $tahunajaran = TahunAjaran::where('status', 1)->first();
 
-        $presensi = Presensi::whereDate('created_at', date("Y-m-d"))
-            ->where('idjadwalmengajar', $idjadwalmengajar)
+        $presensi = Presensi::whereDate('created_at', date("Y-m-d", $id[1]))
+            ->where('idjadwalmengajar', $id[0])
             ->where('semester', $tahunajaran->semester);
         if ($presensi->first()) {
             $presensi->update([
@@ -125,7 +159,6 @@ class MasukMengajarController extends Controller
 
             return redirect()->back()->with('success', 'Catatan Pembelajaran berhasil disimpan!');
         }
-
         return redirect()->back()->with('info', 'Silakan lakukan presensi siswa terlebih dahulu!');
     }
 }

@@ -35,7 +35,9 @@
                                     <th>Mata Pelajaran</th>
                                     <th>Kelas</th>
                                     <th class="text-center">Presentasi Kehadiran Siswa</th>
+                                    @if(in_array('Rekap Presensi', $fiturMenu[$view]) || in_array('Histori Presensi', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,8 +60,12 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        @if(in_array('Rekap Presensi', $fiturMenu[$view]) || in_array('Histori Presensi', $fiturMenu[$view]))
                                         <td>
+                                            @if(in_array('Rekap Presensi', $fiturMenu[$view]))
                                             <a href="{{ route('rekap-presensi-siswa-detail', Crypt::encrypt($subject->kode_matpel."-".$subject->idkelas)) }}" class="btn btn-sm btn-info">Rekap Presensi</a>
+                                            @endif
+                                            @if(in_array('Histori Presensi', $fiturMenu[$view]))
                                             <button class="btn btn-sm btn-warning" id="historyPresensi"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" 
@@ -69,7 +75,9 @@
                                                 
                                                 Histori Presensi
                                             </button>
+                                            @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

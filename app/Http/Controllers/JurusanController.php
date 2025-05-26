@@ -11,12 +11,32 @@ use App\Models\Siswa;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Routing\Controller;
 
 class JurusanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+
+            if (!isset($this->fiturMenu['Data Jurusan'])) {
+                return redirect()->back();
+            }
+
+            $this->view = 'Data Jurusan';
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $data['tahun_ajaran'] = TahunAjaran::all();
@@ -109,6 +129,9 @@ class JurusanController extends Controller
 
     public function export()
     {
+        if (!in_array('Eksport', $this->fiturMenu['Data Jurusan'])) {
+            return redirect()->back();
+        }
         return Excel::download(new JurusanExport, 'Data Jurusan.xlsx');
     }
 }

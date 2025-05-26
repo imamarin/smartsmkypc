@@ -44,9 +44,7 @@ class AppServiceProvider extends ServiceProvider
                         $fiturMenu[$menu->menu][] = $fitur->fitur;
                     }
                 }
-
-
-                // dd($fiturMenu);
+                
                 session(['fiturMenu' => $fiturMenu]);
                 $view->with(
                     [

@@ -29,11 +29,16 @@
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
+                            @if(in_array('Eksport', $fiturMenu[$view]))
                             <a href="{{ route('data-jurusan.export') }}" class="btn btn-info me-2">Export Data</a>
+                            @endif
+                            @if(in_array('Import', $fiturMenu[$view]))
                             <a href="#" class="btn btn-success me-2">Import Data</a>
-                            <!-- Button to trigger modal -->
+                            @endif
+                            @if(in_array('Tambah', $fiturMenu[$view]))
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addJurusanModal">Tambah
                                 Data</button>
+                            @endif
                         </div>
                     </div>
                 </div><!-- end card header -->
@@ -47,7 +52,9 @@
                                     <th>Kompetensi</th>
                                     <th>Program Keahlian</th>
                                     <th>Bidang Keahlian</th>
+                                    @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,15 +65,21 @@
                                         <td>{{ $item->kompetensi }}</td>
                                         <td>{{ $item->program_keahlian }}</td>
                                         <td>{{ $item->bidang_keahlian }}</td>
+                                        @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                         <td>
+                                            @if(in_array('Edit', $fiturMenu[$view]))
                                             <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
                                                 data-bs-target="#addJurusanModal"  data-id="{{ Crypt::encrypt($item->id) }}"
                                                 data-jurusan="{{ base64_encode(json_encode($item)) }}">
                                                 Edit
                                             </button>
+                                            @endif
+                                            @if(in_array('Hapus', $fiturMenu[$view]))
                                             <a href="{{ route('data-jurusan.destroy', Crypt::encrypt($item->id)) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                            @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

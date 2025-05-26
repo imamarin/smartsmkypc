@@ -20,13 +20,14 @@ class SiswaController extends Controller
      * Display a listing of the resource.
      */
     protected $view;
+    protected $fiturMenu;
 
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $fiturMenu = session('fiturMenu');
+            $this->fiturMenu = session('fiturMenu');
 
-            if (!isset($fiturMenu['Data Siswa'])) {
+            if (!isset($this->fiturMenu['Data Siswa'])) {
                 return redirect()->back();
             }
 
@@ -54,6 +55,10 @@ class SiswaController extends Controller
      */
     public function create()
     {
+        if (!in_array('Tambah', $this->fiturMenu['Data Siswa'])) {
+            return redirect()->back();
+        }
+
         $data['tahun_ajaran'] = TahunAjaran::all();
         $data['role'] = Role::all();
         return view('pages.siswa.create', $data);
@@ -231,6 +236,10 @@ class SiswaController extends Controller
 
     public function export()
     {
+        if (!in_array('Eksport', $this->fiturMenu['Data Siswa'])) {
+            return redirect()->back();
+        }
+
         $data['siswa'] = Siswa::all();
         return Excel::download(new SiswaExport($data['siswa']), 'Data Siswa.xlsx');
     }

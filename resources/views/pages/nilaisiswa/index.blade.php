@@ -48,7 +48,9 @@
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
                         <!-- Button to trigger modal -->
+                        @if(in_array('Tambah', $fiturMenu[$view]))
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah Data Nilai</button>
+                        @endif
                     </div>
                 </div>
             </div><!-- end card header -->
@@ -66,7 +68,9 @@
                                         <th>Tanggal Pelaksanaan</th>
                                         <th>Nilai Rata-Rata</th>
                                         <th>Keterangan</th>
+                                        @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]) || in_array('input', $fiturMenu[$view]))                                        
                                         <th>Aksi</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,14 +82,22 @@
                                         <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
                                         <td>{{ floor($item->detailnilaisiswa_avg_nilai) ?? 0 }}</td>
                                         <td>{{ $item->keterangan }}</td>
+                                        @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]) || in_array('Input', $fiturMenu[$view]))                                        
                                         <td>
+                                            @if(in_array('Input', $fiturMenu[$view]))
                                             <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
+                                            @endif
+                                            @if(in_array('Edit', $fiturMenu[$view]))
                                             <button class="btn btn-sm btn-info" id="editModal"
                                                 data-id = "{{ Crypt::encrypt($item->id) }}"
                                                 data-nilai = "{{ base64_encode(json_encode($item)) }}"
                                                 data-bs-toggle="modal" data-bs-target="#addSubjectModal">Edit</button>
+                                            @endif
+                                            @if(in_array('Hapus', $fiturMenu[$view]))
                                             <a href="{{ route('nilai-siswa-destroy', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                            @endif
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>

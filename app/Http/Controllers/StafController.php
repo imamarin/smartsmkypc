@@ -20,13 +20,14 @@ class StafController extends Controller
      * Display a listing of the resource.
      */
     protected $view;
+    protected $fiturMenu;
 
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $fiturMenu = session('fiturMenu');
+            $this->fiturMenu = session('fiturMenu');
 
-            if (!isset($fiturMenu['Data Staf'])) {
+            if (!isset($this->fiturMenu['Data Staf'])) {
                 return redirect()->back();
             }
 
@@ -51,6 +52,9 @@ class StafController extends Controller
      */
     public function create()
     {
+        if (!in_array('Tambah', $this->fiturMenu['Data Staf'])) {
+            return redirect()->back();
+        }
         $data['role'] = Role::all();
         return view('pages.staf.create', $data);
     }
@@ -221,6 +225,10 @@ class StafController extends Controller
 
     public function export()
     {
+        if (!in_array('Eksport', $this->fiturMenu['Data Staf'])) {
+            return redirect()->back();
+        }
+
         $data['staf'] = Staf::all();
         return Excel::download(new GuruExport($data['staf']), 'Data Staf.xlsx');
     }

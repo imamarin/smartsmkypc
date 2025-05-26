@@ -29,9 +29,12 @@
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
+                            @if(in_array('Eksport', $fiturMenu[$view]))
                             <a href="{{ route('data-staf.export') }}" class="btn btn-info me-2">Export Data</a>
+                            @endif
+                            @if(in_array('Import', $fiturMenu[$view]))
                             <a href="#" class="btn btn-success me-2">Import Data</a>
-                            
+                            @endif
                             @if(in_array('Tambah', $fiturMenu[$view]))
                             <a href="{{ route('data-staf.create') }}" class="btn btn-primary">Tambah Data</a>
                             @endif
@@ -52,7 +55,9 @@
                                     <th>Alamat</th>
                                     <th>No HP</th>
                                     <th>Status</th>
+                                    @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,16 +90,22 @@
                                                     value="{{ $item->status == 1 ? 0 : 1 }}">
                                             </form>
                                         </td>
+                                        @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                         <td>
                                             <div class="d-flex">
+                                                @if(in_array('Edit', $fiturMenu[$view]))
                                                 <a href="{{ route('data-staf.edit', Crypt::encrypt($item->user->id)) }}"
                                                     class="btn btn-sm btn-secondary me-2">
                                                     Edit
                                                 </a>
+                                                @endif
+                                                @if(in_array('Hapus', $fiturMenu[$view]))
                                                 <a href="{{ route('data-staf.destroy', Crypt::encrypt($item->user->id)) }}"
                                                     class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                                @endif
                                             </div>
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

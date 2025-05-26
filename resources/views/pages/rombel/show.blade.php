@@ -25,12 +25,17 @@
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
+                        @if(in_array('Tambah Siswa', $fiturMenu[$view]))
                         @if($tingkat == "X")
                         <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah Siswa</button>
                         @else
                         <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#pindahTingkatModal">Tambahkan dari Tingkat Sebelumnya</button>
                         @endif
+                        @endif
+
+                        @if(in_array('Hapus Siswa', $fiturMenu[$view]))
                         <a href="#" class="btn btn-danger me-2" id="hapusRombel">Hapus Siswa</a>
+                        @endif
                     </div>
                 </div>
             </div><!-- end card header -->
@@ -46,7 +51,9 @@
                                     <th>Nisn</th>
                                     <th>Nama Siswa</th>
                                     <th>Jenis Kelamin</th>
+                                    @if(in_array('Pindah Kelas', $fiturMenu[$view]) || in_array('Hapus Siswa', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,7 +64,9 @@
                                         <td>{{ $item->nisn }}</td>
                                         <td>{{ $item->siswa->nama }}</td>
                                         <td>{{ $item->siswa->jenis_kelamin }}</td>
+                                        @if(in_array('Pindah Kelas', $fiturMenu[$view]) || in_array('Hapus Siswa', $fiturMenu[$view]))
                                         <td>
+                                            @if(in_array('Pindah Kelas', $fiturMenu[$view]))
                                             <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#movingClassModal" data-id="{{ Crypt::encrypt($item->id) }}"
                                                 data-nisn="{{ $item->nisn }}"
@@ -66,9 +75,13 @@
                                                 data-subject="pindahkelas">
                                                 Pindah Kelas
                                             </button>
+                                            @endif
+                                            @if(in_array('Hapus Siswa', $fiturMenu[$view]))
                                             <a href="{{ route('data-rombel.destroy', Crypt::encrypt($item->id)) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                            @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

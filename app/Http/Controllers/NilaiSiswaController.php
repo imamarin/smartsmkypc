@@ -15,13 +15,46 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class NilaiSiswaController extends Controller
 {
     //
     protected $tahunajaran;
+    protected $view;
+    protected $fiturMenu;
+
     public function __construct()
     {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            if (
+                Route::currentRouteName() == 'nilai-siswa' ||
+                Route::currentRouteName() == 'nilai-siswa-store' ||
+                Route::currentRouteName() == 'nilai-siswa-update' ||
+                Route::currentRouteName() == 'nilai-siswa-destroy' ||
+                Route::currentRouteName() == 'nilai-siswa.input' ||
+                Route::currentRouteName() == 'nilai-siswa.simpan'
+            ) {
+                $this->view = 'Pengolahan Nilai Siswa';
+            } else if (
+                Route::currentRouteName() == 'nilai-siswa.rekap' ||
+                Route::currentRouteName() == 'nilai-siswa.rekap.show' ||
+                Route::currentRouteName() == 'nilai-siswa.persentase.store'
+            ) {
+                $this->view = 'Rekapan Nilai Siswa';
+            }
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+
         $this->tahunajaran = TahunAjaran::where('status', 1)->first();
     }
     public function index(Request $request)

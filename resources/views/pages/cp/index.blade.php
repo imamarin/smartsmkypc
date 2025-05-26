@@ -30,10 +30,12 @@
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
                             {{-- <a href="{{ route('capaian-pembelajaran.export') }}" class="btn btn-info me-2">Export Data</a> --}}
-                            <a href="#" class="btn btn-success me-2">Import Data</a>
+                            {{-- <a href="#" class="btn btn-success me-2">Import Data</a> --}}
                             <!-- Button to trigger modal -->
+                            @if(in_array('Tambah', $fiturMenu[$view]))
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCPModal">Tambah
                                 Data</button>
+                            @endif
                         </div>
                     </div>
                 </div><!-- end card header -->
@@ -47,7 +49,9 @@
                                     <th>Mata Pelajaran</th>
                                     <th>Capaian Pembelajaran</th>
                                     <th>Tujuan Pembelajaran</th>
+                                    @if(in_array('Edit', $fiturMenu[$view]) || in_array('Hapus', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,17 +66,23 @@
                                         <td>{{ $cp->kode_cp }}</td>
                                         <td>{{ $cp->capaian }}</td>
                                         <td><a href="capaian-pembelajaran/{{ Crypt::encrypt($cp->kode_cp) }}" class="btn btn-sm btn-info">{{ $cp->tp->count() }} Tujuan Pembelajaran</a></td>
+                                        @if(in_array('Edit', $fiturMenu[$view]) || in_array('Hapus', $fiturMenu[$view]))
                                         <td>
+                                            @if(in_array('Edit', $fiturMenu[$view]))
                                             <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
                                                 data-bs-target="#addCPModal"  data-id="{{ Crypt::encrypt($cp->kode_cp) }}"
                                                 data-cp="{{ base64_encode(json_encode($cp)) }}">
                                                 Edit
                                             </button>
+                                            @endif
                                             @if($cp->tp->count() < 1)
+                                            @if(in_array('Hapus', $fiturMenu[$view]))
                                             <a href="{{ route('capaian-pembelajaran.destroy', Crypt::encrypt($cp->kode_cp)) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                             @endif
+                                            @endif
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 @endforeach
