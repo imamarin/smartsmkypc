@@ -36,7 +36,7 @@
                                                 <h6 style="z-index: 1000">: </h6>
                                                 <select name="idkelas" id="idkelas" class="form-select select2">
                                                     @foreach ($kelas as $item)
-                                                        <option value="{{ $item->idkelas }}" {{ $walikelas->idkelas == $item->idkelas ? 'selected' : '' }}>
+                                                        <option value="{{ Crypt::encrypt($item->idkelas) }}" {{ $walikelas->idkelas == $item->idkelas ? 'selected' : '' }}>
                                                             {{ $item->kelas->kelas }}
                                                         </option>
                                                     @endforeach

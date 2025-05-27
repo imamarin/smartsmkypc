@@ -53,7 +53,9 @@
                                     <th>Mata Pelajaran</th>
                                     <th>Tanggal Mengajar</th>
                                     <th>Status Pengajauan</th>
+                                    @if(in_array('Proses Pengajuan', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,6 +75,7 @@
                                             <span class="badge bg-warning">Menunggu Persetujuan</span>
                                             @endif
                                         </td>
+                                        @if(in_array('Proses Pengajuan', $fiturMenu[$view]))
                                         <td>
                                             <a href="javascript:void(0)" class="btn btn-sm btn-primary"
                                                 data-bs-toggle="modal"
@@ -87,6 +90,7 @@
                                                 data-tanggapan = "{{ $subject->tanggapan }}"
                                                 >Proses Pengajuan</a>
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

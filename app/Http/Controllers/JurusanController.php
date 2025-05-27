@@ -26,11 +26,11 @@ class JurusanController extends Controller
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
 
-            if (!isset($this->fiturMenu['Data Jurusan'])) {
+            $this->view = 'Data Master-Data Jurusan';
+            if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
 
-            $this->view = 'Data Jurusan';
             view()->share('view', $this->view);
 
             return $next($request);
@@ -119,12 +119,17 @@ class JurusanController extends Controller
         try {
             $id = Crypt::decrypt($id);
         } catch (DecryptException $e) {
-            return redirect()->back()->with('success', 'Data Berhasil Diubah');
+            return redirect()->back()->with('warning', $e->getMessage());
         }
 
-        $jurusan = Jurusan::find($id);
-        $jurusan->delete();
-        return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        try {
+            //code...
+            $jurusan = Jurusan::find($id);
+            $jurusan->delete();
+            return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Data tidak bisa dihapus');
+        }
     }
 
     public function export()

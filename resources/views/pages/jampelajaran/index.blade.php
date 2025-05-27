@@ -29,11 +29,17 @@
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
+                            @if(in_array('Eksport', $fiturMenu[$view]))
                             <a href="#" class="btn btn-info me-2">Export Data</a>
+                            @endif
+                            @if(in_array('Import', $fiturMenu[$view]))
                             <a href="#" class="btn btn-success me-2">Import Data</a>
+                            @endif
                             <!-- Button to trigger modal -->
+                            @if(in_array('Hapus', $fiturMenu[$view]))
                             <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah Data</button>
                             <a href="#" class="btn btn-danger" id="hapusJampel">Hapus Jam Pelajaran</a>
+                            @endif
                         </div>
                     </div>
                 </div><!-- end card header -->
@@ -44,14 +50,18 @@
                             <table class="table display nowrap" id="example">
                                 <thead>
                                     <tr>
+                                        @if(in_array('Hapus', $fiturMenu[$view]))
                                         <th><input type="checkbox" id="select-all"></th>
+                                        @endif
                                         <th>No</th>
                                         <th>hari</th>
                                         <th>Jam</th>
                                         <th>Waktu Mulai</th>
                                         <th>Jam Mulai</th>
                                         <th>Tahun Ajaran</th>
+                                        @if(in_array('Edit', $fiturMenu[$view]))
                                         <th>Aksi</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,13 +70,16 @@
                                     @endphp
                                     @foreach ($jampel as $subject)
                                         <tr>
+                                            @if(in_array('Hapus', $fiturMenu[$view]))
                                             <td><input type="checkbox" name="jampel[]" class="item-checkbox" value="{{ $subject->id }}"></td>
+                                            @endif
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $hari[$subject->hari-1] }}</td>
                                             <td>{{ $subject->jam }}</td>
                                             <td>{{ $subject->mulai }}</td>
                                             <td>{{ $subject->akhir }}</td>
                                             <td>{{ $subject->tahunajaran?->awal_tahun_ajaran }}/{{ $subject->tahunajaran?->akhir_tahun_ajaran }}</td>
+                                            @if(in_array('Edit', $fiturMenu[$view]))
                                             <td>
                                                 <!-- Trigger modal untuk Edit -->
                                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
@@ -79,6 +92,7 @@
                                                     Edit Jam Pelajaran
                                                 </button>
                                             </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

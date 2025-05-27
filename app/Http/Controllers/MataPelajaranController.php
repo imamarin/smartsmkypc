@@ -3,20 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\Matpel;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Crypt;
 
 class MataPelajaranController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+
+            $this->view = 'Kurikulum-Data Mata Pelajaran';
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $data['matpel'] = Matpel::orderBy('matpels_kode', 'asc')->orderBy('kode_matpel', 'asc')->get();
         $title = 'Data Kelas!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
-        return view('pages.mata pelajaran.index', $data);
+        return view('pages.matapelajaran.index', $data);
     }
 
     /**
@@ -79,6 +101,13 @@ class MataPelajaranController extends Controller
      */
     public function destroy(string $id)
     {
+
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
         try {
             //code...
             Matpel::where('matpels_kode', $id)->delete;

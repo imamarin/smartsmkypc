@@ -46,8 +46,12 @@
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
+                            @if(in_array('Eksport', $fiturMenu[$view]))
                             <a href="#" class="btn btn-info me-2">Export Data</a>
+                            @endif
+                            @if(in_array('Import', $fiturMenu[$view]))
                             <a href="#" class="btn btn-success me-2">Import Data</a>
+                            @endif
                             <!-- Button to trigger modal -->
                             {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Walikelas</button> --}}
                         </div>
@@ -62,7 +66,9 @@
                                     <th>Tahun Ajaran</th>
                                     <th>Kelas</th>
                                     <th>Walikelas</th>
+                                    @if(in_array('Edit', $fiturMenu[$view]) || in_array('Hapus', $fiturMenu[$view]) || in_array('Tambah', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,8 +78,10 @@
                                         <td>{{ $subject->tahunajaran->awal_tahun_ajaran }}/{{ $subject->tahunajaran->akhir_tahun_ajaran }}</td>
                                         <td>{{ $subject->kelas }}</td>
                                         <td>{{ $subject->walikelas[0]->staf->nama ?? '-' }}</td>
+                                        @if(in_array('Edit', $fiturMenu[$view]) || in_array('Hapus', $fiturMenu[$view]) || in_array('Tambah', $fiturMenu[$view]))
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
+                                            @if(in_array('Edit', $fiturMenu[$view]) || in_array('Tambah', $fiturMenu[$view]))
                                             <button class="btn {{ $subject->walikelas != null ? 'btn-secondary' : 'btn-primary' }} btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" 
                                                 data-id="{{  isset($subject->walikelas[0]->id) ? Crypt::encrypt($subject->walikelas[0]->id) : '' }}"
@@ -85,10 +93,14 @@
                                                 data-idkelas="{{ encryptSmart($subject->id) }}">
                                                 {{ isset($subject->walikelas[0]) ? 'Edit Walikelas' : 'Tambahkan Walikelas' }}
                                             </button>
+                                            @endif
+                                            @if(in_array('Hapus', $fiturMenu[$view]))
                                             @if(isset($subject->walikelas[0]) != null)
                                             <a href="{{ route('data-walikelas.destroy', isset($subject->walikelas[0]->id) ? Crypt::encrypt($subject->walikelas[0]->id) : '') }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                             @endif
+                                            @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

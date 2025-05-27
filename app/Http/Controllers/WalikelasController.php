@@ -13,12 +13,41 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use League\Flysystem\DecoratedAdapter;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class WalikelasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            if (
+                Route::currentRouteName() == 'walikelas' ||
+                Route::currentRouteName() == 'walikelas.tahunajaran' ||
+                Route::currentRouteName() == 'walikelas.petugaspresensi'
+            ) {
+                $this->view = 'Walikelas-Data Siswa';
+            } else {
+                $this->view = 'Kurikulum-Data Walikelas';
+            }
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index(Request $request)
     {
         //
@@ -111,9 +140,14 @@ class WalikelasController extends Controller
     {
 
         if ($request->idkelas) {
+            try {
+                $idkelas = Crypt::decrypt($request->idkelas);
+            } catch (DecryptException $e) {
+                return redirect()->back()->with('error', $e->getMessage());
+            }
             $where = [
                 'nip' => Auth::user()->staf->nip,
-                'idkelas' => $request->idkelas
+                'idkelas' => $idkelas
             ];
         } else {
             $where = [
@@ -158,6 +192,6 @@ class WalikelasController extends Controller
             'petugas_presensi' => $request->nisn
         ]);
 
-        return redirect()->route('walikelas.tahunajaran', ['idkelas' => $walikelas->idkelas])->with('success', 'Petugas presensi harian berhasil disimpan');
+        return redirect()->route('walikelas.tahunajaran', ['idkelas' => Crypt::encrypt($walikelas->idkelas)])->with('success', 'Petugas presensi harian berhasil disimpan');
     }
 }

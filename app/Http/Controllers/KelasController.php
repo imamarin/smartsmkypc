@@ -25,11 +25,11 @@ class KelasController extends Controller
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
 
-            if (!isset($this->fiturMenu['Data Kelas'])) {
+            $this->view = 'Data Master-Data Kelas';
+            if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
 
-            $this->view = 'Data Kelas';
             view()->share('view', $this->view);
 
             return $next($request);

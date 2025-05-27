@@ -6,12 +6,33 @@ use Illuminate\Http\Request;
 use App\Models\TahunAjaran;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Routing\Controller;
 
 class TahunAjaranController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            $this->view = 'Tahun Ajaran';
+
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $data['tahun_ajaran'] = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();

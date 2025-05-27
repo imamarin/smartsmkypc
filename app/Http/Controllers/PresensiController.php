@@ -34,17 +34,36 @@ class PresensiController extends Controller
 
     public function __construct()
     {
+
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
             if (Route::currentRouteName() == 'rekap-presensi-mengajar') {
-                $this->view = 'Rekap Presensi Mengajar';
+                $this->view = 'Administrasi Guru-Rekap Presensi Mengajar';
             } else if (
                 Route::currentRouteName() == 'rekap-presensi-siswa' ||
                 Route::currentRouteName() == 'rekap-presensi-siswa-detail' ||
                 Route::currentRouteName() == 'history-presensi' ||
                 Route::currentRouteName() == 'presensi.store'
             ) {
-                $this->view = 'Rekap Presensi Siswa';
+                $this->view = 'Administrasi Guru-Rekap Presensi Siswa';
+            } else if (
+                Route::currentRouteName() == 'data-rekap-presensi-siswa' ||
+                Route::currentRouteName() == 'data-rekap-presensi-siswa.kbm' ||
+                Route::currentRouteName() == 'data-rekap-presensi-siswa.harian'
+            ) {
+                $this->view = 'Kurikulum-Rekap Presensi Siswa';
+            } else if (
+                Route::currentRouteName() == 'data-rekap-presensi-guru-get' ||
+                Route::currentRouteName() == 'data-rekap-presensi-guru' ||
+                Route::currentRouteName() == 'data-rekap-presensi-guru-detail'
+            ) {
+                $this->view = 'Kurikulum-Rekap Presensi Guru';
+            } else if (
+                Route::currentRouteName() == 'walikelas.rekap-presensi-siswa' ||
+                Route::currentRouteName() == 'walikelas.rekap-presensi-siswa.kbm' ||
+                Route::currentRouteName() == 'walikelas.rekap-presensi-siswa.harian'
+            ) {
+                $this->view = 'Walikelas-Rekap Presensi Siswa';
             }
 
             if (!isset($this->fiturMenu[$this->view])) {

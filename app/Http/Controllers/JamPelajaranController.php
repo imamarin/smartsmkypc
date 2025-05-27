@@ -7,12 +7,34 @@ use App\Models\TahunAjaran;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class JamPelajaranController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+
+            $this->view = 'Kurikulum-Data Jam Pelajaran';
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         //
@@ -98,7 +120,7 @@ class JamPelajaranController extends Controller
         } catch (DecryptException $e) {
             return redirect()->back()->with('warning', $e->getMessage());
         }
-        
+
         $validate = $request->validate([
             'idtahunajaran' => 'required',
             'hari' => 'required|min:1',

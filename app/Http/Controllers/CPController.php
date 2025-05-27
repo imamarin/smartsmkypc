@@ -22,7 +22,7 @@ class CPController extends Controller
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
 
-            $this->view = 'CP & TP';
+            $this->view = 'Administrasi Guru-CP & TP';
             if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }

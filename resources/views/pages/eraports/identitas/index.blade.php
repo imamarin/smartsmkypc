@@ -28,12 +28,14 @@
                         <h4 class="card-title">Daftar Aktivasi Raport</h4>
                         {{ Storage::get('aktivasi'); }}
                     </div>
+                    @if(in_array('Tambah', $fiturMenu[$view]))
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
                             <!-- Button to trigger modal -->
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah Data</button>
                         </div>
                     </div>
+                    @endif
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">
@@ -45,8 +47,12 @@
                                     <th>Semester</th>
                                     <th>Tahun Ajaran</th>
                                     <th>Kepala Sekolah</th>
+                                    @if(in_array('Ubah Status', $fiturMenu[$view]))
                                     <th>Status Aktivasi</th>
+                                    @endif
+                                    @if(in_array('Edit', $fiturMenu[$view]) || in_array('Hapus', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,6 +63,7 @@
                                         <td>{{ $item->semester }}</td>
                                         <td>{{ $item->tahunajaran->awal_tahun_ajaran }} / {{ $item->tahunajaran->akhir_tahun_ajaran }}</td>
                                         <td>{{ $item->kepala_sekolah }}</td>
+                                        @if(in_array('Ubah Status', $fiturMenu[$view]))
                                         <td>
                                             <form action="{{ route('raport.aktivasi', Crypt::encrypt($item->id)) }}"
                                                 method="post">
@@ -73,7 +80,10 @@
                                                     value="{{ $aktivasi?->id == $item->id ? 0 : 1 }}">
                                             </form>
                                         </td>
+                                        @endif
+                                        @if(in_array('Edit', $fiturMenu[$view]) || in_array('Hapus', $fiturMenu[$view]))
                                         <td>
+                                            @if(in_array('Edit', $fiturMenu[$view]))
                                             <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal"  data-id="{{ Crypt::encrypt($item->id) }}"
                                                 data-tanggal="{{ base64_encode($item->tanggal_terima_raport) }}"
@@ -85,9 +95,13 @@
                                                 data-alamat="{{ base64_encode($item->alamat) }}">
                                                 Edit
                                             </button>
+                                            @endif
+                                            @if(in_array('Hapus', $fiturMenu[$view]))
                                             <a href="{{ route('raport-identitas.destroy', Crypt::encrypt($item->id)) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
+                                            @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

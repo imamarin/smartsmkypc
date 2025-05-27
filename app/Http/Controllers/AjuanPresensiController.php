@@ -8,9 +8,41 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class AjuanPresensiController extends Controller
 {
+
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            if (
+                Route::currentRouteName() == 'ajuan-kehadiran-mengajar.index' ||
+                Route::currentRouteName() == 'ajuan-kehadiran-mengajar.update'
+            ) {
+                $this->view = 'Kurikulum-Pengajuan Kehadiran Mengajar';
+            } else if (
+                Route::currentRouteName() == 'ajuan-kehadiran-mengajar.store' ||
+                Route::currentRouteName() == 'ajuan-kehadiran-mengajar.destroy'
+            ) {
+                $this->view = 'Rekap Presensi Mengajar';
+            }
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     //
     public function index()
     {

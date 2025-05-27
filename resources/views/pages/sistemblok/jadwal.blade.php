@@ -23,6 +23,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
+                @if(in_array('Tambah', $fiturMenu[$view]))
                 <div class="card-header">
                     <div class="row">
                         <div class="col-12 col-md-12">
@@ -55,6 +56,7 @@
                         </div>
                     </div>
                 </div><!-- end card header -->
+                @endif
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table display nowrap" id="example">
@@ -64,7 +66,9 @@
                                     <th>Nama Sesi</th>
                                     <th>Tanggal Mulai</th>
                                     <th>Tanggal Akhir</th>
+                                    @if(in_array('Hapus', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,11 +78,13 @@
                                         <td>{{ $subject->sistemblok->nama_sesi }}</td>
                                         <td>{{ $subject->tanggal_mulai }}</td>
                                         <td>{{ $subject->tanggal_akhir }}</td>
+                                        @if(in_array('Hapus', $fiturMenu[$view]))
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <a href="{{ route('jadwal-sistem-blok.destroy', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

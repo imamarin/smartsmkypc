@@ -27,11 +27,11 @@ class StafController extends Controller
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
 
-            if (!isset($this->fiturMenu['Data Staf'])) {
+            $this->view = 'Data Master-Data Staf';
+            if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
 
-            $this->view = 'Data Staf';
             view()->share('view', $this->view);
 
             return $next($request);
@@ -199,13 +199,19 @@ class StafController extends Controller
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
-        $role = UserRole::where('iduser', $id);
-        $staf = Staf::where('iduser', $id);
-        $user = User::find($id);
-        $role->delete();
-        $staf->delete();
-        $user->delete();
-        return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        try {
+            //code...
+            $role = UserRole::where('iduser', $id);
+            $staf = Staf::where('iduser', $id);
+            $user = User::find($id);
+            $staf->delete();
+            $role->delete();
+            $user->delete();
+            return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Data tidak bisa dihapus');
+        }
     }
 
     public function updateStatus(Request $request, $id)

@@ -26,11 +26,11 @@ class RombelController extends Controller
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
 
-            if (!isset($this->fiturMenu['Data Rombel'])) {
+            $this->view = 'Data Master-Data Rombel';
+            if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
 
-            $this->view = 'Data Rombel';
             view()->share('view', $this->view);
 
             return $next($request);

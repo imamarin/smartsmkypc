@@ -63,7 +63,9 @@
                                     <th>NIP</th>
                                     <th>Nama Staf</th>
                                     <th class="text-center">Persentase Kehadiran</th>
+                                    @if(in_array('Detail Kehadiran', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,9 +101,11 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        @if(in_array('Detail Kehadiran', $fiturMenu[$view]))
                                         <td>
                                             <a href="{{ route('data-rekap-presensi-guru-detail', Crypt::encrypt($subject->nip."*".$tahunajaran_selected."*".$semester_selected)) }}" class="btn btn-sm btn-warning">Lihat Detail Kehadiran</a>
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

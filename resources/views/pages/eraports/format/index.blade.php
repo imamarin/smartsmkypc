@@ -30,10 +30,21 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-12 col-md-3">
-                                        <label for="versi" class="form-label">Versi</label>
-                                        <input type="text" name="versi" id="versi" class="form-control">
+                                        <label for="kurikulum" class="form-label">Kurikulum</label>
+                                        <select name="kurikulum" id="kurikulum" class="form-select select2">
+                                            <option value="kurikulummerdeka">Kurikulum Merdeka</option>
+                                            <option value="kurtilas">Kurikulum 13</option>
+                                        </select>
                                     </div>
-                                    <div class="col-12 col-md-3">
+                                    <div class="col-12 col-md-2">
+                                        <label for="versi" class="form-label">Versi</label>
+                                        <select name="versi" id="versi" class="form-select select2">
+                                            @for ($i = 1; $i <= 10; $i++)
+                                                <option value='{{ $i }}'>{{$i}}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-2">
                                         <label for="tingkat" class="form-label">Tingkat</label>
                                         <select name="tingkat" id="tingkat" class="form-select select2">
                                             <option value="X">X</option>
@@ -51,7 +62,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-3 d-flex align-items-end mb-1">
+                                    <div class="col-12 col-md-2 d-flex align-items-end mb-1">
                                         <input type="submit" class="btn btn-primary" value="SIMPAN">
                                     </div>
                                 </div>
@@ -66,6 +77,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Tingkat</th>
+                                    <th>Kurikulum</th>
                                     <th>Versi</th>
                                     <th>Tahun Ajaran</th>
                                     <th>Aksi</th>
@@ -76,6 +88,15 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $subject->tingkat }}</td>
+                                        <td>
+                                            @if($subject->kurikulum == 'kurikulummerdeka')
+                                            Kurikulum Merdeka
+                                            @elseif($subject->kurikulum == 'kurtilas')
+                                            Kurikulum 13
+                                            @else
+                                            -
+                                            @endif
+                                        </td>
                                         <td>{{ $subject->versi }}</td>
                                         <td>{{ $subject->tahunajaran->awal_tahun_ajaran }} / {{ $subject->tahunajaran->akhir_tahun_ajaran }}</td>
                                         <td>

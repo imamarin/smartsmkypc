@@ -9,12 +9,33 @@ use App\Models\Menu;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controller;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            $this->view = 'Role & Hak Akses';
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         $data['roles'] = Role::withCount('user_role')->get();
@@ -100,12 +121,6 @@ class RoleController extends Controller
         foreach ($menus as $menu) {
             $fiturList = [];
             foreach ($menu->fitur as $fitur) { // Mengubah fiturs menjadi fitur
-                // $accessList[] = [
-                //     'id' => $fitur->id,
-                //     'menu' => $menu->menu,
-                //     'fitur' => $fitur->fitur,
-                //     'has_access' => in_array($fitur->id, $existingAccess)
-                // ];
                 $fiturList[] = [
                     'id' => $fitur->id,
                     'menu_id' => $menu->id,

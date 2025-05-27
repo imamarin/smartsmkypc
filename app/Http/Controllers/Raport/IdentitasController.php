@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Raport;
 
-use App\Http\Controllers\Controller;
+// use App\Http\Controllers\Controller;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\TahunAjaran;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -10,14 +10,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Routing\Controller;
+use Throwable;
 
 class IdentitasController extends Controller
 {
     protected $tahunajaran;
+    protected $view;
+    protected $fiturMenu;
+
     public function __construct()
     {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            $this->view = 'E-Raport-Aktivasi Raport';
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+
         $this->tahunajaran = TahunAjaran::where('status', 1)->first();
     }
+
     //
     public function index()
     {
@@ -80,10 +99,16 @@ class IdentitasController extends Controller
     {
         try {
             $id = Crypt::decrypt($id);
-            IdentitasRaport::find($id)->delete();
-            return redirect()->back()->with('success', 'Data Identitas berhasil dihapus');
         } catch (DecryptException $e) {
             return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        try {
+            $id = Crypt::decrypt($id);
+            IdentitasRaport::find($id)->delete();
+            return redirect()->back()->with('success', 'Data Identitas berhasil dihapus');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Data tidak bisa dihapus');
         }
     }
 

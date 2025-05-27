@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class SiswaController extends Controller
 {
@@ -26,12 +27,25 @@ class SiswaController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
+            if (Route::currentRouteName() == 'walikelas.siswa.edit') {
+                $this->view = 'Walikelas-Data Siswa';
+            } else if (Route::currentRouteName() == 'data-siswa.index') {
+                $this->view = 'Data Master-Data Siswa';
+            } else if (Route::currentRouteName() == 'data-siswa.update') {
+                $this->view = 'Data Master-Data Siswa';
+                if (!isset($this->fiturMenu[$this->view])) {
+                    $this->view = 'Walikelas-Data Siswa';
+                }
+            } else {
+                $this->view = 'Data Master-Data Siswa';
+            }
 
-            if (!isset($this->fiturMenu['Data Siswa'])) {
+            // dd($this->view);
+
+            if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
 
-            $this->view = 'Data Siswa';
             view()->share('view', $this->view);
 
             return $next($request);
@@ -216,13 +230,19 @@ class SiswaController extends Controller
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
-        $userRole = UserRole::where('iduser', $id);
-        $siswa = Siswa::where('iduser', $id);
-        $user = User::find($id);
-        $userRole->delete();
-        $siswa->delete();
-        $user->delete();
-        return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        try {
+            //code...
+            $userRole = UserRole::where('iduser', $id);
+            $siswa = Siswa::where('iduser', $id);
+            $user = User::find($id);
+            $siswa->delete();
+            $userRole->delete();
+            $user->delete();
+            return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Data tidak bisa dihapus');
+        }
     }
 
     public function updateStatus(Request $request, $id)

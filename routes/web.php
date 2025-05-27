@@ -111,7 +111,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/masuk-mengajar', [MasukMengajarController::class, 'index'])->name('masuk-mengajar.index');
         Route::get('/masuk-mengajar/{id}', [MasukMengajarController::class, 'show'])->name('masuk-mengajar.show');
         Route::post('/masuk-mengajar/catatan/{id}', [MasukMengajarController::class, 'updateCatatan'])->name('masuk-mengajar.updateCatatan');
-        
+
         //presensi
         Route::get('/rekap-presensi-siswa', [PresensiController::class, 'rekapSiswa'])->name('rekap-presensi-siswa');
         Route::get('/rekap-presensi-mengajar', [PresensiController::class, 'rekapGuru'])->name('rekap-presensi-mengajar');
@@ -126,12 +126,12 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/pengajuan-kehadiran-mengajar', [AjuanPresensiController::class, 'store'])->name('ajuan-kehadiran-mengajar.store');
         Route::post('/pengajuan-kehadiran-mengajar/{id}', [AjuanPresensiController::class, 'update'])->name('ajuan-kehadiran-mengajar.update');
         Route::delete('/pengajuan-kehadiran-mengajar/{id}', [AjuanPresensiController::class, 'destroy'])->name('ajuan-kehadiran-mengajar.destroy');
-        
+
         //data rekap presensi
         Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa');
         Route::post('/data-rekap-presensi-siswa/kbm', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa.kbm');
         Route::post('/data-rekap-presensi-siswa/harian', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa.harian');
-        Route::get('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru']);
+        Route::get('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru-get');
         Route::get('/data-rekap-presensi-guru/{id}', [PresensiController::class, 'rekapGuru'])->name('data-rekap-presensi-guru-detail');
         Route::post('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru');
         //walikelas

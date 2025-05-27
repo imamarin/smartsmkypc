@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Fitur;
 use App\Models\HakAkses;
 use App\Models\Menu;
 use App\Models\UserRole;
@@ -30,7 +31,11 @@ class AppServiceProvider extends ServiceProvider
 
                 $idrole = UserRole::where('iduser', Auth::user()->id)->get()->pluck('idrole');
 
-                $menuKategori = Menu::with('kategori')->whereHas('fitur', function ($query) use ($idrole) {
+                $menuKategori = Menu::with(['kategori', 'fitur' => function ($query) use ($idrole) {
+                    $query->whereHas('hakakses', function ($query) use ($idrole) {
+                        $query->whereIn('idrole', $idrole);
+                    });
+                }])->whereHas('fitur', function ($query) use ($idrole) {
                     $query->whereHas('hakakses', function ($query) use ($idrole) {
                         $query->whereIn('idrole', $idrole);
                     });
@@ -41,10 +46,10 @@ class AppServiceProvider extends ServiceProvider
                 $fiturMenu = [];
                 foreach ($menuKategori as $menu) {
                     foreach ($menu->fitur as $fitur) {
-                        $fiturMenu[$menu->menu][] = $fitur->fitur;
+                        $fiturMenu[$menu->kategori->kategori . "-" . $menu->menu][] = $fitur->fitur;
                     }
                 }
-                
+
                 session(['fiturMenu' => $fiturMenu]);
                 $view->with(
                     [

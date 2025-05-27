@@ -8,20 +8,39 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\Rule;
+use Illuminate\Routing\Controller;
+
 
 class KalenderAkademikController extends Controller
 {
     //
     protected $tahunajaran;
 
+    protected $view;
+    protected $fiturMenu;
+
     public function __construct()
     {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            $this->view = 'Kalender Akademik';
+
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
         $this->tahunajaran = TahunAjaran::where('status', 1)->first();
 
         $title = 'Data Jurusan!';
         $text = "Yakin ingin menghapus data ini?";
         confirmDelete($title, $text);
     }
+
 
     public function index()
     {

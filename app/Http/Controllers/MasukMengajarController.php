@@ -29,9 +29,9 @@ class MasukMengajarController extends Controller
                 Route::currentRouteName() == 'masuk-mengajar.show' ||
                 Route::currentRouteName() == 'masuk-mengajar.updateCatatan'
             ) {
-                $this->view = 'Masuk Mengajar';
+                $this->view = 'Administrasi Guru-Masuk Mengajar';
             } else if (Route::currentRouteName() == 'show-presensi.tanggal') {
-                $this->view = 'Rekap Presensi Siswa';
+                $this->view = 'Administrasi Guru-Rekap Presensi Siswa';
             }
 
             if (!isset($this->fiturMenu[$this->view])) {

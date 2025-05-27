@@ -37,13 +37,13 @@ class NilaiSiswaController extends Controller
                 Route::currentRouteName() == 'nilai-siswa.input' ||
                 Route::currentRouteName() == 'nilai-siswa.simpan'
             ) {
-                $this->view = 'Pengolahan Nilai Siswa';
+                $this->view = 'Administrasi Guru-Pengolahan Nilai Siswa';
             } else if (
                 Route::currentRouteName() == 'nilai-siswa.rekap' ||
                 Route::currentRouteName() == 'nilai-siswa.rekap.show' ||
                 Route::currentRouteName() == 'nilai-siswa.persentase.store'
             ) {
-                $this->view = 'Rekapan Nilai Siswa';
+                $this->view = 'Administrasi Guru-Rekapan Nilai Siswa';
             }
 
             if (!isset($this->fiturMenu[$this->view])) {
@@ -57,6 +57,7 @@ class NilaiSiswaController extends Controller
 
         $this->tahunajaran = TahunAjaran::where('status', 1)->first();
     }
+
     public function index(Request $request)
     {
         $title = 'Data Pengolah Nilai!';
@@ -153,7 +154,9 @@ class NilaiSiswaController extends Controller
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
-        $nilaisiswa = NilaiSiswa::find($id)->delete();
+        $nilaisiswa = NilaiSiswa::find($id);
+        $nilaisiswa->delete();
+
         return redirect()->route('nilai-siswa', [
             'kategori' => $nilaisiswa->kategori,
         ])->with('success', 'Data berhasil dihapus');

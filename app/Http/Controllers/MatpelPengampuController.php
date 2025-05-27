@@ -24,7 +24,7 @@ class MatpelPengampuController extends Controller
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
 
-            $this->view = 'Matpel Pengampu';
+            $this->view = 'Administrasi Guru-Matpel Pengampu';
             if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
@@ -89,8 +89,14 @@ class MatpelPengampuController extends Controller
     public function destroy(string $id)
     {
         //
-        MatpelPengampu::findOrFail($id)->delete();
-        return redirect()->back()->with('success', 'Data berhasil dihapus!');
+        try {
+            //code...
+            MatpelPengampu::findOrFail($id)->delete();
+            return redirect()->back()->with('success', 'Data berhasil dihapus!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Data tidak bisa dihapus');
+        }
     }
 
     public function export()

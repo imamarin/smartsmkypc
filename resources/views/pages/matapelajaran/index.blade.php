@@ -29,11 +29,17 @@
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
+                            @if(in_array('Eksport', $fiturMenu[$view]))
                             <a href="#" class="btn btn-info me-2">Export Data</a>
+                            @endif
+                            @if(in_array('Import', $fiturMenu[$view]))
                             <a href="#" class="btn btn-success me-2">Import Data</a>
+                            @endif
                             <!-- Button to trigger modal -->
+                            @if(in_array('Tambah', $fiturMenu[$view]))
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah
                                 Data</button>
+                            @endif
                         </div>
                     </div>
                 </div><!-- end card header -->
@@ -47,7 +53,9 @@
                                     <th>Mata Pelajaran</th>
                                     <th>Kelompok</th>
                                     <th>Gabungan Mata Pelajaran</th>
+                                    @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,8 +66,10 @@
                                         <td>{{ $subject->matpel }}</td>
                                         <td>{{ $subject->kelompok }}</td>
                                         <td>{{ $subject->parent->matpel ?? '-' }}</td>
+                                        @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
+                                            @if(in_array('Edit', $fiturMenu[$view]))
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#addSubjectModal" data-id="{{ $subject->kode_matpel }}"
                                                 data-kode="{{ $subject->kode_matpel }}" data-matpel="{{ $subject->matpel }}"
@@ -67,9 +77,13 @@
                                                 data-kategori="{{ $subject->matpels_kode }}">
                                                 Edit
                                             </button>
-                                            <a href="{{ route('data-mata-pelajaran.destroy', $subject->kode_matpel) }}"
+                                            @endif
+                                            @if(in_array('Hapus', $fiturMenu[$view]))
+                                            <a href="{{ route('data-mata-pelajaran.destroy', Crypt::encrypt($subject->kode_matpel)) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
+                                            @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

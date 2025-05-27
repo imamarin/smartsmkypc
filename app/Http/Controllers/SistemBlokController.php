@@ -8,12 +8,38 @@ use App\Models\TahunAjaran;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class SistemBlokController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    protected $view;
+    protected $fiturMenu;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->fiturMenu = session('fiturMenu');
+            if (Route::currentRouteName() == "sistem-blok.index" || Route::currentRouteName() == "sistemblok.updateStatus") {
+                $this->view = 'Sistem Blok';
+            } else {
+                $this->view = 'Kurikulum-Jadwal Sistem Blok';
+            }
+
+            if (!isset($this->fiturMenu[$this->view])) {
+                return redirect()->back();
+            }
+
+            view()->share('view', $this->view);
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
         //

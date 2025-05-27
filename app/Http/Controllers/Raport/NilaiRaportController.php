@@ -101,11 +101,18 @@ class NilaiRaportController extends Controller
     {
         try {
             $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        try {
+            //code...
             DetailNilaiRaport::where('idnilairaport', $id)->delete();
             NilaiRaport::find($id)->delete();
             return redirect()->back()->with('success', 'Data nilai raport berhasil dihapus');
-        } catch (DecryptException $e) {
-            return redirect()->back()->with('warning', $e->getMessage());
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', "Data tidak berhasil dihapus");
         }
     }
 }

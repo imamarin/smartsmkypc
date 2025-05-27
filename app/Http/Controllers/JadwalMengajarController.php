@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class JadwalMengajarController extends Controller
 {
@@ -28,8 +29,16 @@ class JadwalMengajarController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
+            if (
+                Route::currentRouteName() == 'data-jadwal-mengajar-guru' ||
+                Route::currentRouteName() == 'data-jadwal-mengajar-guru.show' ||
+                Route::currentRouteName() == 'kunci'
 
-            $this->view = 'Jadwal Mengajar';
+            ) {
+                $this->view = 'Kurikulum-Jadwal Mengajar Guru';
+            } else {
+                $this->view = 'Administrasi Guru-Jadwal Mengajar';
+            }
             if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
@@ -209,14 +218,25 @@ class JadwalMengajarController extends Controller
     public function destroy(string $id)
     {
         //
-        $id = Crypt::decrypt($id);
-        $jadwalmengajar = JadwalMengajar::find($id);
-        if ($jadwalmengajar) {
-            $jadwalmengajar->delete();
-            return redirect()->back()->with('success', 'Jam pelajaran berhasil dihapus!');
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
         }
 
-        return redirect()->back()->with('warning', 'Jam pelajaran gagal dihapus');
+        try {
+            //code...
+            $jadwalmengajar = JadwalMengajar::find($id);
+            if ($jadwalmengajar) {
+                $jadwalmengajar->delete();
+                return redirect()->back()->with('success', 'Jam pelajaran berhasil dihapus!');
+            }
+
+            return redirect()->back()->with('warning', 'Jam pelajaran gagal dihapus');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Data tidak bisa dihapus');
+        }
     }
 
     public function dataJadwalMengajarGuru()

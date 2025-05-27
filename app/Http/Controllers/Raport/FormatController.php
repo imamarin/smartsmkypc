@@ -27,12 +27,14 @@ class FormatController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'kurikulum' => 'required',
             'versi' => 'required',
             'tingkat' => 'required',
             'idtahunajaran' => 'required'
         ]);
 
         Format::updateOrCreate([
+            'kurikulum' => $request->kurikulum,
             'versi' => $request->versi,
             'tingkat' => $request->tingkat,
             'idtahunajaran' => $request->idtahunajaran
