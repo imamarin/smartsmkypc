@@ -20,7 +20,7 @@ class TahunAjaranController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
-            $this->view = 'Tahun Ajaran';
+            $this->view = 'Pengaturan-Tahun Ajaran';
 
 
             if (!isset($this->fiturMenu[$this->view])) {

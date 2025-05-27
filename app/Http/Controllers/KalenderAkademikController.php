@@ -23,7 +23,7 @@ class KalenderAkademikController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
-            $this->view = 'Kalender Akademik';
+            $this->view = 'Pengaturan-Kalender Akademik';
 
 
             if (!isset($this->fiturMenu[$this->view])) {

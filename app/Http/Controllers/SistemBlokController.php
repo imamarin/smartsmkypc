@@ -25,7 +25,7 @@ class SistemBlokController extends Controller
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
             if (Route::currentRouteName() == "sistem-blok.index" || Route::currentRouteName() == "sistemblok.updateStatus") {
-                $this->view = 'Sistem Blok';
+                $this->view = 'Pengaturan-Sistem Blok';
             } else {
                 $this->view = 'Kurikulum-Jadwal Sistem Blok';
             }
