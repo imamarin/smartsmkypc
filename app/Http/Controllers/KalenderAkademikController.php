@@ -27,7 +27,7 @@ class KalenderAkademikController extends Controller
 
 
             if (!isset($this->fiturMenu[$this->view])) {
-                return redirect()->back();
+                return redirect()->back();Ma
             }
 
             view()->share('view', $this->view);

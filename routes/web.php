@@ -134,22 +134,25 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru-get');
         Route::get('/data-rekap-presensi-guru/{id}', [PresensiController::class, 'rekapGuru'])->name('data-rekap-presensi-guru-detail');
         Route::post('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru');
-        //walikelas
-        Route::get('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas');
-        Route::post('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas.tahunajaran');
-        Route::get('/walikelas/siswa/{id}', [SiswaController::class, 'edit'])->name('walikelas.siswa.edit');
-        Route::post('/walikelas/petugas-presensi/{id}', [WalikelasController::class, 'petugasPresensi'])->name('walikelas.petugaspresensi');
-        Route::get('/walikelas/presensi-harian-siswa', [PresensiHarianController::class, 'siswa'])->name('presensi-harian-siswa');
-        Route::post('/walikelas/presensi-harian-siswa', [PresensiHarianController::class, 'siswa'])->name('presensi-harian-siswa');
-        Route::get('/walikelas/rekap-presensi-harian-siswa', [PresensiHarianController::class, 'rekapSiswa'])->name('rekap-presensi-harian-siswa');
-        Route::post('/walikelas/rekap-presensi-harian-siswa', [PresensiHarianController::class, 'rekapSiswa'])->name('rekap-presensi-harian-siswa');
-        Route::get('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'create'])->name('presensi-harian-siswa-create');
-        Route::post('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'store'])->name('presensi-harian-siswa-store');
-        Route::get('/walikelas/rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa');
-        Route::post('/walikelas/rekap-presensi-siswa/kbm', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa.kbm');
-        Route::post('/walikelas/rekap-presensi-siswa/harian', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa.harian');
-        //grafik
-        Route::get('/walikelas/grafik-presensi-siswa', [DiagramController::class, 'siswa'])->name('walikelas.grafik-presensi-siswa');
+
+        Route::middleware('cek-walikelas')->group(function () {
+            //walikelas
+            Route::get('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas');
+            Route::post('/walikelas/siswa', [WalikelasController::class, 'siswa'])->name('walikelas.tahunajaran');
+            Route::get('/walikelas/siswa/{id}', [SiswaController::class, 'edit'])->name('walikelas.siswa.edit');
+            Route::post('/walikelas/petugas-presensi/{id}', [WalikelasController::class, 'petugasPresensi'])->name('walikelas.petugaspresensi');
+            Route::get('/walikelas/presensi-harian-siswa', [PresensiHarianController::class, 'siswa'])->name('presensi-harian-siswa');
+            Route::post('/walikelas/presensi-harian-siswa', [PresensiHarianController::class, 'siswa'])->name('presensi-harian-siswa');
+            Route::get('/walikelas/rekap-presensi-harian-siswa', [PresensiHarianController::class, 'rekapSiswa'])->name('rekap-presensi-harian-siswa');
+            Route::post('/walikelas/rekap-presensi-harian-siswa', [PresensiHarianController::class, 'rekapSiswa'])->name('rekap-presensi-harian-siswa');
+            Route::get('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'create'])->name('presensi-harian-siswa-create');
+            Route::post('/walikelas/presensi-harian-siswa/{id}', [PresensiHarianController::class, 'store'])->name('presensi-harian-siswa-store');
+            Route::get('/walikelas/rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa');
+            Route::post('/walikelas/rekap-presensi-siswa/kbm', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa.kbm');
+            Route::post('/walikelas/rekap-presensi-siswa/harian', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa.harian');
+            //grafik
+            Route::get('/walikelas/grafik-presensi-siswa', [DiagramController::class, 'siswa'])->name('walikelas.grafik-presensi-siswa');
+        });
         //pengolahan nilai siswa
         Route::get('/pengolahan-nilai-siswa', [NilaiSiswaController::class, 'index'])->name('nilai-siswa');
         Route::post('/pengolahan-nilai-siswa', [NilaiSiswaController::class, 'store'])->name('nilai-siswa-store');
@@ -179,17 +182,19 @@ Route::middleware('cek-status-login')->group(function () {
             Route::post('/raport-aktivasi/{id}', [IdentitasController::class, 'aktivasi'])->name('raport.aktivasi');
             Route::get('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'input'])->name('detail-nilai-raport.input');
             Route::post('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'store'])->name('detail-nilai-raport.store');
-            Route::resource('/nilai-raport', NilaiRaportController::class);
-            Route::resource('/matpel-kelas', MatpelKelasController::class);
-            Route::resource('/absensi-siswa', AbsensiRaportController::class);
-            Route::resource('/kategori-sikap', KategoriSikapController::class);
-            Route::resource('/nilai-sikap', NilaiSikapController::class);
-            Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
-            Route::resource('/nilai-ekstrakurikuler', NilaiEkstraController::class);
-            Route::resource('/kenaikan-kelas', KenaikanKelasController::class);
-            Route::resource('/nilai-prakerin', NilaiPrakerinController::class);
-            Route::get('/cetak/{page}/{id}/{start}/{end}', [CetakController::class, 'page'])->name('cetak.raport');
-            Route::resource('/cetak', CetakController::class);
+            Route::middleware('cek-walikelas')->group(function () {
+                Route::resource('/nilai-raport', NilaiRaportController::class);
+                Route::resource('/matpel-kelas', MatpelKelasController::class);
+                Route::resource('/absensi-siswa', AbsensiRaportController::class);
+                Route::resource('/kategori-sikap', KategoriSikapController::class);
+                Route::resource('/nilai-sikap', NilaiSikapController::class);
+                Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
+                Route::resource('/nilai-ekstrakurikuler', NilaiEkstraController::class);
+                Route::resource('/kenaikan-kelas', KenaikanKelasController::class);
+                Route::resource('/nilai-prakerin', NilaiPrakerinController::class);
+                Route::get('/cetak/{page}/{id}/{start}/{end}', [CetakController::class, 'page'])->name('cetak.raport');
+                Route::resource('/cetak', CetakController::class);
+            });
             Route::resource('/format', FormatController::class);
         });
 

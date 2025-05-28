@@ -9,6 +9,7 @@ use App\Models\MatpelPengampu;
 use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\MatpelKelas;
 use App\Models\Staf;
+use App\Models\TahunAjaran;
 use App\Models\Walikelas;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -20,8 +21,10 @@ class MatpelKelasController extends Controller
 {
     //
     protected $aktivasi;
+    protected $tahunajaran;
     public function __construct()
     {
+        $this->tahunajaran = TahunAjaran::where('status', 1)->first();
         $this->aktivasi = Session::get('aktivasi');
         $title = 'Data Matpel Kelas Raport!';
         $text = "Yakin ingin menghapus data ini?";
