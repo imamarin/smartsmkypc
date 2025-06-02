@@ -23,7 +23,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header d-flex align-items-center">
+                <div class="card-header d-flex align-items-center"  style="background-color: #cbd931 ;">
                     <div class="col">
                         <form action="{{ route('data-walikelas.tahunajaran') }}" method="post">
                             @csrf

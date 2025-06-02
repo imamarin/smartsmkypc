@@ -11,6 +11,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class KelasController extends Controller
 {
@@ -24,8 +25,11 @@ class KelasController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
-
-            $this->view = 'Data Master-Data Kelas';
+            if (Route::currentRouteName() == 'data-kelas.json-tahunajaran') {
+                $this->view = 'Walikelas-Rekap Presensi Siswa';
+            } else {
+                $this->view = 'Data Master-Data Kelas';
+            }
             if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
@@ -149,6 +153,11 @@ class KelasController extends Controller
     public function export()
     {
         return Excel::download(new KelasExport, 'Data Kelas.xlsx');
+    }
+
+    public function getJsonByTingkat(String $id)
+    {
+        $kelas = Kelas::where('idtahunajaran', $id)->get();
     }
 
     public function getJsonByIdTahunAjaran(String $id)

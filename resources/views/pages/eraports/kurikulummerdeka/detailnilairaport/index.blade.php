@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg bg-light" style="border: 2px solid rgb(31, 177, 188)">
                     <div class="row">
                         <div class="col-6">
                             <label for="kelas" class="form-label">Kelas:</label><br>
@@ -45,8 +45,9 @@
         </div>
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h4 class="card-title text-start">Input Nilai Raport</h4>
+                <div class="card-header d-flex justify-content-between" style="background-color: rgb(31, 177, 188)">
+                    <h4 class="card-title text-start text-white">Input Nilai Raport</h4>
+                    <a href="{{ route('detail-nilai-raport.export', $id) }}" class="btn btn-sm btn-success">Ekspor ke Excel</a>
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">

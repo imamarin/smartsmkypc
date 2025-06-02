@@ -81,5 +81,25 @@ class DetailNilaiRaportController extends Controller
         return redirect()->back();
     }
 
+    public function export(String $id){
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $nilairaport = NilaiRaport::find($id);
+
+        $versi = Format::where('tingkat', $nilairaport->kelas->tingkat)->first();
+        if ($versi) {
+            if ($versi->kurikulum == 'kurikulummerdeka') {
+                $v = new KurikulumMerdekaDetailNilaiRaportController;
+                return $v->export($nilairaport, $id);
+            }
+        }
+
+        return redirect()->back();
+    }
+
     
 }

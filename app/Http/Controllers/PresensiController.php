@@ -303,6 +303,7 @@ class PresensiController extends Controller
         $data['tahunajaran'] = TahunAjaran::orderBy('awal_tahun_ajaran', 'desc')->get();
 
         if ($request->segment(2) == 'walikelas') {
+            $data['tahunajaran'] = TahunAjaran::where('status', 1)->get();
             $data['kelas'] = Kelas::select('kelas.id', 'kelas.kelas')->join('walikelas', 'walikelas.idkelas', '=', 'kelas.id')
                 ->where('walikelas.idtahunajaran', $tahunajaran->id)
                 ->where('walikelas.nip', Auth::user()->staf->nip)->get();

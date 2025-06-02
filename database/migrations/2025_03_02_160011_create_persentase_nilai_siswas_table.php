@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('semester', ['ganjil', 'genap']);
             $table->foreignId('idtahunajaran')->references('id')->on('tahun_ajarans');
             $table->integer('tugas');
-            $table->integer('sumatif');
+            $table->integer('harian');
             $table->integer('uas');
             $table->integer('uts');
             $table->timestamps();

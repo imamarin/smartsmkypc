@@ -86,7 +86,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive bg bg-white">
                         <table class="table display nowrap" id="example">
                             <thead>
                                 <tr>

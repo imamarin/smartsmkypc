@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <div class="card-header d-flex align-items-center">
+            <div class="card-header d-flex align-items-center bg bg-info">
                 @if(in_array('Tambah', $fiturMenu[$view]))
                 <div class="col">
                     {{-- <h4 class="card-title">List Matpel Pengampu</h4> --}}

@@ -23,7 +23,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bg bg-info">
                     <h4 class="card-title">Tanggal: {{ date('d-m-Y') }}</h4>
                 </div>
                 <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
@@ -47,14 +47,14 @@
                     @endif
                     
                 </div>
-                <div class="card-footer d-flex flex-column align-items-center justify-content-center text-center">
+                <div class="card-footer d-flex flex-column align-items-center justify-content-center text-center bg bg-secondary text-white">
                     <i>Selamat Melaksanakan Kegiatan Belajar dan Mengajar</i>
                 </div>
             </div>
         </div>
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header d-flex align-items-center">
+                <div class="card-header d-flex align-items-center bg bg-info">
                     <div class="col">
                         <h4 class="card-title">Jadwal Hari ini</h4>
                     </div>

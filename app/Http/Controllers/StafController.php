@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\GuruExport;
+use App\Imports\StafImport;
 use App\Models\Staf;
 use App\Models\Role;
 use App\Models\User;
@@ -237,5 +238,17 @@ class StafController extends Controller
 
         $data['staf'] = Staf::all();
         return Excel::download(new GuruExport($data['staf']), 'Data Staf.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+
+        $import = new StafImport;
+        Excel::import($import, $request->file('file'));
+
+        return back()->with('success', "Berhasil mengimpor {$import->successCount} data.");
     }
 }

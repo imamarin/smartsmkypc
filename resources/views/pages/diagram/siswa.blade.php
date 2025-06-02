@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header text-white" style="background-color: rgb(42, 101, 149)">
                     <form action="{{ route('walikelas.grafik-presensi-siswa') }}" method="get">
                         <div class="row">
                             <div class="col-2">

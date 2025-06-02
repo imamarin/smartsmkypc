@@ -7,8 +7,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0">Data Nilai Raport</h4>
-
+                <h4 class="mb-0"></h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -23,14 +22,14 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header d-flex align-items-center">
+                <div class="card-header d-flex align-items-center" style="background-color: rgb(31, 177, 188)">
                     <div class="col">
-                        <h4 class="card-title">Data Nilai Raport</h4>
+                        <h4 class="card-title text-white">Data Nilai Raport</h4>
                     </div>
                     <div class="col">
-                        <div class="d-flex justify-content-end mb-3">
+                        <div class="d-flex justify-content-end">
                             <!-- Button to trigger modal -->
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah Data Nilai Raport</button>
+                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah Data Nilai Raport</button>
                         </div>
                     </div>
                 </div><!-- end card header -->

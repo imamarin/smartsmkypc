@@ -24,7 +24,7 @@
     <!-- end page title -->
     <div class="row">
         <div class="col-md-3">
-            <div class="card">
+            <div class="card" style="border: 2px solid rgb(31, 177, 188)">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6">
@@ -54,8 +54,8 @@
         </div>
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h4 class="card-title text-start">Input Raport Kehadiran Siswa</h4>
+                <div class="card-header d-flex justify-content-between" style="background-color: rgb(31, 177, 188)">
+                    <h4 class="card-title text-start text-white">Input Raport Kehadiran Siswa</h4>
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">

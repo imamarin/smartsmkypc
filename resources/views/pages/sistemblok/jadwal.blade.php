@@ -24,7 +24,7 @@
         <div class="col-lg-12">
             <div class="card">
                 @if(in_array('Tambah', $fiturMenu[$view]))
-                <div class="card-header">
+                <div class="card-header"  style="background-color: #cbd931 ;">
                     <div class="row">
                         <div class="col-12 col-md-12">
                             <form action="{{ route('jadwal-sistem-blok.store') }}" method="post">

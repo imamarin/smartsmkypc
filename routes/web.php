@@ -63,14 +63,24 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/data-jurusan', JurusanController::class);
         Route::get('/data-jurusan/export/data', [JurusanController::class, 'export'])->name('data-jurusan.export');
         //data-siswa
+        Route::get('/data-siswa/tahunajaran', [SiswaController::class, 'tahunajaran'])->name('data-siswa.tahunajaran');
         Route::resource('/data-siswa', SiswaController::class);
         Route::post('/data-siswa/{id}/updateStatus', [SiswaController::class, 'updateStatus'])->name('data-siswa.updateStatus');
         Route::get('/data-siswa/export/data', [SiswaController::class, 'export'])->name('data-siswa.export');
+        Route::post('/data-siswa/import/data', [SiswaController::class, 'import'])->name('data-siswa.import');
+        Route::get('/template-import-siswa', function () {
+            $file = public_path('storage/template_import/template_siswa.xlsx');
+            return response()->download($file);
+        })->name('data-siswa.template.import');
         //data-staf
         Route::resource('/data-staf', StafController::class);
         Route::post('/data-staf/{id}/updateStatus', [StafController::class, 'updateStatus'])->name('data-staf.updateStatus');
         Route::get('/data-staf/export/data', [StafController::class, 'export'])->name('data-staf.export');
-
+        Route::post('/data-staf/import/data', [StafController::class, 'import'])->name('data-staf.import');
+        Route::get('/template-import-staf', function () {
+            $file = public_path('storage/template_import/template_stafs.xlsx');
+            return response()->download($file);
+        })->name('data-staf.template.import');
         //data-rombel
         Route::resource('/data-rombel', RombelController::class);
         Route::post('/data-rombel/siswarombel', [RombelController::class, 'SiswaRombel'])->name('data-rombel.siswaRombel');
@@ -156,8 +166,11 @@ Route::middleware('cek-status-login')->group(function () {
         //pengolahan nilai siswa
         Route::get('/pengolahan-nilai-siswa', [NilaiSiswaController::class, 'index'])->name('nilai-siswa');
         Route::post('/pengolahan-nilai-siswa', [NilaiSiswaController::class, 'store'])->name('nilai-siswa-store');
+        Route::post('/pengolahan-nilai-siswa/kurmer', [NilaiSiswaController::class, 'kurmerstore'])->name('nilai-siswa-kurmer-store');
         Route::post('/pengolahan-nilai-siswa/{id}', [NilaiSiswaController::class, 'update'])->name('nilai-siswa-update');
         Route::delete('/pengolahan-nilai-siswa/{id}', [NilaiSiswaController::class, 'destroy'])->name('nilai-siswa-destroy');
+        Route::get('/pengolahan-nilai-siswa/cp/{id}', [NilaiSiswaController::class, 'getCP'])->name('nilai-siswa.getCP');
+        Route::get('/pengolahan-nilai-siswa/tp/{id}', [NilaiSiswaController::class, 'getTP'])->name('nilai-siswa.getTP');
         Route::get('/pengolahan-nilai-siswa/{kategori}/{id}', [NilaiSiswaController::class, 'inputNilai'])->name('nilai-siswa.input');
         Route::post('/pengolahan-nilai-siswa/{kategori}/{id}', [NilaiSiswaController::class, 'simpanNilai'])->name('nilai-siswa.simpan');
         Route::get('/rekap-nilai-siswa', [NilaiSiswaController::class, 'rekapNilaiSiswa'])->name('nilai-siswa.rekap');
@@ -182,8 +195,9 @@ Route::middleware('cek-status-login')->group(function () {
             Route::post('/raport-aktivasi/{id}', [IdentitasController::class, 'aktivasi'])->name('raport.aktivasi');
             Route::get('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'input'])->name('detail-nilai-raport.input');
             Route::post('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'store'])->name('detail-nilai-raport.store');
+            Route::get('/nilai-raport/export/{id}', [DetailNilaiRaportController::class, 'export'])->name('detail-nilai-raport.export');
+            Route::resource('/nilai-raport', NilaiRaportController::class);
             Route::middleware('cek-walikelas')->group(function () {
-                Route::resource('/nilai-raport', NilaiRaportController::class);
                 Route::resource('/matpel-kelas', MatpelKelasController::class);
                 Route::resource('/absensi-siswa', AbsensiRaportController::class);
                 Route::resource('/kategori-sikap', KategoriSikapController::class);

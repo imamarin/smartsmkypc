@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Exports\SiswaExport;
+use App\Imports\SiswaImport;
 use App\Models\Role;
+use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use App\Models\User;
@@ -46,6 +48,10 @@ class SiswaController extends Controller
                 return redirect()->back();
             }
 
+            $title = 'Hapus Siswa!';
+            $text = "Yakin ingin menghapus data ini?";
+            confirmDelete($title, $text);
+
             view()->share('view', $this->view);
 
             return $next($request);
@@ -54,12 +60,30 @@ class SiswaController extends Controller
 
     public function index()
     {
-        $title = 'Hapus Siswa!';
-        $text = "Yakin ingin menghapus data ini?";
-        confirmDelete($title, $text);
 
-        $data['siswa'] = Siswa::select('nisn', 'nama', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat_siswa', 'no_hp_siswa', 'status', 'iduser')
-            ->with(['user:id'])->where('status', 1)->get();
+        $data['tahunajaran'] = TahunAjaran::orderBy('id', 'desc')->get();
+
+        $data['siswa'] = Rombel::whereHas('tahunajaran', function ($query) {
+            $query->where('status', 1);
+        })->get();
+
+        return view('pages.siswa.index', $data);
+    }
+
+    public function tahunajaran(Request $request)
+    {
+        try {
+            $id = Crypt::decrypt($request->id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        $data['tahunajaran'] = TahunAjaran::orderBy('id', 'desc')->get();
+
+        $data['siswa'] = Rombel::whereHas('tahunajaran', function ($query) use ($id) {
+            $query->where('idtahunajaran', $id);
+        })->get();
+
+        $data['idtahunajaran'] = $id;
 
         return view('pages.siswa.index', $data);
     }
@@ -69,7 +93,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        if (!in_array('Tambah', $this->fiturMenu['Data Siswa'])) {
+        if (!in_array('Tambah', $this->fiturMenu[$this->view])) {
             return redirect()->back();
         }
 
@@ -262,5 +286,17 @@ class SiswaController extends Controller
 
         $data['siswa'] = Siswa::all();
         return Excel::download(new SiswaExport($data['siswa']), 'Data Siswa.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+
+        $import = new SiswaImport;
+        Excel::import($import, $request->file('file'));
+
+        return back()->with('success', "Berhasil mengimpor {$import->successCount} data.");
     }
 }

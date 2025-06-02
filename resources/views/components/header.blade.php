@@ -6,14 +6,14 @@
                 <img class="rounded-circle header-profile-user" src="{{ asset('assets/images/users/avatar-1.jpg') }}"
                     alt="Header Avatar">
                 <span class="ms-2 d-none d-sm-block user-item-desc">
-                    <span class="user-name">{{ Auth::user()->staf->nama ?? '' }}</span>
-                    <span class="user-sub-title">{{ Auth::user()->staf->nip ?? '' }}</span>
+                    <span class="user-name text-white">{{ Auth::user()->staf->nama ?? '' }}</span>
+                    <span class="user-sub-title text-white">{{ Auth::user()->staf->nip ?? '' }}</span>
                 </span>
             </button>
             <div class="dropdown-menu dropdown-menu-end pt-0">
                 <div class="p-3 bg-primary border-bottom">
                     <h6 class="mb-0 text-white">{{ Auth::user()->staf->nama ?? '' }}</h6>
-                    <p class="mb-0 font-size-11 text-white-50 fw-semibold">{{ Auth::user()->staf->nip ?? '' }}</p>
+                    <p class="mb-0 font-size-11 text-white fw-semibold">{{ Auth::user()->staf->nip ?? '' }}</p>
                 </div>
                 <a class="dropdown-item" href="pages-profile.html"><i
                         class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span

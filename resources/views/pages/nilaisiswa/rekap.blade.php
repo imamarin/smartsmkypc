@@ -21,7 +21,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <div class="card-header d-flex align-items-center">
+            <div class="card-header d-flex align-items-center bg bg-info">
                 <div class="col">
                     <h4 class="card-title">Rekap Nilai Siswa</h4>
                 </div>

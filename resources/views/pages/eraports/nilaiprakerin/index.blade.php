@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body text-white" style="background-color: rgb(31, 177, 188)">
                     <div class="row">
                         <div class="col-4">
                             <label for="kelas" class="form-label">Semester:</label><br>

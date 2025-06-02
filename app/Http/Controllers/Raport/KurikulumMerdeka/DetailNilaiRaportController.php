@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Raport\KurikulumMerdeka;
 
+use App\Exports\NilaiSiswaExport;
 use App\Http\Controllers\Controller;
 use App\Models\DetailNilaiSiswa;
 use App\Models\PersentaseNilaiSiswa;
@@ -14,6 +15,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DetailNilaiRaportController extends Controller
 {
@@ -127,5 +129,45 @@ class DetailNilaiRaportController extends Controller
         $data['persen_uas'] = ($persen->uas ?? 25) / 100;
 
         return $data;
+    }
+
+    public function export($nilairaport, $id)
+    {
+        try {
+            $data['id'] = Crypt::encrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $siswa = Siswa::whereHas('rombel', function ($query) use ($nilairaport) {
+            $query->where([
+                'idtahunajaran' => $nilairaport->idtahunajaran,
+                'idkelas' => $nilairaport->idkelas
+            ]);
+        })->orderBy('nama', 'asc')->get();
+
+        $detailnilairaport = DetailNilaiRaport::where([
+            'idnilairaport' => $id
+        ])->get();
+
+        $nilai_pengetahuan = [];
+        if ($detailnilairaport->count() > 0) {
+            foreach ($detailnilairaport as $key => $value) {
+                $nilai_pengetahuan[$value->nisn] = $value->nilai_1;
+            }
+            $data['nilai_pengetahuan'] = $nilai_pengetahuan;
+        } else {
+            $nilaiakhir = $this->nilaiakhir($nilairaport);
+            foreach ($nilaiakhir['nilaisiswa'] as $value) {
+                # code...
+                $nilai_pengetahuan[$value->nisn] = round(($value->nilai_tugas * $nilaiakhir['persen_tugas']) + ($value->nilai_sumatif * $nilaiakhir['persen_sumatif']) + ($value->nilai_uts * $nilaiakhir['persen_uts']) + ($value->nilai_uas * $nilaiakhir['persen_uas']));
+            }
+            $data['nilai_pengetahuan'] = $nilai_pengetahuan;
+        }
+
+        $data['nilairaport'] = $nilairaport;
+        $data['siswa'] = $siswa;
+
+        return Excel::download(new NilaiSiswaExport($data), 'Nilai_Siswa_' . $nilairaport->kelas->kelas . '.xlsx');
     }
 }

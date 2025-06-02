@@ -33,7 +33,7 @@
                             <a href="{{ route('data-staf.export') }}" class="btn btn-info me-2">Export Data</a>
                             @endif
                             @if(in_array('Import', $fiturMenu[$view]))
-                            <a href="#" class="btn btn-success me-2">Import Data</a>
+                            <a href="#" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</a>
                             @endif
                             @if(in_array('Tambah', $fiturMenu[$view]))
                             <a href="{{ route('data-staf.create') }}" class="btn btn-primary">Tambah Data</a>
@@ -112,6 +112,33 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Import Data Staf</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="importForm" action="{{ route('data-staf.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Upload File (.xlsx)</label>
+                            <input type="file" class="form-control" accept=".xlsx" id="file" name="file" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <span>Download Template .xlsx disini</span>
+                            <a href="{{ route('data-staf.template.import') }}">Template_Stafs.xlsx</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Import</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

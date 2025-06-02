@@ -49,7 +49,7 @@
                                     <th>NISN</th>
                                     <th>Nama Siswa</th>
                                     <th>Nilai Tugas <br> ({{ $persen_tugas*100 }}%)</th>
-                                    <th>Nilai Sumatif <br> ({{ $persen_sumatif*100 }}%)</th>
+                                    <th>Nilai Ujian Harian <br> ({{ $persen_harian*100 }}%)</th>
                                     <th>Nilai UTS <br> ({{ $persen_uts*100 }}%)</th>
                                     <th>Nilai UAS <br> ({{ $persen_uas*100 }}%)</th>
                                     <th>Nilai Akhir</th>
@@ -62,10 +62,10 @@
                                     <td>{{ $item->nisn }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ round($item->nilai_tugas) }}</td>
-                                    <td>{{ round($item->nilai_sumatif) }}</td>
+                                    <td>{{ round($item->nilai_harian) }}</td>
                                     <td>{{ round($item->nilai_uts) }}</td>
                                     <td>{{ round($item->nilai_uas) }}</td>
-                                    <td>{{ round(($item->nilai_tugas*$persen_tugas)+($item->nilai_sumatif*$persen_sumatif)+($item->nilai_uts*$persen_uts)+($item->nilai_uas*$persen_uas)) }}</td>
+                                    <td>{{ round(($item->nilai_tugas*$persen_tugas)+($item->nilai_harian*$persen_harian)+($item->nilai_uts*$persen_uts)+($item->nilai_uas*$persen_uas)) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -98,8 +98,8 @@
                         <input type="number" name="tugas" id="tugas" class="form-control" min="0" max="100" value="{{ $persen_tugas*100 }}">
                     </div>
                     <div class="mb-3">
-                        <label for="sumatif" class="form-label">Persentase Nilai Sumatif</label>
-                        <input type="number" name="sumatif" id="sumatif" class="form-control" min="0" max="100" value="{{ $persen_sumatif*100 }}">
+                        <label for="sumatif" class="form-label">Persentase Nilai Ujian Harian</label>
+                        <input type="number" name="harian" id="harian" class="form-control" min="0" max="100" value="{{ $persen_harian*100 }}">
                     </div>
                     <div class="mb-3">
                         <label for="uts" class="form-label">Persentase Nilai UTS</label>
@@ -124,13 +124,13 @@
     const submit = document.querySelector('#submitBtn');
     submit.addEventListener('click', function(e){
         const tugas = document.querySelector('#tugas');
-        const sumatif = document.querySelector('#sumatif');
+        const harian = document.querySelector('#harian');
         const uts = document.querySelector('#uts');
         const uas = document.querySelector('#uas');
         const form = document.querySelector('#formNilaiSiswa');
         const alert = document.querySelector('#alert');
         
-        jumlah = parseInt(tugas.value) + parseInt(sumatif.value) + parseInt(uts.value) + parseInt(uas.value);
+        jumlah = parseInt(tugas.value) + parseInt(harian.value) + parseInt(uts.value) + parseInt(uas.value);
         console.log(jumlah);
         
         if(jumlah == 100){

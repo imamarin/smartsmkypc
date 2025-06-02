@@ -33,4 +33,9 @@ class NilaiSiswa extends Model
     {
         return $this->hasMany(DetailNilaiSiswa::class, 'idnilaisiswa');
     }
+
+    public function kurmer()
+    {
+        return $this->hasOne(NilaiSiswaKurmer::class, 'idnilaisiswa');
+    }
 }
