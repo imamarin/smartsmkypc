@@ -8,16 +8,17 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class RombelExport implements FromView
 {
+    protected $rombel;
     protected $kelas;
 
 
-    public function __construct($kelas)
+    public function __construct($rombel, $kelas)
     {
+        $this->rombel = $rombel;
         $this->kelas = $kelas;
     }
     public function view(): View
     {
-        // dd($this->kelas);
-        return view('exports.rombel_export', ['kelas' => $this->kelas]);
+        return view('exports.rombel_export', ['rombel' => $this->rombel, 'kelas' => $this->kelas]);
     }
 }

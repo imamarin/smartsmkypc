@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0"></h4>
+                <h4 class="mb-0">Rekap Presensi Pengajar</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -19,11 +19,52 @@
     </div>
     <!-- end page title -->
     <div class="row">
+        <div class="col-md-4">
+            <div class="card border-success shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="me-3 text-success">
+                        <i class="bi bi-person-check-fill fs-1"></i>
+                    </div>
+                    <div>
+                        <h6 class="card-title mb-1 text-muted">Total Hadir</h6>
+                        <h4 class="mb-0 fw-bold text-dark">{{ $total_hadir }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-danger shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="me-3 text-danger">
+                        <i class="bi bi-person-x-fill fs-1"></i>
+                    </div>
+                    <div>
+                        <h6 class="card-title mb-1 text-muted">Total Tidak Hadir</h6>
+                        <h4 class="mb-0 fw-bold text-dark">{{ $total_tidak_hadir }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-primary shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <div class="me-3 text-primary">
+                        <i class="bi bi-bar-chart-line-fill fs-1"></i>
+                    </div>
+                    <div>
+                        <h6 class="card-title mb-1 text-muted">Persentase Kehadiran</h6>
+                        <h4 class="mb-0 fw-bold text-dark">{{ round($persentase_kehadiran) }} %</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col">
             <div class="card">
-                <div class="card-header d-flex flex-row align-items-center bg bg-info">
+                {{-- <div class="card-header d-flex flex-row align-items-center bg bg-info">
                     <h4 class="card-title">Rekap Presensi Mengajar</h4>
-                </div><!-- end card header -->
+                </div><!-- end card header --> --}}
                 <div class="card-body">
                     @if(isset($staf))
                     <div class="row">

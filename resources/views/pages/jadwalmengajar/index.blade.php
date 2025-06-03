@@ -28,12 +28,12 @@
 
                     <div class="col">
                         <div class="d-flex justify-content-end">
-                            @if(in_array('Eksport', $fiturMenu[$view]))
+                            {{-- @if(in_array('Eksport', $fiturMenu[$view]))
                             <a href="#" class="btn btn-info me-2">Export Data</a>
                             @endif
                             @if(in_array('Import', $fiturMenu[$view]))
                             <a href="#" class="btn btn-success me-2">Import Data</a>
-                            @endif
+                            @endif --}}
                             <!-- Button to trigger modal -->
                             @if(in_array('Tambah', $fiturMenu[$view]))
                             @if(!$kunci_jadwal)

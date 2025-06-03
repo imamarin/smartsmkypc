@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\WalikelasEksport;
 use App\Models\Staf;
 use App\Models\Kelas;
 use App\Models\Rombel;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Crypt;
 use League\Flysystem\DecoratedAdapter;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WalikelasController extends Controller
 {
@@ -42,6 +44,10 @@ class WalikelasController extends Controller
                 return redirect()->back();
             }
 
+            $title = 'Data Walikelas!';
+            $text = "Yakin ingin menghapus data ini?";
+            confirmDelete($title, $text);
+
             view()->share('view', $this->view);
 
             return $next($request);
@@ -52,23 +58,20 @@ class WalikelasController extends Controller
     {
         //
         $data['staf'] = Staf::all();
-        $data['tahunajaran'] = TahunAjaran::orderBy('status', 'desc')->get();
+        $data['tahunajaran'] = TahunAjaran::orderBy('status', 'desc')->orderBy('id', 'desc')->get();
         if ($request->isMethod('post')) {
             $data['walikelas'] = Kelas::whereHas('tahunajaran', function ($query) use ($request) {
                 $query->where('id', decryptSmart($request->idtahunajaran));
             })->get();
-            $data['idtahunajaran'] = $request->idtahunajaran;
+            $data['idtahunajaran'] = decryptSmart($request->idtahunajaran);
         } else {
             $data['walikelas'] = Kelas::whereHas('tahunajaran', function ($query) {
                 $query->where('status', 1);
             })->get();
-            $data['idtahunajaran'] = '';
+            $data['idtahunajaran'] = $data['tahunajaran'][0]->id;
         }
 
-        $title = 'Data Walikelas!';
-        $text = "Yakin ingin menghapus data ini?";
-        confirmDelete($title, $text);
-        // dd($data['walikelas']);
+
         return view('pages.walikelas.index', $data);
     }
 
@@ -193,5 +196,22 @@ class WalikelasController extends Controller
         ]);
 
         return redirect()->route('walikelas.tahunajaran', ['idkelas' => Crypt::encrypt($walikelas->idkelas)])->with('success', 'Petugas presensi harian berhasil disimpan');
+    }
+
+    public function export($id)
+    {
+
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $walikelas = Kelas::whereHas('tahunajaran', function ($query) use ($id) {
+            $query->where('id', $id);
+        })->get();
+        $tahunajaran = TahunAjaran::find($id);
+
+        return Excel::download(new WalikelasEksport($walikelas, $tahunajaran), 'Data-Walikelas-' . $tahunajaran->awal_tahun_ajaran . '.xlsx');
     }
 }

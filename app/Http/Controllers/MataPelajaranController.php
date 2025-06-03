@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MatpelEksport;
 use App\Models\Matpel;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Crypt;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MataPelajaranController extends Controller
 {
@@ -117,5 +119,12 @@ class MataPelajaranController extends Controller
             //throw $th;
             return redirect()->back()->with('error', 'Tidak dapat menghapus data karena masih memiliki relasi!');
         }
+    }
+
+    public function export()
+    {
+
+        $matpel = Matpel::orderBy('matpels_kode', 'asc')->orderBy('kode_matpel', 'asc')->get();
+        return Excel::download(new MatpelEksport($matpel), 'Data-Matpel.xlsx');
     }
 }

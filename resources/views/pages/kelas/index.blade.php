@@ -25,16 +25,22 @@
         <div class="card">
             <div class="card-header d-flex align-items-center">
                 <div class="col">
-                    <h4 class="card-title">Data Kelas</h4>
+                    <form action="{{ route('data-kelas.tahunajaran') }}" method="get" class="d-flex gap-2 w-100">
+                        <div style="width: 45%">
+                            <label for="tahunajaran" class="form-label">Tahun Ajaran</label>
+                            <select name="id" id="tahunajaran" class="form-control select2">
+                                @foreach($tahun_ajaran as $item)
+                                <option value="{{ Crypt::encrypt($item->id) }}" {{ isset($idtahunajaran) ? ($idtahunajaran == $item->id ? 'selected' : '') : ''  }}>{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="d-flex align-items-end">
+                            <input type="submit" value="Tampilkan" class="btn btn-primary" style="margin-bottom: 5px">
+                        </div>
+                    </form>
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
-                        @if(in_array('Eksport', $fiturMenu[$view]))
-                        <a href="{{ route('data-kelas.export') }}" class="btn btn-info me-2">Export Data</a>
-                        @endif
-                        @if(in_array('Import', $fiturMenu[$view]))
-                        <a href="#" class="btn btn-success me-2">Import Data</a>
-                        @endif
                         @if(in_array('Tambah', $fiturMenu[$view]))
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah
                             Data</button>
@@ -110,11 +116,10 @@
                     <div class="mb-3">
                         <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
                         <select class="form-select" id="tahun_ajaran" name="idtahunajaran" required>
-                            <option selected disabled>--- Pilih Tahun Ajaran ---</option>
+                            {{-- <option selected disabled>--- Pilih Tahun Ajaran ---</option> --}}
                             @foreach ($tahun_ajaran as $tahun)
-                            <option value="{{ encryptSmart($tahun->id) }}">
+                            <option value="{{ encryptSmart($tahun->id) }}" {{ isset($idtahunajaran) ? ($idtahunajaran == $tahun->id ? 'selected' : '') : ''  }}>
                                 {{ $tahun->awal_tahun_ajaran }}/{{ $tahun->akhir_tahun_ajaran }}
-                                ({{ $tahun->semester == 'ganjil' ? 'Ganjil' : 'Genap' }})
                             </option>
                             @endforeach
                         </select>

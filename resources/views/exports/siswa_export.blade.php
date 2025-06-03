@@ -29,7 +29,7 @@
             @foreach ($siswa as $key => $item)
                 <tr>
                     <td>{{ $key + 1 }}</td>
-                    <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
+                    <td class="{{ $item->status == 1 ? '' : 'text-danger' }}" style="mso-number-format: '\@';">
                         {{ $item->nis }}/{{ $item->nisn }}</td>
                     <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">{{ $item->nama }}
                     </td>
@@ -38,7 +38,7 @@
                         {{ $item->tanggal_lahir }}</td>
                     <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                         {{ $item->jenis_kelamin }}</td>
-                    <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">{{ $item->nik }}
+                    <td class="{{ $item->status == 1 ? '' : 'text-danger' }}" style="mso-number-format: '\@';">{{ $item->nik }}
                     </td>
                     <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
                         {{ $item->asal_sekolah }}</td>

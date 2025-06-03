@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\RombelExport;
+use App\Imports\RombelImport;
 use App\Models\Kelas;
 use App\Models\Rombel;
 use App\Models\Siswa;
@@ -33,13 +34,17 @@ class RombelController extends Controller
 
             view()->share('view', $this->view);
 
+            $title = 'Data Rombel!';
+            $text = "Yakin ingin menghapus data ini?";
+            confirmDelete($title, $text);
+
             return $next($request);
         });
     }
 
     public function index()
     {
-        $tahunajaran = TahunAjaran::orderBy('status', 'desc')->get();
+        $tahunajaran = TahunAjaran::orderBy('status', 'desc')->orderBy('id', 'desc')->get();
         $siswa = Siswa::select('nisn', 'nama')->where('status', 1)->get();
         $kelas = Kelas::with(['walikelas' => function ($query) {
             $query->limit(1);
@@ -48,14 +53,35 @@ class RombelController extends Controller
                 $query->where('status', 1);
             })->orderBy('tingkat', 'asc')->get();
 
-        $kelas = $kelas->sortByDesc(function ($kls) {
-            return $kls->rombel->count();
-        })->values();
+        // $kelas = $kelas->sortByDesc(function ($kls) {
+        //     return $kls->rombel->count();
+        // })->values();
 
-        $title = 'Data Kelas!';
-        $text = "Yakin ingin menghapus data ini?";
-        confirmDelete($title, $text);
+
         return view('pages.rombel.index', compact('siswa', 'kelas', 'tahunajaran'));
+    }
+
+    public function tahunajaran(Request $request)
+    {
+        try {
+            $id = Crypt::decrypt($request->id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        $tahunajaran = TahunAjaran::orderBy('status', 'desc')->orderBy('id', 'desc')->get();
+        $siswa = Siswa::select('nisn', 'nama')->where('status', 1)->get();
+        $kelas = Kelas::with(['walikelas' => function ($query) {
+            $query->limit(1);
+        }, 'rombel'])
+            ->whereHas('tahunajaran', function ($query) use ($id) {
+                $query->where('idtahunajaran', $id);
+            })->orderBy('tingkat', 'asc')->get();
+
+
+        $idtahunajaran = $id;
+
+        return view('pages.rombel.index', compact('siswa', 'kelas', 'tahunajaran', 'idtahunajaran'));
     }
 
     /**
@@ -157,7 +183,7 @@ class RombelController extends Controller
     public function showStudents(String $id)
     {
         //
-        if (!in_array('Tampil Siswa', $this->fiturMenu['Data Rombel'])) {
+        if (!in_array('Tampil Siswa', $this->fiturMenu['Data Master-Data Rombel'])) {
             return redirect()->back();
         }
 
@@ -263,11 +289,42 @@ class RombelController extends Controller
         ]);
     }
 
-    public function export()
+    public function export($id)
     {
-        $kelas = Kelas::with(['rombel', 'jurusan'])->whereHas('tahunajaran', function ($query) {
-            $query->where('status', 1);
-        })->orderBy('tingkat', 'asc')->get();
-        return Excel::download(new RombelExport($kelas), 'Data Rombel.xlsx');
+
+        try {
+            $id = explode('*', Crypt::decrypt($id));
+            $idkelas = $id[0];
+            $idtahunajaran = $id[1];
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $rombel = Rombel::with('kelas')->where(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran])->get()->sortBy(function ($rombel) {
+            return $rombel->siswa->nama;
+        })->values();
+        $kelas = Kelas::find($idkelas);
+
+        return Excel::download(new RombelExport($rombel, $kelas->kelas), 'Data-Rombel-' . $kelas->kelas . '.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx',
+            'id' => 'required'
+        ]);
+
+        try {
+            $id = explode('*', Crypt::decrypt($request->id));
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $import = new RombelImport($id);
+        Excel::import($import, $request->file('file'));
+
+        return back()->with('success', "Berhasil mengimpor {$import->successCount} data.");
     }
 }

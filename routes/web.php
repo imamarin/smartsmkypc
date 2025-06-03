@@ -56,6 +56,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/tahun-ajaran', TahunAjaranController::class);
         Route::post('/tahun-ajaran/{id}/updateStatus', [TahunAjaranController::class, 'updateStatus'])->name('tahun-ajaran.updateStatus');
         //data-kelas
+        Route::get('/data-kelas/tahunajaran', [KelasController::class, 'tahunajaran'])->name('data-kelas.tahunajaran');
         Route::resource('/data-kelas', KelasController::class);
         Route::get('/data-kelas/json-tahunajaran/{id}', [KelasController::class, 'getJsonByIdTahunAjaran'])->name('data-kelas.json-tahunajaran');
         Route::get('/data-kelas/export/data', [KelasController::class, 'export'])->name('data-kelas.export');
@@ -72,6 +73,7 @@ Route::middleware('cek-status-login')->group(function () {
             $file = public_path('storage/template_import/template_siswa.xlsx');
             return response()->download($file);
         })->name('data-siswa.template.import');
+
         //data-staf
         Route::resource('/data-staf', StafController::class);
         Route::post('/data-staf/{id}/updateStatus', [StafController::class, 'updateStatus'])->name('data-staf.updateStatus');
@@ -81,23 +83,35 @@ Route::middleware('cek-status-login')->group(function () {
             $file = public_path('storage/template_import/template_stafs.xlsx');
             return response()->download($file);
         })->name('data-staf.template.import');
+
         //data-rombel
+        Route::get('/data-rombel/tahunajaran', [RombelController::class, 'tahunajaran'])->name('data-rombel.tahunajaran');
         Route::resource('/data-rombel', RombelController::class);
         Route::post('/data-rombel/siswarombel', [RombelController::class, 'SiswaRombel'])->name('data-rombel.siswaRombel');
         Route::post('/data-rombel/deletesiswa', [RombelController::class, 'deleteSiswa'])->name('data-rombel.deleteSiswa');
         Route::post('/data-rombel/pindahtingkat/{id}', [RombelController::class, 'pindahTingkat'])->name('data-rombel.pindahTingkat');
         Route::post('/data-rombel/updaterombel/{idkelas}/{idtahunajaran}', [RombelController::class, 'updateRombel'])->name('data-rombel.updateRombel');
-        Route::get('/data-rombel/export/data', [RombelController::class, 'export'])->name('data-rombel.export');
+        Route::get('/data-rombel/export/{id}', [RombelController::class, 'export'])->name('data-rombel.export');
         Route::get('/data-rombel/siswa/{id}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
+        Route::post('/data-rombel/import/data', [RombelController::class, 'import'])->name('data-rombel.import');
+        Route::get('/template-import-rombel', function () {
+            $file = public_path('storage/template_import/template_rombel.xlsx');
+            return response()->download($file);
+        })->name('data-rombel.template.import');
+
         //data-mata-pelajaran
+        Route::get('/data-mata-pelajaran/export', [MataPelajaranController::class, 'export'])->name('data-matpel.export');
         Route::resource('/data-mata-pelajaran', MataPelajaranController::class);
         //data-matpel-pengampu
         Route::resource('/matpel-pengampu', MatpelPengampuController::class);
         Route::get('/matpel-pengampu/export/data', [MatpelPengampuController::class, 'export'])->name('matpel-pengampu.export');
+        
         //data-walikelas
+        Route::get('/data-rombel/export/{id}', [WalikelasController::class, 'export'])->name('data-walikelas.export');
         Route::post('/data-walikelas/tahunajaran', [WalikelasController::class, 'index'])->name('data-walikelas.tahunajaran');
         Route::get('/data-walikelas/tahunajaran', [WalikelasController::class, 'index'])->name('data-walikelas.tahunajaran');
         Route::resource('/data-walikelas', WalikelasController::class);
+        
         //data-jam-pelajaran
         Route::get('/jam-pelajaran/{id}', [JamPelajaranController::class, 'getJam'])->name('jam-pelajaran.getjam');
         Route::resource('/data-jam-pelajaran', JamPelajaranController::class);

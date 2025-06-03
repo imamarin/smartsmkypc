@@ -28,7 +28,7 @@
                         <form action="{{ route('data-walikelas.tahunajaran') }}" method="post">
                             @csrf
                             <div class="row">
-                                <div class="col-12 col-md-3">
+                                <div class="col-12 col-md-9">
                                     <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
                                     <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
                                         @foreach ($tahunajaran as $item)
@@ -38,7 +38,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-12 col-md-3 d-flex align-items-end mb-1">
+                                <div class="col-12 col-md-3 d-flex align-items-end">
                                     <input type="submit" class="btn btn-primary" value="Tampilkan">
                                 </div>
                             </div>
@@ -47,13 +47,8 @@
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
                             @if(in_array('Eksport', $fiturMenu[$view]))
-                            <a href="#" class="btn btn-info me-2">Export Data</a>
+                            <a href="{{ route('data-walikelas.export', Crypt::encrypt($idtahunajaran)) }}" class="btn btn-info me-2">Export Data</a>
                             @endif
-                            @if(in_array('Import', $fiturMenu[$view]))
-                            <a href="#" class="btn btn-success me-2">Import Data</a>
-                            @endif
-                            <!-- Button to trigger modal -->
-                            {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Walikelas</button> --}}
                         </div>
                     </div>
                 </div><!-- end card header -->

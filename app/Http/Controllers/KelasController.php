@@ -34,6 +34,10 @@ class KelasController extends Controller
                 return redirect()->back();
             }
 
+            $title = 'Data Kelas!';
+            $text = "Yakin ingin menghapus data ini?";
+            confirmDelete($title, $text);
+
             view()->share('view', $this->view);
 
             return $next($request);
@@ -45,11 +49,28 @@ class KelasController extends Controller
         $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) {
             $query->where('status', 1);
         })->get();
-        $data['tahun_ajaran'] = TahunAjaran::all();
+        $data['tahun_ajaran'] = TahunAjaran::orderBy('status', 'desc')->orderBy('id', 'desc')->get();
         $data['jurusan'] = Jurusan::all();
-        $title = 'Data Kelas!';
-        $text = "Yakin ingin menghapus data ini?";
-        confirmDelete($title, $text);
+
+        return view('pages.kelas.index', $data);
+    }
+
+    public function tahunajaran(Request $request)
+    {
+
+        try {
+            $id = Crypt::decrypt($request->id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) use ($id) {
+            $query->where('idtahunajaran', $id);
+        })->get();
+        $data['tahun_ajaran'] = TahunAjaran::orderBy('status', 'desc')->orderBy('id', 'desc')->get();
+        $data['jurusan'] = Jurusan::all();
+        $data['idtahunajaran'] = $id;
+
         return view('pages.kelas.index', $data);
     }
 

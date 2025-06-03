@@ -51,12 +51,6 @@
                 @endif
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
-                        @if(in_array('Eksport', $fiturMenu[$view]))
-                        <a href="{{ route('matpel-pengampu.export') }}" class="btn btn-info me-2">Export Data</a>
-                        @endif
-                        @if(in_array('Import', $fiturMenu[$view]))
-                        <a href="#" class="btn btn-success me-2">Import Data</a>
-                        @endif
                         <!-- Button to trigger modal -->
                         {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Walikelas</button> --}}
                     </div>

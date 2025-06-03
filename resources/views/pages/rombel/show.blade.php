@@ -27,14 +27,17 @@
                     <div class="d-flex justify-content-end mb-3">
                         @if(in_array('Tambah Siswa', $fiturMenu[$view]))
                         @if($tingkat == "X")
-                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah Siswa</button>
+                        <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Tambah Siswa</button>
+                        @if(in_array('Import', $fiturMenu[$view]))
+                        <a href="#" class="btn btn-sm btn-success me-2"  data-bs-toggle="modal" data-bs-target="#importModal" id="importRombel">Import dari Excel</a>
+                        @endif
                         @else
-                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#pindahTingkatModal">Tambahkan dari Tingkat Sebelumnya</button>
+                        <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#pindahTingkatModal">Tambahkan dari Tingkat Sebelumnya</button>
                         @endif
                         @endif
 
                         @if(in_array('Hapus Siswa', $fiturMenu[$view]))
-                        <a href="#" class="btn btn-danger me-2" id="hapusRombel">Hapus Siswa</a>
+                        <a href="#" class="btn btn-sm btn-danger me-2" id="hapusRombel">Hapus Siswa</a>
                         @endif
                     </div>
                 </div>
@@ -234,6 +237,34 @@
                         <button type="submit" class="btn btn-primary" id="submitBtnMove">Simpan</button>
                     </div>
 
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">Import Data Siswa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="importForm" action="{{ route('data-rombel.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="hidden" name="id" value="{{ Crypt::encrypt($idkelas.'*'.$idtahunajaran) }}">
+                        <label for="file" class="form-label">Upload File (.xlsx)</label>
+                        <input type="file" class="form-control" accept=".xlsx" id="file" name="file" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <span>Download Template .xlsx disini</span>
+                        <a href="{{ route('data-rombel.template.import') }}">Template_Rombel.xlsx</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Import</button>
                 </div>
             </form>
         </div>

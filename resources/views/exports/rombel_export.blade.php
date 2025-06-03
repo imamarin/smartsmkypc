@@ -1,27 +1,36 @@
 <div class="table-responsive">
     <table class="table display nowrap" id="example">
         <thead>
-            <tr colspan="5">
-                <th colspan="5">Data Rombel</th>
+            <tr colspan="4">
+                <th colspan="4" align="center"><b>SISWA KELAS {{ strtoupper($kelas) }}</b></th>
             </tr>
             <tr>
-                <th>No</th>
-                <th>Kelas</th>
-                <th>Jurusan</th>
-                <th>Jumlah Siswa</th>
-                <th>Walikelas</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style="border: 1px solid black;">No</th>
+                <th style="border: 1px solid black;">Nisn</th>
+                <th style="border: 1px solid black;">Nama Siswa</th>
+                <th style="border: 1px solid black;">JK</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($kelas as $key => $item)
+            @foreach ($rombel as $key => $item)
             <tr>
-                <td>{{ $key+1 }}</td>
-                <td>{{ $item->kelas }}</td>
-                <td>{{ $item->jurusan->jurusan }}</td>
-                <td>{{ $item->rombel->count() }}</td>
-                <td>-</td>
+                <td style="width: 50px;border: 1px solid black;">{{ $loop->iteration }} </td>
+                <td style="width: 100px;mso-number-format: '\@';border: 1px solid black;">{{ $item->siswa->nisn }}</td>
+                <td style="width: 220px;border: 1px solid black;">{{ $item->siswa->nama }}</td>
+                <td style="width: 50px;border: 1px solid black;">
+                    {{ $item->siswa->jenis_kelamin }}
+                </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+
+
+

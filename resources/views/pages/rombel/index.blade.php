@@ -22,16 +22,22 @@
         <div class="card">
             <div class="card-header d-flex align-items-center">
                 <div class="col">
-                    <h4 class="card-title">List Rombel</h4>
+                    <form action="{{ route('data-rombel.tahunajaran') }}" method="get" class="d-flex gap-2 w-100">
+                        <div style="width: 45%">
+                            <label for="tahunajaran" class="form-label">Tahun Ajaran</label>
+                            <select name="id" id="tahunajaran" class="form-control select2">
+                                @foreach($tahunajaran as $item)
+                                <option value="{{ Crypt::encrypt($item->id) }}" {{ isset($idtahunajaran) ? ($idtahunajaran == $item->id ? 'selected' : '') : ''  }}>{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="d-flex align-items-end">
+                            <input type="submit" value="Tampilkan" class="btn btn-primary" style="margin-bottom: 5px">
+                        </div>
+                    </form>
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end mb-3">
-                         @if(in_array('Eksport', $fiturMenu[$view]))
-                        <a href="{{ route('data-rombel.export') }}" class="btn btn-info me-2">Export Data</a>
-                        @endif
-                        @if(in_array('Import', $fiturMenu[$view]))
-                        <a href="#" class="btn btn-success me-2">Import Data</a>
-                        @endif
                     </div>
                 </div>
             </div><!-- end card header -->
@@ -60,12 +66,19 @@
                                 <td>
                                     {{ $item->walikelas[0]->staf->nama ?? '-'}}
                                 </td>
-                                @if(in_array('Tampil Siswa', $fiturMenu[$view]))
+                                @if(in_array('Tampil Siswa', $fiturMenu[$view]) || in_array('Eksport', $fiturMenu[$view]) || in_array('Import', $fiturMenu[$view]))
                                 <td>
+                                    @if(in_array('Tampil Siswa', $fiturMenu[$view]))
                                     <a href="{{ route('data-rombel.showStudents', Crypt::encrypt($item->id.'*'.$item->idtahunajaran)) }}"
                                         class="btn btn-sm btn-info">Lihat Siswa</a>
+                                    @endif
+                                    @if(in_array('Eksport', $fiturMenu[$view]))
+                                    <a href="{{ route('data-rombel.export', Crypt::encrypt($item->id.'*'.$item->idtahunajaran)) }}" class="btn btn-sm btn-success"><i class="mdi mdi-file-excel"></i></a>
+                                    @endif
+                                    <a href="#" class="btn btn-sm btn-secondary"><i class="mdi mdi-printer"></i></a>
                                 </td>
                                 @endif
+                                
                             </tr>
                             @endforeach
                         </tbody>
