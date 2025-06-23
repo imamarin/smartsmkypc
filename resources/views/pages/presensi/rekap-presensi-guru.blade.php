@@ -24,8 +24,8 @@
                 <div class="card-header"  style="background-color: #cbd931 ;">
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <form action="{{ route('data-rekap-presensi-guru') }}" method="post">
-                                @csrf
+                            <form action="{{ route('data-rekap-presensi-guru') }}" method="get">
+                                {{-- @csrf --}}
                                 <div class="row">
                                     <div class="col-12 col-md-3">
                                         <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
@@ -49,6 +49,10 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>
+
+                        <div class="col-md-6 d-flex align-items-end justify-content-end">
+                            <a href="{{ route('data-rekap-presensi-guru.export', Crypt::encrypt($tahunajaran_selected.'*'.$semester_selected)) }}" class="btn btn-info me-2">Export Data</a>
                         </div>
                     </div>
                     

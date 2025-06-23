@@ -135,7 +135,7 @@ $nama = "";
                             </td>
                             @endforeach
                         @endfor
-                        <td align="center">{{ $matpel->us->nilai ?? '0' }}</td>
+                        <td align="center">{{ $matpel->us->nilai ?? '-' }}</td>
                     </tr>
                     @endforeach
                     @for ($i = $row->matpel->count(); $i <= 29; $i++)

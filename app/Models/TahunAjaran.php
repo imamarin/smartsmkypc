@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Keuangan\KategoriKeuangan;
 use App\Models\Raport\AbsensiRaport;
 use App\Models\Raport\Format;
 use App\Models\Raport\IdentitasRaport;
@@ -114,5 +115,10 @@ class TahunAjaran extends Model
     public function nilaiprakerin()
     {
         return $this->hasMany(NilaiPrakerin::class, 'idtahunajaran');
+    }
+
+    public function kategorikeuangan()
+    {
+        return $this->hasMany(KategoriKeuangan::class, 'idtahunajaran');
     }
 }

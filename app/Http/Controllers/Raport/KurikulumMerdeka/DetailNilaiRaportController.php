@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Raport\KurikulumMerdeka;
 
 use App\Exports\NilaiSiswaExport;
 use App\Http\Controllers\Controller;
+use App\Imports\NilaiRaportImpor;
+use App\Imports\Kurmer\NilaiRaportImport;
 use App\Models\DetailNilaiSiswa;
 use App\Models\PersentaseNilaiSiswa;
 use App\Models\Raport\DetailNilaiRaport;
@@ -169,5 +171,14 @@ class DetailNilaiRaportController extends Controller
         $data['siswa'] = $siswa;
 
         return Excel::download(new NilaiSiswaExport($data), 'Nilai_Siswa_' . $nilairaport->kelas->kelas . '.xlsx');
+    }
+
+    public function import($nilairaport, Request $request)
+    {
+
+        $import = new NilaiRaportImport($nilairaport);
+        Excel::import($import, $request->file('file'));
+
+        return back()->with('success', "Berhasil mengimpor {$import->successCount} data.");
     }
 }

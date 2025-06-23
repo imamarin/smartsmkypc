@@ -47,7 +47,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between" style="background-color: rgb(31, 177, 188)">
                     <h4 class="card-title text-start text-white">Input Nilai Raport</h4>
-                    <a href="{{ route('detail-nilai-raport.export', $id) }}" class="btn btn-sm btn-success">Ekspor ke Excel</a>
+                    <div>
+                        <a href="{{ route('detail-nilai-raport.export', $id) }}" class="btn btn-sm btn-success">Eksport Excel</a>
+                        <a href="#" class="btn btn-sm btn-secondary me-2"  data-bs-toggle="modal" data-bs-target="#importModal" id="importNilaiRaport">Import Nilai</a>
+                    </div>
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">
@@ -90,7 +93,34 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Import Nilai Raport Siswa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="importForm" action="{{ route('nilai-raport.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <input type="hidden" name="id" value="{{ Crypt::encrypt($nilairaport->id) }}">
+                            <label for="file" class="form-label">Upload File (.xlsx)</label>
+                            <input type="file" class="form-control" accept=".xlsx" id="file" name="file" required>
+                        </div>
 
+                        <div class="mb-3">
+                            <span>Download Template .xlsx disini</span>
+                            <a href="{{ route('nilairaport.template.import') }}">Template_Nilai_Raport_Siswa.xlsx</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')

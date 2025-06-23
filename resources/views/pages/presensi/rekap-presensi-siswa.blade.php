@@ -155,11 +155,11 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nisn }}</td>
-                                            <td>{{ $item->siswa->nama }}</td>
-                                            <td>{{ $item->total_hadir }}</td>
-                                            <td>{{ $item->total_sakit }}</td>
-                                            <td>{{ $item->total_izin }}</td>
-                                            <td>{{ $item->total_alfa }}</td>
+                                            <td>{{ $item->nama }}</td>
+                                            <td>{{ $presensi[$item->nisn]->total_hadir ?? '0' }}</td>
+                                            <td>{{ $presensi[$item->nisn]->total_sakit ?? '0' }}</td>
+                                            <td>{{ $presensi[$item->nisn]->total_izin ?? '0' }}</td>
+                                            <td>{{ $presensi[$item->nisn]->alfa ?? '0' }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

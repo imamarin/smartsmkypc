@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RekapPresensiGuruEksport;
 use App\Models\AjuanPresensiMengajar;
 use App\Models\DetailPresensi;
 use App\Models\Staf;
@@ -13,6 +14,7 @@ use App\Models\MatpelPengampu;
 use App\Models\Presensi;
 use App\Models\PresensiHarianSiswa;
 use App\Models\Rombel;
+use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -23,6 +25,7 @@ use Nette\Utils\ArrayList;
 use Nette\Utils\Arrays;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PresensiController extends Controller
 {
@@ -55,7 +58,8 @@ class PresensiController extends Controller
             } else if (
                 Route::currentRouteName() == 'data-rekap-presensi-guru-get' ||
                 Route::currentRouteName() == 'data-rekap-presensi-guru' ||
-                Route::currentRouteName() == 'data-rekap-presensi-guru-detail'
+                Route::currentRouteName() == 'data-rekap-presensi-guru-detail' ||
+                Route::currentRouteName() == 'data-rekap-presensi-guru.export'
             ) {
                 $this->view = 'Kurikulum-Rekap Presensi Guru';
             } else if (
@@ -441,6 +445,7 @@ class PresensiController extends Controller
         }
 
 
+
         $data['kelas_selected'] = $request->idkelas;
         $data['tahunajaran_selected'] = $request->idtahunajaran ?? $tahunajaran->id;
         $data['semester_selected'] = $request->semester ?? $tahunajaran->semester;
@@ -632,21 +637,24 @@ class PresensiController extends Controller
 
     public function harianSiswa(Request $request, TahunAjaran $tahunajaran)
     {
-        $presensiHarian = PresensiHarianSiswa::select('*')->selectRaw("
-            SUM(keterangan = 'h') as total_hadir,
-            SUM(keterangan = 's') as total_sakit,
-            SUM(keterangan = 'i') as total_izin,
-            SUM(keterangan = 'a') as total_alfa
-        ")->whereHas('siswa.rombel', function ($query) use ($request) {
-            $query->where('idkelas', $request->idkelas)->whereHas('tahunajaran', function ($query) use ($request) {
-                $query->where('id', $request->idtahunajaran);
-            });
-        })->where([
-            'semester' => $request->semester,
-            'idtahunajaran' => $request->idtahunajaran
-        ])->groupBy('nisn')->get();
 
-        $data['presensi_harian_siswa'] = $presensiHarian->sortBy('siswa.nama');
+        $siswa = Siswa::whereHas('rombel', function ($query) use ($request) {
+            $query->where('idkelas', $request->idkelas);
+        })->orderBy('nama')->get();
+
+        $rekap = PresensiHarianSiswa::select('nisn')
+            ->selectRaw("SUM(keterangan = 'h') as total_hadir")
+            ->selectRaw("SUM(keterangan = 's') as total_sakit")
+            ->selectRaw("SUM(keterangan = 'i') as total_izin")
+            ->selectRaw("SUM(keterangan = 'a') as total_alfa")
+            ->where('semester', $request->semester)
+            ->where('idtahunajaran', $request->idtahunajaran)
+            ->groupBy('nisn')
+            ->get()
+            ->keyBy('nisn');
+
+        $data['presensi'] = $rekap;
+        $data['presensi_harian_siswa'] = $siswa;
         $data['idkelas'] = $request->idkelas;
         $data['idtahunajaran'] = $request->idtahunajaran;
         $data['semester'] = $request->semester;
@@ -820,9 +828,10 @@ class PresensiController extends Controller
         return view('pages.presensi.guru', $data);
     }
 
-    public function rekapPresensiGuru(Request $request)
+    public function prosesRekapPresensiGuru($request)
     {
         //
+
         $tahunajaran = TahunAjaran::where('status', 1)->first();
 
         $idtahunajaran = $request->idtahunajaran ? decryptSmart($request->idtahunajaran) : $tahunajaran->id;
@@ -841,107 +850,138 @@ class PresensiController extends Controller
                 'idtahunajaran' => $idtahunajaran
             ]);
         })->get();
+        $data['jadwalsistemblok'] = $idtahunajaran;
+        if ($jadwalsistemblok->count() > 0) {
 
-        $kalenderakademik = KalenderAkademik::where('idtahunajaran', $idtahunajaran)->get();
-        $tanggal_akademik = [];
-        foreach ($kalenderakademik as $value) {
-            # code...
-            $first = strtotime($value->tanggal_mulai);
-            $end = strtotime($value->tanggal_akhir);
+            $kalenderakademik = KalenderAkademik::where('idtahunajaran', $idtahunajaran)->get();
+            $tanggal_akademik = [];
+            foreach ($kalenderakademik as $value) {
+                # code...
+                $first = strtotime($value->tanggal_mulai);
+                $end = strtotime($value->tanggal_akhir);
 
-            while ($first <= $end) {
-                array_push($tanggal_akademik, date('Y-m-d', $first));
-                $first = strtotime('+1 day', $first);
+                while ($first <= $end) {
+                    array_push($tanggal_akademik, date('Y-m-d', $first));
+                    $first = strtotime('+1 day', $first);
+                }
             }
-        }
 
-        $tanggal = [];
-        foreach ($jadwalsistemblok as $value) {
-            # code...
-            $first = strtotime($value->tanggal_mulai);
-            $end = strtotime($value->tanggal_akhir);
-            while ($first <= $end) {
-                if (!in_array(date('Y-m-d', $first), $tanggal_akademik)) {
-                    if (isset($tanggal[$value->idsistemblok])) {
-                        if (!in_array(date('Y-m-d', $first), $tanggal[$value->idsistemblok])) {
-                            array_push($tanggal[$value->idsistemblok], date('Y-m-d', $first));
+            $tanggal = [];
+            foreach ($jadwalsistemblok as $value) {
+                # code...
+                $first = strtotime($value->tanggal_mulai);
+                $end = strtotime($value->tanggal_akhir);
+                while ($first <= $end) {
+                    if (!in_array(date('Y-m-d', $first), $tanggal_akademik)) {
+                        if (isset($tanggal[$value->idsistemblok])) {
+                            if (!in_array(date('Y-m-d', $first), $tanggal[$value->idsistemblok])) {
+                                array_push($tanggal[$value->idsistemblok], date('Y-m-d', $first));
+                            }
+                        } else {
+                            $tanggal[$value->idsistemblok][0] = date('Y-m-d', $first);
                         }
-                    } else {
-                        $tanggal[$value->idsistemblok][0] = date('Y-m-d', $first);
                     }
+
+                    $first = strtotime('+1 day', $first);
                 }
-
-                $first = strtotime('+1 day', $first);
             }
-        }
 
-        foreach ($tanggal as $key => $value) {
-            # code...
-            $max_tanggal = $tanggal[$key];
-            $filtered = array_filter($value, function ($date) use ($max_tanggal) {
-                if (date('Y-m-d') > $max_tanggal) {
-                    $t = max($date);
+            foreach ($tanggal as $key => $value) {
+                # code...
+                $max_tanggal = $tanggal[$key];
+                $filtered = array_filter($value, function ($date) use ($max_tanggal) {
+                    if (date('Y-m-d') > $max_tanggal) {
+                        $t = max($date);
+                    } else {
+                        $t = date('Y-m-d');
+                    }
+
+                    return date('Y-m-d', strtotime($date)) <= $t;
+                });
+
+                $tanggal[$key] = $filtered;
+            }
+
+            $jadwalmengajar = JadwalMengajar::whereHas('sistemblok', function ($query) use ($idtahunajaran, $semester) {
+                $query->where([
+                    'idtahunajaran' => $idtahunajaran,
+                    'semester' => $semester
+                ]);
+            })->get();
+
+            $jumlahJamPerHari = [];
+            $jumlahPertemuan = [];
+            foreach ($jadwalmengajar as $jadwal) {
+                # code...
+                if (isset($jumlahJamPerHari[$jadwal->nip][$jadwal->idsistemblok][$jadwal->jampel->hari])) {
+                    $jumlahJamPerHari[$jadwal->nip][$jadwal->idsistemblok][$jadwal->jampel->hari]++;
                 } else {
-                    $t = date('Y-m-d');
+                    $jumlahJamPerHari[$jadwal->nip][$jadwal->idsistemblok][$jadwal->jampel->hari] = 1;
                 }
 
-                return date('Y-m-d', strtotime($date)) <= $t;
-            });
-
-            $tanggal[$key] = $filtered;
-        }
-
-        $jadwalmengajar = JadwalMengajar::with(['presensi'])->whereHas('sistemblok', function ($query) use ($idtahunajaran, $semester) {
-            $query->where([
-                'idtahunajaran' => $idtahunajaran,
-                'semester' => $semester
-            ]);
-        })->get();
-
-        $jumlahJamPerHari = [];
-        $jumlahPertemuan = [];
-        $t = [];
-        foreach ($jadwalmengajar as $jadwal) {
-            # code...
-            if (isset($jumlahJamPerHari[$jadwal->nip][$jadwal->idsistemblok][$jadwal->jampel->hari])) {
-                $jumlahJamPerHari[$jadwal->nip][$jadwal->idsistemblok][$jadwal->jampel->hari]++;
-            } else {
-                $jumlahJamPerHari[$jadwal->nip][$jadwal->idsistemblok][$jadwal->jampel->hari] = 1;
-            }
-
-            $tanggal_awal = min($tanggal[$jadwal->idsistemblok]);
-            foreach ($jadwal->presensi as $key => $value) {
-                # code...
-                if (date('Y-m-d', strtotime($value->created_at)) >= $tanggal_awal) {
-                    if (isset($jumlahPertemuan[$jadwal->nip])) {
-                        $jumlahPertemuan[$jadwal->nip]++;
-                    } else {
-                        $jumlahPertemuan[$jadwal->nip] = 1;
+                $tanggal_sistemblok = $tanggal[$jadwal->idsistemblok];
+                foreach ($jadwal->presensi as $key => $value) {
+                    # code...
+                    if (in_array(date('Y-m-d', strtotime($value->created_at)), $tanggal_sistemblok)) {
+                        if (isset($jumlahPertemuan[$jadwal->nip])) {
+                            $jumlahPertemuan[$jadwal->nip]++;
+                        } else {
+                            $jumlahPertemuan[$jadwal->nip] = 1;
+                        }
                     }
                 }
             }
-        }
 
-        $totalPertemuan = [];
-        foreach ($jumlahJamPerHari as $key_staf => $staf) {
-            $totalPertemuan[$key_staf] = 0;
-            foreach ($staf as $key_sistemblok => $sesi) {
-                # code...
-                foreach ($tanggal[$key_sistemblok] as $tgl) {
-                    if (isset($sesi[date('N', strtotime($tgl))])) {
-                        $totalPertemuan[$key_staf] += $sesi[date('N', strtotime($tgl))];
+            $totalPertemuan = [];
+            foreach ($jumlahJamPerHari as $key_staf => $staf) {
+                $totalPertemuan[$key_staf] = 0;
+                foreach ($staf as $key_sistemblok => $sesi) {
+                    # code...
+                    foreach ($tanggal[$key_sistemblok] as $tgl) {
+                        if (isset($sesi[date('N', strtotime($tgl))])) {
+                            $totalPertemuan[$key_staf] += $sesi[date('N', strtotime($tgl))];
+                        }
                     }
                 }
             }
+
+            $data['jumlahPertemuan'] = $jumlahPertemuan;
+            $data['totalPertemuan'] = $totalPertemuan;
+
+            $data['tahunajaran_selected'] = $idtahunajaran;
+            $data['semester_selected'] = $semester;
         }
 
+        return $data;
+    }
 
-        $data['jumlahPertemuan'] = $jumlahPertemuan;
-        $data['totalPertemuan'] = $totalPertemuan;
+    public function rekapPresensiGuru(Request $request)
+    {
+        $data = $this->prosesRekapPresensiGuru($request);
 
-        $data['tahunajaran_selected'] = $idtahunajaran;
-        $data['semester_selected'] = $semester;
+        if (!isset($data['jumlahPertemuan'])) {
+            return redirect()->back()->with('warning', 'Sistem jadwal tidak tersedia');
+        }
 
         return view('pages.presensi.rekap-presensi-guru', $data);
+    }
+
+    public function exportRekapPresensiGuru($id)
+    {
+        try {
+            $id = explode('*', Crypt::decrypt($id));
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $request = (object)[
+            'idtahunajaran' => decryptSmart($id[0]),
+            'semester' => $id[1]
+        ];
+
+        $data = $this->prosesRekapPresensiGuru($request);
+
+        $tahunajaran = TahunAjaran::find($data['tahunajaran_selected']);
+        return Excel::download(new RekapPresensiGuruEksport($data, $tahunajaran), 'Data-Rekap-Presensi-Guru-' . $tahunajaran->awal_tahun_ajaran . '.xlsx');
     }
 }

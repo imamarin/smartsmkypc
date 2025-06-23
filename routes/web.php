@@ -10,6 +10,11 @@ use App\Http\Controllers\JamPelajaranController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KalenderAkademikController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\Keuangan\KategoriKeuanganController;
+use App\Http\Controllers\Keuangan\KeuanganLainController;
+use App\Http\Controllers\Keuangan\NonSPPController;
+use App\Http\Controllers\Keuangan\SPPController;
+use App\Http\Controllers\Keuangan\TagihanKeuanganController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MasukMengajarController;
 use App\Http\Controllers\MataPelajaranController;
@@ -105,13 +110,13 @@ Route::middleware('cek-status-login')->group(function () {
         //data-matpel-pengampu
         Route::resource('/matpel-pengampu', MatpelPengampuController::class);
         Route::get('/matpel-pengampu/export/data', [MatpelPengampuController::class, 'export'])->name('matpel-pengampu.export');
-        
+
         //data-walikelas
         Route::get('/data-rombel/export/{id}', [WalikelasController::class, 'export'])->name('data-walikelas.export');
         Route::post('/data-walikelas/tahunajaran', [WalikelasController::class, 'index'])->name('data-walikelas.tahunajaran');
         Route::get('/data-walikelas/tahunajaran', [WalikelasController::class, 'index'])->name('data-walikelas.tahunajaran');
         Route::resource('/data-walikelas', WalikelasController::class);
-        
+
         //data-jam-pelajaran
         Route::get('/jam-pelajaran/{id}', [JamPelajaranController::class, 'getJam'])->name('jam-pelajaran.getjam');
         Route::resource('/data-jam-pelajaran', JamPelajaranController::class);
@@ -155,9 +160,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/data-rekap-presensi-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa');
         Route::post('/data-rekap-presensi-siswa/kbm', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa.kbm');
         Route::post('/data-rekap-presensi-siswa/harian', [PresensiController::class, 'rekapPresensiSiswa'])->name('data-rekap-presensi-siswa.harian');
-        Route::get('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru-get');
+        Route::get('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru');
         Route::get('/data-rekap-presensi-guru/{id}', [PresensiController::class, 'rekapGuru'])->name('data-rekap-presensi-guru-detail');
-        Route::post('/data-rekap-presensi-guru', [PresensiController::class, 'rekapPresensiGuru'])->name('data-rekap-presensi-guru');
+        Route::get('/data-rekap-presensi-guru/export/{id}', [PresensiController::class, 'exportRekapPresensiGuru'])->name('data-rekap-presensi-guru.export');
 
         Route::middleware('cek-walikelas')->group(function () {
             //walikelas
@@ -190,6 +195,23 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/rekap-nilai-siswa', [NilaiSiswaController::class, 'rekapNilaiSiswa'])->name('nilai-siswa.rekap');
         Route::get('/rekap-nilai-siswa/{id}', [NilaiSiswaController::class, 'showRekapNilaiSiswa'])->name('nilai-siswa.rekap.show');
         Route::post('/rekap-nilai-siswa/{id}', [NilaiSiswaController::class, 'storePersentaseNilai'])->name('nilai-siswa.persentase.store');
+
+        //Keuangan
+        Route::prefix('/keuangan')->group(function () {
+            Route::resource('/kategori-keuangan', KategoriKeuanganController::class);
+            Route::get('/pembayaran-spp/siswa', [SPPController::class, 'siswa'])->name('pembayaran-spp.siswa');
+            Route::resource('/pembayaran-spp', SPPController::class);
+            Route::get('/pembayaran-lain/siswa', [NonSPPController::class, 'siswa'])->name('pembayaran-lain.siswa');
+            Route::get('/pembayaran-lain/detail/{id}', [NonSPPController::class, 'detailNonSPP'])->name('pembayaran-lain.detail');
+            Route::post('/pembayaran-lain/detail/{id}', [NonSPPController::class, 'updateDetailNonSPP'])->name('pembayaran-lain.detail.update');
+            Route::delete('/pembayaran-lain/detail/delete/{id}', [NonSPPController::class, 'deleteDetailNonSPP'])->name('pembayaran-lain.detailnonspp.destroy');
+            Route::resource('/pembayaran-lain', NonSPPController::class);
+            Route::get('/tagihan-keuangan/kelas', [TagihanKeuanganController::class, 'show'])->name('tagihan-keuangan.kelas');
+            Route::get('/tagihan-keuangan/kelas/data/{id}', [TagihanKeuanganController::class, 'kelas'])->name('tagihan-keuangan.kelas.data');
+            Route::get('/tagihan-keuangan/print/{id}', [TagihanKeuanganController::class, 'print'])->name('tagihan-keuangan.print');
+            Route::resource('/tagihan-keuangan', TagihanKeuanganController::class);
+        });
+
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');
@@ -224,6 +246,11 @@ Route::middleware('cek-status-login')->group(function () {
                 Route::resource('/cetak', CetakController::class);
             });
             Route::resource('/format', FormatController::class);
+            Route::post('/nilai-raport/import', [DetailNilaiRaportController::class, 'import'])->name('nilai-raport.import');
+            Route::get('/template-import-nilairaport', function () {
+                $file = public_path('storage/template_import/template_nilai_raport_siswa.xlsx');
+                return response()->download($file);
+            })->name('nilairaport.template.import');
         });
 
 

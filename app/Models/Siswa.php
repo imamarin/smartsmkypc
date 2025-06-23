@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Keuangan\NonSpp;
+use App\Models\Keuangan\Spp;
 use App\Models\Raport\AbsensiRaport;
 use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\KenaikanKelas;
@@ -74,5 +76,15 @@ class Siswa extends Model
     public function nilaiprakerin()
     {
         return $this->hasOne(NilaiPrakerin::class, 'nisn', 'nisn');
+    }
+
+    public function spp()
+    {
+        return $this->hasMany(Spp::class, 'nisn', 'nisn');
+    }
+
+    public function nonspp()
+    {
+        return $this->hasMany(NonSpp::class, 'nisn', 'nisn');
     }
 }

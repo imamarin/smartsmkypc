@@ -73,7 +73,7 @@
                                         class="btn btn-sm btn-info">Lihat Siswa</a>
                                     @endif
                                     @if(in_array('Eksport', $fiturMenu[$view]))
-                                    <a href="{{ route('data-rombel.export', Crypt::encrypt($item->id.'*'.$item->idtahunajaran)) }}" class="btn btn-sm btn-success"><i class="mdi mdi-file-excel"></i></a>
+                                    {{-- <a href="{{ route('data-rombel.export', Crypt::encrypt($item->id.'*'.$item->idtahunajaran)) }}" class="btn btn-sm btn-success"><i class="mdi mdi-file-excel"></i></a> --}}
                                     @endif
                                     <a href="#" class="btn btn-sm btn-secondary"><i class="mdi mdi-printer"></i></a>
                                 </td>

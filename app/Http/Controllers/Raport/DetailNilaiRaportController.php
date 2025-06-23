@@ -81,7 +81,8 @@ class DetailNilaiRaportController extends Controller
         return redirect()->back();
     }
 
-    public function export(String $id){
+    public function export(String $id)
+    {
         try {
             $id = Crypt::decrypt($id);
         } catch (DecryptException $e) {
@@ -101,5 +102,29 @@ class DetailNilaiRaportController extends Controller
         return redirect()->back();
     }
 
-    
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx',
+            'id' => 'required'
+        ]);
+
+        try {
+            $id = Crypt::decrypt($request->id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
+        $nilairaport = NilaiRaport::find($id);
+
+        $versi = Format::where('tingkat', $nilairaport->kelas->tingkat)->first();
+        if ($versi) {
+            if ($versi->kurikulum == 'kurikulummerdeka') {
+                $v = new KurikulumMerdekaDetailNilaiRaportController;
+                return $v->import($nilairaport, $request);
+            }
+        }
+
+        return redirect()->back();
+    }
 }

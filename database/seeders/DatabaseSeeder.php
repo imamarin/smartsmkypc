@@ -140,9 +140,17 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now()
         ]);
         Kategori::create([
+            'id' => 8,
+            'kategori' => 'Keuangan',
+            'posisi' => 7,
+            'icon' => 'book',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Kategori::create([
             'id' => 7,
             'kategori' => 'Pengaturan',
-            'posisi' => 7,
+            'posisi' => 8,
             'icon' => 'settings',
             'created_at' => now(),
             'updated_at' => now()
@@ -534,6 +542,51 @@ class DatabaseSeeder extends Seeder
             'url' => '/pages/kalender-akademik',
             'posisi' => 4,
             'idkategori' => 7,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'id' => 44,
+            'menu' => 'Pembayaran SPP',
+            'url' => '/pages/keuangan/pembayaran-spp',
+            'posisi' => 1,
+            'idkategori' => 8,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'id' => 45,
+            'menu' => 'Pembayaran Lain',
+            'url' => '/pages/keuangan/pembayaran-lain',
+            'posisi' => 2,
+            'idkategori' => 8,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'id' => 46,
+            'menu' => 'Tagihan Keuangan',
+            'url' => '/pages/keuangan/tagihan-keuangan',
+            'posisi' => 3,
+            'idkategori' => 8,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'id' => 47,
+            'menu' => 'Laporan Keuangan Siswa',
+            'url' => '/pages/keuangan/laporan-keuangan-siswa',
+            'posisi' => 4,
+            'idkategori' => 8,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        Menu::create([
+            'id' => 45,
+            'menu' => 'Kategori Keuangan',
+            'url' => '/pages/keuangan/kategori-keuangan',
+            'posisi' => 5,
+            'idkategori' => 8,
             'created_at' => now(),
             'updated_at' => now()
         ]);
