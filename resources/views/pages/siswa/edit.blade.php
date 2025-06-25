@@ -104,17 +104,17 @@
                                             value="{{ $siswa->asal_sekolah }}" required>
                                     </div>
                                 </div><!-- end row -->
-                            </div><!-- end col -->
-
-                            <div class="col-xl-6">
-                                <div class="row mb-3 mt-3 mt-xl-0">
+                                <div class="row mb-lg-0 row">
                                     <label class="col-md-2 col-form-label">Alamat Siswa<span
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <textarea name="alamat_siswa" class="form-control" cols="30" rows="5" required>{{ $siswa->alamat_siswa }}</textarea>
                                     </div>
                                 </div><!-- end row -->
-                                <div class="row mb-3">
+                            </div><!-- end col -->
+
+                            <div class="col-xl-6">
+                                <div class="row mb-3  mt-3 mt-xl-0">
                                     <label class="col-md-2 col-form-label">No HP Siswa</label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="number" name="no_hp_siswa"
@@ -122,7 +122,22 @@
                                     </div>
                                 </div><!-- end row -->
                                 <div class="row mb-3">
-                                    <label class="col-md-2 col-form-label">Tangal Terima<span
+                                    <label class="col-md-2 col-form-label">Status Keluarga</label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" name="status_keluarga">
+                                            <option value="Anak Kandung" {{ $siswa->status_keluarga == 'Anak Kandung' ? 'selected' : '' }}>Anak Kandung</option>
+                                            <option value="Anak Tiri"  {{ $siswa->status_keluarga == 'Anak Tiri' ? 'selected' : '' }}>Anak Tiri</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-md-2 col-form-label">Anak Ke</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="number" name="anak_ke" value="{{ $siswa->anak_ke }}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-md-2 col-form-label">Tanggal Terima<span
                                             class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="date" name="diterima_tanggal"
@@ -231,6 +246,50 @@
                                     </div>
                                 </div><!-- end row -->
                             </div><!-- end col -->
+                        </div><!-- end row -->
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header justify-content-between d-flex align-items-center">
+                        <h4 class="card-title">Data Wali Siswa</h4>
+                    </div><!-- end card header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="mb-3 row">
+                                    <label class="col-md-2 col-form-label">Nama Wali<span
+                                            class="text-danger">*</span></label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="walisiswa" value="{{ $siswa->walisiswa }}">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label class="col-md-2 col-form-label">Pekerjaan Wali<span
+                                            class="text-danger">*</span></label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="pekerjaan_wali" value="{{ $siswa->pekerjaan_wali }}">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="row mb-3">
+                                    <label class="col-md-2 col-form-label">No HP Wali</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="number" name="no_hp_wali" value="{{ $siswa->no_hp_wali }}">
+                                    </div>
+                                </div>
+                            </div><!-- end col -->
+                            <div class="col-xl-6">
+                                <div class="row mb-3">
+                                    <label class="col-md-2 col-form-label">Alamat Wali<span
+                                            class="text-danger">*</span></label>
+                                    <div class="col-md-10">
+                                        <textarea name="alamat_wali" class="form-control" cols="30" rows="4">{{ $siswa->alamat_wali }}</textarea>
+                                    </div>
+                                </div><!-- end row -->
+                            </div>
                         </div><!-- end row -->
                     </div><!-- end card body -->
                 </div><!-- end card -->

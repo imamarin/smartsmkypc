@@ -15,7 +15,7 @@
                     <h6 class="mb-0 text-white">{{ Auth::user()->staf->nama ?? '' }}</h6>
                     <p class="mb-0 font-size-11 text-white fw-semibold">{{ Auth::user()->staf->nip ?? '' }}</p>
                 </div>
-                <a class="dropdown-item" href="pages-profile.html"><i
+                <a class="dropdown-item" href="{{ route('profil-staf.edit', Crypt::encrypt(Auth::user()->id)) }}"><i
                         class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span
                         class="align-middle">Profil</span></a>
                 {{--  <a class="dropdown-item" href="apps-chat.html"><i

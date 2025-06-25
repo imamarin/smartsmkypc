@@ -6,10 +6,12 @@ use App\Exports\NilaiSiswaExport;
 use App\Http\Controllers\Controller;
 use App\Imports\NilaiRaportImpor;
 use App\Imports\Kurmer\NilaiRaportImport;
+use App\Models\CapaianPembelajaran;
 use App\Models\DetailNilaiSiswa;
 use App\Models\PersentaseNilaiSiswa;
 use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\IdentitasRaport;
+use App\Models\Raport\NilaiCP;
 use App\Models\Raport\NilaiRaport;
 use App\Models\Rombel;
 use App\Models\Siswa;
@@ -42,6 +44,8 @@ class DetailNilaiRaportController extends Controller
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
+        $data['cp'] = CapaianPembelajaran::where('kode_matpel', $nilairaport->kode_matpel)->get();
+
         $siswa = Siswa::whereHas('rombel', function ($query) use ($nilairaport) {
             $query->where([
                 'idtahunajaran' => $nilairaport->idtahunajaran,
@@ -68,6 +72,16 @@ class DetailNilaiRaportController extends Controller
             $data['nilai_pengetahuan'] = $nilai_pengetahuan;
         }
 
+        $nilai_cp = [];
+        $nilaicp = NilaiCP::where('idnilairaport', $id)->get();
+        if ($nilaicp->count() > 0) {
+            foreach ($nilaicp as $key => $value) {
+                $nilai_cp[$value->nisn][$value->kode_cp] = $value->nilai;
+            }
+        }
+
+        $data['nilai_cp'] = $nilai_cp;
+
         $data['nilairaport'] = $nilairaport;
         $data['siswa'] = $siswa;
 
@@ -90,6 +104,28 @@ class DetailNilaiRaportController extends Controller
             ], [
                 'nilai_1' => $value,
             ]);
+        }
+
+        foreach ($request->capaian as $key => $value) {
+            # code...
+            foreach ($value as $key2 => $value2) {
+                # code...
+                if ($value2 < 2) {
+                    NilaiCP::updateOrCreate([
+                        'nisn' => $key,
+                        'idnilairaport' => $id,
+                        'kode_cp' => $key2
+                    ], [
+                        'nilai' => $value2
+                    ]);
+                } else {
+                    NilaiCP::where([
+                        'nisn' => $key,
+                        'idnilairaport' => $id,
+                        'kode_cp' => $key2
+                    ])->delete();
+                }
+            }
         }
 
         return redirect()->back()->with('success', 'Nilai raport berhasil di simpan');

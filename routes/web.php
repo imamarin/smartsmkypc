@@ -56,7 +56,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware('cek-status-login')->group(function () {
     Route::prefix('/pages')->group(function () {
         //dashboard
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/beranda', [DashboardController::class, 'index'])->name('dashboard');
         //tahun-ajaran
         Route::resource('/tahun-ajaran', TahunAjaranController::class);
         Route::post('/tahun-ajaran/{id}/updateStatus', [TahunAjaranController::class, 'updateStatus'])->name('tahun-ajaran.updateStatus');
@@ -80,6 +80,7 @@ Route::middleware('cek-status-login')->group(function () {
         })->name('data-siswa.template.import');
 
         //data-staf
+        Route::resource('/profil-staf', StafController::class);
         Route::resource('/data-staf', StafController::class);
         Route::post('/data-staf/{id}/updateStatus', [StafController::class, 'updateStatus'])->name('data-staf.updateStatus');
         Route::get('/data-staf/export/data', [StafController::class, 'export'])->name('data-staf.export');
@@ -181,6 +182,10 @@ Route::middleware('cek-status-login')->group(function () {
             Route::post('/walikelas/rekap-presensi-siswa/harian', [PresensiController::class, 'rekapPresensiSiswa'])->name('walikelas.rekap-presensi-siswa.harian');
             //grafik
             Route::get('/walikelas/grafik-presensi-siswa', [DiagramController::class, 'siswa'])->name('walikelas.grafik-presensi-siswa');
+
+            Route::get('/walikelas/tagihan-keuangan-siswa', [TagihanKeuanganController::class, 'index'])->name('walikelas.tagihan-keuangan-siswa');
+            Route::get('/walikelas/tagihan-keuangan-siswa/kelas', [TagihanKeuanganController::class, 'show'])->name('walikelas.tagihan-keuangan-siswa.kelas');
+            Route::get('/walikelas/tagihan-keuangan-siswa/print/{id}', [TagihanKeuanganController::class, 'print'])->name('walikelas.tagihan-keuangan-siswa.print');
         });
         //pengolahan nilai siswa
         Route::get('/pengolahan-nilai-siswa', [NilaiSiswaController::class, 'index'])->name('nilai-siswa');
@@ -229,21 +234,23 @@ Route::middleware('cek-status-login')->group(function () {
         Route::prefix('/raport')->group(function () {
             Route::resource('/raport-identitas', IdentitasController::class);
             Route::post('/raport-aktivasi/{id}', [IdentitasController::class, 'aktivasi'])->name('raport.aktivasi');
-            Route::get('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'input'])->name('detail-nilai-raport.input');
-            Route::post('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'store'])->name('detail-nilai-raport.store');
-            Route::get('/nilai-raport/export/{id}', [DetailNilaiRaportController::class, 'export'])->name('detail-nilai-raport.export');
-            Route::resource('/nilai-raport', NilaiRaportController::class);
-            Route::middleware('cek-walikelas')->group(function () {
-                Route::resource('/matpel-kelas', MatpelKelasController::class);
-                Route::resource('/absensi-siswa', AbsensiRaportController::class);
-                Route::resource('/kategori-sikap', KategoriSikapController::class);
-                Route::resource('/nilai-sikap', NilaiSikapController::class);
-                Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
-                Route::resource('/nilai-ekstrakurikuler', NilaiEkstraController::class);
-                Route::resource('/kenaikan-kelas', KenaikanKelasController::class);
-                Route::resource('/nilai-prakerin', NilaiPrakerinController::class);
-                Route::get('/cetak/{page}/{id}/{start}/{end}', [CetakController::class, 'page'])->name('cetak.raport');
-                Route::resource('/cetak', CetakController::class);
+            Route::middleware('aktivasi-raport')->group(function () {
+                Route::get('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'input'])->name('detail-nilai-raport.input');
+                Route::post('/nilai-raport/detail/{id}', [DetailNilaiRaportController::class, 'store'])->name('detail-nilai-raport.store');
+                Route::get('/nilai-raport/export/{id}', [DetailNilaiRaportController::class, 'export'])->name('detail-nilai-raport.export');
+                Route::resource('/nilai-raport', NilaiRaportController::class);
+                Route::middleware('cek-walikelas')->group(function () {
+                    Route::resource('/matpel-kelas', MatpelKelasController::class);
+                    Route::resource('/absensi-siswa', AbsensiRaportController::class);
+                    Route::resource('/kategori-sikap', KategoriSikapController::class);
+                    Route::resource('/nilai-sikap', NilaiSikapController::class);
+                    Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
+                    Route::resource('/nilai-ekstrakurikuler', NilaiEkstraController::class);
+                    Route::resource('/kenaikan-kelas', KenaikanKelasController::class);
+                    Route::resource('/nilai-prakerin', NilaiPrakerinController::class);
+                    Route::get('/cetak/{page}/{id}/{start}/{end}', [CetakController::class, 'page'])->name('cetak.raport');
+                    Route::resource('/cetak', CetakController::class);
+                });
             });
             Route::resource('/format', FormatController::class);
             Route::post('/nilai-raport/import', [DetailNilaiRaportController::class, 'import'])->name('nilai-raport.import');

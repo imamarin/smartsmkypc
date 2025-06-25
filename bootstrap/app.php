@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AktivasiRaport;
 use App\Http\Middleware\CekStatusLogin;
 use App\Http\Middleware\WalikelasMiddleware;
 use Illuminate\Foundation\Application;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'cek-status-login' => CekStatusLogin::class,
             'cek-walikelas' => WalikelasMiddleware::class,
+            'aktivasi-raport' => AktivasiRaport::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

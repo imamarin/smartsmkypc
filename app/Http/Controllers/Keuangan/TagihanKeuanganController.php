@@ -7,11 +7,14 @@ use App\Models\Keuangan\KategoriKeuangan;
 use App\Models\Keuangan\NonSpp;
 use App\Models\Rombel;
 use App\Models\TahunAjaran;
+use App\Models\Walikelas;
 use DateTime;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Route;
 
 class TagihanKeuanganController extends Controller
 {
@@ -23,8 +26,15 @@ class TagihanKeuanganController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
-
-            $this->view = 'Keuangan-Tagihan Keuangan';
+            if (
+                Route::currentRouteName() == 'walikelas.tagihan-keuangan-siswa' ||
+                Route::currentRouteName() == 'walikelas.tagihan-keuangan-siswa.kelas' ||
+                Route::currentRouteName() == 'walikelas.tagihan-keuangan-siswa.print'
+            ) {
+                $this->view = 'Walikelas-Tagihan Keuangan Siswa';
+            } else {
+                $this->view = 'Keuangan-Tagihan Keuangan';
+            }
             if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
@@ -37,12 +47,24 @@ class TagihanKeuanganController extends Controller
 
     public function index()
     {
-        $data['tahunajaran'] = TahunAjaran::orderBy('status', 'desc')->orderBy('id', 'desc')->get();
-        $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) {
-            return $query->where('status', 1);
-        })->orderBy('kelas', 'asc')->get();
+        if ($this->view == 'Walikelas-Tagihan Keuangan Siswa') {
+            $data['tahunajaran'] = TahunAjaran::where('status', 1)->get();
+
+            $walikelas = Walikelas::where('nip', Auth::user()->staf->nip)->pluck('idkelas');
+            $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) {
+                return $query->where('status', 1);
+            })->whereIn('id', $walikelas)->orderBy('kelas', 'asc')->get();
+            $data['route'] = route('walikelas.tagihan-keuangan-siswa.kelas');
+        } else {
+            $data['tahunajaran'] = TahunAjaran::orderBy('status', 'desc')->orderBy('id', 'desc')->get();
+            $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) {
+                return $query->where('status', 1);
+            })->orderBy('kelas', 'asc')->get();
+            $data['route'] = route('tagihan-keuangan.kelas');
+        }
         $data['idtahunajaran'] = '';
         $data['idkelas'] = '';
+
         $data['rombel'] = [];
         return view('pages.keuangan.tagihankeuangan.index', $data);
     }
@@ -56,10 +78,23 @@ class TagihanKeuanganController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        $data['tahunajaran'] = TahunAjaran::orderBy('status', 'desc')->orderBy('id', 'desc')->get();
-        $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) {
-            return $query->where('status', 1);
-        })->orderBy('kelas', 'asc')->get();
+        if ($this->view == 'Walikelas-Tagihan Keuangan Siswa') {
+            $data['tahunajaran'] = TahunAjaran::where('status', 1)->get();
+
+            $walikelas = Walikelas::where('nip', Auth::user()->staf->nip)->pluck('idkelas');
+            $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) {
+                return $query->where('status', 1);
+            })->whereIn('id', $walikelas)->orderBy('kelas', 'asc')->get();
+            $data['route'] = route('walikelas.tagihan-keuangan-siswa.kelas');
+            $data['route_print'] = 'walikelas.tagihan-keuangan-siswa.print';
+        } else {
+            $data['tahunajaran'] = TahunAjaran::orderBy('status', 'desc')->orderBy('id', 'desc')->get();
+            $data['kelas'] = Kelas::whereHas('tahunajaran', function ($query) {
+                return $query->where('status', 1);
+            })->orderBy('kelas', 'asc')->get();
+            $data['route'] = route('tagihan-keuangan.kelas');
+            $data['route_print'] = 'tagihan-keuangan.print';
+        }
 
         $data['idtahunajaran'] = $idtahunajaran;
         $data['idkelas'] = $idkelas;

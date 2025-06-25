@@ -382,7 +382,6 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
-
         Menu::create([
             'id' => 26,
             'menu' => 'Grafik Presensi Siswa',
@@ -574,19 +573,19 @@ class DatabaseSeeder extends Seeder
         ]);
         Menu::create([
             'id' => 47,
-            'menu' => 'Laporan Keuangan Siswa',
-            'url' => '/pages/keuangan/laporan-keuangan-siswa',
-            'posisi' => 4,
+            'menu' => 'Kategori Keuangan',
+            'url' => '/pages/keuangan/kategori-keuangan',
+            'posisi' => 5,
             'idkategori' => 8,
             'created_at' => now(),
             'updated_at' => now()
         ]);
         Menu::create([
-            'id' => 45,
-            'menu' => 'Kategori Keuangan',
-            'url' => '/pages/keuangan/kategori-keuangan',
-            'posisi' => 5,
-            'idkategori' => 8,
+            'id' => 48,
+            'menu' => 'Tagihan Keuangan Siswa',
+            'url' => '/pages/walikelas/tagihan-keuangan-siswa',
+            'posisi' => 4,
+            'idkategori' => 5,
             'created_at' => now(),
             'updated_at' => now()
         ]);

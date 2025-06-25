@@ -81,10 +81,10 @@
 			<table style="width:100%;" id="nilai" cellspacing="0">
 				<thead>
 					<tr>
-						<th align="center" style="width:4%;">No</th>
-						<th valign="middle" align="center" style="width: 22%;">MATA PELAJARAN</th>
-						<th align="center" style="width:4%;">Nilai Akhir</th>
-						<th align="center" style="width:4%;">Capaian Kompetensi</th>
+						<th align="center" style="width:1%;">No</th>
+						<th valign="middle" align="center" style="width: 25%;">MATA PELAJARAN</th>
+						<th align="center" style="width:13%;">Nilai Akhir</th>
+						<th align="center">Capaian Kompetensi</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -98,8 +98,8 @@
                     @endphp
 					@foreach ($kelompok_matpel_A as $row1)
 						<tr>
-							<td align="center" style="width:3%;">{{ $n }}</td>
-							<td>{{ Casef($row1->matpel->matpel) }}</td>
+							<td align="center" valign="top">{{ $n }}</td>
+							<td valign="top">{{ Casef($row1->matpel->matpel) }}</td>
 							@php
 							if (isset($pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
 								$pengetahuanA = $pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip];
@@ -108,8 +108,26 @@
 							}
 							@endphp
 
-							<td align="center">{{ $pengetahuanA }}</td>
-							<td align="center"></td>
+							<td align="center" valign="top">{{ $pengetahuanA }}</td>
+							<td align="center" valign="top">
+								@php
+									if(isset($nilai_cp[$row->nisn][$row1->kode_matpel][$row1->nip])){
+										$textTercapai = [];
+										$textTidakTercapai = [];
+										foreach ($nilai_cp[$row->nisn][$row1->kode_matpel][$row1->nip] as $key => $value) {
+											# code...
+											if($value['nilai'] == 1){
+												$textTercapai[] = $value->textCapaian;
+											}else{
+												$textTidakTercapai[] = $value->textCapaian;
+											}
+										}
+
+										echo "Siswa sudah mencapai kompetensi: ".count($textTercapai) > 0 ? implode(',', $textTercapai) : '-'.'<br>';
+										echo "Siswa belum mencapai kompetensi: ".count($textTidakTercapai) > 0 ? implode(',', $textTidakTercapai) : '-'.'<br>';
+									}
+								@endphp
+							</td>
 						</tr>
 					@php
 						$n++;
@@ -123,8 +141,8 @@
                     @endphp
 					@foreach ($kelompok_matpel_B as $row1)
 						<tr>
-							<td align="center" style="width:3%;">{{ $n }}</td>
-							<td>{{ Casef($row1->matpel->matpel) }}</td>
+							<td align="center" valign="top">{{ $n }}</td>
+							<td valign="top">{{ Casef($row1->matpel->matpel) }}</td>
 							@php
 							if (isset($pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip])) {
 								$pengetahuanB = $pengetahuan[$row1->kode_matpel][$row->nisn][$row1->nip];
@@ -133,8 +151,27 @@
 							}
 							@endphp
 
-							<td align="center">{{ $pengetahuanB }}</td>
-							<td align="center"></td>
+							<td align="center" valign="top">{{ $pengetahuanB }}</td>
+							<td style="text-align: justify" valign="top">
+								@php
+									if(isset($nilai_cp[$row->nisn][$row1->kode_matpel][$row1->nip])){
+										$textTercapai = [];
+										$textTidakTercapai = [];
+										foreach ($nilai_cp[$row->nisn][$row1->kode_matpel][$row1->nip] as $key => $value) {
+											# code...
+											if($value['nilai'] == 1){
+												$textTercapai[] = $value['textCapaian'];
+											}else{
+												$textTidakTercapai[] = $value['textCapaian'];
+											}
+										}
+										$tercapai = count($textTercapai) > 0 ? implode(',', $textTercapai) : '-';
+										$tidaktercapai = count($textTidakTercapai) > 0 ? implode(',', $textTidakTercapai) : '-';
+										echo "<b>Siswa sudah mencapai kompetensi: </b>".$tercapai.'<br><br>';
+										echo "<b>Siswa belum mencapai kompetensi: </b>".$tidaktercapai.'<br>';
+									}
+								@endphp
+							</td>
 						</tr>
 					@php
 						$n++;

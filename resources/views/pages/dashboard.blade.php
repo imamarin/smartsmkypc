@@ -33,7 +33,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bg bg-info">
                     <h6>DOWNLOAD FORMAT DOKUMEN</h6>
                 </div><!-- end card header -->
                 <div class="card-body">

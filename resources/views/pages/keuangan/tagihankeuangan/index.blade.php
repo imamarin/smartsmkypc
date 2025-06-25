@@ -25,7 +25,7 @@
                 <div class="card-header text-white"  style="background-color: #494f4f;">
                     <div class="row">
                         <div class="col">
-                            <form action="{{ route('tagihan-keuangan.kelas') }}" method="get">
+                            <form action="{{ $route }}" method="get">
                                 <div class="row">
                                     <div class="col-12 col-md-2">
                                         <label for="idtahunajaran" class="form-label text-white">Tahun Ajaran</label>
@@ -78,7 +78,7 @@
                                     <td style="text-align: end">{{ $item->spp <= $item->jmlBulan ? $item->jmlBulan - $item->spp : '0' }} Bulan</td>
                                     <td style="text-align: end">{{ number_format($item->totalKeuangan - $item->nonspp <= 0 ? '0' : $item->totalKeuangan - $item->nonspp, '0', ',', '.') }}</td>
                                     <td style="text-align: center">
-                                        <a href="{{ route('tagihan-keuangan.print', Crypt::encrypt($item->nisn.'*'.$idkelas.'*'.$idtahunajaran)) }}" class="btn btn-sm btn-primary" target="_blank"><i class="fas fa-print"></i></a>
+                                        <a href="{{ route($route_print, Crypt::encrypt($item->nisn.'*'.$idkelas.'*'.$idtahunajaran)) }}" class="btn btn-sm btn-primary" target="_blank"><i class="fas fa-print"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach

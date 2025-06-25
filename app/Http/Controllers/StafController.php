@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
 class StafController extends Controller
@@ -29,7 +30,7 @@ class StafController extends Controller
             $this->fiturMenu = session('fiturMenu');
 
             $this->view = 'Data Master-Data Staf';
-            if (!isset($this->fiturMenu[$this->view])) {
+            if (!isset($this->fiturMenu[$this->view]) && !Route::currentRouteName('profil-staf.edit')) {
                 return redirect()->back();
             }
 
@@ -128,6 +129,10 @@ class StafController extends Controller
         $data['staf'] = Staf::where('iduser', $id)->first();
         $data['role'] = Role::all();
         $data['roleUser'] = UserRole::where('iduser', $id)->get()->pluck('idrole')->toArray();
+
+        if (Route::currentRouteName('profil-staf.edit')) {
+            return view('pages.staf.profil', $data);
+        }
         return view('pages.staf.edit', $data);
     }
 
@@ -158,32 +163,49 @@ class StafController extends Controller
             $users->save();
 
             $staf = Staf::where('iduser', $id)->first();
-            $editStaf = $request->validate([
-                'nip' => $staf->nip != $request->nip ? 'required|unique:stafs,nip' : 'required',
-                'nama' => 'required',
-                'nip' => $staf->nip != $request->nip ? 'required|unique:stafs,nip' : 'required',
-                'alamat' => 'required',
-                'tempat_lahir' => 'required',
-                'tanggal_lahir' => 'required',
-                'jenis_kelamin' => 'required',
-                'no_hp' => 'required',
-                'status' => 'required',
-                'nuptk' => 'required',
-            ]);
 
-            $staf->update($editStaf);
-
-            $role = UserRole::where('iduser', $id);
-            if ($role->count() > 0) {
-                $role->delete();
-            }
-            foreach ($request->role as $key => $value) {
-                UserRole::create([
-                    'iduser' => $id,
-                    'idrole' => $value
+            if (Route::currentRouteName('profil-staf.edit')) {
+                $editStaf = $request->validate([
+                    'nip' => $staf->nip != $request->nip ? 'required|unique:stafs,nip' : 'required',
+                    'nama' => 'required',
+                    'alamat' => 'required',
+                    'tempat_lahir' => 'required',
+                    'tanggal_lahir' => 'required',
+                    'jenis_kelamin' => 'required',
+                    'no_hp' => 'required',
+                    'nuptk' => 'required',
                 ]);
+
+                $staf->update($editStaf);
+
+                return redirect()->back()->with('success', 'Profil berhasil Diubah');
+            } else {
+                $editStaf = $request->validate([
+                    'nip' => $staf->nip != $request->nip ? 'required|unique:stafs,nip' : 'required',
+                    'nama' => 'required',
+                    'alamat' => 'required',
+                    'tempat_lahir' => 'required',
+                    'tanggal_lahir' => 'required',
+                    'jenis_kelamin' => 'required',
+                    'no_hp' => 'required',
+                    'status' => 'required',
+                    'nuptk' => 'required',
+                ]);
+
+                $staf->update($editStaf);
+
+                $role = UserRole::where('iduser', $id);
+                if ($role->count() > 0) {
+                    $role->delete();
+                }
+                foreach ($request->role as $key => $value) {
+                    UserRole::create([
+                        'iduser' => $id,
+                        'idrole' => $value
+                    ]);
+                }
+                return redirect()->route('data-staf.index')->with('success', 'Data Berhasil Diubah');
             }
-            return redirect()->route('data-staf.index')->with('success', 'Data Berhasil Diubah');
         }
 
         return redirect()->back()->with('danger', 'Data Gagal Diubah');

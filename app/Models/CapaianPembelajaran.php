@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Raport\NilaiCP;
 use Illuminate\Database\Eloquent\Model;
 
 class CapaianPembelajaran extends Model
@@ -20,5 +21,10 @@ class CapaianPembelajaran extends Model
     public function matpel()
     {
         return $this->belongsTo(Matpel::class, "kode_matpel", "kode_matpel");
+    }
+
+    public function nilaicp()
+    {
+        return $this->hasMany(NilaiCP::class, 'kode_cp', 'kode_cp');
     }
 }

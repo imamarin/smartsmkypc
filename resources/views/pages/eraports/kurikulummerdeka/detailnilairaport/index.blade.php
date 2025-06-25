@@ -23,19 +23,23 @@
     </div>
     <!-- end page title -->
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body bg bg-light" style="border: 2px solid rgb(31, 177, 188)">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-3">
                             <label for="kelas" class="form-label">Kelas:</label><br>
                             {{ $nilairaport->kelas->kelas }}<br>
+                        </div>
+                        <div class="col-3">
                             <label for="kelas" class="form-label mt-2">Mata Pelajaran:</label><br>
                             {{ $nilairaport->matpel->matpel }}
                         </div>
-                        <div class="col-6">
+                        <div class="col-3">
                             <label for="kelas" class="form-label">Semester:</label><br>
                             {{ $nilairaport->semester}}<br>
+                        </div>
+                        <div class="col-3">
                             <label for="kelas" class="form-label mt-2">Tahun Ajaran:</label><br>
                             {{ $nilairaport->tahunajaran->awal_tahun_ajaran }} / {{ $nilairaport->tahunajaran->akhir_tahun_ajaran }}
                         </div>
@@ -43,7 +47,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between" style="background-color: rgb(31, 177, 188)">
                     <h4 class="card-title text-start text-white">Input Nilai Raport</h4>
@@ -59,11 +65,17 @@
                             <table class="table table-striped display nowrap">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Nisn</th>
-                                        <th>Nama Siswa</th>
-                                        <th>Nilai Akhir</th>
+                                        <th rowspan="2">#</th>
+                                        <th rowspan="2">Nisn</th>
+                                        <th rowspan="2">Nama Siswa</th>
+                                        <th rowspan="2">Nilai Akhir</th>
+                                        <th rowspan="2">Hasil Capaian Pembelajaran</th>
+                                        {{-- <th colspan="2">Hasil Ketercapaian</th> --}}
                                     </tr>
+                                    {{-- <tr>
+                                        <th>Tercapai <input type="radio" name="pilih_capaian" class="btn btn-sm btn-success" onclick="checkAll('tercapai')"></th>
+                                        <th>Tidak Tercapai <input type="radio" name="pilih_capaian" class="btn btn-sm btn-danger" onclick="checkAll('tidaktercapai')"></th>
+                                    </tr> --}}
                                 </thead>
                                 <tbody>
                                     @foreach ($siswa as $key => $subject)
@@ -73,6 +85,40 @@
                                             <td>{{ $subject->nama }}</td>
                                             <td>
                                                 <input type="number" name="nilai_pengetahuan[{{ $subject->nisn }}]" id="nilai_pengetahuan_{{ $subject->nisn }}" value="{{ $nilai_pengetahuan[$subject->nisn] ?? old('nilai_pengetahuan.'.$subject->nisn) }}" class="form-control" min="0" max="100">
+                                            </td>
+                                            <td>
+                                                @foreach ($cp as $key2 => $item)
+                                                <div class="row pb-3 border border-top-0 border-left-0 border-end-0">
+                                                    <div class="col-md-6">
+                                                        {{ $item->capaian }}
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        @php
+                                                            $abaikan = '';
+                                                            $tercapai = '';
+                                                            $tidak_tercapai = '';
+                                                            if(isset($nilai_cp[$subject->nisn][$item->kode_cp])){
+                                                                if($nilai_cp[$subject->nisn][$item->kode_cp] == 1){
+                                                                    $tercapai = 'checked';
+                                                                }else{
+                                                                    $tercapai = '';
+                                                                }
+
+                                                                if($nilai_cp[$subject->nisn][$item->kode_cp] == 0){
+                                                                    $tidak_tercapai = 'checked';
+                                                                }else{
+                                                                    $tidak_tercapai = '';
+                                                                }
+                                                            }else{
+                                                                $abaikan = 'checked';
+                                                            }
+                                                        @endphp
+                                                        <input type="radio" name="capaian[{{ $subject->nisn }}][{{ $item->kode_cp }}]" id="capaian['{{ $key }}']['{{ $key2 }}']" value="1" class="radio-tercapai siswa-{{ $key }} cp-{{ $key2 }}" {{ $tercapai }}> Tercapai<br>
+                                                        <input type="radio" name="capaian[{{ $subject->nisn }}][{{ $item->kode_cp }}]" id="capaian['{{ $key }}']['{{ $key2 }}']" value="0" class="radio-tercapai siswa-{{ $key }} cp-{{ $key2 }}" {{ $tidak_tercapai }}> Tidak Tercapai<br>
+                                                        <input type="radio" name="capaian[{{ $subject->nisn }}][{{ $item->kode_cp }}]" id="capaian['{{ $key }}']['{{ $key2 }}']" value="2" class="radio-tercapai siswa-{{ $key }} cp-{{ $key2 }}" {{ $abaikan }}> Abaikan<br>
+                                                    </div>
+                                                </div>
+                                                @endforeach
                                             </td>
                                         </tr>
                                     @endforeach
@@ -124,5 +170,24 @@
 @endsection
 
 @push('scripts')
+<script>
+    function checkAll(type) {
+        const selector = type === 'tercapai' ? '.radio-tercapai' : '.radio-tidaktercapai';
+        const radios = document.querySelectorAll(selector);
 
+        // Loop per siswa dan per cp
+        const grouped = {};
+
+        radios.forEach(radio => {
+            const name = radio.name;
+            if (!grouped[name]) {
+                grouped[name] = radio;
+            }
+        });
+
+        Object.values(grouped).forEach(radio => {
+            radio.checked = true;
+        });
+    }
+</script>
 @endpush

@@ -9,6 +9,7 @@ use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\Ekstrakurikuler;
 use App\Models\Raport\Format;
 use App\Models\Raport\MatpelKelas;
+use App\Models\Raport\NilaiCP;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
 use App\Models\Walikelas;
@@ -118,6 +119,24 @@ class V1Controller extends Controller
             # code...
             $pengetahuan[$item->nilairaport->kode_matpel][$item->nisn][$item->nilairaport->nip] = $item->nilai_1;
         }
+
+        $nilaicp = NilaiCP::whereHas('nilairaport', function ($query) use ($aktivasi, $id) {
+            $query->where([
+                'idtahunajaran' => $aktivasi->idtahunajaran,
+                'idkelas' => $id,
+                'semester' => $aktivasi->semester
+            ]);
+        })->get();
+        $nilai_cp = [];
+        foreach ($nilaicp as $item) {
+            $nilai_cp[$item->nisn][$item->nilairaport->kode_matpel][$item->nilairaport->nip][$item->kode_cp] = [
+                'textCapaian' => $item->capaianpembelajaran->capaian,
+                'nilai' => $item->nilai
+            ];
+        }
+
+        // dd($nilai_cp);
+        $data['nilai_cp'] = $nilai_cp;
 
         $data['pengetahuan'] = $pengetahuan;
         return view("pages.eraports.kurikulummerdeka.cetak.v1.raport1", $data);

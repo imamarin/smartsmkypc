@@ -38,4 +38,9 @@ class NilaiRaport extends Model
     {
         return $this->hasMany(DetailNilaiRaport::class, 'idnilairaport');
     }
+
+    public function nilaicp()
+    {
+        return $this->hasMany(NilaiCP::class, 'idnilairaport');
+    }
 }
