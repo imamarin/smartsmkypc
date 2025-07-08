@@ -580,15 +580,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        Menu::create([
-            'id' => 48,
-            'menu' => 'Tagihan Keuangan Siswa',
-            'url' => '/pages/walikelas/tagihan-keuangan-siswa',
-            'posisi' => 4,
-            'idkategori' => 5,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+
         Fitur::create([
             'id' => 1,
             'idmenu' => 2,

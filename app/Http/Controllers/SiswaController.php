@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\SiswaExport;
 use App\Imports\SiswaImport;
+use App\Models\JadwalMengajar;
 use App\Models\Role;
 use App\Models\Rombel;
 use App\Models\Siswa;
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 class SiswaController extends Controller
@@ -29,7 +31,13 @@ class SiswaController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
-            if (Route::currentRouteName() == 'walikelas.siswa.edit') {
+            if (
+                Route::currentRouteName() == 'siswa.profil' ||
+                Route::currentRouteName() == 'profil-siswa.update' ||
+                Route::currentRouteName() == 'siswa.jadwal'
+            ) {
+                $this->view = 'Layanan Siswa-Profil';
+            } else if (Route::currentRouteName() == 'walikelas.siswa.edit') {
                 $this->view = 'Walikelas-Data Siswa';
             } else if (Route::currentRouteName() == 'data-siswa.index') {
                 $this->view = 'Data Master-Data Siswa';
@@ -132,8 +140,14 @@ class SiswaController extends Controller
             'alamat_ortu' => 'required',
             'no_hp_siswa' => 'required',
             'no_hp_ortu' => 'required',
+            'status_keluarga' => 'required',
+            'anak_ke' => 'required',
         ]);
-
+        $requestSiswa['nisn_dapodik'] = $request->nisn;
+        $requestSiswa['walisiswa'] = $request->walisiswa;
+        $requestSiswa['pekerjaan_wali'] = $request->pekerjaan_wali;
+        $requestSiswa['alamat_wali'] = $request->alamat_wali;
+        $requestSiswa['no_hp_wali'] = $request->no_hp_wali;
         $dataRole = $request->validate([
             'role' => 'required'
         ]);
@@ -179,6 +193,11 @@ class SiswaController extends Controller
         $data['tahun_ajaran'] = TahunAjaran::all();
         $data['role'] = Role::all();
         $data['roleUser'] = UserRole::where('iduser', $id)->get()->pluck('idrole')->toArray();
+
+        if ($this->view == 'Layanan Siswa-Profil') {
+            return view('pages.siswa.profil', $data);
+        }
+
         return view('pages.siswa.edit', $data);
     }
 
@@ -187,6 +206,12 @@ class SiswaController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('warning', $e->getMessage());
+        }
+
         $users = User::find($id);
         if ($users) {
             if ($users->username != $request->username) {
@@ -204,40 +229,77 @@ class SiswaController extends Controller
 
             $updateSiswa = Siswa::where('iduser', $id);
             $siswa = $updateSiswa->first();
-            $editSiswa = $request->validate([
-                'nisn' => $siswa->nisn != $request->nisn ? 'required|unique:siswa,nisn' : 'required',
-                'nis' => $siswa->nis != $request->nis ? 'unique:siswa,nis' : 'required',
-                'asal_sekolah' => 'required',
-                'nik' => 'required',
-                'alamat_siswa' => 'required',
-                'nama' => 'required',
-                'tempat_lahir' => 'required',
-                'tanggal_lahir' => 'required',
-                'jenis_kelamin' => 'required',
-                'diterima_tanggal' => 'required',
-                'no_hp_siswa' => 'required',
-                'idtahunajaran' => 'required',
-                'status' => 'required',
-                'nama_ayah' => 'required',
-                'nama_ibu' => 'required',
-                'pekerjaan_ayah' => 'required',
-                'pekerjaan_ibu' => 'required',
-                'alamat_ortu' => 'required',
-                'no_hp_ortu' => 'required',
-            ]);
-            $updateSiswa->update($editSiswa);
 
-            $role = UserRole::where('iduser', $id);
-            if ($role->count() > 0) {
-                $role->delete();
-            }
-            foreach ($request->role as $key => $value) {
-                UserRole::create([
-                    'iduser' => $id,
-                    'idrole' => $value
+            if ($this->view == 'Layanan Siswa-Profil') {
+                $editSiswa = $request->validate([
+                    'nis' => $siswa->nis != $request->nis ? 'unique:siswa,nis' : 'required',
+                    'asal_sekolah' => 'required',
+                    'nik' => 'required',
+                    'alamat_siswa' => 'required',
+                    'nama' => 'required',
+                    'tempat_lahir' => 'required',
+                    'tanggal_lahir' => 'required',
+                    'jenis_kelamin' => 'required',
+                    'anak_ke' => 'required',
+                    'no_hp_siswa' => 'required',
+                    'nama_ayah' => 'required',
+                    'nama_ibu' => 'required',
+                    'pekerjaan_ayah' => 'required',
+                    'pekerjaan_ibu' => 'required',
+                    'alamat_ortu' => 'required',
+                    'no_hp_ortu' => 'required',
+                    'status_keluarga' => 'required',
                 ]);
+                $editSiswa['nisn_dapodik'] = $request->nisn;
+                $editSiswa['walisiswa'] = $request->walisiswa;
+                $editSiswa['pekerjaan_wali'] = $request->pekerjaan_wali;
+                $editSiswa['alamat_wali'] = $request->alamat_wali;
+                $editSiswa['no_hp_wali'] = $request->no_hp_wali;
+                $updateSiswa->update($editSiswa);
+                return redirect()->route('siswa.profil')->with('success', 'Data Berhasil Diubah');
+            } else {
+                $editSiswa = $request->validate([
+                    // 'nisn' => $siswa->nisn != $request->nisn ? 'required|unique:siswa,nisn' : 'required',
+                    'nis' => $siswa->nis != $request->nis ? 'unique:siswa,nis' : 'required',
+                    'asal_sekolah' => 'required',
+                    'nik' => 'required',
+                    'alamat_siswa' => 'required',
+                    'nama' => 'required',
+                    'tempat_lahir' => 'required',
+                    'tanggal_lahir' => 'required',
+                    'jenis_kelamin' => 'required',
+                    'diterima_tanggal' => 'required',
+                    'no_hp_siswa' => 'required',
+                    'idtahunajaran' => 'required',
+                    'status' => 'required',
+                    'nama_ayah' => 'required',
+                    'nama_ibu' => 'required',
+                    'pekerjaan_ayah' => 'required',
+                    'pekerjaan_ibu' => 'required',
+                    'alamat_ortu' => 'required',
+                    'no_hp_ortu' => 'required',
+                    'status_keluarga' => 'required',
+                    'anak_ke' => 'required',
+                ]);
+                $editSiswa['nisn_dapodik'] = $request->nisn;
+                $editSiswa['walisiswa'] = $request->walisiswa;
+                $editSiswa['pekerjaan_wali'] = $request->pekerjaan_wali;
+                $editSiswa['alamat_wali'] = $request->alamat_wali;
+                $editSiswa['no_hp_wali'] = $request->no_hp_wali;
+                $updateSiswa->update($editSiswa);
+
+                $role = UserRole::where('iduser', $id);
+                if ($role->count() > 0) {
+                    $role->delete();
+                }
+                foreach ($request->role as $key => $value) {
+                    UserRole::create([
+                        'iduser' => $id,
+                        'idrole' => $value
+                    ]);
+                }
+                return redirect()->route('data-siswa.index')->with('success', 'Data Berhasil Diubah');
             }
-            return redirect()->route('data-siswa.index')->with('success', 'Data Berhasil Diubah');
         }
 
         return redirect()->back()->with('danger', 'Data Gagal Diubah');
@@ -278,6 +340,12 @@ class SiswaController extends Controller
         return redirect()->back()->with('success', 'Status Berhasil Diubah');
     }
 
+    public function profil()
+    {
+        $id = Crypt::encrypt(Auth::user()->id);
+        return $this->edit($id);
+    }
+
     public function export()
     {
         if (!in_array('Eksport', $this->fiturMenu['Data Siswa'])) {
@@ -298,5 +366,24 @@ class SiswaController extends Controller
         Excel::import($import, $request->file('file'));
 
         return back()->with('success', "Berhasil mengimpor {$import->successCount} data.");
+    }
+
+    public function jadwal()
+    {
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+        $rombel = Rombel::where('nisn', Auth::user()->siswa->nisn)->where('idtahunajaran', $tahunajaran->id)->first();
+        $jadwalMengajar = JadwalMengajar::with('jampel')->where('idkelas', $rombel->idkelas)->whereHas('sistemblok', function ($query) use ($tahunajaran) {
+            $query->where('status', 1)->where('semester', $tahunajaran->semester);
+        })->get()->sortBy(function ($item) {
+            return $item->jampel->jam ?? 0;
+        })->values();
+        $jadwal = [];
+        foreach ($jadwalMengajar as $key => $value) {
+            # code...
+            $jadwal[$value->jampel->hari][] = $value;
+        }
+        $data['hari'] = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $data['jadwal'] = $jadwal;
+        return view('pages.siswa.jadwal', $data);
     }
 }

@@ -68,6 +68,10 @@ class PresensiController extends Controller
                 Route::currentRouteName() == 'walikelas.rekap-presensi-siswa.harian'
             ) {
                 $this->view = 'Walikelas-Rekap Presensi Siswa';
+            } else if (
+                Route::currentRouteName() == 'info-kehadiran-siswa'
+            ) {
+                $this->view = 'Layanan Siswa-Info Kehadiran';
             }
 
             if (!isset($this->fiturMenu[$this->view])) {
@@ -964,6 +968,118 @@ class PresensiController extends Controller
         }
 
         return view('pages.presensi.rekap-presensi-guru', $data);
+    }
+
+    public function infokehadiransiswa()
+    {
+        $tahunajaran = TahunAjaran::where('status', 1)->first();
+        $nisn = Auth::user()->siswa->nisn;
+
+        $presensiHarian = PresensiHarianSiswa::where('nisn', $nisn)->where('idtahunajaran', $tahunajaran->id)->orderBy('semester', 'desc')
+            ->orderBy('created_at', 'desc')->get();
+
+        $presensi = [];
+        $totalHadir = 0;
+        $totalSakit = 0;
+        $totalIzin = 0;
+        $totalAlfa = 0;
+        foreach ($presensiHarian as $value) {
+            # code...
+            $presensi[date('Y-m-d', strtotime($value->created_at))] = $value;
+            if ($value->keterangan == 'h') {
+                $totalHadir++;
+            } else if ($value->keterangan == 'i') {
+                $totalIzin++;
+            } else if ($value->keterangan == 's') {
+                $totalSakit++;
+            } else if ($value->keterangan == 'a') {
+                $totalAlfa++;
+            }
+        }
+
+        $kalenderakademik = KalenderAkademik::where('idtahunajaran', $tahunajaran->id)
+            ->where('status_kbm', '!=', 'efektif')
+            ->get();
+        $tanggal_akademik = [];
+        foreach ($kalenderakademik as $value) {
+            # code...
+            $first = strtotime($value->tanggal_mulai);
+            $end = strtotime($value->tanggal_akhir);
+
+            while ($first <= $end) {
+                array_push($tanggal_akademik, date('Y-m-d', $first));
+                $first = strtotime('+1 day', $first);
+            }
+        }
+
+        $first = strtotime($tahunajaran->tgl_mulai);
+        $end = strtotime(date('Y-m-d'));
+
+        $tanggal = [];
+        $data_presensi = [];
+        while ($end >= $first) {
+            # code...
+            if (!in_array(date('Y-m-d', $end), $tanggal_akademik)) {
+                if (isset($presensi[date('Y-m-d', $end)])) {
+                    array_push($data_presensi, $presensi[date('Y-m-d', $end)]);
+                    array_push($tanggal, date('Y-m-d', $end));
+                } else {
+                    array_push($data_presensi, null);
+                    array_push($tanggal, date('Y-m-d', $end));
+                }
+            }
+
+            $end = strtotime('-1 day', $end);
+        }
+
+        //Presensi KBM
+        $idkelas = Rombel::where('nisn', $nisn)->where('idtahunajaran', $tahunajaran->id)->value('idkelas');
+
+        $presensiKBM = Presensi::with(['detailpresensi' => function ($query) {
+            $query->where('nisn', Auth::user()->siswa->nisn);
+        }])
+            ->whereHas('detailpresensi', function ($query) {
+                $query->where('nisn', Auth::user()->siswa->nisn);
+            })
+            ->where('idtahunajaran', $tahunajaran->id)
+            ->where('idkelas', $idkelas)
+            ->get();
+
+        $dataPresensiKBM = [];
+        foreach ($presensiKBM as $key => $value) {
+            if (isset($totalPresensi[$value->semester][$value->kode_matpel][$value->detailpresensi()->first()->keterangan])) {
+                $totalPresensi[$value->semester][$value->kode_matpel][$value->detailpresensi()->first()->keterangan]++;
+            } else {
+                $totalPresensi[$value->semester][$value->kode_matpel][$value->detailpresensi()->first()->keterangan] = 1;
+            }
+
+            $dataPresensiKBM[$value->kode_matpel] = (object)[
+                'kode_matpel' => $value->kode_matpel,
+                'nama_matpel' => $value->matpel->matpel,
+                'nama_guru' => $value->staf->nama,
+                'ganjil' => (object)[
+                    'hadir' => $totalPresensi['ganjil'][$value->kode_matpel]['h'] ?? 0,
+                    'sakit' => $totalPresensi['ganjil'][$value->kode_matpel]['s'] ?? 0,
+                    'izin' => $totalPresensi['ganjil'][$value->kode_matpel]['i'] ?? 0,
+                    'alfa' => $totalPresensi['ganjil'][$value->kode_matpel]['a'] ?? 0,
+                ],
+                'genap' => (object)[
+                    'hadir' => $totalPresensi['genap'][$value->kode_matpel]['h'] ?? 0,
+                    'sakit' => $totalPresensi['genap'][$value->kode_matpel]['s'] ?? 0,
+                    'izin' => $totalPresensi['genap'][$value->kode_matpel]['i'] ?? 0,
+                    'alfa' => $totalPresensi['genap'][$value->kode_matpel]['a'] ?? 0,
+                ],
+            ];
+        }
+
+        $data['presensi'] = $data_presensi;
+        $data['tanggal'] = $tanggal;
+        $data['total_hadir'] = $totalHadir;
+        $data['total_izin'] = $totalIzin;
+        $data['total_sakit'] = $totalSakit;
+        $data['total_alfa'] =  $totalAlfa;
+        $data['presensi_kbm'] = (object) $dataPresensiKBM ?? [];
+        return view('pages.siswa.kehadiran', $data);
     }
 
     public function exportRekapPresensiGuru($id)

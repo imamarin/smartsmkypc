@@ -69,6 +69,9 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/data-jurusan', JurusanController::class);
         Route::get('/data-jurusan/export/data', [JurusanController::class, 'export'])->name('data-jurusan.export');
         //data-siswa
+        Route::get('/siswa/profil',  [SiswaController::class, 'profil'])->name('siswa.profil');
+        Route::get('/siswa/jadwal-mata-pelajaran',  [SiswaController::class, 'jadwal'])->name('siswa.jadwal');
+        Route::resource('/profil-siswa', SiswaController::class);
         Route::get('/data-siswa/tahunajaran', [SiswaController::class, 'tahunajaran'])->name('data-siswa.tahunajaran');
         Route::resource('/data-siswa', SiswaController::class);
         Route::post('/data-siswa/{id}/updateStatus', [SiswaController::class, 'updateStatus'])->name('data-siswa.updateStatus');
@@ -143,6 +146,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/masuk-mengajar/catatan/{id}', [MasukMengajarController::class, 'updateCatatan'])->name('masuk-mengajar.updateCatatan');
 
         //presensi
+        Route::get('/siswa/info-kehadiran', [PresensiController::class, 'infokehadiransiswa'])->name('info-kehadiran-siswa');
         Route::get('/rekap-presensi-siswa', [PresensiController::class, 'rekapSiswa'])->name('rekap-presensi-siswa');
         Route::get('/rekap-presensi-mengajar', [PresensiController::class, 'rekapGuru'])->name('rekap-presensi-mengajar');
         Route::get('/rekap-presensi-mengajar/{id}/presensi/{tgl}', [MasukMengajarController::class, 'show'])->name('ajuan-kehadiran-mengajar.presensi');
@@ -202,6 +206,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/rekap-nilai-siswa/{id}', [NilaiSiswaController::class, 'storePersentaseNilai'])->name('nilai-siswa.persentase.store');
 
         //Keuangan
+        Route::get('/siswa/info-keuangan', [TagihanKeuanganController::class, 'infoSiswa'])->name('info-keuangan-siswa');
         Route::prefix('/keuangan')->group(function () {
             Route::resource('/kategori-keuangan', KategoriKeuanganController::class);
             Route::get('/pembayaran-spp/siswa', [SPPController::class, 'siswa'])->name('pembayaran-spp.siswa');
@@ -231,6 +236,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::resource('/tujuan-pembelajaran', TPController::class);
 
         //Raport
+        Route::get('/siswa/hasil-studi-siswa', [CetakController::class, 'infoSiswa'])->name('hasil-studi-siswa');
         Route::prefix('/raport')->group(function () {
             Route::resource('/raport-identitas', IdentitasController::class);
             Route::post('/raport-aktivasi/{id}', [IdentitasController::class, 'aktivasi'])->name('raport.aktivasi');

@@ -18,7 +18,7 @@
         </div>
     </div>
     <!-- end page title -->
-    <form action="{{ route('data-siswa.update', $siswa->user->id) }}" method="POST">
+    <form action="{{ route('data-siswa.update', Crypt::encrypt($siswa->user->id)) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="row">
@@ -34,7 +34,7 @@
                                     <label class="col-md-2 col-form-label">NISN<span class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="number" name="nisn"
-                                            value="{{ $siswa->nisn }}" required readonly>
+                                            value="{{ $siswa->nisn_dapodik }}" required>
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
@@ -115,14 +115,16 @@
 
                             <div class="col-xl-6">
                                 <div class="row mb-3  mt-3 mt-xl-0">
-                                    <label class="col-md-2 col-form-label">No HP Siswa</label>
+                                    <label class="col-md-2 col-form-label">No HP Siswa<span
+                                            class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="number" name="no_hp_siswa"
                                             value="{{ $siswa->no_hp_siswa }}">
                                     </div>
                                 </div><!-- end row -->
                                 <div class="row mb-3">
-                                    <label class="col-md-2 col-form-label">Status Keluarga</label>
+                                    <label class="col-md-2 col-form-label">Status Keluarga<span
+                                            class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <select class="form-control" name="status_keluarga">
                                             <option value="Anak Kandung" {{ $siswa->status_keluarga == 'Anak Kandung' ? 'selected' : '' }}>Anak Kandung</option>
@@ -131,7 +133,8 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-md-2 col-form-label">Anak Ke</label>
+                                    <label class="col-md-2 col-form-label">Anak Ke<span
+                                            class="text-danger">*</span></label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="number" name="anak_ke" value="{{ $siswa->anak_ke }}">
                                     </div>
@@ -261,15 +264,13 @@
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="mb-3 row">
-                                    <label class="col-md-2 col-form-label">Nama Wali<span
-                                            class="text-danger">*</span></label>
+                                    <label class="col-md-2 col-form-label">Nama Wali</label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="text" name="walisiswa" value="{{ $siswa->walisiswa }}">
                                     </div>
                                 </div><!-- end row -->
                                 <div class="mb-3 row">
-                                    <label class="col-md-2 col-form-label">Pekerjaan Wali<span
-                                            class="text-danger">*</span></label>
+                                    <label class="col-md-2 col-form-label">Pekerjaan Wali</label>
                                     <div class="col-md-10">
                                         <input class="form-control" type="text" name="pekerjaan_wali" value="{{ $siswa->pekerjaan_wali }}">
                                     </div>
@@ -283,8 +284,7 @@
                             </div><!-- end col -->
                             <div class="col-xl-6">
                                 <div class="row mb-3">
-                                    <label class="col-md-2 col-form-label">Alamat Wali<span
-                                            class="text-danger">*</span></label>
+                                    <label class="col-md-2 col-form-label">Alamat Wali</label>
                                     <div class="col-md-10">
                                         <textarea name="alamat_wali" class="form-control" cols="30" rows="4">{{ $siswa->alamat_wali }}</textarea>
                                     </div>

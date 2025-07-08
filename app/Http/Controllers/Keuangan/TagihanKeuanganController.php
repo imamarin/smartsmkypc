@@ -32,6 +32,8 @@ class TagihanKeuanganController extends Controller
                 Route::currentRouteName() == 'walikelas.tagihan-keuangan-siswa.print'
             ) {
                 $this->view = 'Walikelas-Tagihan Keuangan Siswa';
+            } else if (Route::currentRouteName() == 'info-keuangan-siswa') {
+                $this->view = 'Layanan Siswa-Info Keuangan';
             } else {
                 $this->view = 'Keuangan-Tagihan Keuangan';
             }
@@ -217,5 +219,70 @@ class TagihanKeuanganController extends Controller
         });
 
         return view('pages.keuangan.tagihankeuangan.cetak', $data);
+    }
+
+    public function infoSiswa()
+    {
+        $rombel = Rombel::whereHas('tahunajaran', function ($query) {
+            $query->where('status', 1);
+        })->where('nisn', Auth::user()->siswa->nisn)->first();
+
+        $jurusan = [$rombel->kelas->jurusan, 'semua'];
+        $keuangan = KategoriKeuangan::where('idtahunajaran', Auth::user()->siswa->idtahunajaran)->whereIn('jurusan', $jurusan)->get();
+
+        $nonspp = NonSpp::where('nisn', Auth::user()->siswa->nisn)->get();
+        $keuangan_paid = [];
+        foreach ($nonspp as $value) {
+            $keuangan_paid[$value->idkategorikeuangan] = $value->detailnonspp->sum('bayar');
+        }
+
+        $data['siswa'] = $rombel;
+        $data['keuangan'] = $keuangan->map(function ($item) use ($rombel, $keuangan_paid) {
+            if ($item->nama == 'SPP') {
+                $start = new DateTime($rombel->siswa->diterima_tanggal);
+                $end = new DateTime();
+
+                $months = (($end->format('Y') - $start->format('Y')) * 12) + ($end->format('m') - $start->format('m'));
+
+                if ($end->format('d') >= $start->format('d')) {
+                    $months += 1;
+                }
+                if ($rombel->siswa->spp->count() <= $months) {
+                    $spp = $months - $rombel->siswa->spp->count();
+                } else {
+                    $spp = 0;
+                }
+
+                return (object)[
+                    'keuangan' => 'SPP',
+                    'biaya' => number_format($item->biaya, '0', ',', '.') . '/bulan',
+                    'sisa_tagihan' => $spp . ' bulan',
+                    'keterangan' => $spp == 0 ? 'Pembayaran Lunas' : 'Belum Bayar'
+                ];
+            } else {
+                $tagihan = $item->biaya;
+                if (isset($keuangan_paid[$item->id])) {
+                    $tagihan = $item->biaya - $keuangan_paid[$item->id];
+                    if ($tagihan == 0) {
+                        $keterangan = "Sudah Bayar";
+                    } elseif ($tagihan == $item->biaya) {
+                        $keterangan = "Belum Bayar";
+                    } elseif ($tagihan < $item->biaya) {
+                        $keterangan = "Belum Lunas";
+                    }
+                } else {
+                    $keterangan = "Belum Bayar";
+                }
+
+                return (object)[
+                    'keuangan' => $item->nama,
+                    'biaya' => number_format($item->biaya, '0', ',', '.'),
+                    'sisa_tagihan' =>  number_format($tagihan, '0', ',', '.'),
+                    'keterangan' => $keterangan
+                ];
+            }
+        });
+
+        return view('pages.siswa.keuangan', $data);
     }
 }

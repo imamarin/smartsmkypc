@@ -62,7 +62,7 @@ class PresensiHarianController extends Controller
             $presensi[date('Y-m-d', strtotime($value->created_at))] = $value;
         }
 
-        $kalenderakademik = KalenderAkademik::where('idtahunajaran', $tahunajaran->id)->get();
+        $kalenderakademik = KalenderAkademik::where('idtahunajaran', $tahunajaran->id)->where('status_kbm', '!=', 'efektif')->get();
         $tanggal_akademik = [];
         foreach ($kalenderakademik as $value) {
             # code...
