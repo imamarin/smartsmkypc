@@ -10,6 +10,8 @@ use App\Http\Controllers\JamPelajaranController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KalenderAkademikController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\Keuangan\HonorController;
+use App\Http\Controllers\Keuangan\HonorDetailController;
 use App\Http\Controllers\Keuangan\KategoriKeuanganController;
 use App\Http\Controllers\Keuangan\KeuanganLainController;
 use App\Http\Controllers\Keuangan\NonSPPController;
@@ -220,6 +222,15 @@ Route::middleware('cek-status-login')->group(function () {
             Route::get('/tagihan-keuangan/kelas/data/{id}', [TagihanKeuanganController::class, 'kelas'])->name('tagihan-keuangan.kelas.data');
             Route::get('/tagihan-keuangan/print/{id}', [TagihanKeuanganController::class, 'print'])->name('tagihan-keuangan.print');
             Route::resource('/tagihan-keuangan', TagihanKeuanganController::class);
+            Route::get('/honorium-pegawai/rincian/{id}', [HonorDetailController::class, 'rincian'])->name('honorium-pegawai.rincian');
+            Route::get('/honorium-pegawai/kelola/{id}', [HonorDetailController::class, 'kelola'])->name('honorium-pegawai.kelola');
+            Route::get('/honorium-pegawai/kelola/{id}/create', [HonorDetailController::class, 'create'])->name('honorium-pegawai.kelola.create');
+            Route::post('/honorium-pegawai/kelola/{id}/create', [HonorDetailController::class, 'store'])->name('honorium-pegawai.kelola.store');
+            Route::delete('/honorium-pegawai/kelola/{id}/destroy', [HonorDetailController::class, 'destroy'])->name('honorium-pegawai.kelola.destroy');
+            Route::get('/honorium-pegawai/kelola/{id}/edit', [HonorDetailController::class, 'edit'])->name('honorium-pegawai.kelola.edit');
+            Route::put('/honorium-pegawai/kelola/{id}/edit', [HonorDetailController::class, 'update'])->name('honorium-pegawai.kelola.update');
+            Route::post('/honorium-pegawai/kelola/{id}/import', [HonorDetailController::class, 'import'])->name('honorium-pegawai.kelola.import');
+            Route::resource('/honorium-pegawai', HonorController::class);
         });
 
         //pengaturan

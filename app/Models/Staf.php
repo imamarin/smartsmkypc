@@ -53,6 +53,11 @@ class Staf extends Model
         return $this->hasMany(MatpelKelas::class, 'nip', 'nip');
     }
 
+    public function honordetail()
+    {
+        return $this->hasMany(HonorDetail::class, 'nip', 'nip');
+    }
+
     protected $casts = [
         'id' => 'string',
     ];
