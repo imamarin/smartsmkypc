@@ -109,7 +109,7 @@
 							@endphp
 
 							<td align="center" valign="top">{{ $pengetahuanA }}</td>
-							<td align="center" valign="top">
+							<td style="text-align: justify" valign="top">
 								@php
 									if(isset($nilai_cp[$row->nisn][$row1->kode_matpel][$row1->nip])){
 										$textTercapai = [];
@@ -123,8 +123,10 @@
 											}
 										}
 
-										echo "Siswa sudah mencapai kompetensi: ".count($textTercapai) > 0 ? implode(',', $textTercapai) : '-'.'<br>';
-										echo "Siswa belum mencapai kompetensi: ".count($textTidakTercapai) > 0 ? implode(',', $textTidakTercapai) : '-'.'<br>';
+										$tercapai = count($textTercapai) > 0 ? implode(',', $textTercapai) : '-';
+										$tidaktercapai = count($textTidakTercapai) > 0 ? implode(',', $textTidakTercapai) : '-';
+										echo "<b>Siswa sudah mencapai kompetensi: </b>".$tercapai.'<br><br>';
+										echo "<b>Siswa belum mencapai kompetensi: </b>".$tidaktercapai.'<br>';
 									}
 								@endphp
 							</td>
