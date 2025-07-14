@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Keuangan;
 
 use App\Http\Controllers\Controller;
 use App\Imports\HonorDetailImport;
+use App\Models\Honor;
 use App\Models\HonorDetail;
 use App\Models\Staf;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -22,7 +23,8 @@ class HonorDetailController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        $data['honor'] = HonorDetail::findOrFail($id);
+        $data['honor'] = Honor::findOrFail($id);
+        $data['detail'] = HonorDetail::where('idhonor', $id)->first();
         return view('pages.keuangan.honor.rincian', $data);
     }
 

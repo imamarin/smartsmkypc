@@ -37,6 +37,9 @@
                 <a class="dropdown-item" href="{{ route('profil-staf.edit', Crypt::encrypt(Auth::user()->id)) }}"><i
                         class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span
                         class="align-middle">Profil</span></a>
+                <a class="dropdown-item" href="{{ route('staf.honorium') }}"><i
+                        class="mdi mdi-account-cash-outline text-muted font-size-16 align-middle me-1"></i> <span
+                        class="align-middle">Honor</span></a>
                 {{--  <a class="dropdown-item" href="apps-chat.html"><i
                         class="mdi mdi-message-text-outline text-muted font-size-16 align-middle me-1"></i>
                     <span class="align-middle">Messages</span></a>  --}}

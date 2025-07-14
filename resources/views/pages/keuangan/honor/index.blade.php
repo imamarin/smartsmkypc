@@ -43,9 +43,7 @@
                                     <th>#</th>
                                     <th>Bulan</th>
                                     <th>Tahun</th>
-                                    @if(in_array('Hapus', $fiturMenu[$view]))
                                     <th>Aksi</th>
-                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,22 +52,20 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $subject->bulan }}</td>
                                         <td>{{ $subject->tahun }}</td>
-                                        @if(in_array('Hapus', $fiturMenu[$view]))
                                         <td>
                                             @if(in_array('Rincian', $fiturMenu[$view]))
                                             <a href="{{ route('honorium-pegawai.rincian', Crypt::encrypt($subject->id)) }}"
-                                                class="btn btn-info btn-sm">Rincian Honor Pegawai</a>
+                                                class="btn btn-info btn-sm">Rincian Honor</a>
                                             @endif
                                             @if(in_array('Kelola', $fiturMenu[$view]))
                                             <a href="{{ route('honorium-pegawai.kelola', Crypt::encrypt($subject->id)) }}"
-                                                class="btn btn-primary btn-sm">Kelola Honor Pegawai</a>
+                                                class="btn btn-primary btn-sm">Kelola Honor</a>
                                             @endif
                                             @if(in_array('Hapus', $fiturMenu[$view]))
                                             <a href="{{ route('honorium-pegawai.destroy', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                             @endif
                                         </td>
-                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
