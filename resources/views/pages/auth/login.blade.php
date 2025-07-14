@@ -1,105 +1,145 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ asset('assets/images/logo-smk.png') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+    }
+    .login-container {
+      min-height: 100vh;
+    }
+    .login-left {
+      flex: 2;
+      background: #fff;
+      padding: 40px;
+    }
+    .login-right {
+      flex: 1;
+      background: #263788;
+      /* background: linear-gradient(to right, #263788, #6a5acd); */
+      background: linear-gradient(to right, #263788, #3f51b5, #2196f3);
 
-    <meta charset="utf-8" />
-    <title>Sistem Manajemen Akademik</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    <meta content="Pichforest" name="author" />
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-    <!-- Bootstrap Css -->
-    <link href="{{ asset('assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
-    <!-- Material Design Icons -->
-    <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+      color: white;
+      padding: 60px 40px;
+    }
+    .login-box {
+      max-width: 400px;
+      width: 100%;
+      margin: auto;
+    }
+    .form-control {
+      border-radius: 10px;
+      padding: 10px 15px;
+    }
+    .btn-login {
+      background-color: #f97316;
+      color: white;
+      border-radius: 10px;
+      padding: 10px 0;
+      border: solid 1px white;
+    }
+    .btn-login:hover {
+        background: #263788;
+        color: white;
+        border: solid 1px #f97316;
+    }
+    .form-text a {
+      color: white;
+      text-decoration: underline;
+    }
+    .form-group {
+      position: relative;
+    }
+    .toggle-password {
+      position: absolute;
+      top: 70%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #999;
+    }
+    .logo-smk {
+      width: 150px;
+      height: auto;
+    }
 
+  </style>
 </head>
-
-
 <body>
 
-    <!-- <body data-layout="horizontal"> -->
-
-    <div class="authentication-bg min-vh-100">
-        <div class="bg-overlay bg-white"></div>
-        <div class="container">
-            <div class="d-flex flex-column min-vh-100 px-3 pt-4">
-                <div class="row justify-content-center my-auto">
-                    <div class="col-md-8 col-lg-6 col-xl-4">
-                        <div class="text-center  py-5">
-                            <div class="mb-4 mb-md-5">
-                                <a href="index.html" class="d-block auth-logo">
-                                    <img src="assets/images/logo-dark.png" alt="" height="22"
-                                        class="auth-logo-dark">
-                                    <img src="assets/images/logo-light.png" alt="" height="22"
-                                        class="auth-logo-light">
-                                </a>
-                            </div>
-                            <div class="mb-4">
-                                <h5>Selamat Datang !</h5>
-                                <p>Masuk untuk melanjutkan ke SMART YPC.</p>
-                            </div>
-                            <form method="POST" action="{{ route('login') }}">
-                                @csrf
-                                <div class="form-floating form-floating-custom mb-3">
-                                    <input type="text" class="form-control" id="input-username" name="username"
-                                        placeholder="Enter User Name">
-                                    <label for="input-username">Username</label>
-                                    <div class="form-floating-icon">
-                                        <i class="uil uil-users-alt"></i>
-                                    </div>
-                                </div>
-                                <div class="form-floating form-floating-custom mb-3">
-                                    <input type="password" class="form-control" id="input-password" name="password"
-                                        placeholder="Enter Password">
-                                    <label for="input-password">Password</label>
-                                    <div class="form-floating-icon">
-                                        <i class="uil uil-padlock"></i>
-                                    </div>
-                                </div>
-
-                                <div class="mt-3">
-                                    <button class="btn btn-info w-100" type="submit">Masuk</button>
-                                </div>
-                            </form><!-- end form -->
-                        </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="text-center text-muted p-4">
-                            <p class="mb-0">&copy;
-                                <script>
-                                    document.write(new Date().getFullYear())
-                                </script> Smart YPC. Crafted with <i
-                                    class="mdi mdi-heart text-danger"></i> by Pusdatin SMK YPC Tasikmalaya
-                            </p>
-                        </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-
+<div class="login-container d-block d-md-flex">
+  <div class="login-left d-none d-md-flex align-items-center justify-content-center">
+    <img src="{{ asset('assets/images/login-smart.png') }}" class="img-fluid" alt="Login Illustration" />
+  </div>
+  <div class="login-right d-md-flex align-items-center justify-content-center min-vh-100">
+    <div class="login-box">
+        <img src="{{ asset('assets/images/logo-smk.png') }}" class="logo-smk mx-auto d-block mb-3" alt="Login Illustration" />
+        <div style="height: 100px" class="text-center text-white">
+            <h4 class="mb-3" id="typewriter"></h4>
+        </div>
+        <p class="mb-4">Silakan login untuk masuk ke layanan SMART</p>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+                <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                </div>
+            <div class="mb-3 form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password">
+                <span class="toggle-password" onclick="togglePassword()"><i class="fa-regular fa-eye"></i></span>
             </div>
-        </div><!-- end container -->
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn-login">Login</button>
+            </div>
+        </form>
     </div>
-    <!-- end authentication section -->
+  </div>
+</div>
 
-    <!-- JAVASCRIPT -->
-    <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/metismenujs/metismenujs.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/feather-icons/feather.min.js') }}"></script>
-
-
-    @include('sweetalert::alert')
-
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.querySelector('.toggle-password');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.innerHTML = '<i class="fa-regular fa-eye-slash"></i>';
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.innerHTML = '<i class="fa-regular fa-eye"></i>';
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        const text = "Assalamualaikum Wr. Wb.<br>Selamat Datang, di Aplikasi SMART SMK YPC Tasikmalaya";
+        const target = document.getElementById("typewriter");
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                if (text.substring(i, i+4) === "<br>") {
+                    target.innerHTML += "<br>";
+                    i += 4;
+                } else {
+                    target.innerHTML += text.charAt(i);
+                    i++;
+                }
+                setTimeout(typeWriter, 60);
+            } else {
+                setTimeout(() => {
+                    target.innerHTML = "";
+                    i = 0;
+                    typeWriter();
+                }, 1500); 
+            }
+        }
+        typeWriter();
+    });
+</script>
 </body>
-
 </html>

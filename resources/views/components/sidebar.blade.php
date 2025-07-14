@@ -1,26 +1,26 @@
 <div class="vertical-menu">
     <!-- LOGO -->
     <div class="navbar-brand-box">
-        <a href="index.html" class="logo logo-dark">
+        <a href="{{ route('dashboard') }}" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('assets/images/logo-sm-light.png') }}" alt="" height="22">
+                <img src="{{ asset('assets/images/logo-smk.png') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="22">
+                <img src="{{ asset('assets/images/smkypc-light.png') }}" alt="" style="width: 160px; height: 50px;">
             </span>
         </a>
 
-        <a href="index.html" class="logo logo-light">
+        <a href="{{ route('dashboard') }}" class="logo logo-light">
             <span class="logo-lg">
-                <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="22">
+                <img src="{{ asset('assets/images/smkypc-dark.png') }}" alt="" style="width: 160px; height: 50px;">
             </span>
             <span class="logo-sm">
-                <img src="{{ asset('assets/images/logo-sm-light.png') }}" alt="" height="22">
+                <img src="{{ asset('assets/images/logo-smk.png') }}" alt="" height="22">
             </span>
         </a>
     </div>
 
-    <button type="button" class="btn btn-sm px-3 font-size-16 header-item vertical-menu-btn">
+    <button type="button" class="btn btn-sm px-3 font-size-16 header-item vertical-menu-btn" style="color: white">
         <i class="fa fa-fw fa-bars"></i>
     </button>
 

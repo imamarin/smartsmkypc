@@ -83,7 +83,7 @@
                                             <td>{{ $loop->iteration }} </td>
                                             <td>{{ $subject->nisn }}</td>
                                             <td>{{ $subject->nama }}</td>
-                                            <td>
+                                            <td style="width: 150px;">
                                                 <input type="number" name="nilai_pengetahuan[{{ $subject->nisn }}]" id="nilai_pengetahuan_{{ $subject->nisn }}" value="{{ $nilai_pengetahuan[$subject->nisn] ?? old('nilai_pengetahuan.'.$subject->nisn) }}" class="form-control" min="0" max="100">
                                             </td>
                                             <td>

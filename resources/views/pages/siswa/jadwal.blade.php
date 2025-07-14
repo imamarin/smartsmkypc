@@ -59,11 +59,11 @@
                                 @foreach ($jadwal[$key+1] as $item_jadwal)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item_jadwal->matpel->matpel }}</td>
-                                        <td>{{ $item_jadwal->staf->nama }}</td>
-                                        <td>{{ $item_jadwal->jampel->jam }}</td>
-                                        <td>{{ $item_jadwal->jampel->mulai }}</td>
-                                        <td>{{ $item_jadwal->jampel->akhir }}</td>
+                                        <td>{{ $item_jadwal->nama_matpel }}</td>
+                                        <td>{{ $item_jadwal->nama_guru}}</td>
+                                        <td>{{ $item_jadwal->jampel }}</td>
+                                        <td>{{ $item_jadwal->mulai}}</td>
+                                        <td>{{ $item_jadwal->selesai }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

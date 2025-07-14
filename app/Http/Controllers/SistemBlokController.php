@@ -131,6 +131,7 @@ class SistemBlokController extends Controller
         SistemBlok::query()->update([
             'status' => '0'
         ]);
+
         SistemBlok::find($id)->update([
             'status' => '1'
         ]);

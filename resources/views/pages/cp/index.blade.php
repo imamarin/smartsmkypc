@@ -41,7 +41,7 @@
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table display nowrap" id="example2">
+                        <table class="table display wrap" id="example2">
                             <thead>
                                 <tr>
                                     <th style="width: 5%">#</th>

@@ -117,9 +117,9 @@
 										foreach ($nilai_cp[$row->nisn][$row1->kode_matpel][$row1->nip] as $key => $value) {
 											# code...
 											if($value['nilai'] == 1){
-												$textTercapai[] = $value->textCapaian;
+												$textTercapai[] = $value['textCapaian'];
 											}else{
-												$textTidakTercapai[] = $value->textCapaian;
+												$textTidakTercapai[] = $value['textCapaian'];
 											}
 										}
 
@@ -236,10 +236,10 @@
 				<tbody>
 					<tr>
 						<td align="center">1</td>
-						<td>{{ $row->nilaiprakerin->dudi }}</td>
-						<td>{{ $row->nilaiprakerin->alamat }}</td>
-						<td align="center">{{ $row->nilaiprakerin->waktu }} Jam</td>
-						<td align="center">{{ $row->nilaiprakerin->nilai }}</td>
+						<td>{{ $row->nilaiprakerin->dudi ?? '-' }}</td>
+						<td>{{ $row->nilaiprakerin->alamat ?? '-' }}</td>
+						<td align="center">{{ $row->nilaiprakerin->waktu ?? '-' }} Jam</td>
+						<td align="center">{{ $row->nilaiprakerin->nilai ?? '-' }}</td>
 					</tr>
 					
 				</tbody>

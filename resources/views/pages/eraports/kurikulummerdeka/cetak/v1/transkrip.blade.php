@@ -123,14 +123,24 @@ $nama = "";
                             @foreach ($semester as $semester)
                             <td align="center">
                                 @php
-                                    $filtered = $matpel->hasil->first(function ($item) use($tahun, $semester) {
-                                        return $item->tahun_ajaran == $tahun && $item->semester == $semester;
+                                $hasil = false;
+                                foreach ($matpel->daftar_nip as $key => $value) {
+                                    // $filtered = $matpel->hasil->first(function ($item) use($tahun, $semester, $value) {
+                                    //     return $item->tahun_ajaran == $tahun && $item->semester == $semester && $item->nip == $value;
+                                    // })->nilai ?? '-';
+
+                                    $filtered = $matpel->hasil->first(function ($item) use($tahun, $semester, $value) {
+                                        return $item->tahun_ajaran == $tahun && $item->semester == $semester && $item->nip == $value;
                                     });
                                     if($filtered){
+                                        $hasil = true;
                                         echo $filtered->nilai;
-                                    }else{
-                                        echo "-";
+                                        break;
                                     }
+                                }
+                                if(!$hasil){
+                                    echo '-';
+                                }
                                 @endphp
                             </td>
                             @endforeach

@@ -248,9 +248,7 @@ Route::middleware('cek-status-login')->group(function () {
                 Route::middleware('cek-walikelas')->group(function () {
                     Route::resource('/matpel-kelas', MatpelKelasController::class);
                     Route::resource('/absensi-siswa', AbsensiRaportController::class);
-                    Route::resource('/kategori-sikap', KategoriSikapController::class);
                     Route::resource('/nilai-sikap', NilaiSikapController::class);
-                    Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
                     Route::resource('/nilai-ekstrakurikuler', NilaiEkstraController::class);
                     Route::resource('/kenaikan-kelas', KenaikanKelasController::class);
                     Route::resource('/nilai-prakerin', NilaiPrakerinController::class);
@@ -258,6 +256,8 @@ Route::middleware('cek-status-login')->group(function () {
                     Route::resource('/cetak', CetakController::class);
                 });
             });
+            Route::resource('/ekstrakurikuler', EkstrakurikulerController::class);
+            Route::resource('/kategori-sikap', KategoriSikapController::class);
             Route::resource('/format', FormatController::class);
             Route::post('/nilai-raport/import', [DetailNilaiRaportController::class, 'import'])->name('nilai-raport.import');
             Route::get('/template-import-nilairaport', function () {

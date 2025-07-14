@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\SiswaExport;
 use App\Imports\SiswaImport;
 use App\Models\JadwalMengajar;
+use App\Models\JamPelajaran;
 use App\Models\Role;
 use App\Models\Rombel;
 use App\Models\Siswa;
@@ -373,17 +374,32 @@ class SiswaController extends Controller
         $tahunajaran = TahunAjaran::where('status', 1)->first();
         $rombel = Rombel::where('nisn', Auth::user()->siswa->nisn)->where('idtahunajaran', $tahunajaran->id)->first();
         $jadwalMengajar = JadwalMengajar::with('jampel')->where('idkelas', $rombel->idkelas)->whereHas('sistemblok', function ($query) use ($tahunajaran) {
-            $query->where('status', 1)->where('semester', $tahunajaran->semester);
+            $query->where('semester', $tahunajaran->semester);
         })->get()->sortBy(function ($item) {
             return $item->jampel->jam ?? 0;
         })->values();
         $jadwal = [];
+        $jadwalMengajar = $jadwalMengajar->map(function ($item) {
+            $jam_akhir = $item->jampel->jam + $item->jumlah_jam - 1;
+            return (object)[
+                'id' => $item->id,
+                'hari' => $item->jampel->hari ?? '-',
+                'jampel' => $item->jampel->jam ?? '-',
+                'mulai' => $item->jampel->mulai ?? '-',
+                'selesai' => JamPelajaran::where('jam', $jam_akhir)->first()->akhir ?? '-',
+                'kode_matpel' => $item->kode_matpel,
+                'nama_matpel' => $item->matpel->matpel ?? '-',
+                'nip' => $item->nip,
+                'nama_guru' => $item->staf->nama ?? '-',
+            ];
+        });
         foreach ($jadwalMengajar as $key => $value) {
             # code...
-            $jadwal[$value->jampel->hari][] = $value;
+            $jadwal[$value->hari][] = $value;
         }
         $data['hari'] = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         $data['jadwal'] = $jadwal;
+        // dd($rombel);
         return view('pages.siswa.jadwal', $data);
     }
 }

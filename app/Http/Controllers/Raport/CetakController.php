@@ -118,15 +118,17 @@ class CetakController extends Controller
                         ['idtahunajaran', 'asc'],
                         ['semester', 'asc'],
                     ])->values(),
-                'matpel' => MatpelKelas::whereHas(
+                'matpel' => MatpelKelas::select('rpt_matpel_kelas.*', DB::raw('GROUP_CONCAT(nip) as daftar_nip'))->with('matpel')->whereHas(
                     'kelas',
                     function ($query) use ($siswa) {
                         $query->whereHas('rombel', function ($query) use ($siswa) {
                             $query->where('nisn', $siswa->nisn);
                         });
                     }
-                )->groupBy('kode_matpel')->get()->map(function ($matpel) use ($siswa) {
+                )->orderBy('kelompok_matpel', 'asc')->orderBy('id', 'asc')->groupBy('kode_matpel')->get()->map(function ($matpel) use ($siswa) {
+                    $nip = explode(',', $matpel->daftar_nip);
                     return (object)[
+                        'daftar_nip' => $nip,
                         'kode_matpel' => $matpel->kode_matpel,
                         'matpel' => $matpel->matpel->matpel,
                         'us' => DetailNilaiSiswa::select('nilai')->whereHas('nilaisiswa', function ($query) use ($matpel) {
@@ -134,13 +136,13 @@ class CetakController extends Controller
                                 ->where('nip', $matpel->nip)
                                 ->where('kategori', 'uas');
                         })->where('nisn', $siswa->nisn)->first(),
-                        'hasil' => DetailNilaiRaport::whereHas('nilairaport', function ($query) use ($matpel) {
-                            $query->where('kode_matpel', $matpel->kode_matpel);
-                            $query->where('nip', $matpel->nip);
+                        'hasil' => DetailNilaiRaport::whereHas('nilairaport', function ($query) use ($matpel, $nip) {
+                            $query->where('kode_matpel', $matpel->kode_matpel)->whereIn('nip', $nip);
                         })
                             ->where('nisn', $siswa->nisn)
                             ->get()->map(function ($hasil) {
                                 return (object)[
+                                    'nip' => $hasil->nilairaport->nip,
                                     'tahun_ajaran' => $hasil->nilairaport->tahunajaran->awal_tahun_ajaran,
                                     'semester' => $hasil->nilairaport->semester,
                                     'nilai' => $hasil->nilai_1

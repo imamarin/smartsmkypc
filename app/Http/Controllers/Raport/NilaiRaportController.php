@@ -53,6 +53,7 @@ class NilaiRaportController extends Controller
 
         $data['nilairaport'] = NilaiRaport::where([
             'idtahunajaran' => $this->aktivasi->idtahunajaran,
+            'semester' => $aktivasi->semester,
             'nip' => Auth::user()->staf->nip
         ])->orderBy('id', 'desc')->get();
 

@@ -43,7 +43,7 @@
                             <a class="nav-link {{ $kategori == 'uas' ? 'active' : '' }}" data-bs-toggle="pill" href="#uas">Nilai UAS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ $kategori == 'us' ? 'active' : '' }}" data-bs-toggle="pill" href="#uas">Nilai US</a>
+                            <a class="nav-link {{ $kategori == 'us' ? 'active' : '' }}" data-bs-toggle="pill" href="#us">Nilai US</a>
                         </li>
                     </ul>
                     {{-- <h4 class="card-title">List Rombel</h4> --}}
@@ -68,7 +68,9 @@
                                         <th>#</th>
                                         <th>Kelas</th>
                                         <th>Mata Pelajaran</th>
+                                        @if($value != 'us')
                                         <th>Tanggal Pelaksanaan</th>
+                                        @endif
                                         <th>Nilai Rata-Rata</th>
                                         <th>Keterangan</th>
                                         @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]) || in_array('input', $fiturMenu[$view]))                                        
@@ -82,7 +84,9 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->kelas->kelas }}</td>
                                         <td>{{ $item->matpel->matpel }}</td>
+                                        @if($value != 'us')
                                         <td>{{ date('d-m-Y', strtotime($item->tanggal_pelaksanaan)) }}</td>
+                                        @endif
                                         <td>{{ floor($item->detailnilaisiswa_avg_nilai) ?? 0 }}</td>
                                         <td>{{ $item->keterangan }}</td>
                                         @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]) || in_array('Input', $fiturMenu[$view]))                                        

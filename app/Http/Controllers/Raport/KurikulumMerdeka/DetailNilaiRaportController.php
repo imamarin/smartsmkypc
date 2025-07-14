@@ -8,6 +8,7 @@ use App\Imports\NilaiRaportImpor;
 use App\Imports\Kurmer\NilaiRaportImport;
 use App\Models\CapaianPembelajaran;
 use App\Models\DetailNilaiSiswa;
+use App\Models\Matpel;
 use App\Models\PersentaseNilaiSiswa;
 use App\Models\Raport\DetailNilaiRaport;
 use App\Models\Raport\IdentitasRaport;
@@ -44,7 +45,16 @@ class DetailNilaiRaportController extends Controller
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
-        $data['cp'] = CapaianPembelajaran::where('kode_matpel', $nilairaport->kode_matpel)->get();
+        $arr_matpel = [];
+        $matpel = Matpel::where('matpels_kode', $nilairaport->kode_matpel)->get();
+        if ($matpel->count() > 0) {
+            foreach ($matpel as $key => $item) {
+                $arr_matpel[] = $item->kode_matpel;
+            }
+            $data['cp'] = CapaianPembelajaran::whereIn('kode_matpel', $arr_matpel)->get();
+        } else {
+            $data['cp'] = CapaianPembelajaran::where('kode_matpel', $nilairaport->kode_matpel)->get();
+        }
 
         $siswa = Siswa::whereHas('rombel', function ($query) use ($nilairaport) {
             $query->where([

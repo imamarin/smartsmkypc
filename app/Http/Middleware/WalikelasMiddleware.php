@@ -23,7 +23,7 @@ class WalikelasMiddleware
             $query->where('status', 1);
         })->first();
         if (!$walikelas) {
-            return redirect()->back()->with('warning', 'Maaf, fitur ini hanya untuk walikelas');
+            return redirect('/pages/beranda')->with('warning', 'Maaf, fitur ini hanya untuk walikelas');
         }
 
 

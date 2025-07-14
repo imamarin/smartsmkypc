@@ -94,15 +94,25 @@
                                 @endphp
                                 @foreach ($semester as $semester)
                                 <td style="text-align: center; vertical-align: middle;">
-                                    @php
-                                        $filtered = $matpel->hasil->first(function ($item) use($tahun, $semester) {
-                                            return $item->tahun_ajaran == $tahun && $item->semester == $semester;
+                                     @php
+                                    $hasil = false;
+                                    foreach ($matpel->daftar_nip as $key => $value) {
+                                        // $filtered = $matpel->hasil->first(function ($item) use($tahun, $semester, $value) {
+                                        //     return $item->tahun_ajaran == $tahun && $item->semester == $semester && $item->nip == $value;
+                                        // })->nilai ?? '-';
+
+                                        $filtered = $matpel->hasil->first(function ($item) use($tahun, $semester, $value) {
+                                            return $item->tahun_ajaran == $tahun && $item->semester == $semester && $item->nip == $value;
                                         });
                                         if($filtered){
+                                            $hasil = true;
                                             echo $filtered->nilai;
-                                        }else{
-                                            echo "-";
+                                            break;
                                         }
+                                    }
+                                    if(!$hasil){
+                                        echo '-';
+                                    }
                                     @endphp
                                 </td>
                                 @endforeach

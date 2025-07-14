@@ -44,7 +44,7 @@ class MatpelKelasController extends Controller
             ->where([
                 'idtahunajaran' => $this->aktivasi->idtahunajaran,
                 'semester' => $this->aktivasi->semester
-            ])->get();
+            ])->orderBy('kelompok_matpel', 'asc')->orderBy('id', 'asc')->get();
         return view('pages.eraports.matpelkelas.index', $data);
     }
 

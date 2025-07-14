@@ -236,7 +236,8 @@ class NilaiSiswaController extends Controller
         $tahunajaran = $this->tahunajaran;
         $rekap = NilaiSiswa::where([
             'semester' => $tahunajaran->semester,
-            'idtahunajaran' => $tahunajaran->id
+            'idtahunajaran' => $tahunajaran->id,
+            'nip' => Auth::user()->staf->nip
         ])->groupBy('kode_matpel')->groupBy('idkelas')->get();
 
         $data['rekap'] = $rekap;
