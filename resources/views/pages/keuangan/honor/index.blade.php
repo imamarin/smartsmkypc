@@ -54,15 +54,15 @@
                                         <td>{{ $subject->tahun }}</td>
                                         <td>
                                             @if(in_array('Rincian', $fiturMenu[$view]))
-                                            <a href="{{ route('honorium-pegawai.rincian', Crypt::encrypt($subject->id)) }}"
+                                            <a href="{{ route('honorarium-pegawai.rincian', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-info btn-sm">Rincian Honor</a>
                                             @endif
                                             @if(in_array('Kelola', $fiturMenu[$view]))
-                                            <a href="{{ route('honorium-pegawai.kelola', Crypt::encrypt($subject->id)) }}"
+                                            <a href="{{ route('honorarium-pegawai.kelola', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-primary btn-sm">Kelola Honor</a>
                                             @endif
                                             @if(in_array('Hapus', $fiturMenu[$view]))
-                                            <a href="{{ route('honorium-pegawai.destroy', Crypt::encrypt($subject->id)) }}"
+                                            <a href="{{ route('honorarium-pegawai.destroy', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                             @endif
                                         </td>
@@ -84,7 +84,7 @@
                     <h5 class="modal-title" id="addSubjectModalLabel">Tambah Honorium Pegawai</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="subjectForm" action="{{ route('honorium-pegawai.store') }}" method="POST">
+                <form id="subjectForm" action="{{ route('honorarium-pegawai.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">

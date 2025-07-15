@@ -22,12 +22,12 @@ class HonorController extends Controller
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
             if (
-                Route::currentRouteName() == 'honorium-pegawai.index' ||
-                Route::currentRouteName() == 'honorium-pegawai.store' ||
-                Route::currentRouteName() == 'honorium-pegawai.destroy' ||
+                Route::currentRouteName() == 'honorarium-pegawai.index' ||
+                Route::currentRouteName() == 'honorarium-pegawai.store' ||
+                Route::currentRouteName() == 'honorarium-pegawai.destroy' ||
                 Route::currentRouteName() == 'staf.honorium'
             ) {
-                $this->view = 'Keuangan-Honorium Pegawai';
+                $this->view = 'Keuangan-Honorarium Pegawai';
             }
 
             if (!isset($this->fiturMenu[$this->view])) {

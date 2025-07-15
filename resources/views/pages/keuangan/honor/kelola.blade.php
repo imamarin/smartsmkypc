@@ -28,7 +28,7 @@
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3 gap-2">
                             <!-- Button to trigger modal -->
-                            <a href="{{ route('honorium-pegawai.kelola.create', Crypt::encrypt($id)) }}"
+                            <a href="{{ route('honorarium-pegawai.kelola.create', Crypt::encrypt($id)) }}"
                                 class="btn btn-primary btn-sm">Tambah Data</a>
                             <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-default"><i class="fa fa-upload"></i> Import Data</button>
                         </div>
@@ -80,9 +80,9 @@
                                         <td>{{ $subject->lainnya }}</td>
                                         <td>{{ $subject->jum_tal }}</td>
                                         <td>
-                                            <a href="{{ route('honorium-pegawai.kelola.edit', Crypt::encrypt($subject->id)) }}"
+                                            <a href="{{ route('honorarium-pegawai.kelola.edit', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-info btn-sm" >Edit</a>
-                                            <a href="{{ route('honorium-pegawai.kelola.destroy', Crypt::encrypt($subject->id)) }}"
+                                            <a href="{{ route('honorarium-pegawai.kelola.destroy', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                         </td>
                                     </tr>
@@ -97,7 +97,7 @@
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="post" action="{{ route('honorium-pegawai.kelola.import', Crypt::encrypt($id)) }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('honorarium-pegawai.kelola.import', Crypt::encrypt($id)) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
                         <h4 class="modal-title">Import Honor Staf</h4>

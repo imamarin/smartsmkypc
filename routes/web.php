@@ -209,7 +209,7 @@ Route::middleware('cek-status-login')->group(function () {
 
         //Keuangan
         Route::get('/siswa/info-keuangan', [TagihanKeuanganController::class, 'infoSiswa'])->name('info-keuangan-siswa');
-        Route::get('/staf/honorium', [HonorController::class, 'index'])->name('staf.honorium');
+        Route::get('/staf/honorarium', [HonorController::class, 'index'])->name('staf.honorium');
         Route::prefix('/keuangan')->group(function () {
             Route::resource('/kategori-keuangan', KategoriKeuanganController::class);
             Route::get('/pembayaran-spp/siswa', [SPPController::class, 'siswa'])->name('pembayaran-spp.siswa');
@@ -223,15 +223,15 @@ Route::middleware('cek-status-login')->group(function () {
             Route::get('/tagihan-keuangan/kelas/data/{id}', [TagihanKeuanganController::class, 'kelas'])->name('tagihan-keuangan.kelas.data');
             Route::get('/tagihan-keuangan/print/{id}', [TagihanKeuanganController::class, 'print'])->name('tagihan-keuangan.print');
             Route::resource('/tagihan-keuangan', TagihanKeuanganController::class);
-            Route::get('/honorium-pegawai/rincian/{id}', [HonorDetailController::class, 'rincian'])->name('honorium-pegawai.rincian');
-            Route::get('/honorium-pegawai/kelola/{id}', [HonorDetailController::class, 'kelola'])->name('honorium-pegawai.kelola');
-            Route::get('/honorium-pegawai/kelola/{id}/create', [HonorDetailController::class, 'create'])->name('honorium-pegawai.kelola.create');
-            Route::post('/honorium-pegawai/kelola/{id}/create', [HonorDetailController::class, 'store'])->name('honorium-pegawai.kelola.store');
-            Route::delete('/honorium-pegawai/kelola/{id}/destroy', [HonorDetailController::class, 'destroy'])->name('honorium-pegawai.kelola.destroy');
-            Route::get('/honorium-pegawai/kelola/{id}/edit', [HonorDetailController::class, 'edit'])->name('honorium-pegawai.kelola.edit');
-            Route::put('/honorium-pegawai/kelola/{id}/edit', [HonorDetailController::class, 'update'])->name('honorium-pegawai.kelola.update');
-            Route::post('/honorium-pegawai/kelola/{id}/import', [HonorDetailController::class, 'import'])->name('honorium-pegawai.kelola.import');
-            Route::resource('/honorium-pegawai', HonorController::class);
+            Route::get('/honorarium-pegawai/rincian/{id}', [HonorDetailController::class, 'rincian'])->name('honorarium-pegawai.rincian');
+            Route::get('/honorarium-pegawai/kelola/{id}', [HonorDetailController::class, 'kelola'])->name('honorarium-pegawai.kelola');
+            Route::get('/honorarium-pegawai/kelola/{id}/create', [HonorDetailController::class, 'create'])->name('honorarium-pegawai.kelola.create');
+            Route::post('/honorarium-pegawai/kelola/{id}/create', [HonorDetailController::class, 'store'])->name('honorarium-pegawai.kelola.store');
+            Route::delete('/honorarium-pegawai/kelola/{id}/destroy', [HonorDetailController::class, 'destroy'])->name('honorarium-pegawai.kelola.destroy');
+            Route::get('/honorarium-pegawai/kelola/{id}/edit', [HonorDetailController::class, 'edit'])->name('honorarium-pegawai.kelola.edit');
+            Route::put('/honorarium-pegawai/kelola/{id}/edit', [HonorDetailController::class, 'update'])->name('honorarium-pegawai.kelola.update');
+            Route::post('/honorarium-pegawai/kelola/{id}/import', [HonorDetailController::class, 'import'])->name('honorarium-pegawai.kelola.import');
+            Route::resource('/honorarium-pegawai', HonorController::class);
         });
 
         //pengaturan

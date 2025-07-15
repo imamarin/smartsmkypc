@@ -61,12 +61,14 @@
                                 </ul>
                             </li>
                         @else
+                            @if($menu->menu != "Honorarium Pegawai")
                             <li class="{{ request()->is(ltrim($menu->url, '/') . '*') ? 'mm-active' : '' }}">
                                 <a href="{{ $menu->url }}">
                                     <i class="icon nav-icon" data-feather="{{ $menu->kategori->icon }}"></i>
                                     <span class="menu-item" data-key="t-analytics">{{ $menu->menu }}</span>
                                 </a>
                             </li>
+                            @endif
                         @endif
                         @php
                             // Menandai kategori ini sudah ditampilkan
