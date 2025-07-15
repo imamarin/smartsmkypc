@@ -34,9 +34,13 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header bg bg-info">
-                    <h6>INFORMASI SEKOLAH</h6>
+                    <h6>KALENDER SEKOLAH</h6>
                 </div><!-- end card header -->
                 <div class="card-body">
+                    <div class="container-fluid">
+                        <iframe src="https://calendar.google.com/calendar/embed?src=imamamirulloh%40gmail.com&ctz=Antarctica%2FDavis" style="border: 0; width: 100%; height: 700px;" frameborder="0" scrolling="no"></iframe>
+                    </div>
+
                 </div>
             </div>
         </div>
