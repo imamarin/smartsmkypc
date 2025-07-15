@@ -11,6 +11,8 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
+
 
 class HonorDetailController extends Controller
 {
@@ -24,7 +26,7 @@ class HonorDetailController extends Controller
         }
 
         $data['honor'] = Honor::findOrFail($id);
-        $data['detail'] = HonorDetail::where('idhonor', $id)->first();
+        $data['detail'] = HonorDetail::where('idhonor', $id)->where('nip', Auth::user()->staf->nip)->firstOrFail();
         return view('pages.keuangan.honor.rincian', $data);
     }
 
