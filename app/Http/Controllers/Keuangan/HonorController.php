@@ -25,7 +25,7 @@ class HonorController extends Controller
                 Route::currentRouteName() == 'honorarium-pegawai.index' ||
                 Route::currentRouteName() == 'honorarium-pegawai.store' ||
                 Route::currentRouteName() == 'honorarium-pegawai.destroy' ||
-                Route::currentRouteName() == 'staf.honorium'
+                Route::currentRouteName() == 'staf.honorarium'
             ) {
                 $this->view = 'Keuangan-Honorarium Pegawai';
             }

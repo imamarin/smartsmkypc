@@ -215,7 +215,7 @@ Route::middleware('cek-status-login')->group(function () {
 
         //Keuangan
         Route::get('/siswa/info-keuangan', [TagihanKeuanganController::class, 'infoSiswa'])->name('info-keuangan-siswa');
-        Route::get('/staf/honorarium', [HonorController::class, 'index'])->name('staf.honorium');
+        Route::get('/staf/honorarium', [HonorController::class, 'index'])->name('staf.honorarium');
         Route::prefix('/keuangan')->group(function () {
             Route::resource('/kategori-keuangan', KategoriKeuanganController::class);
             Route::get('/pembayaran-spp/siswa', [SPPController::class, 'siswa'])->name('pembayaran-spp.siswa');
