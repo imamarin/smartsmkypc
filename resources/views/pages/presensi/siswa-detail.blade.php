@@ -70,7 +70,7 @@
                                     @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }} </td>
-                                        <td>{{ $subject->nisn }}</td>
+                                        <td>{{ $subject->siswa->nisn_dapodik }}</td>
                                         <td>{{ $subject->siswa->nama }}</td>
                                         @foreach($tanggal_presensi as $item)
                                         @php

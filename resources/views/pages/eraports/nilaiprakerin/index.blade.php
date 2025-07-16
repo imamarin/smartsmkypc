@@ -75,7 +75,7 @@
                                     @foreach ($siswa as $key => $subject)
                                         <tr>
                                             <td>{{ $loop->iteration }} </td>
-                                            <td>{{ $subject->nisn }}</td>
+                                            <td>{{ $subject->nisn_dapodik }}</td>
                                             <td>{{ $subject->nama }}</td>
                                             <td>
                                                 <input type="text" value="{{ $subject->nilaiprakerin->dudi ?? '-' }}" name="dudi[{{ $subject->nisn }}]" id="dudi" class="form-control">

@@ -41,7 +41,7 @@
     <table>
         <tr>
             <td style="width: 100px">NISN</td>
-            <td>: {{ $siswa->siswa->nisn }}</td>
+            <td>: {{ $siswa->siswa->nisn_dapodik }}</td>
         </tr>
         <tr>
             <td>NAMA SISWA</td>

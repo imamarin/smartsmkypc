@@ -55,7 +55,7 @@
                                 @foreach ($ekstrakurikuler as $subject)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $subject->nama }}</td>
+                                        <td>{{ $subject->nisn_dapodik }}</td>
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
                                             <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"

@@ -73,7 +73,7 @@
                                 @foreach ($rombel as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->nisn }}</td>
+                                    <td>{{ $item->nisn_dapodik }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td style="text-align: end">{{ $item->spp <= $item->jmlBulan ? $item->jmlBulan - $item->spp : '0' }} Bulan</td>
                                     <td style="text-align: end">{{ number_format($item->totalKeuangan - $item->nonspp <= 0 ? '0' : $item->totalKeuangan - $item->nonspp, '0', ',', '.') }}</td>

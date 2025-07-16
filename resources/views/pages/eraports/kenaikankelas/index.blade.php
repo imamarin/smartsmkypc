@@ -74,7 +74,7 @@
                                     @foreach ($siswa as $key => $subject)
                                         <tr>
                                             <td>{{ $loop->iteration }} </td>
-                                            <td>{{ $subject->nisn }}</td>
+                                            <td>{{ $subject->nisn_dapodik }}</td>
                                             <td>{{ $subject->nama }}</td>
                                             <td>
                                                 <select name="keterangan[{{ $subject->nisn }}]" id="keterangan" class="form-select">

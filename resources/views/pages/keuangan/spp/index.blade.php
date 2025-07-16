@@ -33,7 +33,7 @@
                                             <option value="">Pilih Siswa</option>
                                             @foreach ($siswa as $item)
                                                 <option value="{{ encryptSmart($item->nisn) }}" {{ $item->nisn == $nisn ? 'selected':'' }}>
-                                                    {{ $item->nisn.' | '.strtoupper($item->nama).' | '. $item->kelas}}
+                                                    {{ $item->nisn_dapodik.' | '.strtoupper($item->nama).' | '. $item->kelas}}
                                                 </option>
                                             @endforeach
                                         </select>

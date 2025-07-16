@@ -82,7 +82,7 @@
                                 @foreach ($presensi as $key => $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->nisn }}</td>
+                                        <td>{{ $item->siswa->nisn_dapodik }}</td>
                                         <td>{{ $item->siswa->nama }}</td>
                                         <td>{{ $item->total_hadir }}</td>
                                         <td>{{ $item->total_sakit }}</td>

@@ -69,7 +69,7 @@
 					</tr>
 					<tr>
 						<td>No. Induk / NISN</td>
-						<td>: {{ $row->nisn }}</td>
+						<td>: {{ $row->nisn_dapodik }}</td>
 						<td>Tahun Ajaran</td>
 						<td>: {{ $aktivasi->tahunajaran->awal_tahun_ajaran }}/{{ $aktivasi->tahunajaran->akhir_tahun_ajaran }}</td>
 					</tr>
@@ -216,7 +216,7 @@
 					</tr>
 					<tr>
 						<td>No. Induk / NISN</td>
-						<td>: {{ $row->nisn }}</td>
+						<td>: {{ $row->nisn_dapodik }}</td>
 						<td>Tahun Ajaran</td>
 						<td>: {{ $aktivasi->tahunajaran->awal_tahun_ajaran }}/{{ $aktivasi->tahunajaran->akhir_tahun_ajaran }}</td>
 					</tr>

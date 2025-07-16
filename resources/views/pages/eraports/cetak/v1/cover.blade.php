@@ -63,7 +63,7 @@ SEKOLAH MENENGAH KEJURUAN<br />
 <br />
 <font size="+2" face="Times New Roman"><b>NISN</b></font>
 <div style="border:#000000 solid 1px;width:50%;">
-<font size="+2" face="Times New Roman">{{ $row->nisn }}</font>
+<font size="+2" face="Times New Roman">{{ $row->nisn_dapodik }}</font>
 </div>
 <br />
 <br />
@@ -141,7 +141,7 @@ SEKOLAH MENENGAH KEJURUAN<br />
 <td>1.</td><td style="width:40%;">Nama Peserta Didik (Lengkap)</td><td>: {{ $row->nama }}</td>
 </tr>
 <tr>
-<td>2.</td><td>Nomor Indik Siswa Nasional</td><td>: <?php echo $row->nisn; ?></td>
+<td>2.</td><td>Nomor Indik Siswa Nasional</td><td>: <?php echo $row->nisn_dapodik; ?></td>
 </tr>
 <tr>
 @php

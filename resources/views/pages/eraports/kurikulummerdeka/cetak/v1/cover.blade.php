@@ -63,7 +63,7 @@ SEKOLAH MENENGAH KEJURUAN<br />
 <br />
 <font size="+2" face="Times New Roman"><b>NISN</b></font>
 <div style="border:#000000 solid 1px;width:50%;">
-<font size="+2" face="Times New Roman">{{ $row->nisn }}</font>
+<font size="+2" face="Times New Roman">{{ $row->nisn_dapodik }}</font>
 </div>
 <br />
 <br />

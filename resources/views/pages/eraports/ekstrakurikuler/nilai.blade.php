@@ -113,7 +113,7 @@
                                 @foreach ($nilaiekstrakurikuler as $subject)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $subject->nisn }}</td>
+                                        <td>{{ $subject->siswa->nisn_dapodik }}</td>
                                         <td>{{ $subject->siswa->nama }}</td>
                                         <td>{{ $subject->ekstrakurikuler->nama }}</td>
                                         <td>{{ $subject->nilai == 3 ? 'Sangat Baik' : ($subject->nilai == 2 ? 'Baik' : 'Cukup Baik') }}</td>

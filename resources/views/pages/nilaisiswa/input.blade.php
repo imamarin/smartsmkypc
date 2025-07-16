@@ -69,7 +69,7 @@
                                     @foreach ($rombel as $key => $subject)
                                         <tr>
                                             <td>{{ $loop->iteration }} </td>
-                                            <td>{{ $subject->nisn }}</td>
+                                            <td>{{ $subject->siswa->nisn_dapodik }}</td>
                                             <td>{{ $subject->siswa->nama }}</td>
                                             <td>{{ $subject->siswa->jenis_kelamin }}</td>
                                             <td>

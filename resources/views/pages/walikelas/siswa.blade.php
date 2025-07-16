@@ -116,7 +116,7 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td class="{{ $item->siswa->status == 1 ? '' : 'text-danger' }}">
-                                            {{ $item->siswa->nis }}/{{ $item->siswa->nisn }}</td>
+                                            {{ $item->siswa->nis }}/{{ $item->siswa->nisn_dapodik }}</td>
                                         <td class="{{ $item->siswa->status == 1 ? '' : 'text-danger' }}">{{ $item->siswa->nama }}</td>
                                         <td class="{{ $item->siswa->status == 1 ? '' : 'text-danger' }}">
                                             {{ $item->siswa->tempat_lahir }},

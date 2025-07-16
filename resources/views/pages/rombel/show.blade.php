@@ -64,7 +64,7 @@
                                     <tr>
                                         <td><input type="checkbox" name="siswa[]" value="{{ $item->id }}" class="item-checkbox"></td>
                                         <td>{{ $key+1 }}</td>
-                                        <td>{{ $item->nisn }}</td>
+                                        <td>{{ $item->siswa->nisn_dapodik }}</td>
                                         <td>{{ $item->siswa->nama }}</td>
                                         <td>{{ $item->siswa->jenis_kelamin }}</td>
                                         @if(in_array('Pindah Kelas', $fiturMenu[$view]) || in_array('Hapus Siswa', $fiturMenu[$view]))

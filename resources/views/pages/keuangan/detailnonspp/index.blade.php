@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col col-md-2">
                             <h6 class="text-white">NISN:</h6>
-                            {{ $siswa->siswa->nisn }}
+                            {{ $siswa->siswa->nisn_dapodik }}
                         </div>
                         <div class="col col-md-3">
                             <h6 class="text-white">Nama Siswa:</h6>

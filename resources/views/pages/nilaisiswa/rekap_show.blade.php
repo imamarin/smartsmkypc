@@ -59,7 +59,7 @@
                                 @foreach ($nilaisiswa as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->nisn }}</td>
+                                    <td>{{ $item->nisn_dapodik }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ round($item->nilai_tugas) }}</td>
                                     <td>{{ round($item->nilai_harian) }}</td>

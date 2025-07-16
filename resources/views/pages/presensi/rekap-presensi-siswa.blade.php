@@ -154,7 +154,7 @@
                                     @foreach ($presensi_harian_siswa as $key => $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->nisn }}</td>
+                                            <td>{{ $item->nisn_dapodik }}</td>
                                             <td>{{ $item->nama }}</td>
                                             <td>{{ $presensi[$item->nisn]->total_hadir ?? '0' }}</td>
                                             <td>{{ $presensi[$item->nisn]->total_sakit ?? '0' }}</td>

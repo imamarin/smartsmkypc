@@ -74,7 +74,7 @@
                                     @foreach ($siswa as $subject)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $subject->nisn }}</td>
+                                            <td>{{ $subject->nisn_dapodik }}</td>
                                             <td>{{ $subject->nama }}</td>
                                             @foreach ($sikap as $item)
                                                 @php
