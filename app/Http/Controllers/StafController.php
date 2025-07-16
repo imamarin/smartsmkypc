@@ -54,7 +54,7 @@ class StafController extends Controller
      */
     public function create()
     {
-        if (!in_array('Tambah', $this->fiturMenu['Data Staf'])) {
+        if (!in_array('Tambah', $this->fiturMenu['Data Master-Data Staf'])) {
             return redirect()->back();
         }
         $data['role'] = Role::all();

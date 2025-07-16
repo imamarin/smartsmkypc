@@ -87,4 +87,9 @@ class Siswa extends Model
     {
         return $this->hasMany(NonSpp::class, 'nisn', 'nisn');
     }
+
+    public function kasussiswa()
+    {
+        return $this->hasMany(KasusSiswa::class, 'nisn', 'nisn');
+    }
 }
