@@ -181,7 +181,7 @@
                         html += `
                         <tr>
                             <td class='bg bg-secondary text-white'>
-                                <span>${item.menu}</span>
+                                <span>${item.kategori} -> ${item.menu}</span>
                             </td>
                             <td class='bg bg-secondary text-white' style='border-left:none;'>
                                 <div class="custom-control custom-switch">

@@ -132,6 +132,7 @@ class RoleController extends Controller
             $accessList[] = [
                 'id' => $menu->id,
                 'menu' => $menu->menu,
+                'kategori' => $menu->kategori->kategori,
                 'fitur' => $fiturList,
             ];
         }
