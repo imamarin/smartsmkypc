@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('jenis_kasus');
             $table->text('deskripsi')->nullable();
             $table->date('tanggal_kasus')->nullable();
-            $table->enum('status', ['private', 'open', 'closed'])->default('private');
+            $table->enum('status', ['private', 'open', 'closed', 'sp1', 'sp2', 'sp3'])->default('private');
             $table->text('penanganan')->nullable(); // tindakan yang diambil
             $table->string('dokumentasi')->nullable(); // link atau path ke dokumentasi
             $table->timestamps();
