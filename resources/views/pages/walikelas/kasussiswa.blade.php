@@ -24,7 +24,7 @@
                 <div class="card-header text-white" style="background-color: rgb(42, 101, 149)">
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <form action="{{ route('walikelas.laporan-kasus-siswa.rombel') }}" method="get">
+                            <form action="{{ route('laporan-kasus-siswa.rombel') }}" method="get">
                                 <div class="row">
                                     <div class="col-12 col-md-3">
                                         <label for="idkelas" class="form-label">Kelas</label>
@@ -78,12 +78,18 @@
                                         <td>{{ $item->jenis_kasus ?? 0 }}</td>
                                         <td>{{ $item->tanggal_kasus ?? 0 }}</td>
                                         <td>
-                                            @if ($item->status == 'open')
-                                                Pengajuan Tindakan
-                                            @elseif ($item->status == 'in_progress')
-                                                Sedang Ditindak
-                                            @elseif ($item->status == 'resolved')
+                                            @if ($item->status == 'private')
+                                                Penindakan walikelas
+                                            @elseif ($item->status == 'open')
+                                                Penindakan BK
+                                            @elseif ($item->status == 'closed')
                                                 Kasus Selesai
+                                            @elseif ($item->status == 'sp1')
+                                                Surat Peringatan 1
+                                            @elseif ($item->status == 'sp2')
+                                                Surat Peringatan 2
+                                            @elseif ($item->status == 'sp3')
+                                                Surat Peringatan 3
                                             @else
                                                 -
                                             @endif
@@ -91,6 +97,10 @@
                                         @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                         <td>
                                             <div class="d-flex">
+                                                <a href="{{ route('laporan-kasus-siswa.detail', Crypt::encrypt($item->id)) }}"
+                                                    class="btn btn-sm btn-info me-2">
+                                                    Detail Kasus
+                                                </a>
                                                 @if(in_array('Edit', $fiturMenu[$view]))
                                                 <a href="{{ route('laporan-kasus-siswa.edit', Crypt::encrypt($item->id)) }}"
                                                     class="btn btn-sm btn-secondary me-2">

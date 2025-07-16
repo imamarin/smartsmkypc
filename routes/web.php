@@ -195,8 +195,8 @@ Route::middleware('cek-status-login')->group(function () {
             Route::get('/walikelas/tagihan-keuangan-siswa/kelas', [TagihanKeuanganController::class, 'show'])->name('walikelas.tagihan-keuangan-siswa.kelas');
             Route::get('/walikelas/tagihan-keuangan-siswa/print/{id}', [TagihanKeuanganController::class, 'print'])->name('walikelas.tagihan-keuangan-siswa.print');
 
-            Route::post('/walikelas/laporan-kasus-siswa/detail/{id}', [KasusSiswaController::class, 'detail'])->name('walikelas.laporan-kasus-siswa.detail');
-            Route::get('/walikelas/laporan-kasus-siswa/rombel', [KasusSiswaController::class, 'rombel'])->name('walikelas.laporan-kasus-siswa.rombel');
+            Route::get('/walikelas/laporan-kasus-siswa/detail/{id}', [KasusSiswaController::class, 'detail'])->name('laporan-kasus-siswa.detail');
+            Route::get('/walikelas/laporan-kasus-siswa/rombel', [KasusSiswaController::class, 'rombel'])->name('laporan-kasus-siswa.rombel');
             Route::resource('walikelas/laporan-kasus-siswa', KasusSiswaController::class);
         });
         //pengolahan nilai siswa

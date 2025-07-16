@@ -24,12 +24,13 @@ class KasusSiswaController extends Controller
             $this->fiturMenu = session('fiturMenu');
             if (
                 Route::currentRouteName() == 'laporan-kasus-siswa.index' ||
-                Route::currentRouteName() == 'walikelas.laporan-kasus-siswa.rombel' ||
+                Route::currentRouteName() == 'laporan-kasus-siswa.rombel' ||
                 Route::currentRouteName() == 'laporan-kasus-siswa.create' ||
                 Route::currentRouteName() == 'laporan-kasus-siswa.store' ||
                 Route::currentRouteName() == 'laporan-kasus-siswa.edit' ||
                 Route::currentRouteName() == 'laporan-kasus-siswa.update' ||
-                Route::currentRouteName() == 'laporan-kasus-siswa.destroy'
+                Route::currentRouteName() == 'laporan-kasus-siswa.destroy' ||
+                Route::currentRouteName() == 'laporan-kasus-siswa.detail'
 
             ) {
                 $this->view = 'Walikelas-Laporan Kasus Siswa';
@@ -126,7 +127,73 @@ class KasusSiswaController extends Controller
             $query->where('status', '1');
         })->first();
         $idkelas = $kelas ? $kelas->idkelas : null;
-        return redirect()->route('walikelas.laporan-kasus-siswa.rombel', ['idkelas' => Crypt::encrypt($idkelas)])->with('success', 'Laporan kasus siswa berhasil dibuat.');
+        return redirect()->route('laporan-kasus-siswa.rombel', ['idkelas' => Crypt::encrypt($idkelas)])->with('success', 'Laporan kasus siswa berhasil dibuat.');
+    }
+
+    public function edit($id)
+    {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+        $kasus = KasusSiswa::findOrFail($id);
+        $kelas = Kelas::whereHas('tahunajaran', function ($query) {
+            $query->where('status', '1');
+        })->whereHas('walikelas', function ($query) {
+            $query->where('nip', Auth::user()->staf->nip);
+        })->get()->pluck('id');
+
+        $siswa = Rombel::whereHas('kelas', function ($query) use ($kelas) {
+            $query->whereIn('idkelas', $kelas);
+        })->get();
+
+        return view('pages.walikelas.kasussiswa_edit', compact('kasus', 'siswa'));
+    }
+
+    public function update(Request $request, string $id)
+    {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
+        $validated = $request->validate([
+            'nisn' => 'required',
+            'jenis_kasus' => 'required',
+            'deskripsi' => 'nullable',
+            'tanggal_kasus' => 'nullable|date',
+            'status' => 'required|in:private,open,closed,sp1,sp2,sp3',
+            'penanganan' => 'nullable',
+        ]);
+
+        $kasus = KasusSiswa::findOrFail($id);
+        $kasus->update($validated);
+
+        $kelas = Rombel::where('nisn', $validated['nisn'])->whereHas('tahunajaran', function ($query) {
+            $query->where('status', '1');
+        })->first();
+        $idkelas = $kelas ? $kelas->idkelas : null;
+        return redirect()->route('laporan-kasus-siswa.rombel', ['idkelas' => Crypt::encrypt($idkelas)])->with('success', 'Laporan kasus siswa berhasil diperbarui.');
+    }
+
+    public function detail(Request $request)
+    {
+        try {
+            $id = Crypt::decrypt($request->id);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
+        $kasus = KasusSiswa::with(['siswa.rombel' => function ($q) {
+            $q->whereHas('tahunajaran', function ($query) {
+                $query->where('status', '1');
+            });
+        }])
+            ->findOrFail($id);
+
+        return view('pages.walikelas.kasussiswa_detail', compact('kasus'));
     }
 
     public function destroy($id)
