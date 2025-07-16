@@ -27,7 +27,7 @@
                         Detail Kasus Siswa
                     </div>
                     <div class="col-12 col-md-6 d-flex justify-content-end">
-                        <a href="{{ route('laporan-kasus-siswa.rombel', ['idkelas' => Crypt::encrypt($kasus->siswa->rombel[0]->idkelas)]) }}" class="btn btn-light btn-sm mt-3">
+                        <a href="{{ route($route.'laporan-kasus-siswa.rombel', ['idkelas' => Crypt::encrypt($kasus->siswa->rombel[0]->idkelas)]) }}" class="btn btn-light btn-sm mt-3">
                             <i class="bi bi-arrow-left"></i> Kembali
                         </a> 
                     </div>
@@ -57,9 +57,9 @@
                                 <div class="fw-bold">Status</div>
                                 <div>
                                     @if($kasus->status == 'private')
-                                        <span class="badge bg-secondary p-2">Tangani Sendiri</span>
+                                        <span class="badge bg-secondary p-2">Penanganan Walikelas</span>
                                     @elseif($kasus->status == 'open')
-                                        <span class="badge bg-info p-2">Proses BK</span>
+                                        <span class="badge bg-info p-2">Penanganan BK</span>
                                     @elseif($kasus->status == 'closed')
                                         <span class="badge bg-success p-2">Kasus Selesai</span>
                                     @elseif($kasus->status == 'sp1')

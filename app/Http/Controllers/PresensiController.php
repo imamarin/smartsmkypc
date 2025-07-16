@@ -34,12 +34,13 @@ class PresensiController extends Controller
      */
     protected $view;
     protected $fiturMenu;
-
+    protected $route;
     public function __construct()
     {
 
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
+            $this->route = '';
             if (Route::currentRouteName() == 'rekap-presensi-mengajar') {
                 $this->view = 'Administrasi Guru-Rekap Presensi Mengajar';
             } else if (
@@ -69,6 +70,13 @@ class PresensiController extends Controller
             ) {
                 $this->view = 'Walikelas-Rekap Presensi Siswa';
             } else if (
+                Route::currentRouteName() == 'kesiswaan.data-rekap-presensi-siswa' ||
+                Route::currentRouteName() == 'kesiswaan.data-rekap-presensi-siswa.kbm' ||
+                Route::currentRouteName() == 'kesiswaan.data-rekap-presensi-siswa.harian'
+            ) {
+                $this->view = 'Kesiswaan-Laporan Kehadiran Siswa';
+                $this->route = 'kesiswaan.';
+            } else if (
                 Route::currentRouteName() == 'info-kehadiran-siswa'
             ) {
                 $this->view = 'Layanan Siswa-Info Kehadiran';
@@ -78,7 +86,7 @@ class PresensiController extends Controller
                 return redirect()->back();
             }
 
-            view()->share('view', $this->view);
+            view()->share(['view' => $this->view, 'route' => $this->route]);
 
             return $next($request);
         });

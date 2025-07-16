@@ -130,9 +130,10 @@ class StafController extends Controller
         $data['role'] = Role::all();
         $data['roleUser'] = UserRole::where('iduser', $id)->get()->pluck('idrole')->toArray();
 
-        if (Route::currentRouteName('profil-staf.edit')) {
+        if (Route::currentRouteName() == "profil-staf.edit") {
             return view('pages.staf.profil', $data);
         }
+
         return view('pages.staf.edit', $data);
     }
 
@@ -164,7 +165,7 @@ class StafController extends Controller
 
             $staf = Staf::where('iduser', $id)->first();
 
-            if (Route::currentRouteName('profil-staf.edit')) {
+            if (Route::currentRouteName() == 'profil-staf.edit') {
                 $editStaf = $request->validate([
                     'nip' => $staf->nip != $request->nip ? 'required|unique:stafs,nip' : 'required',
                     'nama' => 'required',

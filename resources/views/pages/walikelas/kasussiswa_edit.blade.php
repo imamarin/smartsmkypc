@@ -29,7 +29,7 @@
                     </div>
                 </div><!-- end card header -->
                 <div class="card-body">
-                    <form action="{{ route('laporan-kasus-siswa.update', Crypt::encrypt($kasus->id)) }}" method="POST">
+                    <form action="{{ route($route.'laporan-kasus-siswa.update', Crypt::encrypt($kasus->id)) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -60,8 +60,8 @@
                         <div class="mb-3">
                             <label for="status" class="form-label">Status Kasus</label>
                             <select class="form-select" id="status2" name="status" required>
-                                <option value="private" {{ $kasus->status == 'private' ? 'selected' : '' }}>Tangani Sendiri</option>
-                                <option value="open" {{ $kasus->status == 'open' ? 'selected' : '' }}>Proses BK</option>
+                                <option value="private" {{ $kasus->status == 'private' ? 'selected' : '' }}>Penanganan Walikelas</option>
+                                <option value="open" {{ $kasus->status == 'open' ? 'selected' : '' }}>Penanganan BK</option>
                                 <option value="closed" {{ $kasus->status == 'closed' ? 'selected' : '' }}>Kasus Selesai</option>
                                 <option value="sp1" {{ $kasus->status == 'sp1' ? 'selected' : '' }}>Surat Peringatan 1</option>
                                 <option value="sp2" {{ $kasus->status == 'sp2' ? 'selected' : '' }}>Surat Peringatan 2</option>

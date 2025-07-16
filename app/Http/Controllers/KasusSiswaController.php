@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 class KasusSiswaController extends Controller
 {
     protected $view;
+    protected $route;
     protected $fiturMenu;
 
     public function __construct()
@@ -34,13 +35,29 @@ class KasusSiswaController extends Controller
 
             ) {
                 $this->view = 'Walikelas-Laporan Kasus Siswa';
+                $this->route = '';
+            }
+
+            if (
+                Route::currentRouteName() == 'kesiswaan.laporan-kasus-siswa.index' ||
+                Route::currentRouteName() == 'kesiswaan.laporan-kasus-siswa.rombel' ||
+                Route::currentRouteName() == 'kesiswaan.laporan-kasus-siswa.create' ||
+                Route::currentRouteName() == 'kesiswaan.laporan-kasus-siswa.store' ||
+                Route::currentRouteName() == 'kesiswaan.laporan-kasus-siswa.edit' ||
+                Route::currentRouteName() == 'kesiswaan.laporan-kasus-siswa.update' ||
+                Route::currentRouteName() == 'kesiswaan.laporan-kasus-siswa.destroy' ||
+                Route::currentRouteName() == 'kesiswaan.laporan-kasus-siswa.detail'
+
+            ) {
+                $this->view = 'Kesiswaan-Laporan Kasus Siswa';
+                $this->route = 'kesiswaan.';
             }
 
             if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
 
-            view()->share('view', $this->view);
+            view()->share(['view' => $this->view, 'route' => $this->route]);
 
             return $next($request);
         });
@@ -52,15 +69,26 @@ class KasusSiswaController extends Controller
         $text = "Yakin ingin menghapus data kasus siswa ini?";
         confirmDelete($title, $text);
 
-        $kelas = Kelas::whereHas('tahunajaran', function ($query) {
-            $query->where('status', '1');
-        })->whereHas('walikelas', function ($query) {
-            $query->where('nip', Auth::user()->staf->nip);
-        })->get();
+        if ($this->view == 'Kesiswaan-Laporan Kasus Siswa') {
+            $kelas = Kelas::whereHas('tahunajaran', function ($query) {
+                $query->where('status', '1');
+            })->get();
+            $data['kasus'] = KasusSiswa::with(['siswa.rombel' => function ($q) {
+                $q->whereHas('tahunajaran', function ($query) {
+                    $query->where('status', 1);
+                });
+            }])->get();
+        } else {
+            $kelas = Kelas::whereHas('tahunajaran', function ($query) {
+                $query->where('status', '1');
+            })->whereHas('walikelas', function ($query) {
+                $query->where('nip', Auth::user()->staf->nip);
+            })->get();
+            $data['kasus'] = [];
+        }
 
         $data['kelas'] = $kelas;
         $data['kelas_selected'] = '';
-        $data['kasus'] = [];
         return view('pages.walikelas.kasussiswa', $data);
     }
 
@@ -76,16 +104,25 @@ class KasusSiswaController extends Controller
         $text = "Yakin ingin menghapus data kasus siswa ini?";
         confirmDelete($title, $text);
 
-        $kelas = Kelas::whereHas('tahunajaran', function ($query) {
-            $query->where('status', '1');
-        })->whereHas('walikelas', function ($query) {
-            $query->where('nip', Auth::user()->staf->nip);
-        })->get();
+        if ($this->view == 'Kesiswaan-Laporan Kasus Siswa') {
+            $kelas = Kelas::whereHas('tahunajaran', function ($query) {
+                $query->where('status', '1');
+            })->get();
+        } else {
+            $kelas = Kelas::whereHas('tahunajaran', function ($query) {
+                $query->where('status', '1');
+            })->whereHas('walikelas', function ($query) {
+                $query->where('nip', Auth::user()->staf->nip);
+            })->get();
+        }
 
         $data['kelas'] = $kelas;
-        $data['kasus'] = KasusSiswa::whereHas('siswa.rombel', function ($query) use ($id) {
+        $data['kasus'] = KasusSiswa::with(['siswa.rombel' => function ($q) use ($id) {
+            $q->where('idkelas', $id);
+        }])->whereHas('siswa.rombel', function ($query) use ($id) {
             $query->where('idkelas', $id);
         })->get();
+
 
         $data['kelas_selected'] = $id;
         return view('pages.walikelas.kasussiswa', $data);
@@ -99,16 +136,22 @@ class KasusSiswaController extends Controller
             return redirect()->back()->with('error', 'Kelas tidak ditemukan.');
         }
 
-        $kelas = Kelas::whereHas('tahunajaran', function ($query) {
-            $query->where('status', '1');
-        })->whereHas('walikelas', function ($query) {
-            $query->where('nip', Auth::user()->staf->nip);
-        })->get()->pluck('id');
+        if ($this->view == 'Kesiswaan-Laporan Kasus Siswa') {
+            $siswa = Rombel::whereHas('tahunajaran', function ($query) {
+                $query->where('status', 1);
+            })->get();
+        } else {
+            $kelas = Kelas::whereHas('tahunajaran', function ($query) {
+                $query->where('status', '1');
+            })->whereHas('walikelas', function ($query) {
+                $query->where('nip', Auth::user()->staf->nip);
+            })->get()->pluck('id');
 
-        $siswa = Rombel::whereHas('kelas', function ($query) use ($kelas) {
-            $query->whereIn('idkelas', $kelas);
-        })->get();
-        return view('pages.walikelas.kasussiswa_create', compact('kelas', 'siswa'));
+            $siswa = Rombel::whereHas('kelas', function ($query) use ($kelas) {
+                $query->whereIn('idkelas', $kelas);
+            })->get();
+        }
+        return view('pages.walikelas.kasussiswa_create', compact('siswa'));
     }
 
     public function store(Request $request)
@@ -127,7 +170,7 @@ class KasusSiswaController extends Controller
             $query->where('status', '1');
         })->first();
         $idkelas = $kelas ? $kelas->idkelas : null;
-        return redirect()->route('laporan-kasus-siswa.rombel', ['idkelas' => Crypt::encrypt($idkelas)])->with('success', 'Laporan kasus siswa berhasil dibuat.');
+        return redirect()->route($this->route . 'laporan-kasus-siswa.rombel', ['idkelas' => Crypt::encrypt($idkelas)])->with('success', 'Laporan kasus siswa berhasil dibuat.');
     }
 
     public function edit($id)
@@ -137,16 +180,24 @@ class KasusSiswaController extends Controller
         } catch (DecryptException $e) {
             return redirect()->back()->with('error', 'Data tidak ditemukan.');
         }
-        $kasus = KasusSiswa::findOrFail($id);
-        $kelas = Kelas::whereHas('tahunajaran', function ($query) {
-            $query->where('status', '1');
-        })->whereHas('walikelas', function ($query) {
-            $query->where('nip', Auth::user()->staf->nip);
-        })->get()->pluck('id');
 
-        $siswa = Rombel::whereHas('kelas', function ($query) use ($kelas) {
-            $query->whereIn('idkelas', $kelas);
-        })->get();
+        $kasus = KasusSiswa::findOrFail($id);
+
+        if ($this->view == 'Kesiswaan-Laporan Kasus Siswa') {
+            $siswa = Rombel::whereHas('tahunajaran', function ($query) {
+                $query->where('status', 1);
+            })->get();
+        } else {
+            $kelas = Kelas::whereHas('tahunajaran', function ($query) {
+                $query->where('status', '1');
+            })->whereHas('walikelas', function ($query) {
+                $query->where('nip', Auth::user()->staf->nip);
+            })->get()->pluck('id');
+
+            $siswa = Rombel::whereHas('kelas', function ($query) use ($kelas) {
+                $query->whereIn('idkelas', $kelas);
+            })->get();
+        }
 
         return view('pages.walikelas.kasussiswa_edit', compact('kasus', 'siswa'));
     }
@@ -175,7 +226,7 @@ class KasusSiswaController extends Controller
             $query->where('status', '1');
         })->first();
         $idkelas = $kelas ? $kelas->idkelas : null;
-        return redirect()->route('laporan-kasus-siswa.rombel', ['idkelas' => Crypt::encrypt($idkelas)])->with('success', 'Laporan kasus siswa berhasil diperbarui.');
+        return redirect()->route($this->route . 'laporan-kasus-siswa.rombel', ['idkelas' => Crypt::encrypt($idkelas)])->with('success', 'Laporan kasus siswa berhasil diperbarui.');
     }
 
     public function detail(Request $request)

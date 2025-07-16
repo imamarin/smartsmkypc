@@ -201,12 +201,12 @@
         });
 
         $('#kbm').on('click', function(event){
-            $('#formSearchPresensi').attr('action', '{{ route($route_kbm) }}');
+            $('#formSearchPresensi').attr('action', '{{ route($route.$route_kbm) }}');
             $('#formSearchPresensi').submit();
         });
 
         $('#harian').on('click', function(event){
-            $('#formSearchPresensi').attr('action', '{{ route($route_harian) }}');
+            $('#formSearchPresensi').attr('action', '{{ route($route.$route_harian) }}');
             $('#formSearchPresensi').submit();
         });
 

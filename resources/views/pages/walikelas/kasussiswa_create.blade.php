@@ -29,7 +29,7 @@
                     </div>
                 </div><!-- end card header -->
                 <div class="card-body">
-                    <form action="{{ route('laporan-kasus-siswa.store') }}" method="POST">
+                    <form action="{{ route($route.'laporan-kasus-siswa.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="nisn" class="form-label">Nama Siswa</label>
@@ -60,8 +60,8 @@
                             <label for="status" class="form-label">Status Kasus</label>
                             <select class="form-select" id="status2" name="status" required>
                                 <option value="" disabled selected>Pilih Status</option>
-                                <option value="private">Tangani Sendiri</option>
-                                <option value="open">Proses BK</option>
+                                <option value="private">Penanganan Walikelas</option>
+                                <option value="open">Penanganan BK</option>
                                 <option value="closed">Kasus Selesai</option>
                                 <option value="sp1">Surat Peringatan 1</option>
                                 <option value="sp2">Surat Peringatan 2</option>

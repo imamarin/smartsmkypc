@@ -24,7 +24,7 @@
                 <div class="card-header text-white" style="background-color: rgb(42, 101, 149)">
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <form action="{{ route('laporan-kasus-siswa.rombel') }}" method="get">
+                            <form action="{{ route($route.'laporan-kasus-siswa.rombel') }}" method="get">
                                 <div class="row">
                                     <div class="col-12 col-md-3">
                                         <label for="idkelas" class="form-label">Kelas</label>
@@ -43,13 +43,10 @@
                             </form>
                         </div>
                         <div class="col-12 col-md-6  d-flex align-items-end justify-content-end">
-                            @if(in_array('Tambah', $fiturMenu[$view]) && $kelas_selected != '')
-                                <a href="{{ route('laporan-kasus-siswa.create', ['idkelas' => Crypt::encrypt($kelas_selected)]) }}"
-                                    class="btn btn-success">
-                                    Tambah Kasus Siswa
-                                </a>
-                            @endif
-                          
+                            <a href="{{ route($route.'laporan-kasus-siswa.create', ['idkelas' => Crypt::encrypt($kelas_selected)]) }}"
+                                class="btn btn-success">
+                                Tambah Kasus Siswa
+                            </a>
                         </div>
                     </div>
                     
@@ -63,6 +60,7 @@
                                     <th>#</th>
                                     <th>NISN</th>
                                     <th>Nama Siswa</th>
+                                    <th>Kelas</th>
                                     <th>Jenis Kasus</th>
                                     <th>Tanggal Kasus</th>
                                     <th>Status Kasus</th>
@@ -74,14 +72,15 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->nisn}}</td>
+                                        <td>{{ $item->siswa->rombel[0]->kelas->kelas }}</td>
                                         <td>{{ $item->siswa->nama ?? '-' }}</td>
                                         <td>{{ $item->jenis_kasus ?? 0 }}</td>
                                         <td>{{ $item->tanggal_kasus ?? 0 }}</td>
                                         <td>
                                             @if ($item->status == 'private')
-                                                Penindakan walikelas
+                                                Penanganan walikelas
                                             @elseif ($item->status == 'open')
-                                                Penindakan BK
+                                                Penanganan BK
                                             @elseif ($item->status == 'closed')
                                                 Kasus Selesai
                                             @elseif ($item->status == 'sp1')
@@ -97,18 +96,18 @@
                                         @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('laporan-kasus-siswa.detail', Crypt::encrypt($item->id)) }}"
+                                                <a href="{{ route($route.'laporan-kasus-siswa.detail', Crypt::encrypt($item->id)) }}"
                                                     class="btn btn-sm btn-info me-2">
                                                     Detail Kasus
                                                 </a>
                                                 @if(in_array('Edit', $fiturMenu[$view]))
-                                                <a href="{{ route('laporan-kasus-siswa.edit', Crypt::encrypt($item->id)) }}"
+                                                <a href="{{ route($route.'laporan-kasus-siswa.edit', Crypt::encrypt($item->id)) }}"
                                                     class="btn btn-sm btn-secondary me-2">
                                                     Edit
                                                 </a>
                                                 @endif
                                                 @if(in_array('Hapus', $fiturMenu[$view]))
-                                                <a href="{{ route('laporan-kasus-siswa.destroy', Crypt::encrypt($item->id)) }}"
+                                                <a href="{{ route($route.'laporan-kasus-siswa.destroy', Crypt::encrypt($item->id)) }}"
                                                     class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                                 @endif
                                             </div>

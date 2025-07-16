@@ -240,6 +240,21 @@ Route::middleware('cek-status-login')->group(function () {
             Route::resource('/honorarium-pegawai', HonorController::class);
         });
 
+        Route::prefix('kesiswaan')->group(function () {
+            //kasus-siswa
+            Route::get('/laporan-kasus-siswa/rombel', [KasusSiswaController::class, 'rombel'])->name('kesiswaan.laporan-kasus-siswa.rombel');
+            Route::get('/laporan-kasus-siswa/detail/{id}', [KasusSiswaController::class, 'detail'])->name('kesiswaan.laporan-kasus-siswa.detail');
+            Route::get('/laporan-kasus-siswa', [KasusSiswaController::class, 'index'])->name('kesiswaan.laporan-kasus-siswa.index');
+            Route::post('/laporan-kasus-siswa', [KasusSiswaController::class, 'store'])->name('kesiswaan.laporan-kasus-siswa.store');
+            Route::get('/laporan-kasus-siswa/create', [KasusSiswaController::class, 'create'])->name('kesiswaan.laporan-kasus-siswa.create');
+            Route::get('/laporan-kasus-siswa/{id}/edit', [KasusSiswaController::class, 'edit'])->name('kesiswaan.laporan-kasus-siswa.edit');
+            Route::put('/laporan-kasus-siswa/{id}/update', [KasusSiswaController::class, 'update'])->name('kesiswaan.laporan-kasus-siswa.update');
+            Route::delete('/laporan-kasus-siswa/{id}/destroy', [KasusSiswaController::class, 'destroy'])->name('kesiswaan.laporan-kasus-siswa.destroy');
+            Route::get('/laporan-kehadiran-siswa', [PresensiController::class, 'rekapPresensiSiswa'])->name('kesiswaan.data-rekap-presensi-siswa');
+            Route::post('/laporan-kehadiran-siswa/kbm', [PresensiController::class, 'rekapPresensiSiswa'])->name('kesiswaan.data-rekap-presensi-siswa.kbm');
+            Route::post('/laporan-kehadiran-siswa/harian', [PresensiController::class, 'rekapPresensiSiswa'])->name('kesiswaan.data-rekap-presensi-siswa.harian');
+        });
+
         //pengaturan
         Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::get('/pengaturan/menu', [PengaturanController::class, 'menuForm'])->name('pengaturan.menuForm');
