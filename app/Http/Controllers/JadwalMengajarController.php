@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Staf;
 use App\Models\JadwalMengajar;
+use App\Models\JadwalSistemBlok;
 use App\Models\JamPelajaran;
 use App\Models\Kelas;
 use App\Models\MatpelPengampu;
@@ -263,18 +264,48 @@ class JadwalMengajarController extends Controller
             });
         }], 'jumlah_jam')->where('stafs.status', 1)->get();
 
+        $date = date('Y-m-d', strtotime('2025-06-10'));
+        $hari = date('N', strtotime('2025-06-10'));
+        $idsistemblok = JadwalSistemBlok::where('tanggal_mulai', '<=', $date)->where('tanggal_akhir', '>=', $date)->value('idsistemblok');
+        $jadwalmengajar = JadwalMengajar::where('idsistemblok', $idsistemblok)
+            ->whereHas('jampel', function ($query) use ($hari) {
+                $query->where('hari', $hari);
+            })
+            ->get();
+        $jadwalguru = [];
+        foreach ($jadwalmengajar as $key => $value) {
+            # code...
+            $jadwalguru[$value->nip]['nama'] = $value->staf->nama;
+            $jadwalguru[$value->nip]['jam'][$value->jampel->jam] = [
+                'kelas' => $value->kelas->kelas,
+                'jumlah' => $value->jumlah_jam,
+                'hadir' => $value->presensi->count()
+            ];
+        }
 
+        uasort($jadwalguru, function ($a, $b) {
+            return strcmp($a['nama'], $b['nama']);
+        });
+
+        $jampel = JamPelajaran::select('jam')->where('hari', $hari)->whereHas('tahunajaran', function ($query) {
+            $query->where('status', 1);
+        })->orderBy('jam', 'asc')->get();
+
+        $data['jadwalguru'] = $jadwalguru;
+        $data['jampel'] = $jampel;
         $data['staf'] = $teachers->sortByDesc(function ($teacher) {
             return $teacher->jadwalmengajar->count();
         })->values();
+
         $data['tahunajaran'] = $tahunajaran;
 
-        $jadwalmengajar = JadwalMengajar::first();
-        if ($jadwalmengajar->kunci == 0) {
-            $data['kunci'] = "ditutup";
-        } else {
-            $data['kunci'] = "dibuka";
-        }
+        // $jadwalmengajar = JadwalMengajar::first();
+        // dd($jadwalmengajar->kunci);
+        // if ($jadwalmengajar->kunci == 0) {
+        //     $data['kunci'] = "ditutup";
+        // } else {
+        //     $data['kunci'] = "dibuka";
+        // }
 
         return view('pages.jadwalmengajar.guru', $data);
     }
