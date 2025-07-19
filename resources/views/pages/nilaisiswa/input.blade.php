@@ -63,6 +63,9 @@
                                         <th>Nama Siswa</th>
                                         <th>Jenis Kelamin</th>
                                         <th>Nilai</th>
+                                        @if($nilaisiswakurmer)
+                                        <th>Capaian</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -75,6 +78,17 @@
                                             <td>
                                                 <input type="number" name="nilai[{{ $subject->nisn }}]" id="nilai_{{ $subject->nisn }}" value="{{ $nilai[$subject->nisn] ?? old('nilai.'.$subject->nisn) }}" class="form-control" min="0" max="100">
                                             </td>
+                                            @if($nilaisiswakurmer && isset($nilai[$subject->nisn]))
+                                            <td>
+                                                @if ($nilaisiswakurmer->tp->t1 <= $nilai[$subject->nisn])
+                                                    Siswa sudah mencapai kompetensi: {{ $nilaisiswakurmer->tp->tujuan }}
+                                                @else
+                                                    Siswa belum mencapai kompetensi: {{ $nilaisiswakurmer->tp->tujuan }}
+                                                @endif
+                                            </td>
+                                            @else
+                                            <td>-</td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

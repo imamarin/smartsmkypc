@@ -184,6 +184,8 @@ class NilaiSiswaController extends Controller
             'kategori' => $kategori
         ])->first();
 
+        $nilaisiswakurmer = NilaiSiswaKurmer::where('idnilaisiswa', $id)->first();
+
         if (!$nilaisiswa) {
             return redirect()->route('pengolahan-nilai-siswa', [
                 'kategori' => $kategori
@@ -203,6 +205,7 @@ class NilaiSiswaController extends Controller
 
         $data['nilai'] = $nilai;
         $data['nilaisiswa'] = $nilaisiswa;
+        $data['nilaisiswakurmer'] = $nilaisiswakurmer;
         $data['rombel'] = $rombel;
         return view('pages.nilaisiswa.input', $data);
     }

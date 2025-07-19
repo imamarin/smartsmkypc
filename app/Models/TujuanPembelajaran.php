@@ -13,4 +13,9 @@ class TujuanPembelajaran extends Model
     {
         return $this->belongsTo(CapaianPembelajaran::class, 'kode_cp', 'kode_cp');
     }
+
+    public function nilaisiswakurmer()
+    {
+        return $this->hasMany(NilaiSiswaKurmer::class, 'idtujuanpembelajaran');
+    }
 }
