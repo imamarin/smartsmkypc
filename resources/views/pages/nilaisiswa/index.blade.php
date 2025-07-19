@@ -304,11 +304,12 @@
         $('#formCPTP #kategori').val(kategori);
         $('#formCPTP #idnilaisiswa').val(decodedData.id);
         let url = '{{ route('nilai-siswa.getCP', ':id') }}'.replace(':id', decodedData.kode_matpel);
-        $.get(url, function(data,status){
 
+        $.get(url, function(data,status){
+            
             $('#cp').html("");
             if(data.length > 0){
-                var key;
+                var key = 0;
                 data.forEach((element, index) => {
                     let isSelected = decodedData.kurmer && element.tp.find(item => item.id === decodedData.kurmer.idtujuanpembelajaran);
                     let option = new Option(element.capaian, element.kode_cp, false, isSelected);

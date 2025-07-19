@@ -190,7 +190,10 @@ class NilaiSiswaController extends Controller
             ])->with('warning', 'Nilai siswa tidak tersedia');
         }
 
-        $rombel = Rombel::where('idkelas', $nilaisiswa->idkelas)->get();
+        $rombel = Rombel::where('idkelas', $nilaisiswa->idkelas)->get()->sortBy(function ($rombel) {
+            return $rombel->siswa->nama;
+        })->values();;
+
         $detailnilaisiswa = DetailNilaiSiswa::where('idnilaisiswa', $id)->get();
 
         $nilai = [];
