@@ -264,8 +264,8 @@ class JadwalMengajarController extends Controller
             });
         }], 'jumlah_jam')->where('stafs.status', 1)->get();
 
-        $date = date('Y-m-d', strtotime('2025-06-10'));
-        $hari = date('N', strtotime('2025-06-10'));
+        $date = date('Y-m-d');
+        $hari = date('N');
         $idsistemblok = JadwalSistemBlok::where('tanggal_mulai', '<=', $date)->where('tanggal_akhir', '>=', $date)->value('idsistemblok');
         $jadwalmengajar = JadwalMengajar::where('idsistemblok', $idsistemblok)
             ->whereHas('jampel', function ($query) use ($hari) {
