@@ -80,11 +80,20 @@
                                             </td>
                                             @if($nilaisiswakurmer && isset($nilai[$subject->nisn]))
                                             <td>
-                                                @if ($nilaisiswakurmer->tp->t1 <= $nilai[$subject->nisn])
+                                                @if ($nilai[$subject->nisn] <= $nilaisiswakurmer->tp->bt1)
+                                                    Belum Tuntas, Remedial seluruh bagian
+                                                @elseif ($nilai[$subject->nisn] <= $nilaisiswakurmer->tp->bt2)
+                                                    Belum Tuntas, remedial sebagian
+                                                @elseif ($nilai[$subject->nisn] <= $nilaisiswakurmer->tp->bt2)
+                                                    Tuntas, Perlu pengayaan
+                                                @else
+                                                    Tuntas
+                                                @endif
+                                                {{-- @if ($nilaisiswakurmer->tp->t1 <= $nilai[$subject->nisn])
                                                     Siswa sudah mencapai kompetensi: {{ $nilaisiswakurmer->tp->tujuan }}
                                                 @else
                                                     Siswa belum mencapai kompetensi: {{ $nilaisiswakurmer->tp->tujuan }}
-                                                @endif
+                                                @endif --}}
                                             </td>
                                             @else
                                             <td>-</td>
