@@ -86,8 +86,8 @@ class NonSPPController extends Controller
         $siswa = (object)[
             'nisn' => $siswa->nisn,
             'nama' => $siswa->nama,
-            'kelas' => $kelas->kelas,
-            'jurusan' => $kelas->jurusan->jurusan,
+            'kelas' => $kelas->kelas ?? '-',
+            'jurusan' => $kelas->jurusan->jurusan ?? '-',
             'idtahunajaran' => $siswa->idtahunajaran,
         ];
         $data['siswa'] = $siswa;
