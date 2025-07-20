@@ -34,7 +34,7 @@
                         </div>
                         <div class="col col-md-2">
                             <h6 class="text-white">Kelas:</h6>
-                            {{ $siswa->rombel[0]->kelas->kelas }}
+                            {{ $siswa->rombel[0]->kelas->kelas ?? '-' }}
                         </div>
                         <div class="col col-md-3">
                             <h6 class="text-white">Nama Pembayaran:</h6>
