@@ -264,6 +264,13 @@ class JadwalMengajarController extends Controller
             });
         }], 'jumlah_jam')->where('stafs.status', 1)->get();
 
+        $sistemblok = SistemBlok::where([
+            'semester' => $tahunajaran->semester,
+            'idtahunajaran' => $tahunajaran->id,
+        ])->count();
+
+        $data['sistemblok'] = $sistemblok;
+
         $date = date('Y-m-d');
         $hari = date('N');
         $idsistemblok = JadwalSistemBlok::where('tanggal_mulai', '<=', $date)->where('tanggal_akhir', '>=', $date)->value('idsistemblok');

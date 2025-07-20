@@ -142,7 +142,7 @@
                                         </td>
                                         <td>
                                             <span class="{{ $item->jadwal_mengajar_sum < 1 ? 'badge bg-danger' : 'badge bg-info' }}">
-                                                {{ $item->jadwal_mengajar_sum ?? 0 }} Jam
+                                                {{ $item->jadwal_mengajar_sum > 0 ? ceil($item->jadwal_mengajar_sum / $sistemblok) : 0 }} Jam
                                             </span>
                                         </td>
                                         <td>
