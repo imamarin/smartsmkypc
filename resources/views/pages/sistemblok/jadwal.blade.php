@@ -81,7 +81,7 @@
                                         @if(in_array('Hapus', $fiturMenu[$view]))
                                         <td>
                                             <!-- Trigger modal untuk Edit -->
-                                            <a href="{{ route('jadwal-sistem-blok.destroy', Crypt::encrypt($subject->id)) }}"
+                                            <a href="{{ route('jadwal-sistem-blok.delete', Crypt::encrypt($subject->id)) }}"
                                                 class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus</a>
                                         </td>
                                         @endif

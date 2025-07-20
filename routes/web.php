@@ -138,7 +138,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/sistem-blok/{id}/updateStatus', [SistemBlokController::class, 'updateStatus'])->name('sistemblok.updateStatus');
         Route::get('/jadwal-sistem-blok', [SistemBlokController::class, 'jadwal'])->name('jadwal-sistem-blok');
         Route::post('/jadwal-sistem-blok', [SistemBlokController::class, 'simpanJadwal'])->name('jadwal-sistem-blok.store');
-        Route::get('/jadwal-sistem-blok/{id}', [SistemBlokController::class, 'hapusJadwal'])->name('jadwal-sistem-blok.destroy');
+        Route::get('/jadwal-sistem-blok/{id}', [SistemBlokController::class, 'hapusJadwal'])->name('jadwal-sistem-blok.delete');
         //jadwal-Mengajar
         Route::get('/data-jadwal-mengajar-guru', [JadwalMengajarController::class, 'dataJadwalMengajarGuru'])->name('data-jadwal-mengajar-guru');
         Route::get('/data-jadwal-mengajar-guru/{id}', [JadwalMengajarController::class, 'show'])->name('data-jadwal-mengajar-guru.show');
