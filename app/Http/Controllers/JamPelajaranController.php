@@ -56,7 +56,7 @@ class JamPelajaranController extends Controller
     public function store(Request $request)
     {
         //
-        $idtahunajaran = decryptSmart($request->idtahunajaran);
+        $idtahunajaran = $request->idtahunajaran;
         $request->merge(['idtahunajaran' => $idtahunajaran]);
         $request->validate([
             'idtahunajaran' => 'required',
