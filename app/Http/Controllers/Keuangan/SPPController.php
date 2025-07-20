@@ -53,6 +53,7 @@ class SPPController extends Controller
             })->first();
             return (object)[
                 'nisn' => $item->nisn,
+                'nisn_dapodik' => $item->nisn_dapodik,
                 'nama' => $item->nama,
                 'kelas' => $kelas->kelas ?? '-',
             ];
@@ -110,6 +111,7 @@ class SPPController extends Controller
             })->first();
             return (object)[
                 'nisn' => $item->nisn,
+                'nisn_dapodik' => $item->nisn_dapodik,
                 'nama' => $item->nama,
                 'kelas' => $kelas?->kelas,
             ];
