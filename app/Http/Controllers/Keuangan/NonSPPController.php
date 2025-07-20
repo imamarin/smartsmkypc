@@ -85,6 +85,7 @@ class NonSPPController extends Controller
 
         $siswa = (object)[
             'nisn' => $siswa->nisn,
+            'nisn_dapodik' => $siswa->nisn_dapodik,
             'nama' => $siswa->nama,
             'kelas' => $kelas->kelas ?? '-',
             'jurusan' => $kelas->jurusan->jurusan ?? '-',
@@ -247,10 +248,15 @@ class NonSPPController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        $data['siswa'] = Rombel::whereHas('tahunajaran', function ($query) {
-            $query->where('status', 1);
-        })->where('nisn', $id[0])->first();
+        // $data['siswa'] = Rombel::whereHas('tahunajaran', function ($query) {
+        //     $query->where('status', 1);
+        // })->where('nisn', $id[0])->first();
 
+        $data['siswa'] = Siswa::with(['rombel' => function ($query) {
+            $query->whereHas('tahunajaran', function ($query) {
+                $query->where('status', 1);
+            });
+        }])->where('nisn', $id[0])->first();
 
         $data['detailnonspp'] = DetailNonSpp::where('idnonspp', $id[2])->get();
 

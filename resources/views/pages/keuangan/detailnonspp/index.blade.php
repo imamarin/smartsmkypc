@@ -26,15 +26,15 @@
                     <div class="row">
                         <div class="col col-md-2">
                             <h6 class="text-white">NISN:</h6>
-                            {{ $siswa->siswa->nisn_dapodik }}
+                            {{ $siswa->nisn_dapodik }}
                         </div>
                         <div class="col col-md-3">
                             <h6 class="text-white">Nama Siswa:</h6>
-                            {{ $siswa->siswa->nama }}
+                            {{ $siswa->nama }}
                         </div>
                         <div class="col col-md-2">
                             <h6 class="text-white">Kelas:</h6>
-                            {{ $siswa->kelas->kelas }}
+                            {{ $siswa->rombel[0]->kelas->kelas }}
                         </div>
                         <div class="col col-md-3">
                             <h6 class="text-white">Nama Pembayaran:</h6>
