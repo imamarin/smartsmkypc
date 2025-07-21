@@ -220,7 +220,7 @@ class RombelController extends Controller
         ]);
 
         try {
-            $id = Crypt::decrypt($id);
+            $id = explode('*', Crypt::decrypt($id));
             $idkelas = $id[0];
             $idtahunajaran = $id[1];
         } catch (DecryptException $e) {
@@ -272,7 +272,7 @@ class RombelController extends Controller
         $idtahunajaran = decryptSmart($request->idtahunajaran);
         $kelas = decryptSmart($request->idkelas);
         $siswa = Rombel::whereHas('kelas', function ($query) use ($idtahunajaran, $kelas) {
-            $query->where(['kelas' => $kelas, 'idtahunajaran' => $idtahunajaran]);
+            $query->where(['idkelas' => $kelas, 'idtahunajaran' => $idtahunajaran]);
         })->get();
         // $siswa = Rombel::where(['idkelas' => decryptSmart($request->idkelas), 'idtahunajaran' => decryptSmart($request->idtahunajaran)])->get();
         // $siswa = Rombel::where(['idkelas' => $request->idkelas, 'idtahunajaran' => $request->idtahunajaran])->get();

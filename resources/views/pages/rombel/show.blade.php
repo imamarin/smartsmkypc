@@ -197,7 +197,7 @@
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
-                                <label for="idtahunajaran" class="form-label">Tahun Ajaran </label>
+                                <label for="idtahunajaran" class="form-label">Tahun Ajaran  </label>
                                 <select name="idtahunajaran" id="idtahunajaran" class="form-control select2" required>
                                     <option value="">Pilih Tahun Ajaran</option>
                                     @foreach ($tahunajaran as $item)
@@ -212,6 +212,7 @@
                             <div class="mb-3">
                                 <label for="idkelas" class="form-label">Kelas</label>
                                 <select name="idkelas" id="idkelas" class="form-control select2">
+                                    <option value="">Pilih Kelas</option>
                                     @foreach ($kelas as $item)
                                         @if($item->tingkat < $tingkat)
                                         <option value="{{ encryptSmart($item->kelas) }}" {{ $item->id == $idkelas?'selected':'' }}>{{ $item->kelas }}</option>
@@ -422,13 +423,14 @@
             let url = '{{ route('data-kelas.json-tahunajaran', ':id') }}'.replace(':id', tahunajaran.val());
             $.get(url, function(data,status){
                 kelas.html("");
+                kelas.append('<option value="">pilih kelas</option>');
                 if(data.data.length > 0){
                     data.data.forEach(element => {
                         let option = new Option(element.kelas, element.id);
                         kelas.append(option);
                     });
                 }
-            })
+            });
         })
     </script>
 @endpush

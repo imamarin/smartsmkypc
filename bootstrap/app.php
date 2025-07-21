@@ -14,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->append([
+            \App\Http\Middleware\CustomTrimStrings::class,
+            \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        ]);
+
         $middleware->web(append: [
             \RealRashid\SweetAlert\ToSweetAlert::class,
         ]);
