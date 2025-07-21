@@ -226,7 +226,7 @@ class RombelController extends Controller
         } catch (DecryptException $e) {
         }
 
-        foreach ($request->nisn as $key => $value) {
+        foreach ($request->get('nisn') as $key => $value) {
             Rombel::updateOrCreate([
                 'idtahunajaran' => $idtahunajaran,
                 'nisn' => (string) $value
