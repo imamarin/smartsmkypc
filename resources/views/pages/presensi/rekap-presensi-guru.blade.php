@@ -28,31 +28,34 @@
                                 {{-- @csrf --}}
                                 <div class="row">
                                     <div class="col-12 col-md-3">
-                                        <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
-                                        <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
-                                            @foreach ($tahunajaran as $item)
-                                                <option value="{{ encryptSmart($item->id) }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
-                                                    {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-group">
+                                            <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
+                                            <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
+                                                @foreach ($tahunajaran as $item)
+                                                    <option value="{{ encryptSmart($item->id) }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
+                                                        {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-12 col-md-3">
-                                        <label for="semester" class="form-label">Semester</label>
-                                        <select name="semester" id="semester" class="form-select select2">
-                                            <option value="ganjil" {{ $semester_selected == 'ganjil'?'selected':'' }}>Ganjil</option>
-                                            <option value="genap" {{ $semester_selected == 'genap'?'selected':'' }}>Genap</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label for="semester" class="form-label">Semester</label>
+                                            <select name="semester" id="semester" class="form-select select2">
+                                                <option value="ganjil" {{ $semester_selected == 'ganjil'?'selected':'' }}>Ganjil</option>
+                                                <option value="genap" {{ $semester_selected == 'genap'?'selected':'' }}>Genap</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-12 col-md-3 d-flex align-items-end mb-1">
+                                    <div class="col-12 col-md-3 d-flex align-items-end mb-3">
                                         <input type="submit" class="btn btn-primary" value="Tampilkan Rekapan">
                                     </div>
                                 </div>
                             </form>
                         </div>
-
-                        <div class="col-md-6 d-flex align-items-end justify-content-end">
-                            <a href="{{ route('data-rekap-presensi-guru.export', Crypt::encrypt($tahunajaran_selected.'*'.$semester_selected)) }}" class="btn btn-info me-2">Export Data</a>
+                        <div class="col-12 col-md-6 d-flex align-items-center justify-content-end">
+                            <a href="{{ route('data-rekap-presensi-guru.export', Crypt::encrypt($tahunajaran_selected.'*'.$semester_selected)) }}" class="btn btn-info">Export Data</a>
                         </div>
                     </div>
                     

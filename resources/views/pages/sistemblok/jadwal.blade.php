@@ -21,7 +21,7 @@
     </div>
     <!-- end page title -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="card">
                 @if(in_array('Tambah', $fiturMenu[$view]))
                 <div class="card-header"  style="background-color: #cbd931 ;">
@@ -31,24 +31,30 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-12 col-md-3">
-                                        <label for="idsistemblok" class="form-label">Sesi</label>
-                                        <select name="idsistemblok" id="idsistemblok" class="form-select select2">
-                                            @foreach ($sesi as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->nama_sesi }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-group">
+                                            <label for="idsistemblok" class="form-label">Sesi</label>
+                                            <select name="idsistemblok" id="idsistemblok" class="form-select select2">
+                                                @foreach ($sesi as $item)
+                                                    <option value="{{ $item->id }}">
+                                                        {{ $item->nama_sesi }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-12 col-md-3">
-                                        <label for="tanggal_mulai" class="form-label ">Dari Tanggal</label>
-                                        <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control">
+                                        <div class="form-group">
+                                            <label for="tanggal_mulai" class="form-label ">Dari Tanggal</label>
+                                            <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control">
+                                        </div>
                                     </div>
                                     <div class="col-12 col-md-3">
-                                        <label for="tanggal_akhir" class="form-label">Sampai Tanggal</label>
-                                        <input type="date" name="tanggal_akhir" id="tanggal_akhir" class=" form-control">
+                                        <div class="form-group">
+                                            <label for="tanggal_akhir" class="form-label">Sampai Tanggal</label>
+                                            <input type="date" name="tanggal_akhir" id="tanggal_akhir" class=" form-control">
+                                        </div>
                                     </div>
-                                    <div class="col-12 col-md-3 d-flex align-items-end mb-1">
+                                    <div class="col-12 col-md-3 d-flex align-items-end mb-3">
                                         <input type="submit" class="btn btn-primary" value="SIMPAN" name="simpan_sesi">
                                     </div>
                                 </div>

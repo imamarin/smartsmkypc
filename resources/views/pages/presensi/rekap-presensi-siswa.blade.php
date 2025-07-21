@@ -24,40 +24,46 @@
     </div>
     <!-- end page title -->
     <div class="row">
-        <div class="col">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-white" style="background-color: rgb(42, 101, 149)">
                     <form action="" id="formSearchPresensi" method="post">
                         @csrf
                         <div class="row">
-                            <div class="col-2">
-                                <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
-                                <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
-                                    @foreach ($tahunajaran as $item)
-                                        <option value="{{ encryptSmart($item->id) }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
-                                            {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="col-12 col-md-3">
+                                <div class="form-group">
+                                    <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
+                                    <select name="idtahunajaran" id="idtahunajaran" class="form-select select2">
+                                        @foreach ($tahunajaran as $item)
+                                            <option value="{{ encryptSmart($item->id) }}" {{ $tahunajaran_selected == $item->id?'selected':'' }}>
+                                                {{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-2">
-                                <label for="idkelas" class="form-label">Kelas</label>
-                                <select name="idkelas" id="idkelas" class="form-select select2">
-                                    @foreach ($kelas as $item)
-                                        <option value="{{ encryptSmart($item->id) }}" {{ $kelas_selected == $item->id?'selected':'' }}>
-                                            {{ $item->kelas }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="col-12 col-md-3">
+                                <div class="form-group">
+                                    <label for="idkelas" class="form-label">Kelas</label>
+                                    <select name="idkelas" id="idkelas" class="form-select select2">
+                                        @foreach ($kelas as $item)
+                                            <option value="{{ encryptSmart($item->id) }}" {{ $kelas_selected == $item->id?'selected':'' }}>
+                                                {{ $item->kelas }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-2">
-                            <label for="semester" class="form-label">Semester</label>
-                                <select name="semester" id="semester" class="form-select select2">
-                                    <option value="ganjil" {{ $semester_selected == 'ganjil'?'selected':'' }}>Ganjil</option>
-                                    <option value="genap" {{ $semester_selected == 'genap'?'selected':'' }}>Genap</option>
-                                </select>
+                            <div class="col-12 col-md-3">
+                                <div class="form-group">
+                                    <label for="semester" class="form-label">Semester</label>
+                                    <select name="semester" id="semester" class="form-select select2">
+                                        <option value="ganjil" {{ $semester_selected == 'ganjil'?'selected':'' }}>Ganjil</option>
+                                        <option value="genap" {{ $semester_selected == 'genap'?'selected':'' }}>Genap</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-2 d-flex align-items-end mb-1 gap-1">
+                            <div class="col-12 col-md-3 d-flex align-items-end mb-3 gap-1">
                                 <input type="submit" class="btn btn-primary" name="kbm" id="kbm" value="Presensi KBM">
                                 <input type="submit" class="btn btn-warning" name="harian" id="harian" value="Presensi Harian">
                             </div>
