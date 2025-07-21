@@ -12,6 +12,7 @@ class CustomTrimStrings extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        // 'nisn', // tambah field lain kalau perlu
+        'nisn',
+        'nisn.*' // tambah field lain kalau perlu
     ];
 }
