@@ -42,7 +42,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('api-token')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json(['access_token' => $token]);
     }
 
     public function profile(Request $request)
