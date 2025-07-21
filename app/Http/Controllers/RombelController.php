@@ -227,7 +227,6 @@ class RombelController extends Controller
         }
 
         foreach ($request->get('nisn') as $key => $value) {
-            $value = ' ' . ltrim($value);
             Rombel::updateOrCreate([
                 'idtahunajaran' => $idtahunajaran,
                 'nisn' => $value
