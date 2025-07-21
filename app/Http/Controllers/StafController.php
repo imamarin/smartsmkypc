@@ -164,8 +164,8 @@ class StafController extends Controller
             $users->save();
 
             $staf = Staf::where('iduser', $id)->first();
-
-            if (Route::currentRouteName() == 'profil-staf.edit') {
+            echo Route::currentRouteName();
+            if (Route::currentRouteName() == 'profil-staf.update') {
                 $editStaf = $request->validate([
                     'nip' => $staf->nip != $request->nip ? 'required|unique:stafs,nip' : 'required',
                     'nama' => 'required',
@@ -174,7 +174,6 @@ class StafController extends Controller
                     'tanggal_lahir' => 'required',
                     'jenis_kelamin' => 'required',
                     'no_hp' => 'required',
-                    'nuptk' => 'required',
                 ]);
 
                 $staf->update($editStaf);
@@ -190,7 +189,6 @@ class StafController extends Controller
                     'jenis_kelamin' => 'required',
                     'no_hp' => 'required',
                     'status' => 'required',
-                    'nuptk' => 'required',
                 ]);
 
                 $staf->update($editStaf);
