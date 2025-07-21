@@ -1,5 +1,8 @@
 <header id="page-topbar">
-    <div class="navbar-header d-flex justify-content-end">
+    <div class="navbar-header d-flex justify-content-between justify-content-md-end">
+        <button type="button" class="btn btn-sm px-3 font-size-16 header-item vertical-menu-btn" style="color: white">
+            <i class="fa fa-fw fa-bars"></i>
+        </button>
         <div class="dropdown d-inline-block">
             <button type="button" class="btn header-item user text-start d-flex align-items-center"
                 id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
