@@ -77,43 +77,43 @@
 
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td class="{{ $item->siswa?->status == 1 ? '' : 'text-danger' }}">
-                                            {{ $item->siswa?->nisn_dapodik }}
+                                        <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
+                                            {{ $item->nisn_dapodik }}
                                         </td>
-                                        <td class="{{ $item->siswa?->status == 1 ? '' : 'text-danger' }}">{{ $item->siswa?->nama }}</td>
-                                        <td class="{{ $item->siswa?->status == 1 ? '' : 'text-danger' }}">
-                                            {{ $item->siswa?->tempat_lahir }},
-                                            {{ $item->siswa?->tanggal_lahir }}</td>
-                                        <td class="{{ $item->siswa?->status == 1 ? '' : 'text-danger' }}">
-                                            {{ $item->siswa?->jenis_kelamin }}</td>
-                                        <td class="{{ $item->siswa?->status == 1 ? '' : 'text-danger' }}">
-                                            {{ $item->siswa?->alamat_siswa }}</td>
-                                        <td class="{{ $item->siswa?->status == 1 ? '' : 'text-danger' }}">
-                                            {{ $item->siswa?->no_hp_siswa ?? '-' }}</td>
-                                        <td>{{ $item->siswa?->rombel[0]->kelas->kelas ?? '-' }}</td>
+                                        <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">{{ $item->nama }}</td>
+                                        <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
+                                            {{ $item->tempat_lahir }},
+                                            {{ $item->tanggal_lahir }}</td>
+                                        <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
+                                            {{ $item->jenis_kelamin }}</td>
+                                        <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
+                                            {{ $item->alamat_siswa }}</td>
+                                        <td class="{{ $item->status == 1 ? '' : 'text-danger' }}">
+                                            {{ $item->no_hp_siswa ?? '-' }}</td>
+                                        <td>{{ $item->rombel[0]->kelas->kelas ?? '-' }}</td>
                                         <td>
-                                            <form action="{{ route('data-siswa.updateStatus', Crypt::encrypt($item->siswa?->nisn)) }}"
+                                            <form action="{{ route('data-siswa.updateStatus', Crypt::encrypt($item->nisn)) }}"
                                                 method="post">
                                                 @csrf
                                                 <button type="submit"
-                                                    class="btn btn-sm {{ $item->siswa?->status == 1 ? 'btn-success' : 'btn-danger' }}">
-                                                    {{ $item->siswa?->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
+                                                    class="btn btn-sm {{ $item->status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                    {{ $item->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                                 </button>
                                                 <input type="hidden" name="status"
-                                                    value="{{ $item->siswa?->status == 1 ? 0 : 1 }}">
+                                                    value="{{ $item->status == 1 ? 0 : 1 }}">
                                             </form>
                                         </td>
                                         @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]))
                                         <td>
                                             <div class="d-flex">
                                                 @if(in_array('Edit', $fiturMenu[$view]))
-                                                <a href="{{ route('data-siswa.edit', Crypt::encrypt($item->siswa?->user->id)) }}"
+                                                <a href="{{ route('data-siswa.edit', Crypt::encrypt($item->user?->id)) }}"
                                                     class="btn btn-sm btn-secondary me-2">
                                                     Edit
                                                 </a>
                                                 @endif
                                                 @if(in_array('Hapus', $fiturMenu[$view]))
-                                                <a href="{{ route('data-siswa.destroy', Crypt::encrypt($item->siswa?->user->id)) }}"
+                                                <a href="{{ route('data-siswa.destroy', Crypt::encrypt($item->user?->id)) }}"
                                                     class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                                 @endif
                                             </div>

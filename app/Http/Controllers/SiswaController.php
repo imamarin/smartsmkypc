@@ -72,10 +72,10 @@ class SiswaController extends Controller
 
         $data['tahunajaran'] = TahunAjaran::orderBy('id', 'desc')->get();
 
-        $data['siswa'] = Rombel::whereHas('tahunajaran', function ($query) {
-            $query->where('status', 1);
-        })->get();
-
+        // $data['siswa'] = Rombel::whereHas('tahunajaran', function ($query) {
+        //     $query->where('status', 1);
+        // })->get();
+        $data['siswa'] = Siswa::where('status', 1)->get();
         return view('pages.siswa.index', $data);
     }
 
@@ -88,7 +88,7 @@ class SiswaController extends Controller
         }
         $data['tahunajaran'] = TahunAjaran::orderBy('id', 'desc')->get();
 
-        $data['siswa'] = Rombel::whereHas('tahunajaran', function ($query) use ($id) {
+        $data['siswa'] = Siswa::whereHas('rombel.tahunajaran', function ($query) use ($id) {
             $query->where('idtahunajaran', $id);
         })->get();
 
