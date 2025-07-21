@@ -21,38 +21,46 @@
 </div>
 <!-- end page title -->
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-md-12">
         <div class="card">
-            <div class="card-header d-flex align-items-center bg bg-info">
+            <div class="card-header bg bg-info">
                 @if(in_array('Tambah', $fiturMenu[$view]))
-                <div class="col">
-                    {{-- <h4 class="card-title">List Matpel Pengampu</h4> --}}
-                    <form action="{{ route('matpel-pengampu.store') }}" method="post" class="d-flex gap-2 w-100">
-                        @csrf
-                        <div style="width: 45%">
-                            <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
-                            <select name="idtahunajaran" id="idtahunajaran" class="form-control">
-                                <option value="{{ $tahunajaran->id }}">{{ $tahunajaran->awal_tahun_ajaran }}/{{ $tahunajaran->akhir_tahun_ajaran }}</option>
-                            </select>
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        {{-- <h4 class="card-title">List Matpel Pengampu</h4> --}}
+                        <form action="{{ route('matpel-pengampu.store') }}" method="post" class="">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="idtahunajaran" class="form-label">Tahun Ajaran</label>
+                                        <select name="idtahunajaran" id="idtahunajaran" class="form-control">
+                                            <option value="{{ $tahunajaran->id }}">{{ $tahunajaran->awal_tahun_ajaran }}/{{ $tahunajaran->akhir_tahun_ajaran }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="kode_matpel" class="form-label">Mata Pelajaran</label>
+                                        <select name="kode_matpel" id="kode_matpel" class="form-control select2">
+                                            @foreach ($matpel as $item)
+                                            <option value="{{ $item->kode_matpel }}">{{ $item->matpel }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end mb-3">
+                                    <input type="submit" value="Tambahkan" class="btn btn-primary" style="margin-bottom: 5px">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    @endif
+                    <div class="col-12 col-md-4">
+                        <div class="d-flex justify-content-end mb-3">
+                            <!-- Button to trigger modal -->
+                            {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Walikelas</button> --}}
                         </div>
-                        <div style="width: 45%">
-                            <label for="kode_matpel" class="form-label">Mata Pelajaran</label>
-                            <select name="kode_matpel" id="kode_matpel" class="form-control select2">
-                                @foreach ($matpel as $item)
-                                <option value="{{ $item->kode_matpel }}">{{ $item->matpel }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="d-flex align-items-end">
-                            <input type="submit" value="Tambahkan" class="btn btn-primary" style="margin-bottom: 5px">
-                        </div>
-                    </form>
-                </div>
-                @endif
-                <div class="col">
-                    <div class="d-flex justify-content-end mb-3">
-                        <!-- Button to trigger modal -->
-                        {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Walikelas</button> --}}
                     </div>
                 </div>
             </div><!-- end card header -->
