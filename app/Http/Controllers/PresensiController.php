@@ -835,7 +835,12 @@ class PresensiController extends Controller
             return $item->keterangan === 'Tidak Hadir';
         })->count();
         $data['total_pertemuan'] = collect($data['presensi'])->count();
-        $data['persentase_kehadiran'] = $data['total_hadir'] / $data['total_pertemuan'] * 100;
+
+        if ($data['total_hadir'] > 0 && $data['total_pertemuan'] > 0) {
+            $data['persentase_kehadiran'] = $data['total_hadir'] / $data['total_pertemuan'] * 100;
+        } else {
+            $data['persentase_kehadiran'] = 0;
+        }
 
         return view('pages.presensi.guru', $data);
     }
