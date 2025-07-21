@@ -198,7 +198,8 @@
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
                                 <label for="idtahunajaran" class="form-label">Tahun Ajaran </label>
-                                <select name="idtahunajaran" id="idtahunajaran" class="form-control select2">
+                                <select name="idtahunajaran" id="idtahunajaran" class="form-control select2" required>
+                                    <option value="">Pilih Tahun Ajaran</option>
                                     @foreach ($tahunajaran as $item)
                                         @if($item->id < $idtahunajaran)
                                         <option value="{{ encryptSmart($item->id) }}">{{ $item->awal_tahun_ajaran }}/{{ $item->akhir_tahun_ajaran }}</option>
