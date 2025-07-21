@@ -103,6 +103,19 @@
             padding: 10px;
             font-size: 14px;
         }
+
+        /* Tambahkan ke file CSS kamu */
+        /* .sidebar-collapsed .vertical-menu {
+            width: 0;
+            overflow: hidden;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-expanded .vertical-menu {
+            width: 250px; 
+            transition: width 0.3s ease;
+        } */
+
     </style>
 
     @stack('styles')
@@ -269,8 +282,14 @@
 
             return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
         }
+        
     </script>
-
+    {{-- <script>
+        document.getElementById('toggleSidebar').addEventListener('click', function () {
+            document.body.classList.toggle('sidebar-collapsed');
+            document.body.classList.toggle('sidebar-expanded');
+        });
+    </script> --}}
     @stack('scripts')
     @include('sweetalert::alert')
 </body>
