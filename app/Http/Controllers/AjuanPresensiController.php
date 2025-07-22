@@ -30,7 +30,7 @@ class AjuanPresensiController extends Controller
                 Route::currentRouteName() == 'ajuan-kehadiran-mengajar.store' ||
                 Route::currentRouteName() == 'ajuan-kehadiran-mengajar.destroy'
             ) {
-                $this->view = 'Rekap Presensi Mengajar';
+                $this->view = 'Administrasi Guru-Rekap Presensi Mengajar';
             }
 
             if (!isset($this->fiturMenu[$this->view])) {
