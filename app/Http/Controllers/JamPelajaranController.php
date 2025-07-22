@@ -22,8 +22,14 @@ class JamPelajaranController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
+            if (
+                Route::currentRouteName() == 'jam-pelajaran.getjam'
 
-            $this->view = 'Kurikulum-Data Jam Pelajaran';
+            ) {
+                $this->view = 'Administrasi Guru-Jadwal Mengajar';
+            } else {
+                $this->view = 'Kurikulum-Data Jam Pelajaran';
+            }
 
             if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();

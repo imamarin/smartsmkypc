@@ -193,7 +193,7 @@
         const kelas = $('#idkelas');
         const semester = $('#semester');
         $('#idtahunajaran').on('change',function(event){
-            let url = '{{ route('data-kelas.json-tahunajaran', ':id') }}'.replace(':id', tahunajaran.val());
+            let url = '{{ route('walikelas.kelas.json-tahunajaran', ':id') }}'.replace(':id', tahunajaran.val());
             $.get(url, function(data,status){
                 kelas.html("");
                 if(data.data.length > 0){

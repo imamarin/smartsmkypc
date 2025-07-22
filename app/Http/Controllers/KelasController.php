@@ -26,6 +26,8 @@ class KelasController extends Controller
         $this->middleware(function ($request, $next) {
             $this->fiturMenu = session('fiturMenu');
             if (Route::currentRouteName() == 'data-kelas.json-tahunajaran') {
+                $this->view = 'Data Master-Data Rombel';
+            } else if (Route::currentRouteName() == 'walikelas.kelas.json-tahunajaran') {
                 $this->view = 'Walikelas-Rekap Presensi Siswa';
             } else {
                 $this->view = 'Data Master-Data Kelas';
