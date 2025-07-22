@@ -305,7 +305,7 @@ Route::middleware('cek-status-login')->group(function () {
 
         //download
         Route::get('/download-bukti-mengajar/{filename}', function ($filename) {
-            $filePath = public_path("storage/bukti_ajuan_mengajar/{$filename}");
+            $filePath = storage_path("app/public/bukti_ajuan_mengajar/{$filename}");
 
             if (!file_exists($filePath)) {
                 abort(404, 'File not found.');
