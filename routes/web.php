@@ -107,6 +107,7 @@ Route::middleware('cek-status-login')->group(function () {
         Route::get('/data-rombel/export/{id}', [RombelController::class, 'export'])->name('data-rombel.export');
         Route::get('/data-rombel/siswa/{id}', [RombelController::class, 'showStudents'])->name('data-rombel.showStudents');
         Route::post('/data-rombel/import/data', [RombelController::class, 'import'])->name('data-rombel.import');
+        Route::get('/data-rombel/kelas/json-tahunajaran/{id}', [KelasController::class, 'getJsonByIdTahunAjaran'])->name('data-rombel.kelas.json-tahunajaran');
         Route::get('/template-import-rombel', function () {
             $file = public_path('storage/template_import/template_rombel.xlsx');
             return response()->download($file);

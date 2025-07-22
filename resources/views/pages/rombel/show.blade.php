@@ -420,10 +420,10 @@
         const kelas = $('#pindahTingkatForm #idkelas');
 
         tahunajaran.on('change',function(event){
-            let url = '{{ route('data-kelas.json-tahunajaran', ':id') }}'.replace(':id', tahunajaran.val());
+            let url = '{{ route('data-rombel.kelas.json-tahunajaran', ':id') }}'.replace(':id', tahunajaran.val());
             $.get(url, function(data,status){
                 kelas.html("");
-                kelas.append('<option value="">pilih kelas</option>');
+                kelas.append('<option value="">Pilih Kelas</option>');
                 if(data.data.length > 0){
                     data.data.forEach(element => {
                         let option = new Option(element.kelas, element.id);
