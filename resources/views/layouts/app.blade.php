@@ -165,11 +165,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/libs/metismenujs/metismenujs.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script> --}}
     <script src="{{ asset('assets/libs/feather-icons/feather.min.js') }}"></script>
     <!-- analytics dashboard init -->
     <script src="{{ asset('assets/js/pages/dashboard-analytics.init.js') }}"></script>
-    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/js/app2.js') }}"></script>
     <!-- datatable -->
     <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
@@ -282,14 +282,9 @@
 
             return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
         }
-        
+
     </script>
-    {{-- <script>
-        document.getElementById('toggleSidebar').addEventListener('click', function () {
-            document.body.classList.toggle('sidebar-collapsed');
-            document.body.classList.toggle('sidebar-expanded');
-        });
-    </script> --}}
+    
     @stack('scripts')
     @include('sweetalert::alert')
 </body>

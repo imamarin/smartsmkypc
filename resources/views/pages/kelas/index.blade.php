@@ -1,7 +1,4 @@
 @extends('layouts.app')
-@push('styles')
-@endpush
-
 @section('content')
 <!-- start page title -->
 <div class="row">

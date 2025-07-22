@@ -2,6 +2,7 @@
     "use strict";
     var t = localStorage.getItem("language"),
         a = "en";
+
     function n(e) {
         document.getElementById("header-lang-img") &&
             ("en" == e
@@ -172,7 +173,34 @@
     }),
         r(),
         document.addEventListener("DOMContentLoaded", function (e) {
-            document.getElementById("side-menu") && new MetisMenu("#side-menu");
+            // document.getElementById("side-menu") && new MetisMenu("#side-menu");
+            // Inisialisasi MetisMenu
+            if (document.getElementById("side-menu")) {
+                new MetisMenu("#side-menu");
+            }
+
+            // Tambahkan ini untuk memperbaiki mobile submenu klik
+            document.querySelectorAll("#side-menu a").forEach(function (el) {
+                el.addEventListener("click", function () {
+                    if (window.innerWidth < 992) {
+                        // Cek apakah menu yang diklik punya sub-menu
+                        const parentLi = el.parentElement;
+                        const hasSubMenu =
+                            parentLi && parentLi.querySelector("ul");
+
+                        if (!hasSubMenu) {
+                            // Tidak punya submenu, artinya ini link langsung (klik menuju halaman)
+                            document.body.classList.remove("sidebar-enable");
+                        } else {
+                            // Punya submenu, biarkan MetisMenu buka dulu submenunya
+                            e.preventDefault(); // Supaya tidak reload langsung
+                            parentLi.classList.toggle("mm-active");
+                            const submenu = parentLi.querySelector("ul");
+                            submenu.classList.toggle("mm-show");
+                        }
+                    }
+                });
+            });
         }),
         e();
     for (
@@ -245,31 +273,38 @@
     }
     if (
         (setTimeout(function () {
-            var e = document.querySelectorAll("#sidebar-menu a");
-            e &&
-                e.forEach(function (e) {
-                    var t = window.location.href.split(/[?#]/)[0];
-                    e.href == t &&
-                        (e.classList.add("active"),
-                        (t = e.parentElement) &&
-                            "side-menu" !== t.id &&
-                            (t.classList.add("mm-active"),
-                            (e = t.parentElement) &&
-                                "side-menu" !== e.id &&
-                                (e.classList.add("mm-show"),
-                                e.classList.contains("mm-collapsing") &&
-                                    console.log("has mm-collapsing"),
-                                (t = e.parentElement) &&
-                                    "side-menu" !== t.id &&
-                                    (t.classList.add("mm-active"),
-                                    (e = t.parentElement) &&
-                                        "side-menu" !== e.id &&
-                                        (e.classList.add("mm-show"),
-                                        (t = e.parentElement) &&
-                                            "side-menu" !== t.id &&
-                                            t.classList.add("mm-active"))))));
-                });
-        }, 0),
+            const currentUrl = window.location.href.split(/[?#]/)[0];
+            const menuLinks = document.querySelectorAll("#side-menu a");
+
+            menuLinks.forEach(function (link) {
+                if (link.href === currentUrl) {
+                    // Tambahkan class 'active' ke link
+                    link.classList.add("active");
+
+                    // Tangkap elemen LI dari link yang aktif
+                    let li = link.closest("li");
+                    if (li) li.classList.add("mm-active");
+
+                    // Naik ke atas untuk membuka semua induk menu
+                    let parent = li?.parentElement;
+
+                    while (parent && parent.id !== "side-menu") {
+                        if (parent.classList.contains("sub-menu")) {
+                            // Buka sub-menu
+                            // parent.classList.add("mm-show");
+                            parent.classList.remove("mm-collapsing"); // pastikan tidak animasi
+                            parent.style.height = "auto";
+                            parent.style.overflow = "visible";
+                        }
+
+                        const parentLi = parent.closest("li");
+                        if (parentLi) parentLi.classList.add("mm-active");
+
+                        parent = parentLi?.parentElement;
+                    }
+                }
+            });
+        }, 1000),
         (u = document.querySelectorAll(".navbar-nav a")) &&
             u.forEach(function (e) {
                 var t = window.location.href.split(/[?#]/)[0];
@@ -525,31 +560,3 @@
                     e[t].checked = this.checked;
             });
 })();
-
-function initMetisMenu() {
-    if (typeof MetisMenu !== "undefined") {
-        const oldMenu = document.querySelector("#side-menu");
-        if (oldMenu) {
-            // Destroy instance jika sudah ada
-            if (oldMenu.classList.contains("mm-active")) {
-                oldMenu.classList.remove("mm-active");
-            }
-            oldMenu
-                .querySelectorAll(".mm-show")
-                .forEach((el) => el.classList.remove("mm-show"));
-        }
-        new MetisMenu("#side-menu");
-    }
-}
-
-// Inisialisasi saat load pertama
-document.addEventListener("DOMContentLoaded", initMetisMenu);
-window.alert("ssss");
-// Re-inisialisasi setiap kali menu 'beranda' diklik (atau menu lain)
-document.querySelectorAll("#side-menu a").forEach((link) => {
-    link.addEventListener("click", function () {
-        setTimeout(() => {
-            initMetisMenu(); // Reinit setelah navigasi
-        }, 100); // delay agar DOM sempat update
-    });
-});
