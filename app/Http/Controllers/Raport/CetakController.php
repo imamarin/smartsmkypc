@@ -80,7 +80,7 @@ class CetakController extends Controller
         //     $query->where('status', 1);
         // })->first();
 
-        $aktivasi = TahunAjaran::where('status', 1)->first();
+        $aktivasi = TahunAjaran::select('id as idtahunajaran')->where('status', 1)->first();
 
         $idkelas = Rombel::where('nisn', Auth::user()->siswa->nisn)->where('idtahunajaran', $aktivasi->idtahunajaran)->value('idkelas');
 
