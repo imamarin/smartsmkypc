@@ -13,6 +13,7 @@ use App\Models\Raport\IdentitasRaport;
 use App\Models\Raport\MatpelKelas;
 use App\Models\Rombel;
 use App\Models\Siswa;
+use App\Models\TahunAjaran;
 use App\Models\Walikelas;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -75,9 +76,11 @@ class CetakController extends Controller
 
     public function infoSiswa()
     {
-        $aktivasi = IdentitasRaport::whereHas('tahunajaran', function ($query) {
-            $query->where('status', 1);
-        })->first();
+        // $aktivasi = IdentitasRaport::whereHas('tahunajaran', function ($query) {
+        //     $query->where('status', 1);
+        // })->first();
+
+        $aktivasi = TahunAjaran::where('status', 1)->first();
 
         $idkelas = Rombel::where('nisn', Auth::user()->siswa->nisn)->where('idtahunajaran', $aktivasi->idtahunajaran)->value('idkelas');
 
