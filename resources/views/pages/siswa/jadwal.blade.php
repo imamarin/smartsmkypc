@@ -38,7 +38,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header justify-content-between d-flex align-items-center">
+                <div class="card-header justify-content-between d-flex align-items-center bg bg-primary">
                     <h4 class="card-title">{{ $item }}</h4>
                 </div>
                 <div class="card-body">
