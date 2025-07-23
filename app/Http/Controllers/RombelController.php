@@ -152,16 +152,17 @@ class RombelController extends Controller
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
+        // dd($idtahunajaran);
         $request->merge(['idkelas' => $idkelas, 'idtahunajaran' => $idtahunajaran]);
 
-        $request->validate([
+        $validate = $request->validate([
             'nisn' => 'required',
             'idkelas' => 'required',
             'idtahunajaran' => 'required'
         ]);
 
 
-        Rombel::find($id)->update($request->all());
+        Rombel::find($id)->update($validate);
         return redirect()->back()->with('success', 'Data berhasil diubah');
     }
 
