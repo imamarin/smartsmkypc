@@ -305,13 +305,14 @@ Route::middleware('cek-status-login')->group(function () {
 
         //download
         Route::get('/download-bukti-mengajar/{filename}', function ($filename) {
-            $filePath = public_path("storage/bukti_ajuan_mengajar/{$filename}");
-            // return $filePath;
-            // if (!file_exists($filePath)) {
-            //     abort(404, 'File not found.');
-            // }
 
-            return response()->json($filePath);
-        })->name('download-bukti-mengajar');
+            $filePath = public_path("storage/bukti_ajuan_mengajar/{$filename}");
+
+            if (!file_exists($filePath)) {
+                abort(404, 'File not found.');
+            }
+
+            return response()->download($filePath);
+        })->where('filename', '.*')->name('download-bukti-mengajar');
     });
 });
