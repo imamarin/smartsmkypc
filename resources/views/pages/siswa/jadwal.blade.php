@@ -34,12 +34,23 @@
         </div>
     </div>
     <!-- end page title -->
+    @php
+    $warna = [
+        'linear-gradient(135deg, #3a8dde, #67c6f5)',
+        'linear-gradient(135deg, #ff7e5f, #feb47b)',
+        'linear-gradient(135deg, #11998e, #38ef7d)',
+        'linear-gradient(135deg, #434343, #6e45e2)',
+        'linear-gradient(135deg, #ff9966, #ff5e62)',
+        'linear-gradient(135deg, #2b5876, #4e4376)',
+        'linear-gradient(135deg, #f6d365, #fda085)'
+];
+    @endphp
     @foreach ($hari as $key => $item)    
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header justify-content-between d-flex align-items-center bg bg-primary">
-                    <h4 class="card-title">{{ $item }}</h4>
+                <div class="card-header justify-content-between d-flex align-items-center" style="background: {{ $warna[$key] }}">
+                    <h4 class="card-title text-white">{{ $item }}</h4>
                 </div>
                 <div class="card-body">
                     @if (isset($jadwal[$key + 1]))
