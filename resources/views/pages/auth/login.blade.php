@@ -97,6 +97,9 @@
                 <span class="toggle-password" onclick="togglePassword()"><i class="fa-regular fa-eye"></i></span>
             </div>
             <div class="d-grid mb-3">
+                <a href="{{ route('forgot.password.form') }}" class="text-white">Klik disini lupa password</button>
+            </div>
+            <div class="d-grid mb-3">
                 <button type="submit" class="btn-login">Login</button>
             </div>
         </form>

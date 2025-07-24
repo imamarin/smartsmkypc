@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AjuanPresensiController;
+use App\Http\Controllers\CalenderGoogleController;
 use App\Http\Controllers\CPController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiagramController;
@@ -51,14 +52,25 @@ use App\Models\KasusSiswa;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
 Route::get('/', function () {
     return view('pages.auth.login');
 });
 //login
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForm'])->name('forgot.password.form');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('forgot.password.send');
+
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
+
 Route::middleware('cek-status-login')->group(function () {
     Route::prefix('/pages')->group(function () {
+        Route::get('/calender-google', [CalenderGoogleController::class, 'index']);
         //dashboard
         Route::get('/beranda', [DashboardController::class, 'index'])->name('dashboard');
         //tahun-ajaran
