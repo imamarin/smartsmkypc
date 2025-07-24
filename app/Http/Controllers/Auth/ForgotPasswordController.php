@@ -62,17 +62,16 @@ class ForgotPasswordController extends Controller
         $link = url("/reset-password/{$token}?username={$username}");
 
         // Kirim ke WhatsApp
-        try {
-            $phone = preg_replace('/^0/', '62', $phone);
-            $phone = preg_replace('/^(\+?)(62)?/', '62', $phone);
-            Http::get('http://wa.smk-ypc.sch.id/send', [
-                'number' => $phone,
-                'text' => "Assalamulaikum Wr Wb.\n\nYth. $nama, \n\nKami menerima permintaan reset password.\nKlik link berikut untuk melanjutkan atau abaikan jika tidak melakukan permintaan reset:\n\n$link",
-            ]);
-        } catch (\Throwable $th) {
+        $phone = preg_replace('/^0/', '62', $phone);
+        $phone = preg_replace('/^(\+?)(62)?/', '62', $phone);
+        $response = Http::get('http://wa.smk-ypc.sch.id/send', [
+            'number' => $phone,
+            'text' => "Assalamulaikum Wr Wb.\n\nYth. $nama, \n\nKami menerima permintaan reset password.\nKlik link berikut untuk melanjutkan atau abaikan jika tidak melakukan permintaan reset:\n\n$link",
+        ]);
+        $status = $response->status();
+        if ($status != 200) {
             return back()->withErrors(['phone' => 'Tidak terkirim, silakan periksa kembali no whatasapp. pastikan depan no adalah 62 bukan 0.']);
         }
-
 
         return back()->with('status', 'Link reset password dikirim ke WhatsApp.');
     }
