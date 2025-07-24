@@ -136,10 +136,7 @@ class AjuanPresensiController extends Controller
             $tglmengajar = $ajuan->tanggal_mengajar;
             Http::get('http://wa.smk-ypc.sch.id/send', [
                 'number' => $nohp,
-                'text' => "Assalamulaikum {$nama}, \n\nKami menerima permintaan cek pengajuan.\nMohon untuk cek pengajuan kehadiran jadwal pengajar:\n\n
-                Kelas: {$kelas}
-                Tanggal Mengajar: {$tglmengajar}
-                Mata Pelajaran: {$matpel}",
+                'text' => "Assalamulaikum {$nama}, \n\nKami menerima permintaan pemberitahuan pengajuan.\nSelamat pengajuan anda berhasil disetujui, mohon untuk segera input kehadiran jadwal mengajar:\nKelas: {$kelas}\nTanggal Mengajar: {$tglmengajar}\nMata Pelajaran: {$matpel}",
             ]);
         }
 
