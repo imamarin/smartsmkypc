@@ -149,6 +149,8 @@ class PresensiController extends Controller
                 'created_at' => date('Y-m-d H:i:s', strtotime($tanggal)) ?? date('Y-m-d H:i:s'),
                 'token' => $request->token
             ]);
+
+            $token->update(['status' => 'kadaluarsa']);
         }
 
         foreach ($request->presensi as $key => $value) {
@@ -169,7 +171,6 @@ class PresensiController extends Controller
             }
         }
 
-        $token->update(['status' => 'kadaluarsa']);
 
         return redirect()->back()->with('success', 'Presensi berhasil di proses');
     }
