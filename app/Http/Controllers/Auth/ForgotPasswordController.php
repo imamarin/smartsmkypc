@@ -69,6 +69,7 @@ class ForgotPasswordController extends Controller
             'text' => "Assalamulaikum Wr Wb.\n\nYth. $nama, \n\nKami menerima permintaan reset password.\nKlik link berikut untuk melanjutkan atau abaikan jika tidak melakukan permintaan reset:\n\n$link",
         ]);
         $status = $response->status();
+        dd($status);
         if ($status != 200) {
             return back()->withErrors(['phone' => 'Tidak terkirim, silakan periksa kembali no whatasapp. pastikan depan no adalah 62 bukan 0.']);
         }
