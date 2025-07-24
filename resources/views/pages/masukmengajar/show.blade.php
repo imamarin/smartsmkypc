@@ -167,6 +167,7 @@
                                                     }else{
                                                         $token = '';
                                                     }
+                                                    dd($token);
                                                 }
                                                 @endphp
                                                 <input type="text" name="token" id="token" class="form-control" value="{{ $token }}">

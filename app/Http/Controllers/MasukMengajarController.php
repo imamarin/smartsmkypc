@@ -136,7 +136,6 @@ class MasukMengajarController extends Controller
                 ->where('status', 'aktif')
                 ->where('ajuan', '1')
                 ->first();
-            dd($data['tokenajuan']);
         } else {
             $data['jadwal'] = $jadwal;
             $data['presensi'] = $presensi;
