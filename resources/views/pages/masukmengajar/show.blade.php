@@ -153,13 +153,14 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="token" id="token" class="form-control" value="{{ isset($presensi) ? $presensi->token : '' }}" style="display: none;">
-                                        </td>
-                                    </tr>
+
                                     <tr>
                                         <td colspan="5">
+                                            <div class="mb-3">
+                                                <label for="pokok_bahasan" class="form-label">Token</label>
+                                                <input type="text" name="token" id="token" class="form-control" value="{{ isset($presensi) ? $presensi->token : '' }}" style="display: none;">
+                                                
+                                            </div>
                                             <div class="mb-3">
                                                 <label for="pokok_bahasan" class="form-label">Pokok Bahasan</label>
                                                 <textarea name="pokok_bahasan" rows="5" id="pokok_bahasan" class="form-control">{{ isset($presensi) ? $presensi->pokok_bahasan : '' }}</textarea>
