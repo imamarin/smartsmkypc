@@ -124,6 +124,7 @@ class TagihanKeuanganController extends Controller
 
             return (object)[
                 'nisn' => $item->siswa->nisn,
+                'nisn_dapodik' => $item->siswa->nisn_dapodik,
                 'nama' => $item->siswa->nama,
                 'jmlBulan' => $months,
                 'spp' => $sppTotal,
