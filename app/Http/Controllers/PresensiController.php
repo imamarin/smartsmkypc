@@ -113,18 +113,6 @@ class PresensiController extends Controller
 
         $date = date('Y-m-d', strtotime($tanggal));
 
-
-        $token = TokenMengajar::where('token', $request->token)
-            ->where('idjadwalmengajar', $idjadwalmengajar)
-            ->where('expired_at', '>=', now())
-            ->where('status', 'aktif')
-            ->first();
-
-        if (!$token) {
-            return back()->withErrors(['Token tidak valid atau sudah kadaluarsa.']);
-        }
-
-
         $tahunajaran = TahunAjaran::where('status', 1)->first();
 
         $presensi = Presensi::whereDate('created_at', $date)
@@ -141,6 +129,15 @@ class PresensiController extends Controller
                 'token' => $request->token
             ]);
         } else {
+            $token = TokenMengajar::where('token', $request->token)
+                ->where('idjadwalmengajar', $idjadwalmengajar)
+                ->where('expired_at', '>=', now())
+                ->where('status', 'aktif')
+                ->first();
+
+            if (!$token) {
+                return back()->withErrors(['Token tidak valid atau sudah kadaluarsa.']);
+            }
             $presensi = Presensi::create([
                 'idtahunajaran' => $tahunajaran->id,
                 'semester' => $tahunajaran->semester,
