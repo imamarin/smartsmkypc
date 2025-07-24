@@ -155,7 +155,7 @@
                                 <tfoot>
                                     <tr>
                                         <td>
-                                            <input type="text" name="token" id="token" class="form-control" value="{{ $presensi->token }}" style="display: none;">
+                                            <input type="text" name="token" id="token" class="form-control" value="{{ isset($presensi) ? $presensi->token : '' }}" style="display: none;">
                                         </td>
                                     </tr>
                                     <tr>
