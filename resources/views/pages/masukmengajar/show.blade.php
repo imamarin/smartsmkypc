@@ -158,7 +158,7 @@
                                         <td colspan="5">
                                             <div class="mb-3">
                                                 <label for="pokok_bahasan" class="form-label">Token</label>
-                                                <input type="text" name="token" id="token" class="form-control" value="{{ isset($presensi) ? $presensi->token : '' }}" style="display: none;">
+                                                <input type="text" name="token" id="token" class="form-control" value="{{ isset($presensi) ? $presensi->token : '' }}">
                                                 
                                             </div>
                                             <div class="mb-3">
