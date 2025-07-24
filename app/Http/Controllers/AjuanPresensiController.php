@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\AjuanPresensiMengajar;
+use App\Models\TokenMengajar;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 class AjuanPresensiController extends Controller
 {
@@ -115,7 +118,32 @@ class AjuanPresensiController extends Controller
 
         $ajuan->save();
 
-        return redirect()->back()->with('success', 'Perbaikan Ajuan berhasil dikirim, silakan lakukan cek secara berkala');
+        if ($request->status_ajuan == '2') {
+            $token = strtoupper(Str::random(6));
+            $expiredAt = now()->addDays(1);
+
+            TokenMengajar::create([
+                'idjadwalmengajar' => $ajuan->idjadwalmengajar,
+                'token' => $token,
+                'expired_at' => $expiredAt,
+                'status' => 'aktif',
+            ]);
+
+            $nohp = $ajuan->jadwalmengajar->staf->no_hp;
+            $nama = $ajuan->jadwalmengajar->staf->nama;
+            $kelas = $ajuan->jadwalmengajar->kelas->kelas;
+            $matpel = $ajuan->jadwalmengajar->matpel->matpel;
+            $tglmengajar = $ajuan->tanggal_mengajar;
+            Http::get('http://wa.smk-ypc.sch.id/send', [
+                'number' => $nohp,
+                'text' => "Assalamulaikum {$nama}, \n\nKami menerima permintaan cek pengajuan.\nMohon untuk cek pengajuan kehadiran jadwal pengajar:\n\n
+                Kelas: {$kelas}
+                Tanggal Mengajar: {$tglmengajar}
+                Mata Pelajaran: {$matpel}",
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Perubaha Ajuan berhasil disimpan');
     }
 
     public function destroy(String $id)

@@ -113,6 +113,7 @@ class PresensiController extends Controller
 
         $date = date('Y-m-d', strtotime($tanggal));
 
+
         $token = TokenMengajar::where('token', $request->token)
             ->where('idjadwalmengajar', $idjadwalmengajar)
             ->where('expired_at', '>=', now())
@@ -122,6 +123,7 @@ class PresensiController extends Controller
         if (!$token) {
             return back()->withErrors(['Token tidak valid atau sudah kadaluarsa.']);
         }
+
 
         $tahunajaran = TahunAjaran::where('status', 1)->first();
 
