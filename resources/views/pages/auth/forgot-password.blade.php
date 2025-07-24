@@ -30,8 +30,8 @@
             <form method="POST" action="{{ route('forgot.password.send') }}">
                 @csrf
                 <div class="mb-3">
-                    <label for="phone" class="form-label">Nomor WhatsApp</label>
-                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Contoh: 628xxxxxxxxxx" required>
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Masukan Username" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Kirim Link Reset</button>

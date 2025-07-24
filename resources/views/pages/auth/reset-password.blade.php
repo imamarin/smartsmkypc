@@ -26,7 +26,7 @@
             <form method="POST" action="{{ route('password.reset') }}">
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">
-                <input type="hidden" name="phone" value="{{ $phone }}">
+                <input type="hidden" name="username" value="{{ Crypt::encrypt($username) }}">
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password Baru</label>

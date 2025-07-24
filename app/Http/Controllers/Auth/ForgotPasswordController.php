@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 
 class ForgotPasswordController extends Controller
 {
@@ -19,34 +20,59 @@ class ForgotPasswordController extends Controller
 
     public function sendResetLink(Request $request)
     {
-        $request->validate(['phone' => 'required']);
+        $request->validate(['username' => 'required']);
 
-        $user = User::with('staf')
-            ->whereHas('staf', function ($q) use ($request) {
-                $q->where('no_hp', $request->phone);
-            })->first();
+        $user = User::where('username', $request->username)->first();
 
-        if (!$user || !$user->staf) {
+        if (!$user) {
+            return back()->withErrors(['message' => 'User not found']);
+        }
+
+        if (!$user->staf) {
+            if (!$user->siswa) {
+                $phone = $user->siswa->no_hp ?? false;
+                $nama = $user->siswa->nama;
+            } else {
+                return back()->withErrors(['phone' => 'Nomor tidak ditemukan.']);
+            }
+        } else {
+            $phone = $user->staf->no_hp ?? false;
+            $nama = $user->staf->nama;
+        }
+
+        // $user = User::with('staf')
+        //     ->whereHas('staf', function ($q) use ($request) {
+        //         $q->where('no_hp', $request->phone);
+        //     })->first();
+
+        if ($phone == false) {
             return back()->withErrors(['phone' => 'Nomor tidak ditemukan.']);
         }
 
-        $phone = $user->staf->no_hp;
-        $nama = $user->staf->nama;
+
 
         $token = Str::random(60);
 
         DB::table('password_resets')->updateOrInsert(
-            ['phone' => $phone],
+            ['username' => $request->username],
             ['token' => $token, 'created_at' => Carbon::now()]
         );
 
-        $link = url("/reset-password/{$token}?phone={$phone}");
+        $username = Crypt::encrypt($request->username);
+        $link = url("/reset-password/{$token}?username={$username}");
 
         // Kirim ke WhatsApp
-        Http::get('http://wa.smk-ypc.sch.id/send', [
-            'number' => $phone,
-            'text' => "Assalamulaikum $nama, \n\nKami menerima permintaan reset password.\nKlik link berikut untuk melanjutkan:\n\n$link",
-        ]);
+        try {
+            $phone = preg_replace('/^0/', '62', $phone);
+            $phone = preg_replace('/^(\+?)(62)?/', '62', $phone);
+            Http::get('http://wa.smk-ypc.sch.id/send', [
+                'number' => $phone,
+                'text' => "Assalamulaikum Wr Wb.\n\nYth. $nama, \n\nKami menerima permintaan reset password.\nKlik link berikut untuk melanjutkan atau abaikan jika tidak melakukan permintaan reset:\n\n$link",
+            ]);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['phone' => 'Tidak terkirim, silakan periksa kembali no whatasapp. pastikan depan no adalah 62 bukan 0.']);
+        }
+
 
         return back()->with('status', 'Link reset password dikirim ke WhatsApp.');
     }
