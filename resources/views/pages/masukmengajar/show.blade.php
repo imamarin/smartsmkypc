@@ -158,8 +158,18 @@
                                         <td colspan="5">
                                             <div class="mb-3">
                                                 <label for="pokok_bahasan" class="form-label">Token</label>
-                                                <input type="text" name="token" id="token" class="form-control" value="{{ isset($presensi) ? $presensi->token : '' }}">
-                                                
+                                                @php
+                                                if(isset($presensi)){
+                                                    $token = $presensi->token;
+                                                }else{
+                                                    if(isset($tokenajuan)){
+                                                        $token = $tokenajuan->token;
+                                                    }else{
+                                                        $token = '';
+                                                    }
+                                                }
+                                                @endphp
+                                                <input type="text" name="token" id="token" class="form-control" value="{{ $token }}">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="pokok_bahasan" class="form-label">Pokok Bahasan</label>

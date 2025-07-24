@@ -386,6 +386,7 @@ class SiswaController extends Controller
             $token = TokenMengajar::where('idjadwalmengajar', $item->id)
                 ->where('expired_at', '>=', now())
                 ->where('status', 'aktif')
+                ->where('ajuan', '0')
                 ->first();
 
             return (object)[

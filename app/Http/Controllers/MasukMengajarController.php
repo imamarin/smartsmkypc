@@ -7,6 +7,7 @@ use App\Models\JadwalSistemBlok;
 use App\Models\KalenderAkademik;
 use App\Models\Presensi;
 use App\Models\TahunAjaran;
+use App\Models\TokenMengajar;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +37,7 @@ class MasukMengajarController extends Controller
                 $this->view = 'Administrasi Guru-Rekap Presensi Mengajar';
             }
 
-            
+
             if (!isset($this->fiturMenu[$this->view])) {
                 return redirect()->back();
             }
@@ -130,6 +131,11 @@ class MasukMengajarController extends Controller
                 'kode_matpel' => $jadwal->kode_matpel,
                 'idkelas' => $jadwal->idkelas
             ])->orderBy('updated_at', 'desc')->get();
+            $data['tokenajuan'] = TokenMengajar::where('idjadwalmengajar', $jadwal->id)
+                ->where('expired_at', '>=', now())
+                ->where('status', 'aktif')
+                ->where('ajuan', '1')
+                ->first();
         } else {
             $data['jadwal'] = $jadwal;
             $data['presensi'] = $presensi;

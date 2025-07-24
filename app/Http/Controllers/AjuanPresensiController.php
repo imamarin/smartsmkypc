@@ -127,6 +127,7 @@ class AjuanPresensiController extends Controller
                 'token' => $token,
                 'expired_at' => $expiredAt,
                 'status' => 'aktif',
+                'ajuan' => '1'
             ]);
 
             $nohp = $ajuan->jadwalmengajar->staf->no_hp;
@@ -136,7 +137,7 @@ class AjuanPresensiController extends Controller
             $tglmengajar = $ajuan->tanggal_mengajar;
             Http::get('http://wa.smk-ypc.sch.id/send', [
                 'number' => $nohp,
-                'text' => "Assalamulaikum {$nama}, \n\nKami menerima permintaan pemberitahuan pengajuan.\nSelamat pengajuan anda berhasil disetujui, mohon untuk segera input kehadiran jadwal mengajar:\nKelas: {$kelas}\nTanggal Mengajar: {$tglmengajar}\nMata Pelajaran: {$matpel}",
+                'text' => "Assalamulaikum \n\nYth. {$nama}, \n\nKami menerima permintaan pemberitahuan pengajuan.\nSelamat pengajuan anda berhasil disetujui, mohon untuk segera input kehadiran jadwal mengajar:\nKelas: {$kelas}\nTanggal Mengajar: {$tglmengajar}\nMata Pelajaran: {$matpel}",
             ]);
         }
 
