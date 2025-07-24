@@ -54,6 +54,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\TokenMengajarController;
 
 Route::get('/', function () {
     return view('pages.auth.login');
@@ -87,6 +88,7 @@ Route::middleware('cek-status-login')->group(function () {
         //data-siswa
         Route::get('/siswa/profil',  [SiswaController::class, 'profil'])->name('siswa.profil');
         Route::get('/siswa/jadwal-mata-pelajaran',  [SiswaController::class, 'jadwal'])->name('siswa.jadwal');
+        Route::get('/siswa/jadwal-mata-pelajaran/token/{id}',  [TokenMengajarController::class, 'generateToken'])->name('siswa.jadwal.token');
         Route::resource('/profil-siswa', SiswaController::class);
         Route::get('/data-siswa/tahunajaran', [SiswaController::class, 'tahunajaran'])->name('data-siswa.tahunajaran');
         Route::resource('/data-siswa', SiswaController::class);

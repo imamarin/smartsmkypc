@@ -64,6 +64,7 @@
                                     <th>Jam ke</th>
                                     <th>Jam Masuk</th>
                                     <th>Jam keluar</th>
+                                    <th>Token</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,6 +76,15 @@
                                         <td>{{ $item_jadwal->jampel }}</td>
                                         <td>{{ $item_jadwal->mulai}}</td>
                                         <td>{{ $item_jadwal->selesai }}</td>
+                                        <td>
+                                            @if($item_jadwal->token == '-')
+                                            <a href="{{ route('siswa.jadwal.token', Crypt::encrypt($item_jadwal->id)) }}" class="btn btn-primary">Generate Token</a>
+                                            @else
+                                            <a href="#" class="btn btn-success bold">
+                                                 {{ $item_jadwal->token }}
+                                            </a>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

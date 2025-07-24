@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
+use App\Models\TokenMengajar;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -381,6 +382,12 @@ class SiswaController extends Controller
         $jadwal = [];
         $jadwalMengajar = $jadwalMengajar->map(function ($item) {
             $jam_akhir = $item->jampel->jam + $item->jumlah_jam - 1;
+
+            $token = TokenMengajar::where('idjadwalmengajar', $item->id)
+                ->where('expired_at', '>=', now())
+                ->where('status', 'aktif')
+                ->first();
+
             return (object)[
                 'id' => $item->id,
                 'hari' => $item->jampel->hari ?? '-',
@@ -391,6 +398,7 @@ class SiswaController extends Controller
                 'nama_matpel' => $item->matpel->matpel ?? '-',
                 'nip' => $item->nip,
                 'nama_guru' => $item->staf->nama ?? '-',
+                'token' => $token->token ?? '-'
             ];
         });
         foreach ($jadwalMengajar as $key => $value) {

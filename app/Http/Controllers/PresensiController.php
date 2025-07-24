@@ -16,6 +16,7 @@ use App\Models\PresensiHarianSiswa;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
+use App\Models\TokenMengajar;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -112,6 +113,16 @@ class PresensiController extends Controller
 
         $date = date('Y-m-d', strtotime($tanggal));
 
+        $token = TokenMengajar::where('token', $request->token)
+            ->where('idjadwalmengajar', $idjadwalmengajar)
+            ->where('expired_at', '>=', now())
+            ->where('status', 'aktif')
+            ->first();
+
+        if (!$token) {
+            return back()->withErrors(['Token tidak valid atau sudah kadaluarsa.']);
+        }
+
         $tahunajaran = TahunAjaran::where('status', 1)->first();
 
         $presensi = Presensi::whereDate('created_at', $date)
@@ -124,7 +135,8 @@ class PresensiController extends Controller
                 'idkelas' => $idkelas,
                 'kode_matpel' => $kode_matpel,
                 'nip' => $nip,
-                'pokok_bahasan' => $request->pokok_bahasan
+                'pokok_bahasan' => $request->pokok_bahasan,
+                'token' => $request->token
             ]);
         } else {
             $presensi = Presensi::create([
@@ -135,7 +147,8 @@ class PresensiController extends Controller
                 'nip' => $nip,
                 'idjadwalmengajar' => $idjadwalmengajar,
                 'pokok_bahasan' => $request->pokok_bahasan,
-                'created_at' => date('Y-m-d H:i:s', strtotime($tanggal)) ?? date('Y-m-d H:i:s')
+                'created_at' => date('Y-m-d H:i:s', strtotime($tanggal)) ?? date('Y-m-d H:i:s'),
+                'token' => $request->token
             ]);
         }
 
@@ -156,6 +169,8 @@ class PresensiController extends Controller
                 ]);
             }
         }
+
+        $token->update(['status' => 'kadaluarsa']);
 
         return redirect()->back()->with('success', 'Presensi berhasil di proses');
     }

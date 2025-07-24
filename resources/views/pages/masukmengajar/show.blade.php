@@ -154,6 +154,11 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
+                                        <td>
+                                            <input type="text" name="token" id="token" class="form-control" value="{{ $presensi->token }}" style="display: none;">
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td colspan="5">
                                             <div class="mb-3">
                                                 <label for="pokok_bahasan" class="form-label">Pokok Bahasan</label>
