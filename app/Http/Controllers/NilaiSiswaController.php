@@ -162,6 +162,10 @@ class NilaiSiswaController extends Controller
         }
 
         $nilaisiswa = NilaiSiswa::find($id);
+        if ($nilaisiswa) {
+            NilaiSiswaKurmer::where('idnilaisiswa', $id)->delete();
+            DetailNilaiSiswa::where('idnilaisiswa', $id)->delete();
+        }
         $nilaisiswa->delete();
 
         return redirect()->route('nilai-siswa', [
