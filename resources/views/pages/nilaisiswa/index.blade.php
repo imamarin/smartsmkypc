@@ -34,7 +34,7 @@
                             <a class="nav-link {{ $kategori == 'tugas' ? 'active' : '' }}" data-bs-toggle="pill" href="#tugas">Nilai Tugas</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link {{ $kategori == 'harian' ? 'active' : '' }}" data-bs-toggle="pill" href="#harian">Nilai Ujian Harian</a>
+                          <a class="nav-link {{ $kategori == 'harian' ? 'active' : '' }}" data-bs-toggle="pill" href="#harian">Nilai Sumatif</a>
                         </li>
                         <li class="nav-item">
                           <a class="nav-link {{ $kategori == 'uts' ? 'active' : '' }}" data-bs-toggle="pill" href="#uts">Nilai UTS</a>
@@ -91,6 +91,10 @@
                                         <td>{{ $item->keterangan }}</td>
                                         @if(in_array('Hapus', $fiturMenu[$view]) || in_array('Edit', $fiturMenu[$view]) || in_array('Input', $fiturMenu[$view]))                                        
                                         <td>
+                                            <button class="btn btn-sm btn-info cptpModal" id="cptpModal"
+                                                    data-id = "{{ Crypt::encrypt($item->id) }}"
+                                                    data-nilai = "{{ base64_encode(json_encode($item)) }}"
+                                                    data-bs-toggle="modal" data-bs-target="#cptpSubjectModal">CP & TP</button>
                                             @if(in_array('Input', $fiturMenu[$view]))
                                             <a href="{{ route('nilai-siswa.input', ['kategori' => $item->kategori, 'id' => Crypt::encrypt($item->id)]) }}" class="btn btn-sm btn-secondary">Input Nilai Siswa</a>
                                             @endif
@@ -103,10 +107,6 @@
                                             @if(in_array('Hapus', $fiturMenu[$view]))
                                             <a href="{{ route('nilai-siswa-destroy', Crypt::encrypt($item->id)) }}" class="btn btn-sm btn-danger" data-confirm-delete="true">Hapus</a>
                                             @endif
-                                            <button class="btn btn-sm btn-info cptpModal" id="cptpModal"
-                                                    data-id = "{{ Crypt::encrypt($item->id) }}"
-                                                    data-nilai = "{{ base64_encode(json_encode($item)) }}"
-                                                    data-bs-toggle="modal" data-bs-target="#cptpSubjectModal">CP & TP</button>
                                         </td>
                                         @endif
                                     </tr>
@@ -141,7 +141,7 @@
                         <label for="kategori" class="form-label">Kategori Nilai</label>
                         <select name="kategori" id="kategori" class="form-control select2">
                             <option value="tugas">Tugas</option>
-                            <option value="harian">Ujian Harian</option>
+                            <option value="harian">Sumatif</option>
                             <option value="uts">Ujian Tengah Semester</option>
                             <option value="uas">Ujian Akhir Semester</option>
                             <option value="us">Ujian Sekolah</option>
@@ -281,7 +281,7 @@
         navKategori.on('click', function(event){
             console.log($(this).html());
             $(".cptpModal").hide();
-            if($(this).html() === 'Nilai Ujian Harian'){
+            if($(this).html() === 'Nilai Sumatif'){
                 kategori = 'harian';
                 $(".cptpModal").show();
             }else if($(this).html() === 'Nilai Tugas'){
