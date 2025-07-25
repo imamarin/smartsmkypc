@@ -161,8 +161,15 @@ class NilaiSiswaController extends Controller
             return redirect()->back()->with('warning', $e->getMessage());
         }
 
-        NilaiSiswaKurmer::where('idnilaisiswa', $id)->delete();
-        DetailNilaiSiswa::where('idnilaisiswa', $id)->delete();
+        $nilaikurmer = NilaiSiswaKurmer::where('idnilaisiswa', $id);
+        if ($nilaikurmer->count() > 0) {
+            $nilaikurmer->delete();
+        }
+        $detail = DetailNilaiSiswa::where('idnilaisiswa', $id);
+        if ($detail->count() > 0) {
+            $detail->delete();
+        }
+
         $nilaisiswa = NilaiSiswa::find($id);
 
         $nilaisiswa->delete();
