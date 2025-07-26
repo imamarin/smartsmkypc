@@ -95,10 +95,10 @@ Route::middleware('cek-status-login')->group(function () {
         Route::post('/data-siswa/{id}/updateStatus', [SiswaController::class, 'updateStatus'])->name('data-siswa.updateStatus');
         Route::get('/data-siswa/export/data', [SiswaController::class, 'export'])->name('data-siswa.export');
         Route::post('/data-siswa/import/data', [SiswaController::class, 'import'])->name('data-siswa.import');
-        Route::get('/template-import-siswa', function () {
-            $file = public_path('storage/template_import/template_siswa.xlsx');
+        Route::get('/template-import-siswa/{filename}', function ($filename) {
+            $file = public_path("storage/template_import/{$filename}");
             return response()->download($file);
-        })->name('data-siswa.template.import');
+        })->where('filename', '.*')->name('data-siswa.template.import');
 
         //data-staf
         Route::resource('/profil-staf', StafController::class);
