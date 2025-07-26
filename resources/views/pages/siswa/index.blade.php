@@ -42,7 +42,7 @@
                     <div class="col">
                         <div class="d-flex justify-content-end mb-3">
                             @if(in_array('Eksport', $fiturMenu[$view]))
-                            <a href="{{ route('data-siswa.export', 'template_siswa.xlsx') }}" class="btn btn-info me-2">Export Data</a>
+                            <a href="{{ route('data-siswa.export') }}" class="btn btn-info me-2">Export Data</a>
                             @endif
                             @if(in_array('Import', $fiturMenu[$view]))
                             <a href="#" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</a>
@@ -145,7 +145,7 @@
 
                         <div class="mb-3">
                             <span>Download Template .xlsx disini</span>
-                            <a href="{{ route('data-siswa.template.import') }}">Template_Siswa.xlsx</a>
+                            <a href="{{ route('data-siswa.template.import', 'template_siswa.xlsx') }}">Template_Siswa.xlsx</a>
                         </div>
                     </div>
                     <div class="modal-footer">
