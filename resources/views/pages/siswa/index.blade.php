@@ -145,7 +145,7 @@
 
                         <div class="mb-3">
                             <span>Download Template .xlsx disini</span>
-                            <a href="{{ route('data-siswa.template.import', 'template_siswa.xlsx') }}">Template_Siswa.xlsx</a>
+                            <a href="{{ route('data-siswa.template.import', 'Template_Siswa.xlsx') }}">Template_Siswa.xlsx</a>
                         </div>
                     </div>
                     <div class="modal-footer">
